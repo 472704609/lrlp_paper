@@ -1,8 +1,8 @@
-\documentclass[11pt]{article}
+\documentclass{iserc}
 
 % \usepackage{default}
 % \usepackage{fullpage}
-\usepackage[margin=1in]{geometry}
+% \usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -20,6 +20,7 @@
 
 \title{A Likelihood Robust Method for Water Allocation under Uncertainty}
 \date{}
+\conference{Proceedings of the 2013 Industrial and Systems Engineering Research Conference\\A. Krishnamurthy and W.K.V. Chan, eds.}
 
 % Frequently used general mathematics
 \newcommand{\R}{{\mathbb{R}}}
@@ -84,9 +85,9 @@ More than half of Tucson's water, for instance, comes from this source.
 The Colorado River Basin has experienced a sustained period of drought in recent years, which has led to questions about the adequacy of the Colorado to meet future demands, especially as the population of Arizona (and of other states that depend on this water source) increases.
 Thus, the problem of allocating Colorado water is of critical importance. 
  
-The reliability of the Colorado River system under future climate variability is critically important to the long-term well-being of Arizona and the other six states that depend on this water supply \cite{usbr_colorado_climate}. 
-The current approach to modeling the water supply is to use Global Circulation Models (GCM) to generate regional rainfall and temperature scenarios by the so-called statistical downscaling techniques \cite{christensen_lettenmaier_07,dibike_caulibaly_05}.  
-The US Bureau of Reclamation also uses an approach called the {\it scenario planning} that examines water demand and supplies over the next 50 years \cite{usbr_11}.
+% The reliability of the Colorado River system under future climate variability is critically important to the long-term well-being of Arizona and the other six states that depend on this water supply \cite{usbr_colorado_climate}. 
+% The current approach to modeling the water supply is to use Global Circulation Models (GCM) to generate regional rainfall and temperature scenarios by the so-called statistical downscaling techniques \cite{christensen_lettenmaier_07,dibike_caulibaly_05}.  
+% The US Bureau of Reclamation also uses an approach called the {\it scenario planning} that examines water demand and supplies over the next 50 years \cite{usbr_11}.
 
 In this paper, we present a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
 More general models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
@@ -228,7 +229,7 @@ As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Value of Data} \label{sec:value}
 
-With a data driven formulation such as LRLP-2 it is natural to ask how the behavior changes as more data is gathered.
+With a data driven formulation such as LRLP-2, it is natural to ask how the behavior changes as more data is gathered.
 In particular, for ambiguous formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
 We present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower cost solution.
 
