@@ -69,25 +69,45 @@
 \maketitle
 
 \begin{abstract}
-	We adapt the Likelihood Robust Optimization method recently proposed by Wang, Glynn and Ye to examine water allocation under the ambiguous distribution of future available supply and demand. We examine the value of collecting additional data and the cost of finding a solution robust to an ambiguous probability distribution. A decomposition-based solution algorithm to solve the resulting model is given. Computational results are presented on a long-term water allocation problem in southeast area of Tucson.
+	We adapt and extend the likelihood robust optimization method recently proposed by Wang, Glynn, and Ye to examine water allocation under the ambiguous distribution of future available supply and demand in a two-stage setting.
+	We examine the value of collecting additional data and the cost of finding a solution robust to an ambiguous probability distribution.
+	A decomposition-based solution algorithm to solve the resulting model is given.
+	Computational results are presented on a long-term water allocation problem in southeast area of Tucson.
 \end{abstract}
 
-\section{Introduction \& Motivation}
+\keywords{Optimization under uncertainty, water resources management,  ambiguous stochastic programming, robust optimization, environmental sustainability}
 
+\section{Introduction and Motivation}
 
-More than 25 million people in the southwestern United States depend on the water supplied by the Lower Colorado River Basin for their livelihood. More than half of Tucson's water, for instance, comes from this source. The Colorado River Basin has experienced a sustained period of drought in recent years, which has led to questions about the adequacy of the Colorado to meet future demands, especially as the population of Arizona (and of other states that depend on this water source) increases. Thus, the problem of allocating Colorado water is of critical importance. 
+More than 25 million people in the southwestern United States depend on the water supplied by the Lower Colorado River Basin for their livelihood.
+More than half of Tucson's water, for instance, comes from this source.
+The Colorado River Basin has experienced a sustained period of drought in recent years, which has led to questions about the adequacy of the Colorado to meet future demands, especially as the population of Arizona (and of other states that depend on this water source) increases.
+Thus, the problem of allocating Colorado water is of critical importance. 
  
-% The reliability of the Colorado River system under future climate variability is critically important to the long-term well-being of Arizona and the other six states that depend on this water supply \cite{usbr_colorado_climate}. The current approach to modeling the water supply is to use Global Circulation Models (GCM) to generate regional rainfall and temperature scenarios by the so-called statistical downscaling techniques \cite{christensen_lettenmaier_07,dibike_caulibaly_05}.  The US Bureau of Reclamation also uses an approach called the {\it scenario planning} that examines water demand and supplies over the next 50 years \cite{usbr_11}.
+The reliability of the Colorado River system under future climate variability is critically important to the long-term well-being of Arizona and the other six states that depend on this water supply \cite{usbr_colorado_climate}. 
+The current approach to modeling the water supply is to use Global Circulation Models (GCM) to generate regional rainfall and temperature scenarios by the so-called statistical downscaling techniques \cite{christensen_lettenmaier_07,dibike_caulibaly_05}.  
+The US Bureau of Reclamation also uses an approach called the {\it scenario planning} that examines water demand and supplies over the next 50 years \cite{usbr_11}.
 
-In this paper, we present a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et.\ al.\ \cite{draper_etal_03}.  More general models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.  Our model is modified to incorporate future uncertainty by using the Likelihood Robust Optimization (LRO) approach of Wang, Glynn and Ye \cite{wang2010likelihood}.  LRO is a data-driven method that uses observations of random or unknown parameters to account not only for inherent stochasticity of a problem, but the ambiguity of the probabilistic model itself.  This is especially important in our application as we are looking 40 years into the future and there is considerable ambiguity in the uncertainties.
+In this paper, we present a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
+More general models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
+Our model is modified to incorporate future uncertainty by using the Likelihood Robust Optimization (LRO) approach of Wang, Glynn and Ye \cite{wang2010likelihood}.
+LRO is a data-driven method that uses observations of random or unknown parameters to account not only for inherent stochasticity of a problem, but the ambiguity of the probabilistic model itself.
+This is especially important in our application as we are looking 40 years into the future and there is considerable ambiguity in the uncertainties.
 
-The LRO is especially attractive because only those scenarios of interest, obtained either through observation or simulation, are used directly in the calculations.  Thus the size of the problem is polynomial in the sample size, making it computationally tractable.  Furthermore, the samples used in the LRO can represent select scenarios that are of interest to the authorities---for instance, generated by the scenario planning process \cite{cityofTucsonWaterPlan,usbr_11}. This fits with practice well; the scenario planning process results in several scenarios that the agencies would especially like to be robust against.
+The LRO is especially attractive because only those scenarios of interest, obtained either through observation or simulation, are used directly in the calculations.
+Thus the size of the problem is polynomial in the sample size, making it computationally tractable.
+Furthermore, the samples used in the LRO can represent select scenarios that are of interest to the authorities---for instance, generated by the scenario planning process \cite{cityofTucsonWaterPlan,usbr_11}.
+This fits with practice well; the scenario planning process results in several scenarios that the agencies would especially like to be robust against.
 
-This paper is organized as follows: in Section \ref{sec:network_model} we state the generalized network model in deterministic and stochastic forms; in Section \ref{sec:lrlp2} we describe the Likelihood Robust Optimization method for a two-stage stochastic linear program with recourse; in Section \ref{sec:value} we discuss a method of measuring the value of gathering additional data for input to the LRO; in Section \ref{sec:soln_algorithm} we present a decomposition method for solving the LRO mode; and in Section \ref{sec:comp_results} we present some computational results for our model.
+This paper is organized as follows: in Section \ref{sec:network_model} we state the generalized network model in deterministic and stochastic forms; in Section \ref{sec:lrlp2} we extend the Likelihood Robust Optimization (LRO) model for a two-stage stochastic program with recourse; in Section \ref{sec:value} we discuss a method of measuring the value of gathering additional data for input to the LRO; in Section \ref{sec:soln_algorithm} we present a decomposition method for solving the LRO model; and in Section \ref{sec:comp_results} we present some computational results for our application. Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 
-\section{Generalized Network Water Model} \label{sec:network_model}
 
-We begin with a generalized network flow model of Colorado River water allocation in Tucson.  The deterministic model is a multi-year model of the form
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Generalized Network Water Model} 
+\label{sec:network_model}
+
+We begin with a generalized network flow model of Colorado River water allocation in Tucson.
+The deterministic model is a multi-year model of the form
 \begin{align*}
 	\min_{x,s,r} \ & \sum_{i,j} \sum_t c_{ijt}^x x_{ijt} + \sum_{j} \sum_{t} c_{jt}^s s_{jt}\\
 	\st \ & \sum_i x_{jit} + s_{j,t+1} + r_{jt} = \sum_i a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \forall j,t \\
@@ -95,9 +115,12 @@ We begin with a generalized network flow model of Colorado River water allocatio
 	& l_{jt}^s \leq s_{jt} \leq u_{sjt}^s, \ \forall j,t \\
 	& l_{jt}^r \leq r_{jt} \leq u_{sjt}^r, \ \forall j,t,
 \end{align*}
-where $x_{ijt}$ is the flow from node $i$ to node $j$ during the $t^{\text{th}}$ time period, $s_{jt}$ is the storage in node $j$ at the beginning of the $t^{\text{th}}$ time period, $r_{jt}$ is the water released to surface water from node $j$ in time period $t$, $b_{jt}$ is the external inflow into node $j$ in time period $t$, $a_{ijt}$ is the gain/loss of flow on arc $(i,j)$ at time $t$, $c_{ijt}^x$ and $c_{jt}^s$ are the economic losses associated with arc $(i,j)$ at time $t$ (representing energy and treatment costs) and storage in node $j$ respectively, and $l_{ijt}^x$, $l_{jt}^s$, $l_{jt}^r$, $u_{ijt}^x$, $u_{jt}^s$ and $u_{jt}^r$ are the lower and upper bounds on decision variables.
+where $x_{ijt}$ is the flow from node $i$ to node $j$ during the $t^{\text{th}}$ time period, $s_{jt}$ is the storage in node $j$ at the beginning of the $t^{\text{th}}$ time period, $r_{jt}$ is the water released to surface water from node $j$ in time period $t$, $b_{jt}$ is the external inflow into node $j$ in time period $t$, $a_{ijt}$ is the gain/loss of flow on arc $(i,j)$ at time $t$, $c_{ijt}^x$ and $c_{jt}^s$ are the economic losses (energy and treatment costs) associated with arc $(i,j)$ at time $t$ and storage in node $j$, respectively, and $l_{ijt}^x$, $l_{jt}^s$, $l_{jt}^r$, $u_{ijt}^x$, $u_{jt}^s$ and $u_{jt}^r$ are the lower and upper bounds on decision variables.
 
-To make this model stochastic we rewrite it as a two-stage linear program.  The model has a total of $P = 41$ time periods, representing years 2010-2050, which will be split into two stages of $P_1$ and $P_2 = P - P_1$ years each.  Second stage parameters $b_{jt}$ and (some) lower and upper bounds are then assumed to be stochastic.  The model thus becomes
+To make this model stochastic, we rewrite it as a two-stage linear program.
+The model has a total of $P = 41$ time periods, representing years 2010-2050, which will be split into two stages of $P_1$ and $P_2 = P - P_1$ years each.
+Second stage parameters $b_{jt}$ and (some) lower and upper bounds are then assumed to be stochastic.
+The model thus becomes
 \begin{align}
 	\min_{(x,s,r) \in L^1} \ & \sum_{i,j} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n p_\omega h^\dagger_\omega(s) \label{eq:gen_network_two_stage} \\
 	\st \ & \sum_i x_{jit} + s_{j,t+1} + r_{jt} = \sum_i a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \forall j, 1 \leq t \leq P_1 \notag
@@ -109,11 +132,17 @@ where
 \end{align}
 The $\omega$ index indicates the $n$ second-stage scenarios with probabilities $p_\omega$ and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower and upper variable bounds.
 
-In the rest of the paper, we simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows: in the first-stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.  In the second stage we denote the decisions as $\y^\omega$, the costs as $\q^\omega$, the demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.  Note that the problem now has the form of a general two-stage stochastic linear program with recourse.
+In the rest of the paper, we simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows.
+In the first-stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
+In the second stage, we denote the decisions as $\y^\omega$, the costs as $\q^\omega$, the demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.
+Note that the problem now has the form of a general two-stage stochastic linear program with recourse, which we present next and extend to an LRO formulation.
 
-\section{LRLP-2 Formulation} \label{sec:lrlp2}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{LRLP-2 Formulation} 
+\label{sec:lrlp2}
 
-To apply the likelihood robust optimization framework we will for now begin with a general two-stage stochastic linear program with recourse (SLP-2), and use it to form a two-stage likelihood robust linear program with recourse, which will will denote as LRLP-2.  The SLP-2 is formulated as
+To apply the likelihood robust optimization framework we will for now begin with a general two-stage stochastic linear program with recourse (SLP-2), and use it to form a two-stage likelihood robust linear program with recourse, which will will denote as LRLP-2.
+The SLP-2 is formulated as
 \begin{align*}
 	\min_\x \ & \c\x + \e{h^\dagger(\x)} \\
 	\st \ & A\x = \b \\
@@ -125,43 +154,55 @@ where
 	\st \ & D^\omega y^\omega = B^\omega \x + \d^\omega \nonumber \\
 	& y^\omega \geq 0. \nonumber
 \end{align}
-We assume a finite number of scenarios indexed by $1 \leq \omega \leq n$ with corresponding probabilities $p_1, \dots, p_n$.  For simplicity we assume relatively complete recourse, i.e., the second-stage problems $h^\dagger_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem.  To derive the LRLP-2, we begin by writing SLP-2 in extensive form
-\begin{align*}
-	\min_{\x,y^\omega} \ & \c\x + \sum_\omega p_\omega \q^\omega y^\omega \\
-	\st \ & A\x = \b \\
-	& -B^\omega \x + D^\omega y^\omega = \d^\omega\ \forall \omega \\
-	& \x \geq 0 \\
-	& y^\omega \geq 0\ \forall \omega.
-\end{align*}
+We assume a finite number of scenarios indexed by $1 \leq \omega \leq n$ with corresponding probabilities $p_1, \dots, p_n$.
+For simplicity we assume relatively complete recourse; i.e., the second-stage problems $h^\dagger_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem.
+To derive the LRLP-2, we begin by writing SLP-2 in extensive form
+\[
+	\begin{array}{rrrl}
+		\min_{\x,y^\omega} \ & \c\x & + \sum_\omega p_\omega \q^\omega y^\omega \label{eq:slp2cost} \\
+		\st \ & A\x & & = \b \nonumber \\
+		& -B^\omega \x & + D^\omega y^\omega & = \d^\omega,\ \forall \omega \nonumber \\
+		& \x & & \geq 0 \nonumber \\
+		& & y^\omega & \geq 0,\ \forall \omega. \nonumber
+	\end{array}
+\]
 
-In the likelihood robust formulation the distribution $p_\omega$ is unknown, but scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations.  The objective function is minimized relative to the worst-case distribution selected from a set of distributions with sufficiently high likelihood $\prod_{\omega=1}^n p_\omega^{N_\omega}$.  Its deterministic equivalent form is
+In the likelihood robust formulation, the distribution $p_\omega$ is unknown but scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations.
+The objective function is minimized relative to the worst-case distribution selected from a set of distributions with sufficiently high likelihood $\prod_{\omega=1}^n p_\omega^{N_\omega}$.
+That is, instead of using a specific probability distribution as in SLP-2---for instance, by maximum likelihood estimation that results in $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$---all distributions that have sufficiently high empirical likelihood values are considered. To be robust against all these possible distributions, the distribution that results in the maximum cost is considered. The resulting minimax formulation of LRLP-2 is 
 \begin{align}
 	\min_{\x,y^\omega} \max_p \ & \c\x + \sum_\omega p_\omega \q^\omega y^\omega \label{eq:lrlp_primal}\\
 	\st \ & A\x = \b \nonumber \\
-	& -B^\omega \x + D^\omega y^\omega = \d^\omega\ \forall \omega \nonumber \\
+	& -B^\omega \x + D^\omega y^\omega = \d^\omega,\ \forall \omega \nonumber \\
 	& \sum_\omega N_\omega \log p_\omega \geq \gamma & (\lambda) \label{eq:lrlp_primal_liklihood} \\
 	& \sum_\omega p_\omega = 1 & (\mu) \label{eq:lrlp_primal_probability} \\
 	& \x \geq 0 \nonumber \\
-	& y^\omega, p_\omega \geq 0\ \forall \omega. \nonumber
+	& y^\omega, p_\omega \geq 0,\ \forall \omega. \nonumber
 \end{align}
-Following Wang et.\ al.\ \cite{wang2010likelihood}, we have introduced the likelihood parameter $\gamma$.  The likelihood constraint is equivalent to $\prod_{\omega=1}^n p_\omega^{N_\omega} \geq e^\gamma$.  Let $0 \leq \gamma' \leq 1$ be the relative likelihood parameter that expresses $\gamma$ as a proportion of the maximum likelihood, i.e., $\gamma = \log( \gamma' \prod_\omega (\tfrac{N_\omega}{N})^{N_\omega})$.
+Following Wang et al.\ \cite{wang2010likelihood}, we have introduced the likelihood parameter $\gamma$.
+The likelihood constraint \eqref{eq:lrlp_primal_liklihood} is equivalent to $\prod_{\omega=1}^n p_\omega^{N_\omega} \geq e^\gamma$.
+Let $0 \leq \gamma' \leq 1$ be the \emph{relative likelihood parameter} that expresses $\gamma$ as a proportion of the maximum likelihood; i.e., $\gamma = \log( \gamma' \prod_\omega (\tfrac{N_\omega}{N})^{N_\omega})$.
 
-Taking the dual of the inner maximization problem, with dual variables $\lambda$ (\ref{eq:lrlp_primal_liklihood}) and $\mu$ (\ref{eq:lrlp_primal_probability}), yields
+Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:lrlp_primal_liklihood}) and (\ref{eq:lrlp_primal_probability}), respectively, yields
 \begin{align*}
 	\min_{\lambda,\mu} \ & \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda(\log\lambda - \log(\mu-\q^\omega y^\omega)) \\
 	\st \ & \lambda \geq 0 \\
-	& \mu \geq \q^\omega y^\omega \ \forall \omega.
+	& \mu \geq \q^\omega y^\omega, \ \forall \omega.
 \end{align*}
-where $\bar{N} = N(\log N - 1) - \log\gamma'$.  Combining the two minimizations gives LRLP-2 in deterministic equivalent form
+where $\bar{N} = N(\log N - 1) - \log\gamma'$.
+Combining the two minimizations gives LRLP-2 in extensive form
 \begin{align}
 	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda(\log\lambda - \log(\mu-\q^\omega y^\omega)) \nonumber \\
 	\st \ & A\x = \b \nonumber \\
-	& -B^\omega \x + D^\omega y^\omega = \d^\omega\ \forall \omega \label{eq:lrlp_det_equiv} \\
-	& \mu \geq \q^\omega y^\omega \ \forall \omega \nonumber \\
-	& \x,\lambda,y^\omega \geq 0 \ \forall \omega. \nonumber
+	& -B^\omega \x + D^\omega y^\omega = \d^\omega,\ \forall \omega \label{eq:lrlp_det_equiv} \\
+	& \mu \geq \q^\omega y^\omega, \ \forall \omega \nonumber \\
+	& \x,\lambda,y^\omega \geq 0, \ \forall \omega. \nonumber
 \end{align}
 
-Finally, we wish to return the LRLP-2 to to two-stage formulation.  All terms inside the sum over $\omega$ will be put into the second stage.  To make the formulation as similar to SLP-2 as possible, we choose to express the second stage as an expected value using the maximum likelihood distribution $\frac{N_\omega}{N}$.  The formulation becomes
+Finally, we wish to return the LRLP-2 to two-stage formulation.
+All terms inside the sum over $\omega$ will be put into the second stage.
+To make the formulation as similar to SLP-2 as possible, we choose to express the second stage as an expected value using the maximum likelihood distribution $\frac{N_\omega}{N}$.
+The formulation becomes
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \bar{N}\lambda + \sum_\omega \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu) \nonumber \\
 	\st \ & A\x = \b \label{eq:lrlp_two_stage} \\
@@ -176,23 +217,32 @@ where
 \end{align}
 
 
-Since $\log$ is uniformly increasing, we can rewrite the second stage problem as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.  Thus we can state the second stage of LRLP-2 in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h_\omega(\x))\right]$.
+Since $\log$ is uniformly increasing, we can rewrite the second stage problem as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
+Thus we can state the second stage of LRLP-2 in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h^\dagger_\omega(\x))\right]$.
 
 As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_equiv}) give the relation between primal and dual variables
 \begin{equation}
 	p_\omega = \frac{\lambda N_\omega}{\mu - h^\dagger_\omega(\x)} \label{eq:kkt}
 \end{equation}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Value of Data} \label{sec:value}
 
-With a data driven formulation such as LRLP-2 it is natural to ask how the behavior changes as more data is gathered.  In particular, for ambiguous formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.  We present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization.
+With a data driven formulation such as LRLP-2 it is natural to ask how the behavior changes as more data is gathered.
+In particular, for ambiguous formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
+We present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower cost solution.
 
-Consider again the deterministic equivalent formulation of LRLP-2 (\ref{eq:lrlp_det_equiv}).  Let $f_N(\x,\mu,\lambda) =  \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda(\log\lambda - \log(\mu-h^\dagger(\x)))$ be the objective function, and $z_N = \min_{\x,\mu,\lambda} f_N(\x,\mu,\lambda)$.  We wish to find a simple estimate of the decrease in the optimal cost associated with taking an additional sample, $z_N - z_{N+1}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
+Consider again the deterministic equivalent formulation of LRLP-2 in (\ref{eq:lrlp_det_equiv}).
+Let $f_N(\x,\mu,\lambda) =  \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda$ $(\log\lambda$ $- \log(\mu-h^\dagger(\x)))$ be the objective function, and $z_N = \min_{\x,\mu,\lambda} f_N(\x,\mu,\lambda)$.
+We wish to find a simple estimate of the decrease in the optimal cost associated with taking an additional sample, $z_N - z_{N+1}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
 
-Let $\x^*_N, \mu^*_N,\lambda^*_N \in \argmin f_N(\x,\mu,\lambda)$ be optimal solutions to the $N$-sample problem.  Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
-
-Let $\hat{\omega}$ be the scenario that is selected with the additional sample, then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) = \left[ \overline{N} - \overline{N+1} - \log \lambda^*_N + \log(\mu^*_N - h^\dagger_{\hat{\omega}}(\x^*_N)) \right] \lambda^*_N$.  Note that $\lambda^*_N > 0$, so to guarantee a drop in optimal cost we must show that the first term is positive.  To do so, note that $\overline{N} - \overline{N+1} = N\log N - (N+1)\log(N+1) + 1$, which can be bounded using the tangent lines
+Let $\x^*_N, \mu^*_N,\lambda^*_N \in \argmin f_N(\x,\mu,\lambda)$ be optimal solutions to the $N$-sample problem.
+Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
+Let $\hat{\omega}$ be the scenario that is selected with the additional sample, then 
+\[
+	z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) = \left[ \overline{N} - \overline{N+1} - \log \lambda^*_N + \log(\mu^*_N - h^\dagger_{\hat{\omega}}(\x^*_N)) \right] \lambda^*_N.
+\]
+We can bound $\overline{N} - \overline{N+1} = N\log N - (N+1)\log(N+1) + 1$ by using the tangent lines
 \[
 	\log \x + 1 \leq (\x+1)\log(\x+1) - \x\log \x \leq \log(\x+1) + 1
 \]
@@ -200,54 +250,82 @@ to get $\overline{N} - \overline{N+1} \geq -\log(N+1)$.
 
 Combining these results gives the condition
 \[
-	z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) \geq \left[ -\log(N+1) - \log\lambda^*_N + \log(\mu^*_N-h^\dagger(\x^*_N))\right]\lambda^*_N > 0
+	z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) \geq \left[ -\log(N+1) - \log\lambda^*_N + \log(\mu^*_N-h^\dagger(\x^*_N))\right]\lambda^*_N > 0.
 \]
-which simplifies to
+Note that $\lambda^*_N > 0$, so to guarantee a drop in optimal cost we must show that the first term is positive.
+This then simplifies to
 \[
 	\frac{\mu^*_N - h^\dagger(\x^*_N)}{\lambda^*_N(N+1)} > 1.
 \]
 Using the KKT condition (\ref{eq:kkt}), this can be rewritten as
-\[
+\begin{equation} \label{eq:cost_decrease_cond}
 	\frac{N_{\hat{\omega}}}{N} > \left( \frac{N+1}{N} \right) p_{\hat{\omega}}.
-\]
-That is, we can guarantee a decrease in optimal cost (thus ruling out the previous worst-case distribution) if the probability of the scenario sampled is somewhat more likely to occur in the maximum likelihood distribution than in the worst-case distribution.
+\end{equation}
+The left-hand side of (\ref{eq:cost_decrease_cond}) is the empirical probability of scenario $\hat{\omega}$ given by the observations used to solve (\ref{eq:lrlp_two_stage}).
+The right-hand side contains $p_{\hat{\omega}}$, the worst-case probability of scenario $\hat{\omega}$ computed by solving (\ref{eq:lrlp_two_stage}), using a total of $N$ observations.
 
-Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.  Let $L = \{ \omega : \frac{N_{\omega}}{N} \geq \left( \frac{N+1}{N} \right) p_\omega \}$, where $p_\omega$ is the worst-case distribution discussed above.  The lower bound probability can be found by solving the likelihood robust problem
+We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
+This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt} for a one that results in a decrease in the optimal cost.
+% That is, we can guarantee a decrease in optimal cost (thus ruling out the previous worst-case distribution) if the probability of the scenario sampled is somewhat more likely to occur in the maximum likelihood distribution than in the worst-case distribution.
+
+Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
+Let $L = \left\{ \omega : \frac{N_{\omega}}{N} \geq \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
+That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in LRLP-2.
+We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
 \begin{align}
-	\min_{\omega \in L} \ & \sum_{\omega \in L} p_\omega \nonumber \\
-	\mbox{s.t.} & \sum_\omega N_\omega \log p_\omega \geq \gamma \label{eq:lb_probability} \\
-	& \sum_\omega p_\omega = 1 \nonumber \\
-	& p_\omega \geq 0, \ \forall \omega, \nonumber
+	\min_{\omega \in L} \ & \sum_{\omega \in L} q_\omega \nonumber \\
+	\mbox{s.t.} & \sum_\omega N_\omega \log q_\omega \geq \gamma \label{eq:lb_probability} \\
+	& \sum_\omega q_\omega = 1 \nonumber \\
+	& q_\omega \geq 0, \ \forall \omega, \nonumber
 \end{align}
-using parameters identical to the original LRLP-2 (\ref{eq:lrlp_primal}).  We define $N_L = \sum_{\omega \in L} N_\omega$, then $\min_{\omega \in L} \sum_{\omega \in L} p_\omega \leq \frac{N_L}{N}$ by using the maximum likelihood distribution as a feasible solution.  Taking the dual of (\ref{eq:lb_probability}) as before yields the two dimensional minimization
+where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:kkt}). 
+Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst case distribution $\{p_\omega\}$ using the current set of observations. 
+Let $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$. Note that $\min_{\omega \in L} \sum_{\omega \in L} q_\omega \leq \frac{N_L}{N}$, because the maximum likelihood distribution is always within the likelihood ambiguity set. We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
+
+We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program
 \begin{align}
-	\min_{\mu,\lambda} \ & \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu - 1) - \lambda (N-N_L) \log\mu. \label{eq:prob_cost_decrease}
+	-\min_{\mu,\lambda} \ & \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu - 1) - \lambda (N-N_L) \log\mu, \label{eq:prob_cost_decrease}
 \end{align}
-We view (\ref{eq:prob_cost_decrease}) as a function of parameters $\tfrac{N_L}{N}$,$N$ and $\gamma'$, and plot the optimal value of (\ref{eq:prob_cost_decrease}) as a function of $\tfrac{N_L}{N}$ in Figure \ref{fig:prob_cost_decrease_nd_n} and as a function of $\gamma'$ in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple}.
+where $\bar{N} = N(\log N - 1) - \log\gamma'$.
+
+We can view the optimal value of (\ref{eq:prob_cost_decrease}) as a function of three parameters: the total sample size $N$, the relative likelihood parameter $\gamma'$, and the number of observations in the set $L$, $N_L$.
+The behavior of this lower bound estimate is studied in Figure \ref{fig:prob_cost_decrease_nd_n} as a function of the ratio $\tfrac{N_L}{N}$, and in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} as a function of the relative likelihood parameter $\gamma'$.
+Figure \ref{fig:prob_cost_decrease_nd_n} shows that the estimated lower bound on the probability of optimal cost decrease stays relatively close to the identity line for most values of $\gamma'$, getting closer to the identity line as  $\gamma'$ is increased; i.e., the ambiguity set (or robustness) is decreased.
+Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} give a closer look at how (\ref{eq:prob_cost_decrease}) differs from $\tfrac{N_L}{N}$ as $\gamma'$ is changed.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=.5\textwidth]{images/prob_dec_cost_v_nl_n_20}
-	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of the ratio $\frac{N_L}{N}$ for $N = 20$.}
+	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
 	\label{fig:prob_cost_decrease_nd_n}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\subfloat[][Variance reduction]{
+	\subfloat[][$N_L=50$ $\left(\frac{N_L}{N} = 0.25\right)$]{
 	   \label{fig:prob_cost_decrease_gp}
 	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context}}
-	\subfloat[][Expected Variance]{
+	\subfloat[][$N_L=10,50,100,150$ and $190$]{
 	   \label{fig:prob_cost_decrease_gp_multiple}
 	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context_multiple}}
-	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of $\gamma'$ for $N = 200$, for a single value of $N_L = 50$ (a) and for multiple values of $N_L$ (b).}
+	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
 \end{figure}
 
-The plots in Figures \ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} are presented outside of the context of an LRLP-2.  We note that $\gamma'$ and $N$ are parameters in both LRLP-2 and (\ref{eq:prob_cost_decrease}), but $N_L$ is the result of LRLP-2 optimization, and thus will change with $\gamma'$ in general.  Because $N_L$ is integer, these changes will cause a series of jump discontinuities, as can be seen in Figure \ref{fig:water_prob_decrease}.
+Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the LRLP-2.
+The first two of these parameters are also parameters of the LRLP-2 problem (\ref{eq:lrlp_two_stage}).
+The third, $N_L$, is computed from the optimal solution of (\ref{eq:lrlp_two_stage}) via (\ref{eq:kkt}) and (\ref{eq:cost_decrease_cond}).
+As such, $N_L$ should be viewed as changing with $\gamma'$.
+In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
+This behavior is studied in Section \ref{sec:comp_results}.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Decomposition-Based Solution Method} \label{sec:soln_algorithm}
 
-We propose a Bender's Decomposition-based method for solving LRLP-2.  Our algorithm uses the LRLP-2 second stage problems (\ref{eq:lrlp_second_stage}) to form the cuts, ensuring a linear master problem.  The algorithm requires removing constraint (\ref{eq:lrlp_feas_constraint}) from the second-stage problem (\ref{eq:lrlp_second_stage}) and exchanging it for a series of feasibility constraints in the first-stage problem.  Making this change ensures that the second stage problems are solved using the formulation of $h^\dagger_\theta(\x)$ for SLP-2 (\ref{eq:slp_second_stage}).  The master problem is given by
+We propose a Bender's decomposition-based method for solving LRLP-2.
+Our algorithm uses the LRLP-2 second-stage problems (\ref{eq:lrlp_second_stage}) to form the cuts, ensuring a linear master problem.
+The algorithm removes constraint (\ref{eq:lrlp_feas_constraint}) from the second-stage problem (\ref{eq:lrlp_second_stage}) and exchanges it with a series of feasibility constraints (or cuts) in the first-stage problem.
+Making this change ensures that the second-stage problems are solved using the formulation of $h^\dagger_\theta(\x)$ for SLP-2 (\ref{eq:slp_second_stage}), and is more efficient.
+The master problem is given by
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \bar{N}\lambda + \theta \label{eq:master_problem}\\
 	\st \ & A\x = \b \nonumber \\
@@ -256,41 +334,42 @@ We propose a Bender's Decomposition-based method for solving LRLP-2.  Our algori
 	& \x,\lambda \geq 0, \nonumber
 \end{align}
 where $T_j (\x,\lambda,\mu)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:lrlp_feas_constraint}), and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
+We next discuss these cuts in more detail.
 
 \subsection{Objective Cuts}
 
-Let $(\xh,\lh,\mh)$ be the candidate solution from the master problem (\ref{eq:master_problem}).  An optimality cut can be computed by solving the SLP-2 subproblems $h^\dagger_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second stage problem, and using these to compute the partial (sub)derivatives of the LRLP-2 subproblems as
+Let $(\xh,\lh,\mh)$ be the candidate solution from the master problem (\ref{eq:master_problem}).
+An objective cut can be computed by solving the SLP-2 subproblems $h^\dagger_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the LRLP-2 subproblems as
 \begin{align*}
-	\dfrac{\partial h_\omega}{\partial \mu}(\xh,\lh,\mh) & = \dfrac{-N\lh}{\mh - h_\omega'(\xh)} \\
-	\dfrac{\partial h_\omega}{\partial \lambda}(\xh,\lh,\mh) & = N + N\log\lh - N \log(\mh - h_\omega'(\xh)) \\
-	\dfrac{\partial h_\omega}{\partial \x}(\xh,\lh,\mh) & = \left(\dfrac{N\lh}{\mh - h_\omega'(\xh)}\right) \pi^{*,\omega} B^\omega
+	\dfrac{\partial h_\omega}{\partial \mu}(\xh,\lh,\mh) & = \dfrac{-N\lh}{\mh - h^\dagger_\omega(\xh)} \\
+	\dfrac{\partial h_\omega}{\partial \lambda}(\xh,\lh,\mh) & = N + N\log\lh - N \log(\mh - h^\dagger_\omega(\xh)) \\
+	\dfrac{\partial h_\omega}{\partial \x}(\xh,\lh,\mh) & = \left(\dfrac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega
 \end{align*}
-Recall that $h_\omega'(\x) = \min_{y^\omega \geq 0} \{\q^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.  The cuts are then given by
+Recall that $h_\omega'(\x) = \min_{y^\omega \geq 0} \{\q^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
+The cuts are then given by
 \begin{align*}
 	T_j^\omega & = 
 	\left( \begin{array}{ccc}
-		\left(\frac{N\lh}{\mh - h_\omega'(\xh)}\right) \pi^{*,\omega} B^\omega, 
-			 & N + N\log\lh - N\log(\mh - h_\omega'(\xh)), 
-			 & -\frac{N\lh}{\mh - h_\omega'(\xh)}
+		\left(\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega, 
+			 & N + N\log\lh - N\log(\mh - h^\dagger_\omega(\xh)), 
+			 & -\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}
 	\end{array} \right) \\
-	t_j^\omega & = \frac{N \lh \mh - N \lh \pi^{*,\omega}B\xh}{\mh - h_\omega'(\xh)}.
+	t_j^\omega & = \frac{N \lh h^\dagger_\omega(\xh) - N \lh \pi^{*,\omega}B\xh}{\mh - h^\dagger_\omega(\xh)}.
 \end{align*}
-% ---------------------------------------------------
-% ---------------------------------------------------
-% UPDATE t_j^\omega formula above!!!!!!!
-% ---------------------------------------------------
-% ---------------------------------------------------
 
 For the single-cut master problem proposed, $T_j = \sum_\omega \frac{N_\omega}{N} T_j^\omega$ and $t_j = \sum_\omega \frac{N_\omega}{N} t_j^\omega$.
 
 \subsection{Feasibility Cuts}
-After the subproblems $h_\omega'(\xh)$ are solved, it may be the case that $\mh - h_\omega'(\xh) < 0$ for some $\omega$, rendering $\mh$ infeasible.  This is corrected using the feasibility problem
+After the subproblems $h_\omega'(\xh)$ are solved, it may be the case that $\mh - h_\omega'(\xh) < 0$ for some $\omega$, rendering $\mh$ infeasible.
+This is corrected using the feasibility problem
 \begin{align*}
 	U_\omega(\x,\mu) = \min_{y_\omega,z \geq 0} \ & z \\
 	\st \ & z + \mu - \q^\omega y^\omega \geq 0 \\
 	& D^\omega y^\omega = \d^\omega + B^\omega \x,
 \end{align*}
-which is solved by $z^* = h_\omega'(\x) - \mu$.  The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$ and $\frac{\partial z^*}{\partial \mu} = -1$.  Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
+which is solved by $z^* = h_\omega'(\x) - \mu$.
+The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$ and $\frac{\partial z^*}{\partial \mu} = -1$.
+Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
 \begin{align*}
 	U_\omega(\x,\mu) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) + h_\omega'(\xh) - \mh,
 \end{align*}
@@ -299,7 +378,9 @@ and setting $U_\omega(\x,\mu) = 0$ to find a feasible solution gives the feasibi
 	\mu \geq \pi^{*,\omega}B^\omega \x + (h_\omega'(\xh) - \pi^{*,\omega}B^\omega\xh).
 \]
 
-Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an optimality cut, or to initialize the next iteration of the master problem.  This can be done quickly by minimizing the objective function of (\ref{eq:lrlp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h_\omega'(\xh))$.  We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h_\omega'(\xh)} = 1$ with Newton's method.
+Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
+This can be done quickly by minimizing the objective function of (\ref{eq:lrlp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h_\omega'(\xh))$.
+We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h_\omega'(\xh)} = 1$ with Newton's method.
 
 \subsection{Decomposition Algorithm}
 
@@ -332,15 +413,35 @@ We solve the LRLP-2 with the following decomposition algorithm with tolerance le
 
 \subsection{Computational Enhancements}
 
-In addition to the above decomposition algorithm, we include some computational enhancements in the algorithm.  We include an $\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.  The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
+In order to enhance the performance of the above decomposition-based algorithm, we made some adjustments.
+First, we included an $L_\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
+The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
 
-Because we are also interested in the worst-case probabilities given in the primal variables and not computed directly we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_i \right| < \texttt{TOL2}$ when the algorithm is completed.  This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$
+Because we are also interested in the worst-case LRO probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_i \right| < \texttt{TOL2}$ when the algorithm is completed.
+This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Computational Results} \label{sec:comp_results}
 
-We test LRLP-2 using generalized network model of Colorado River water allocation in the southeastern portion of Tucson of the form (\ref{eq:gen_network_two_stage}).  The model has a total of $P = 41$ time periods, representing years 2010-2050, with projections coming from studies WISP \cite{??} and TAZ \cite{??}.  We use $P_1 = 10$ time periods for the first stage, and four second-stage scenarios are constructed from high (WISP) and low (TAZ) population estimates along with high and low estimates for the amount of water available for use.  Each scenario is assumed to have five observations.  We select tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
+We tested LRLP-2 using generalized network model of Colorado River water allocation in the southeastern portion of Tucson of the form (\ref{eq:gen_network_two_stage}).
+The model has a total of $P = 41$ time periods, representing years 2010-2050. %, with projections coming from studies WISP \cite{??} and TAZ \cite{??}.
+% We use $P_1 = 10$ time periods for the first stage, and four second-stage scenarios are constructed from high (WISP) and low (TAZ) population estimates along with high and low estimates for the amount of water available for use.
+For each time period, the network has 62 nodes representing demand for potable and nonpotable (reclaimed) water, pumps, water treatment plants, and the available water supply from the Colorado River.
+The network in each time period has 102 arcs, representing the pipe network carrying the water between the nodes physically and connecting the network to the five reservoirs that connect the time stages in the model.
+We use $P_1 = 10$ time periods for the first stage.
+Uncertainty in the second stage takes the form of uncertain population (and thus demand for water) and supply of water.
+There are a total of 4 scenarios considered in this test instance: (i) high population, high supply, (ii) high population, low supply, (iii) low population, high supply, and (iv) low population, low supply.
+Each scenario is assumed to have five observations.
+The high population scenarios are more costly as the system needs to meet demand or pay for unmet demand.
+The low population scenarios, on the other hand, are not as costly. The supply variability seems to have a nominal effect. 
+We select tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
 
-Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.  The scenarios fall into two similar pairs because the cost of each scenario depends strongly on the projected demand but only weakly on the projected supply of Colorado River water.
+Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.
+The scenarios fall into two similar pairs because the cost of each scenario depends strongly on the projected demand but only weakly on the projected supply of Colorado River water.
+When $\gamma'$ is close to $1$, we use the maximum likelihood distribution, which has equal $\tfrac{1}{4}$ probabilities on each of the four scenarios.
+As $\gamma'$ is decreased, the ambiguity set increases, and the worst case distribution used by LRLP-2 changes.
+It gives higher than $\tfrac{1}{4}$ probability to the two high-population scenarios and lower than $\tfrac{1}{4}$ probability to the two low-population scenarios, making the solution more robust to costly scenarios.
+We observe that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation).
 
 \begin{figure}
 	\centering
@@ -349,12 +450,12 @@ Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $
 	\label{fig:worst_case}
 \end{figure}
 
-
-% Upon examining the first-stage solution in it's $10^\text{th}$ and final time period, the advice for planners suggested by the model is clear: plan for the most expensive scenario.  Decisions for water storage for all values of $\gamma'$ are near the values found by the deterministic model using the high-population scenarios.
-
 \subsection{Value of Data}
 
-The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.  Figure \ref{fig:water_prob_decrease} shows the computed values of $\frac{N_L}{N}$ and the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.  Through most of the computed values of $\gamma'$, we see $\frac{N_L}{N} = 0.5$.  An additional sample of either of the low population scenarios will result in a decreased expected cost.  For extremely large values of $\gamma'$, above $0.97$, we see the ratio $\frac{N_L}{N}$ quickly drop to zero, thus additional samples will not satisfy the sufficient condition for a decrease in objective cost derived in Section \ref{sec:value}.
+The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
+Figure \ref{fig:water_prob_decrease} shows the computed values of $\frac{N_L}{N}$ and the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
+Through most of the computed values of $\gamma'$, we see $\frac{N_L}{N} = 0.5$ because an additional sample of either of the low-population scenarios will result in a decreased expected cost.
+For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero; thus, additional samples will not satisfy the sufficient condition for a decrease in objective cost derived in Section \ref{sec:value}.
 
 \begin{figure}
 	\centering
@@ -363,6 +464,18 @@ The results of the water model were then analyzed with the value of data techniq
 	\label{fig:water_prob_decrease}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion and Future Work}
+\label{sec:concl}
+
+In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of Wang et al.\ \cite{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted LRLP-2.
+These LRO methods use the empirical likelihood function to define an ambiguity set of probability distributions using observed data.
+The LRO optimizes the worst-case expected cost with respect to this likelihood ambiguity set.
+We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst case distribution. We have also provided a Bender's decomposition-based solution algorithm for the LRLP-2, and applied this method to planning future water distribution in Tucson, Arizona.
+
+Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
+In addition to more varied estimates for future population, we will integrate climate change predictions into the model to generate scenarios for future water supply from the Colorado River. 
+This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner. On the methodological side, we plan to provide guidelines on selecting the robustness parameter $\gamma'$ with respect to the sample size and investigate the asymptotic behavior of the model as the sample size increases. 
 
 \bibliography{love_lro}
 
