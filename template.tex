@@ -1,0 +1,158 @@
+%\documentclass[review]{iserc}% manuscript submitted for review
+\documentclass{iserc}% final manuscript
+
+\usepackage{multirow}
+
+\conference{Proceedings of the 2013 Industrial and Systems Engineering Research Conference\\
+A. Krishnamurthy and W.K.V. Chan, eds.}% Do not change this line.
+\title{ISERC 2013 Paper Formatting Guidelines}
+\author{
+Author 1 Yet\\No Organization Yet\\No Location Yet \\
+\vspace{0.3cm}% Space beween authors with a different affiliation.
+author 2 Yet\\No Organization Yet\\No Location Yet}
+\authorlist{Letens, De Ridder and Lauwens}%Heading
+\abstractID{XXX}% Fill in the web conference management system-assigned abstract ID.
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+All papers must include an Abstract.  Begin with the word Abstract immediately following the title block with one blank line in between.  Use centered, 12 point, Times New Roman Bold text for this heading.  Use 10 point Times New Roman font for the text of the abstract.  There should be a single blank line between the heading and this text.  The abstract should be fully justified and consist of a single paragraph between 100 and 200 words.
+\end{abstract}
+
+\section*{Keywords}
+Three to five keywords related to the main topic must be specified for all submissions.  For example, Industrial engineering, operations research, stochastic processes.
+
+\section{Paper Size}
+Your paper should be formatted for 8 1/2" by 11" US standard paper format.
+
+\section{Page Layout}
+All papers must follow the following layout: 
+\begin{itemize}
+\item 8 1/2" x 11" paper 
+\item Top and bottom margins: 1.00", left and right margins: 1.00" 
+\item The first page header containing ISERC 2013 editors information (The one in this template can be used for all papers)
+Header (from second page to end) containing the list of last names of the authors (In using this template, authors need to double-click the header in the second page and replace it with their names).  Do this step only for an accepted manuscript on final submission.
+\item Single-spacing in a single column
+\item Full text justification
+\item No footers or page numbers 
+\item No indentation - use a single blank line to separate paragraphs 
+\item Maximum of 10 total pages (including author data, references, and any figures and tables).
+\end{itemize} 
+ 
+\section{Paper Title and Author Data}
+The following information should be placed at the top of the first page:
+\begin{itemize}
+\item Paper title: 16 point Times New Roman bold, centered.
+\item Author listing: 12 point Times New Roman, bold, centered Author names; department or college; university or company; city, state and zip, country.  Authors with the same affiliation must be grouped together on the same line with affiliation information following in a single block.  An example is shown above.
+\end{itemize}
+
+\section{Text Sections and Headings}
+\vspace{12pt}%Work-around to be conform with the .doc style. Only for a \section command immediately followed by a \subsection command. 
+\subsection{Text Sections and Headings}
+Text should be organized into sections and subsections, with an Introduction and a Conclusions section being advisable.  A single line should separate paragraphs; no indentation should be used.  Font guidelines are as follows:
+\begin{itemize}
+\item Section Headings: Numbered, 12 point, bold, Upper and Lower Case, left-justified; leave one blank line above only.
+\item Section Sub-headings: Numbered, 10 point, bold, Upper and Lower Case, left-justified; leave one blank line above only.
+\item Regular text: 10 point Times New Roman, full justified, with a single line between paragraphs.
+\end{itemize}
+
+\subsection{Bullets}
+Bullet guidelines are as follows:
+\begin{itemize}
+\item First level bullet.
+\begin{itemize}
+\item Second level bullet
+\begin{itemize}
+\item Third level bullet
+\end{itemize}
+\end{itemize}
+\end{itemize}
+
+\section{Figures, Tables and Their Captions}
+Tables and figures should be included in the main text (see Figure~\ref{fig1} and Table~\ref{tab1}), as close to the point of their introduction as possible.  It is noted that figure and table numbering should be independent.  Captions guidelines are as follows:
+
+\begin{itemize}
+\item Figure captions: 10 point Times New Roman, centered; place below the figure, leave one blank line above and below.  For example, see Figure~\ref{fig1}. No periods in captions unless using multiple sentences.
+\item Table caption: 10 point Times New Roman, centered; place above the table, leave one blank line above only.  For example, see Table~\ref{tab1} below. 
+\end{itemize}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=3.5in]{IERCFigure}
+\caption{Example figure for demonstration}\label{fig1}
+\end{figure}
+
+This is an example paragraph to demonstrate the guidelines for the figures and table captions. 
+
+\begin{table}[htb]
+\caption{Example table for demonstration}\label{tab1}
+\vspace{-0.7cm}%Workaround to be conform with the .doc style. Only for table captions.
+\begin{center}
+\begin{tabular}{ll|ccc}
+\hline
+\multicolumn{2}{l}{}  & Conservative & Epoch & Improvement (\%)\\ \hline
+\multirow{3}{*}{Six epochs} & Federation run time & 1.1 & 0.44 & 62.8\\ \cline{2-5}
+ & Number of time advance messages exchanged & 1.1 & 0.44 & 62.8\\ \cline{2-5}
+ & Number of checking messages exchanged & 34302 & 23533 & 31.4\\ \cline{2-5}
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\section{Equations}
+Equations should be centered and numbered, with the number in parentheses, positioned flush to the right margin.  Preferably, they should be prepared with an Equation Writer.  See Equation~(\ref{eq1}). below for the demonstration.
+\begin{equation}
+FD_t = FD_{t-1} + \rho\delta(DIS_t - FD_{t-1})
+\label{eq1}
+\end{equation}
+
+\section{Page Numbers}
+No page numbers should appear on the paper. 
+
+\section{Acknowledgements}
+Acknowledgement of funding support and/or any other kind of assistance should be contained in an ``Acknowledgements'' section (this section should have no section number), located immediately before the ``References'' section. 
+
+\section{References and Citations from Texts} 
+References should be numbered sequentially by order of occurrence in the text and listed in a separate section labeled References (this section should have no section number) at the end of the document.  Within the text, they should be cited by the corresponding list number, which should be enclosed in brackets \cite{son03}.  If you refer to two documents, user the following format \cite{son06,ven051}.  If you refer to multiple documents, use the following format \cite{ven052,ven053,cha06,ush99,raj00}.   The following provides example formats for different types of reference documents.
+
+\begin{thebibliography}{1}
+
+\bibitem{son03}
+Son, Y., Wysk, R., and Jones, A., 2003, \newblock ``Simulation Based Shop Floor Control: Formal Model, Model Generation and Control Interface," \newblock
+IIE Transactions on Design and Manufacturing, 35(1), 29-48.
+
+\bibitem{son06}
+Son, Y., and Venkateswaran, J., 2006, \newblock ``Hierarchical Supply Chain Planning Architecture for Integrated Analysis of Stability and Performance," \newblock
+International Journal of Simuation and Process Modeling (in press).
+
+\bibitem{ven051}
+Venkateswaran, J., and Son, Y., 2005, Production and Distribution Planning for Dynamic Supply Chains Using Multi-resolution Hybrid Models, Simulation (submitted).
+
+\bibitem{ven052}
+Venkateswaran, J., 2005, \newblock ``Production and Distribution Planning for Dynamic Supply Chains Using Multi-resolution Hybrid Models," \newblock
+Ph.D. dissertation, The University of Arizona.
+
+\bibitem{ven053}
+Venkateswaran, J., and Son, Y., 2005, \newblock ``Information Synchronization Effect on the Stability of Collaborative Supply Chain," \newblock
+Proc. of the Winter Simulation Conference, December 4-7, Orlando, Florida, 1668-1676.
+
+\bibitem{cha06}
+Chang, T., Wysk, R., and Wang, H., 2006, Computer-Aided Manufacturing, 3rd Edition, Prentice Hall, New Jersey.
+
+\bibitem{ush99}
+Usher, J.M., 1999, \newblock ``Chapter 9: STEP Standard in Design and Manufacturing," \newblock
+appears in Direct Engineering: Toward Intelligent Manufacturing, Kamrani, A.K. and Sferro, P. (eds.) Kluwer Academic Publishers, Boston, 259-284.
+
+\bibitem{raj00}
+Rajgopal, J., and Needy, K.L., 2000, \newblock ``Paper Submission Instructions for IERC 2001," \newblock
+(15 August 2000).
+
+\end{thebibliography}
+
+If you have comments or questions about these formatting guidelines or ISERC 2013, please contact the Program Chairs, Ananth Krishnamurthy
+(\href{mailto:ananth@engr.wisc.edu}{ananth@engr.wisc.edu}) and Wai Kin Victor Chan (\href{mailto:chanw@rpi.edu}{chanw@rpi.edu}).\\
+Thank you!
+
+\end{document}
