@@ -265,8 +265,7 @@ The left-hand side of (\ref{eq:cost_decrease_cond}) is the empirical probability
 The right-hand side contains $p_{\hat{\omega}}$, the worst-case probability of scenario $\hat{\omega}$ computed by solving (\ref{eq:lrlp_two_stage}), using a total of $N$ observations.
 
 We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
-This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt} for a one that results in a decrease in the optimal cost.
-% That is, we can guarantee a decrease in optimal cost (thus ruling out the previous worst-case distribution) if the probability of the scenario sampled is somewhat more likely to occur in the maximum likelihood distribution than in the worst-case distribution.
+This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt}.
 
 Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
 Let $L = \left\{ \omega : \frac{N_{\omega}}{N} \geq \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
