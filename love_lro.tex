@@ -1,8 +1,7 @@
 \documentclass{iserc}
 
-% \usepackage{default}
-% \usepackage{fullpage}
-% \usepackage[margin=1in]{geometry}
+\usepackage{multirow}
+
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -13,13 +12,16 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
-
-\bibliographystyle{plain}
-
-\author{David~Love and G\"{u}zin~Bayraksan}
-
 \title{A Likelihood Robust Method for Water Allocation under Uncertainty}
-\date{}
+\author{
+David~Love\\University of Arizona\\Tucson, AZ \\
+\vspace{0.3cm}% Space beween authors with a different affiliation.
+G\"{u}zin~Bayraksan\\The Ohio State University\\Columbus, OH}
+
+\authorlist{Love and Bayraksan}%Heading
+
+\abstractID{XXX}% Fill in the web conference management system-assigned abstract ID.
+
 \conference{Proceedings of the 2013 Industrial and Systems Engineering Research Conference\\A. Krishnamurthy and W.K.V. Chan, eds.}
 
 % Frequently used general mathematics
@@ -76,7 +78,8 @@
 	Computational results are presented on a long-term water allocation problem in southeast area of Tucson.
 \end{abstract}
 
-\keywords{Optimization under uncertainty, water resources management,  ambiguous stochastic programming, robust optimization, environmental sustainability}
+\section*{Keywords}
+Optimization under uncertainty, water resources management,  ambiguous stochastic programming, robust optimization, environmental sustainability
 
 \section{Introduction and Motivation}
 
@@ -477,6 +480,9 @@ We provided a computationally simple method to estimate the probability that an 
 Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
 In addition to more varied estimates for future population, we will integrate climate change predictions into the model to generate scenarios for future water supply from the Colorado River. 
 This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner. On the methodological side, we plan to provide guidelines on selecting the robustness parameter $\gamma'$ with respect to the sample size and investigate the asymptotic behavior of the model as the sample size increases. 
+
+\section*{Acknowledgements}
+The authors would like to thank the Water Sustainability Program at the University of Arizona for providing funding for this research.
 
 \bibliography{love_lro}
 
