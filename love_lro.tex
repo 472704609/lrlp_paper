@@ -142,27 +142,32 @@ The $\omega$ index indicates the $n$ second-stage scenarios with probabilities $
 In the rest of the paper, we simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows.
 In the first-stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
 In the second stage, we denote the decisions as $\y^\omega$, the costs as $\q^\omega$, the demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.
-Note that the problem now has the form of a general two-stage stochastic linear program with recourse, which we present next and extend to an LRO formulation.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{LRLP-2 Formulation} 
-\label{sec:lrlp2}
-
-To apply the likelihood robust optimization framework we will for now begin with a general two-stage stochastic linear program with recourse (SLP-2), and use it to form a two-stage likelihood robust linear program with recourse, which will denote as LRLP-2.
-The SLP-2 is formulated as
-\begin{align*}
-	\min_\x \ & \c\x + \e{h^\dagger(\x)} \\
-	\st \ & A\x = \b \\
-	& \x \geq 0
-\end{align*}
+This notation puts the generalized network model in the form of a two-stage stochastic linear program with recourse(SLP-2), formulated as
+\begin{align}
+	\min_\x \ & \c\x + \sum_{\omega=1}^n p_\omega h^\dagger(\x) \label{eq:slp_first_stage} \\
+	\st \ & A\x = \b \nonumber  \\
+	& \x \geq 0 \nonumber
+\end{align}
 where
 \begin{align}
 	h^\dagger_\omega(\x) = \min_{y^\omega} \ & \q^\omega y^\omega \label{eq:slp_second_stage} \\
 	\st \ & D^\omega y^\omega = B^\omega \x + \d^\omega \nonumber \\
 	& y^\omega \geq 0. \nonumber
 \end{align}
-We assume a finite number of scenarios indexed by $1 \leq \omega \leq n$ with corresponding probabilities $p_1, \dots, p_n$.
 For simplicity we assume relatively complete recourse; i.e., the second-stage problems $h^\dagger_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{LRLP-2 Formulation}
+\label{sec:lrlp2}
+
+The SLP-2 formulation assumes that the distribution $\{p_\omega\}$ is known.
+However, in many applications, including water planning, the distribution is itself unknown.
+One technique to deal with this is to replace the known distribution with an ``ambiguity'' set of distribution, i.e., a set of distributions which is believed to contain the true distribution.
+In the likelihood robust formulation, the distribution $p_\omega$ is unknown but scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations.
+The ambiguity set is defined by the distributions with sufficiently high empirical likelihood $\prod_{\omega=!}^n p_\omega^{N_\omega}$.
+We denote an SLP-2 with a likelihood robust formulation as a two-stage likelihood robust linear program with recourse (LRLP-2).
+
 To derive the LRLP-2, we begin by writing SLP-2 in extensive form
 \[
 	\begin{array}{rrrl}
@@ -173,10 +178,10 @@ To derive the LRLP-2, we begin by writing SLP-2 in extensive form
 		& & y^\omega & \geq 0,\ \forall \omega. \nonumber
 	\end{array}
 \]
-
-In the likelihood robust formulation, the distribution $p_\omega$ is unknown but scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations.
-The objective function is minimized relative to the worst-case distribution selected from a set of distributions with sufficiently high likelihood $\prod_{\omega=1}^n p_\omega^{N_\omega}$.
-That is, instead of using a specific probability distribution as in SLP-2---for instance, by maximum likelihood estimation that results in $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$---all distributions that have sufficiently high empirical likelihood values are considered. To be robust against all these possible distributions, the distribution that results in the maximum cost is considered. The resulting minimax formulation of LRLP-2 is 
+The SLP-2 formulation is augmented by selecting the worst-case distribution $p_\omega$ over the set of distributions with sufficiently high likelihood.
+That is, instead of using a specific probability distribution as in SLP-2---for instance, by maximum likelihood estimation that results in $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$---all distributions that have sufficiently high empirical likelihood values are considered.
+To be robust against all these possible distributions, the distribution that results in the maximum cost is considered.
+The resulting minimax formulation of LRLP-2 is
 \begin{align}
 	\min_{\x,y^\omega} \max_p \ & \c\x + \sum_\omega p_\omega \q^\omega y^\omega \label{eq:lrlp_primal}\\
 	\st \ & A\x = \b \nonumber \\
