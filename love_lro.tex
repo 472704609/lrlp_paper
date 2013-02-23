@@ -106,29 +106,36 @@ This paper is organized as follows: in Section \ref{sec:network_model} we state 
 \section{Generalized Network Water Model} 
 \label{sec:network_model}
 
-We begin with a generalized network flow model of Colorado River water allocation in Tucson.
-The deterministic model is a multi-year model of the form
+We begin by formulating a multi-period generalized network flow model of Colorado River water allocation in Tucson.
+The generalized network is defined by a set of nodes and directed arcs $(N,A)$ defining the network topology.
+Water flows on arc $(i,j) \in A$ during time period $t$, $t = 1, \dots, P$, are represented by decisions $x_{ijt}$.
+Each arc $(i,j) \in A$ and time period $t$ has a unit cost $c_{ijt}^x$, loss coefficient $a_{ijt} \leq 1$, and bounds on the flow $l_{ijt}^x \leq x_{ijt} \leq u_{ijt}$.
+Each node $j \in N$ has a supply/demand for time period $t$, $b_{jt}$.
+Nodes representing aquifers are able to store water between time periods.
+Stored water available at node $j$ at the beginning of time period $t$ is $s_{jt}$, with associated cost $c_{jt}^2$ and bounds $l_{jt}^s \leq s_{jt} \leq u_{jt}$.
+Finally, water released into the environment from node $j$ in period $t$ is given by $r_{jt}$, with bounds $l_{jt}^r \leq r_{jt} \leq u_{jt}^r$.
+
+The generalized network model has a formulation give by
 \begin{align*}
-	\min_{x,s,r} \ & \sum_{i,j} \sum_t c_{ijt}^x x_{ijt} + \sum_{j} \sum_{t} c_{jt}^s s_{jt}\\
-	\st \ & \sum_i x_{jit} + s_{j,t+1} + r_{jt} = \sum_i a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \forall j,t \\
+	\min_{x,s,r} \ & \sum_{(i,j) \in A} \sum_{t=1}^P c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^P c_{jt}^s s_{jt}\\
+	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \forall j,t \\
 	& l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x, \ \forall i,j,t \\
 	& l_{jt}^s \leq s_{jt} \leq u_{sjt}^s, \ \forall j,t \\
 	& l_{jt}^r \leq r_{jt} \leq u_{sjt}^r, \ \forall j,t,
 \end{align*}
-where $x_{ijt}$ is the flow from node $i$ to node $j$ during the $t^{\text{th}}$ time period, $s_{jt}$ is the storage in node $j$ at the beginning of the $t^{\text{th}}$ time period, $r_{jt}$ is the water released to surface water from node $j$ in time period $t$, $b_{jt}$ is the external inflow into node $j$ in time period $t$, $a_{ijt}$ is the gain/loss of flow on arc $(i,j)$ at time $t$, $c_{ijt}^x$ and $c_{jt}^s$ are the economic losses (energy and treatment costs) associated with arc $(i,j)$ at time $t$ and storage in node $j$, respectively, and $l_{ijt}^x$, $l_{jt}^s$, $l_{jt}^r$, $u_{ijt}^x$, $u_{jt}^s$ and $u_{jt}^r$ are the lower and upper bounds on decision variables.
 
 To make this model stochastic, we rewrite it as a two-stage linear program.
 The model has a total of $P = 41$ time periods, representing years 2010-2050, which will be split into two stages of $P_1$ and $P_2 = P - P_1$ years each.
 Second stage parameters $b_{jt}$ and (some) lower and upper bounds are then assumed to be stochastic.
 The model thus becomes
 \begin{align}
-	\min_{(x,s,r) \in L^1} \ & \sum_{i,j} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n p_\omega h^\dagger_\omega(s) \label{eq:gen_network_two_stage} \\
-	\st \ & \sum_i x_{jit} + s_{j,t+1} + r_{jt} = \sum_i a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \forall j, 1 \leq t \leq P_1 \notag
+	\min_{(x,s,r) \in L^1} \ & \sum_{(i,j) \in A} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n p_\omega h^\dagger_\omega(s) \label{eq:gen_network_two_stage} \\
+	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \forall j, 1 \leq t \leq P_1 \notag
 \end{align}
 where
 \begin{align}
-	h^\dagger_\omega(s) = \min_{(x,s,r) \in L^2_\omega} \ & \sum_{i,j} \sum_{t=P_1+1}^{P} c_{ijt}^x x_{ijt} + \sum_{j} \sum_{t=P_1+1}^{P} c_{jt}^s s_{jt} \label{eq:gen_network_second_stage} \\
-	\st \ & \sum_i x_{jit} + s_{j,t+1} + r_{jt} = \sum_i a_{ijt} x_{ijt} + s_{jt} + b_{jt}^\omega, \ \forall j, P_1+1 \leq t \leq P. \notag
+	h^\dagger_\omega(s) = \min_{(x,s,r) \in L^2_\omega} \ & \sum_{(i,j) \in A} \sum_{t=P_1+1}^{P} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=P_1+1}^{P} c_{jt}^s s_{jt} \label{eq:gen_network_second_stage} \\
+	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}^\omega, \ \forall j, P_1+1 \leq t \leq P. \notag
 \end{align}
 The $\omega$ index indicates the $n$ second-stage scenarios with probabilities $p_\omega$ and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower and upper variable bounds.
 
