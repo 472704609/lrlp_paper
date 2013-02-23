@@ -395,7 +395,7 @@ We solve the LRLP-2 with the following decomposition algorithm with tolerance le
 		\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
 		\State Solve sub-problems $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
 		\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu)$
-		\If{$\mu < \max_i h_i'(\x)$}
+		\If{$\mu < \max_\omega h_\omega'(\x)$}
 			\State Generate feasibility cut
 			\State Find $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h_\omega'(\xh))$
 		\Else
@@ -405,7 +405,7 @@ We solve the LRLP-2 with the following decomposition algorithm with tolerance le
 		\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
 			\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
 			\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
-			\State $p_i \gets \frac{\lambda_\text{best} N_i}{\mu_\text{best} - h^\dagger_i(\x_\text{best})}$ for $i = 1, \dots, n$
+			\State $p_\omega \gets \frac{\lambda_\text{best} N_\omega}{\mu_\text{best} - h^\dagger_\omega(\x_\text{best})}$ for $i = 1, \dots, n$
 		\EndIf
 	\EndWhile
 \end{algorithmic}
@@ -416,7 +416,7 @@ In order to enhance the performance of the above decomposition-based algorithm, 
 First, we included an $L_\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
 The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
 
-Because we are also interested in the worst-case LRO probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_i \right| < \texttt{TOL2}$ when the algorithm is completed.
+Because we are also interested in the worst-case LRO probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_\omega \right| < \texttt{TOL2}$ when the algorithm is completed.
 This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
