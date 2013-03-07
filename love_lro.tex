@@ -91,7 +91,7 @@ The US Bureau of Reclamation also uses an approach called the {\it scenario plan
 In this paper, we present a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
 More general models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
 Our model is modified to incorporate future uncertainty by using the Likelihood Robust Optimization (LRO) approach of Wang, Glynn and Ye \cite{wang2010likelihood}.
-LRO is a data-driven method that uses observations of random or unknown parameters to account not only for inherent stochasticity of a problem, but the ambiguity of the probabilistic model itself.
+LRO is a data-driven method that uses observations of random or unknown parameters to account not only for inherent stochasticity of a problem, but the uncertainty of the probabilistic model itself.
 This is especially important in our application as we are looking 40 years into the future and there is considerable ambiguity in the uncertainties.
 
 The LRO is especially attractive because only those scenarios of interest, obtained either through observation or simulation, are used directly in the calculations.
@@ -106,8 +106,13 @@ This paper is organized as follows: in Section \ref{sec:network_model} we state 
 \section{Generalized Network Water Model} 
 \label{sec:network_model}
 
-We begin by formulating a multi-period generalized network flow model of Colorado River water allocation in Tucson.
-The generalized network is defined by a set of nodes and directed arcs $(N,A)$ defining the network topology.
+We begin with a multi-period generalized network flow model of Colorado River water allocation in Tucson, defined by a set of nodes and directed arcs $(N,A)$.
+The nodes represent available water supply from the Colorado River, water treatment plants, reservoirs, and water demand nodes.
+The arcs represent the conveyence system (pipes, etc.) that carry water between the nodes. 
+Water can be stored in between time periods in reservoirs to meet future demands. 
+The model aims to find the minimal cost water flows considering energy, treatement, storage, and transportation costs over the planning period. 
+Generalized network ater allocation models have been used to find water allocations and delivery reliabilities and to assess values of different water use operations; see, e.g., \cite{draper_etal_03}. 
+
 Water flows on arc $(i,j) \in A$ during time period $t = 1, \dots, P$ are represented by decisions $x_{ijt}$.
 Each arc $(i,j) \in A$ and time period $t$ has a unit cost $c_{ijt}^x$, loss coefficient $a_{ijt} \leq 1$, and bounds on the flow $l_{ijt}^x \leq x_{ijt} \leq u_{ijt}$.
 Each node $j \in N$ has a supply/demand for time period $t$, $b_{jt}$.
@@ -115,7 +120,7 @@ Nodes representing aquifers are able to store water between time periods.
 Stored water available at node $j$ at the beginning of time period $t$ is $s_{jt}$, with associated cost $c_{jt}^s$ and bounds $l_{jt}^s \leq s_{jt} \leq u_{jt}$.
 Finally, water released into the environment from node $j$ in period $t$ is given by $r_{jt}$, with bounds $l_{jt}^r \leq r_{jt} \leq u_{jt}^r$.
 
-The generalized network model has a formulation give by
+The deterministic model is a multi-year model of the form
 \begin{align*}
 	\min_{x,s,r} \ & \sum_{(i,j) \in A} \sum_{t=1}^P c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^P c_{jt}^s s_{jt}\\
 	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \forall j,t \\
@@ -132,7 +137,7 @@ The model thus becomes
 	\min_{(x,s,r) \in L^1} \ & \sum_{(i,j) \in A} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n p_\omega h^\dagger_\omega(s) \label{eq:gen_network_two_stage} \\
 	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \forall j, 1 \leq t \leq P_1 \notag
 \end{align}
-where $\omega$ index indicates the $n$ second-stage scenarios with probabilities $p_\omega$,
+where the $\omega$ index indicates the $n$ second-stage scenarios with probabilities $p_\omega$,
 \begin{align}
 	h^\dagger_\omega(s) = \min_{(x,s,r) \in L^2_\omega} \ & \sum_{(i,j) \in A} \sum_{t=P_1+1}^{P} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=P_1+1}^{P} c_{jt}^s s_{jt} \label{eq:gen_network_second_stage} \\
 	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}^\omega, \ \forall j, P_1+1 \leq t \leq P, \notag
@@ -240,8 +245,8 @@ As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Value of Data} \label{sec:value}
 
-With a data driven formulation such as LRLP-2 it is natural to ask how the behavior changes as more data is gathered.
-In particular, for ambiguous formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
+With a data driven formulation such as LRLP-2, it is natural to ask how the behavior changes as more data is gathered.
+In particular, for robust formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
 We present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower cost solution.
 
 Consider again the deterministic equivalent formulation of LRLP-2 in (\ref{eq:lrlp_det_equiv}).
@@ -448,11 +453,11 @@ The low population scenarios, on the other hand, are not as costly. The supply v
 We select tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
 
 Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.
-The scenarios fall into two similar pairs because the cost of each scenario depends strongly on the projected demand but only weakly on the projected supply of Colorado River water.
 When $\gamma'$ is close to $1$, we use the maximum likelihood distribution, which has equal $\tfrac{1}{4}$ probabilities on each of the four scenarios.
 As $\gamma'$ is decreased, the ambiguity set increases, and the worst case distribution used by LRLP-2 changes.
 It gives higher than $\tfrac{1}{4}$ probability to the two high-population scenarios and lower than $\tfrac{1}{4}$ probability to the two low-population scenarios, making the solution more robust to costly scenarios.
-We observe that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation).
+Note that the scenarios fall into two similar pairs because the cost of each scenario depends strongly on the projected demand but only weakly on the projected supply of Colorado River water.
+A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation) in an effort to meet demands in a least-costly way.
 
 \begin{figure}
 	\centering
@@ -461,12 +466,15 @@ We observe that as $\gamma'$ is decreased, or as robustness is increased, the so
 	\label{fig:worst_case}
 \end{figure}
 
-\subsection{Value of Data}
+%\subsection{Value of Data}
 
 The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
-Figure \ref{fig:water_prob_decrease} shows the computed values of $\frac{N_L}{N}$ and the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
+Figure \ref{fig:water_prob_decrease} shows the computed values of $\frac{N_L}{N}$ (dashed line) and the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
 Through most of the computed values of $\gamma'$, we see $\frac{N_L}{N} = 0.5$ because an additional sample of either of the low-population scenarios will result in a decreased expected cost.
+To see this, recall that low-population scenarios have lower costs and . . .  
+%%  DAVID: Please write intutive explanation
 For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero; thus, additional samples will not satisfy the sufficient condition for a decrease in objective cost derived in Section \ref{sec:value}.
+%% AGAIN: More explanation why?
 
 \begin{figure}
 	\centering
@@ -482,7 +490,8 @@ For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac
 In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of Wang et al.\ \cite{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted LRLP-2.
 These LRO methods use the empirical likelihood function to define an ambiguity set of probability distributions using observed data.
 The LRO optimizes the worst-case expected cost with respect to this likelihood ambiguity set.
-We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst case distribution. We have also provided a Bender's decomposition-based solution algorithm for the LRLP-2, and applied this method to planning future water distribution in Tucson, Arizona.
+We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst case distribution and will result in a lower cost solution. 
+We have also provided a Bender's decomposition-based solution algorithm for the LRLP-2 and applied this method to planning future water distribution in Tucson, Arizona.
 
 Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
 In addition to more varied estimates for future population, we will integrate climate change predictions into the model to generate scenarios for future water supply from the Colorado River. 
