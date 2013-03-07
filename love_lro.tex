@@ -200,8 +200,8 @@ The resulting minimax formulation of LRLP-2 is
 	& \x \geq 0 \nonumber \\
 	& y^\omega, p_\omega \geq 0,\ \forall \omega. \nonumber
 \end{align}
-Following Wang et al.\ \cite{wang2010likelihood}, we have introduced the likelihood parameter $\gamma$.
-The likelihood constraint \eqref{eq:lrlp_primal_liklihood} is equivalent to $\prod_{\omega=1}^n p_\omega^{N_\omega} \geq e^\gamma$.
+Following Wang et al.\ \cite{wang2010likelihood}, we have introduced the likelihood parameter $\gamma$, and use it to construct the ambiguity set of distributions $\{p_\omega\}$ satisfying constraints (\ref{eq:lrlp_primal_liklihood}) and (\ref{eq:lrlp_primal_probability}).
+Note the likelihood constraint \eqref{eq:lrlp_primal_liklihood} is equivalent to $\prod_{\omega=1}^n p_\omega^{N_\omega} \geq e^\gamma$.
 Let $0 \leq \gamma' \leq 1$ be the \emph{relative likelihood parameter} that expresses $\gamma$ as a proportion of the maximum likelihood; i.e., $\gamma = \log( \gamma' \prod_\omega (\tfrac{N_\omega}{N})^{N_\omega})$.
 
 Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:lrlp_primal_liklihood}) and (\ref{eq:lrlp_primal_probability}), respectively, yields
