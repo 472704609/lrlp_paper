@@ -120,7 +120,7 @@ Generalized network water allocation models have been used to find water allocat
 Water flows on arc $(i,j) \in A$ during time period $t = 1, \dots, P$ are represented by decisions $x_{ijt}$.
 Each arc $(i,j) \in A$ and time period $t$ has a unit cost $c_{ijt}^x$, loss coefficient $0 \leq a_{ijt} \leq 1$, and bounds on the flow $l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x$.
 Each node $j \in N$ has a supply/demand for time period $t$, $b_{jt}$.
-Nodes representing aquifers are able to store water between time periods.
+Nodes representing reservoirs are able to store water between time periods.
 Stored water available at node $j$ at the beginning of time period $t$ is $s_{jt}$, with associated cost $c_{jt}^s$ and bounds $l_{jt}^s \leq s_{jt} \leq u_{jt}^s$.
 Finally, water released into the environment from node $j$ in period $t$ is given by $r_{jt}$, with bounds $l_{jt}^r \leq r_{jt} \leq u_{jt}^r$.
 The deterministic model is a multi-period generalized network flow model of the form
@@ -133,7 +133,7 @@ The deterministic model is a multi-period generalized network flow model of the 
 \end{align*}
 
 
-In real life, many parameters are unknown, especially as we further look into the future. 
+In practice, many parameters are unknown, especially as we further look into the future. 
 This is particularly true of the water supply and demands, denoted by $b_{jt}$ in the above model. 
 To capture this uncertainty, we make this model stochastic by rewriting it as a two-stage linear program.
 The model has a total of $P$ time periods, which is split into two stages of $P_1$ and $P_2 = P - P_1$ years each. 
@@ -262,7 +262,7 @@ With a data driven formulation such as LRLP-2, it is natural to ask how the beha
 In particular, for robust formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
 For instance, for our water application, initial estimates might show that water demand would be high or low with approximately equal probabilities. 
 Based on new data, later studies could give low demand an increased weight.  
-For LRLP-2, this means that the initial model is likely to be more conservative in an effort to be robust while the new information will make the model less conservative because low water demand results in lower costs and our belief is increased that the future demand will be low.  
+For LRLP-2, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information will make the model less conservative because low water demand results in lower costs and our belief is increased that the future demand will be low.  
 In this section, we present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
 
 Consider again the deterministic equivalent formulation of LRLP-2 in (\ref{eq:lrlp_det_equiv}).
