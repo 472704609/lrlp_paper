@@ -118,7 +118,7 @@ The model aims to find the minimal cost water flows considering energy, treatmen
 Generalized network water allocation models have been used to find water allocations and delivery reliabilities and to assess values of different water use operations; see, e.g., \cite{draper_etal_03}. 
 
 Water flows on arc $(i,j) \in A$ during time period $t = 1, \dots, P$ are represented by decisions $x_{ijt}$.
-Each arc $(i,j) \in A$ and time period $t$ has a unit cost $c_{ijt}^x$, loss coefficient $0 \leq a_{ijt} \leq 1$, and bounds on the flow $l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x$.
+Each arc $(i,j) \in A$ and time period $t$ has a unit cost $c_{ijt}^x$, loss coefficient $0 \leq a_{ijt} \leq 1$ to account for evaporation, leakage from the pipes, etc., and bounds on the flow $l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x$.
 Each node $j \in N$ has a supply/demand for time period $t$, $b_{jt}$.
 Nodes representing reservoirs are able to store water between time periods.
 Stored water available at node $j$ at the beginning of time period $t$ is $s_{jt}$, with associated cost $c_{jt}^s$ and bounds $l_{jt}^s \leq s_{jt} \leq u_{jt}^s$.
@@ -152,13 +152,13 @@ where the $\omega$ index indicates the $n$ second-stage scenarios with probabili
 and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower and upper variable bounds.
 
 In the rest of the paper, we simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows.
-In the first-stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
-In the second stage, we denote the decisions as $\y^\omega$, the costs as $\q^\omega$, the demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.
-This notation puts the generalized network model in the form of a two-stage stochastic linear program with recourse(SLP-2), formulated as
+In the first stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply/demand parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
+In the second stage, we denote the decisions as $\y^\omega$, the costs as $\q^\omega$, the supply/demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.
+This notation puts the generalized network model in the form of a two-stage stochastic linear program with recourse (SLP-2), formulated as
 \begin{align}
 	\min_\x \ & \c\x + \sum_{\omega=1}^n p_\omega h^\dagger(\x) \label{eq:slp_first_stage} \\
 	\st \ & A\x = \b \nonumber  \\
-	&\ \ \x \geq 0 \nonumber
+	&\ \ \ \x \geq 0 \nonumber
 \end{align}
 where
 \begin{align}
@@ -298,10 +298,10 @@ The left-hand side of (\ref{eq:cost_decrease_cond}) is the empirical probability
 The right-hand side contains $p_{\hat{\omega}}$, the worst-case probability of scenario $\hat{\omega}$ computed by solving (\ref{eq:lrlp_two_stage}), using a total of $N$ observations.
 
 We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
-This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt}.
+This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt}.
 
 Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
-Let $L = \left\{ \omega : \frac{N_{\omega}}{N} \geq \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
+Let $L = \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
 That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in LRLP-2.
 We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
 \begin{align}
@@ -454,24 +454,29 @@ Because we are also interested in the worst-case LRO probabilities given in the 
 This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Computational Results} \label{sec:comp_results}
+\section{Application and Computational Results} \label{sec:comp_results}
 
-We tested LRLP-2 using generalized network model of Colorado River water allocation in the southeastern portion of Tucson of the form (\ref{eq:gen_network_two_stage}).
-The model has a total of $P = 41$ time periods, representing years 2010-2050. %, with projections coming from studies WISP \cite{??} and TAZ \cite{??}.
+Using the generalized network model (\ref{eq:gen_network_two_stage}) of Colorado River water allocation in the southeastern portion of Tucson, we created a likelihood robust water allocation problem of the form LRLP-2.
+The southeastern portion of Tucson is a newly developing area and is expected to grow considerably. 
+The LRLP-2 water allocation model would help authorities with future water plans in this area while being robust to uncertainties in water supplies and demands.
+
+The model has a total of $P = 41$ time periods, representing years 2010-2050. 
+%, with projections coming from studies WISP \cite{??} and TAZ \cite{??}.
 % We use $P_1 = 10$ time periods for the first stage, and four second-stage scenarios are constructed from high (WISP) and low (TAZ) population estimates along with high and low estimates for the amount of water available for use.
 For each time period, the network has 62 nodes representing demand for potable and nonpotable (reclaimed) water, pumps, water treatment plants, and the available water supply from the Colorado River.
 The network in each time period has 102 arcs, representing the pipe network carrying the water between the nodes physically and connecting the network to the five reservoirs that connect the time stages in the model.
 We use $P_1 = 10$ time periods for the first stage.
-Uncertainty in the second stage takes the form of uncertain population (and thus demand for water) and supply of water.
+Uncertainty in the second stage takes the form of uncertain population (thus, demand for water) and supply of water.
 There are a total of 4 scenarios considered in this test instance: (i) high population, high supply, (ii) high population, low supply, (iii) low population, high supply, and (iv) low population, low supply.
 Each scenario is assumed to have five observations.
 The high population scenarios are more costly as the system needs to meet demand or pay for unmet demand.
-The low population scenarios, on the other hand, are not as costly. The supply variability seems to have a nominal effect. 
-We select tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
+The low population scenarios, on the other hand, are not as costly. 
+The supply variability seems to have a nominal effect. 
+We applied the decomposition-based solution algorithm presented in Section \ref{sec:soln_algorithm} to solve this model and selected tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
 
 Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.
 When $\gamma'$ is close to $1$, we use the maximum likelihood distribution, which has equal $\tfrac{1}{4}$ probabilities on each of the four scenarios.
-As $\gamma'$ is decreased, the ambiguity set increases, and the worst case distribution used by LRLP-2 changes.
+As $\gamma'$ is decreased, the ambiguity set increases, and the worst-case distribution used by LRLP-2 changes.
 It gives higher than $\tfrac{1}{4}$ probability to the two high-population scenarios and lower than $\tfrac{1}{4}$ probability to the two low-population scenarios, making the solution more robust to costly scenarios.
 Note that the scenarios fall into two similar pairs because the cost of each scenario depends strongly on the projected demand but only weakly on the projected supply of Colorado River water.
 A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation) in an effort to meet demands in a least-costly way.
@@ -486,11 +491,12 @@ A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, o
 %\subsection{Value of Data}
 
 The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
-Figure \ref{fig:water_prob_decrease} shows the computed values of $\frac{N_L}{N}$ (dashed line) and the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
+Figure \ref{fig:water_prob_decrease} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
+The dashed line in Figure \ref{fig:water_prob_decrease} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
 Because the low-population scenarios have lower costs, an additional sample of either low-population scenario will result in a lower expected cost.
-Through most of the computed values of $\gamma'$, we see $\frac{N_L}{N} = 0.5$, indicating that the sufficient condition (\ref{eq:cost_decrease_cond}) was satisfied for both low-population scenarios.
+This is what we see through most of the computed values of $\gamma'$, with $\frac{N_L}{N} = 0.5$, indicating that the sufficient condition (\ref{eq:cost_decrease_cond}) was satisfied for both low-population scenarios.
 For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero.
-This occurs because (\ref{eq:cost_decrease_cond}) only compares scenario probabilities in the empirical and worst-case distributions, not the computed cost of the scenarios.
+This occurs because (\ref{eq:cost_decrease_cond}) only compares scenario probabilities in the empirical ($N_\omega / N$) and worst-case ($p_\omega$) distributions and does not use the computed cost of the scenarios.
 As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabilities become so close the empirical probabilities that (\ref{eq:cost_decrease_cond}) can no longer be satisfied, resulting in $\frac{N_L}{N}$ decreasing to zero.
 
 \begin{figure}
@@ -505,9 +511,8 @@ As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabiliti
 \label{sec:concl}
 
 In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of Wang et al.\ \cite{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted LRLP-2.
-These LRO methods use the empirical likelihood function to define an ambiguity set of probability distributions using observed data.
-The LRO optimizes the worst-case expected cost with respect to this likelihood ambiguity set.
-We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst case distribution and will result in a lower cost solution. 
+The LRO models use the empirical likelihood function to define an ambiguity set of probability distributions using observed data and optimize the worst-case expected cost with respect to this likelihood ambiguity set.
+We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst case distribution and will result in a lower-cost solution. 
 We have also provided a Bender's decomposition-based solution algorithm for the LRLP-2 and applied this method to planning future water distribution in Tucson, Arizona.
 
 Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
