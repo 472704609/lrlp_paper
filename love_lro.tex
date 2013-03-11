@@ -311,7 +311,7 @@ We can estimate a lower bound on the probability of sampling a scenario in $L$ b
 	& q_\omega \geq 0, \ \forall \omega, \nonumber
 \end{align}
 where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:kkt}). 
-Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst case distribution $\{p_\omega\}$ using the current set of observations. 
+Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations. 
 Let $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$. Note that $\min_{\omega \in L} \sum_{\omega \in L} q_\omega \leq \frac{N_L}{N}$, because the maximum likelihood distribution is always within the likelihood ambiguity set. We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
 
 We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program
@@ -471,7 +471,7 @@ There are a total of 4 scenarios considered in this test instance: (i) high popu
 Each scenario is assumed to have five observations.
 The high population scenarios are more costly as the system needs to meet demand or pay for unmet demand.
 The low population scenarios, on the other hand, are not as costly. 
-The supply variability seems to have a nominal effect. 
+% The supply variability seems to have a nominal effect.
 We applied the decomposition-based solution algorithm presented in Section \ref{sec:soln_algorithm} to solve this model and selected tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
 
 Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.
@@ -512,7 +512,7 @@ As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabiliti
 
 In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of Wang et al.\ \cite{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted LRLP-2.
 The LRO models use the empirical likelihood function to define an ambiguity set of probability distributions using observed data and optimize the worst-case expected cost with respect to this likelihood ambiguity set.
-We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst case distribution and will result in a lower-cost solution. 
+We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution. 
 We have also provided a Bender's decomposition-based solution algorithm for the LRLP-2 and applied this method to planning future water distribution in Tucson, Arizona.
 
 Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
