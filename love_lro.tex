@@ -312,7 +312,7 @@ Let $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L
 
 We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program
 \begin{align}
-	-\min_{\mu,\lambda} \ & \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu, \label{eq:prob_cost_decrease}
+	-\min_{\mu \geq 0,\lambda \geq 0} \ & \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu, \label{eq:prob_cost_decrease}
 \end{align}
 where $\bar{N} = N(\log N - 1) - \log\gamma'$.
 
