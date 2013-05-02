@@ -281,195 +281,100 @@ As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The Value of Data} \label{sec:value}
+% \subsection{Decomposition-Based Solution Method} \label{sec:soln_algorithm}
+% 
+% As the model gets larger, as in our water application presented in Section~\ref{sec:comp_results}, a direct solution of LRLP-2 becomes computationally expensive. 
+% Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. In this section, we propose a Bender's decomposition-based method for solving LRLP-2.
+% Our algorithm uses the LRLP-2 second-stage problems $h_\omega(\x,\lambda,\mu)$ (\ref{eq:lrlp_second_stage}) to form the cuts, ensuring a linear master problem.
+% The algorithm removes constraint (\ref{eq:lrlp_feas_constraint}) from the second-stage problem (\ref{eq:lrlp_second_stage}) and exchanges it with a series of feasibility constraints (or cuts) in the first-stage problem.
+% Making this change ensures that the second-stage problems are solved using the formulation of $h^\dagger_\omega(\x)$ for SLP-2 given in  (\ref{eq:slp_second_stage}), and is more efficient.
+% The master problem is given by
+% \begin{align}
+% 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \bar{N}\lambda + \theta \label{eq:master_problem}\\
+% 	\st \ & A\x = \b \nonumber \\
+% 	& \theta \geq T_j (\x,\lambda,\mu)^T + t_j, \ j \in J \nonumber \\
+% 	& \mu \geq M_k \x + m_k, \ k \in K \nonumber \\
+% 	& \x,\lambda \geq 0, \nonumber
+% \end{align}
+% where $T_j (\x,\lambda,\mu)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:lrlp_feas_constraint}), and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
+% We next discuss these cuts in more detail.
+% 
+% \subsection{Objective Cuts}
+% 
+% Let $(\xh,\lh,\mh)$ be the candidate solution from the master problem (\ref{eq:master_problem}).
+% An objective cut can be computed by solving the SLP-2 subproblems $h^\dagger_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the LRLP-2 subproblems as
+% \begin{align*}
+% 	\dfrac{\partial h_\omega}{\partial \x}(\xh,\lh,\mh) & = \left(\dfrac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega \\
+% 	\dfrac{\partial h_\omega}{\partial \lambda}(\xh,\lh,\mh) & = N + N\log\lh - N \log(\mh - h^\dagger_\omega(\xh)) \\
+% 	\dfrac{\partial h_\omega}{\partial \mu}(\xh,\lh,\mh) & = \dfrac{-N\lh}{\mh - h^\dagger_\omega(\xh)}
+% \end{align*}
+% Recall that $h^\dagger_\omega(\x) = \min_{y^\omega \geq 0} \{\q^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
+% The cuts are then given by
+% \begin{align*}
+% 	T_j^\omega & = 
+% 	\left( \begin{array}{ccc}
+% 		\left(\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega, 
+% 			 & N + N\log\lh - N\log(\mh - h^\dagger_\omega(\xh)), 
+% 			 & -\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}
+% 	\end{array} \right) \\
+% 	t_j^\omega & = \frac{N \lh h^\dagger_\omega(\xh) - N \lh \pi^{*,\omega}B\xh}{\mh - h^\dagger_\omega(\xh)}.
+% \end{align*}
+% 
+% For the single-cut master problem proposed, $T_j = \sum_\omega \frac{N_\omega}{N} T_j^\omega$ and $t_j = \sum_\omega \frac{N_\omega}{N} t_j^\omega$.
+% 
+% \subsection{Feasibility Cuts}
+% After the subproblems $h^\dagger_\omega(\xh)$ are solved, it may be the case that $\mh - h^\dagger_\omega(\xh) < 0$ for some $\omega$, rendering $\mh$ infeasible.
+% This is corrected using the feasibility problem
+% \begin{align*}
+% 	U_\omega(\x,\mu) = \min_{y_\omega,z \geq 0} \ & z \\
+% 	\st \ & z + \mu - \q^\omega y^\omega \geq 0 \\
+% 	& D^\omega y^\omega = \d^\omega + B^\omega \x,
+% \end{align*}
+% which is solved by $z^* = h^\dagger_\omega(\x) - \mu$.
+% The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$ and $\frac{\partial z^*}{\partial \mu} = -1$.
+% Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
+% \begin{align*}
+% 	U_\omega(\x,\mu) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) + h^\dagger_\omega(\xh) - \mh,
+% \end{align*}
+% and setting $U_\omega(\x,\mu) = 0$ to find a feasible solution gives the feasibility cut
+% \[
+% 	\mu \geq \pi^{*,\omega}B^\omega \x + (h^\dagger_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
+% \]
+% 
+% Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
+% This can be done quickly by minimizing the objective function of (\ref{eq:lrlp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$.
+% We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h^\dagger_\omega(\xh)} = 1$ with Newton's method.
+% 
+% \subsubsection{Decomposition Algorithm}
+% 
+% We solve the LRLP-2 with the following decomposition algorithm with tolerance level $\texttt{TOL}$
+% 
+% \begin{algorithmic}
+% 	\State Initialize $z_l = -\infty, z_u = \infty$
+% 	\State Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$
+% 	\State Solve all second stage scenarios $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
+% 	\State Initialize $\lambda \gets 1$, $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
+% 	\State Generate initial objective cut
+% 	\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
+% 		\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
+% 		\State Solve sub-problems $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
+% 		\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu)$
+% 		\If{$\mu < \max_\omega h^\dagger_\omega(\x)$}
+% 			\State Generate feasibility cut
+% 			\State Find $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
+% 		\Else
+% 			\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
+% 		\EndIf
+% 		\State Generate objective cut
+% 		\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
+% 			\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
+% 			\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
+% 			\State $p_\omega \gets \frac{\lambda_\text{best} N_\omega}{\mu_\text{best} - h^\dagger_\omega(\x_\text{best})}$ for $i = 1, \dots, n$
+% 		\EndIf
+% 	\EndWhile
+% \end{algorithmic}
 
-With a data driven formulation such as LRLP-2, it is natural to ask how the behavior changes as more data is gathered.
-In particular, for robust formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
-For instance, for our water application, initial estimates might show that water demand would be high or low with approximately equal probabilities. 
-Based on new data, later studies could give low demand an increased weight.  
-For LRLP-2, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information will make the model less conservative because low water demand results in lower costs and our belief is increased that the future demand will be low.  
-In this section, we present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
-
-Consider again the deterministic equivalent formulation of LRLP-2 in (\ref{eq:lrlp_det_equiv}).
-Let $f_N(\x,\mu,\lambda) =  \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda$ $(\log\lambda$ $- \log(\mu-h^\dagger(\x)))$ be the objective function, and $z_N = \min_{\x,\mu,\lambda} f_N(\x,\mu,\lambda)$.
-We wish to find a simple estimate of the decrease in the optimal cost associated with taking an additional sample, $z_N - z_{N+1}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
-
-Let $\x^*_N, \mu^*_N,\lambda^*_N \in \argmin f_N(\x,\mu,\lambda)$ be optimal solutions to the $N$-sample problem.
-Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
-Let $\hat{\omega}$ be the scenario that is selected with the additional sample, then 
-\[
-	z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) = \left[ \overline{N} - \overline{N+1} - \log \lambda^*_N + \log(\mu^*_N - h^\dagger_{\hat{\omega}}(\x^*_N)) \right] \lambda^*_N.
-\]
-We can bound $\overline{N} - \overline{N+1} = N\log N - (N+1)\log(N+1) + 1$ by using the tangent lines
-\[
-	\log \x + 1 \leq (\x+1)\log(\x+1) - \x\log \x \leq \log(\x+1) + 1
-\]
-to get $\overline{N} - \overline{N+1} \geq -\log(N+1)$.
-
-Combining these results gives the condition
-\[
-	z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) \geq \left[ -\log(N+1) - \log\lambda^*_N + \log(\mu^*_N-h^\dagger(\x^*_N))\right]\lambda^*_N > 0.
-\]
-Note that $\lambda^*_N > 0$, so to guarantee a drop in optimal cost we must show that the first term is positive.
-This then simplifies to
-\[
-	\frac{\mu^*_N - h^\dagger(\x^*_N)}{\lambda^*_N(N+1)} > 1.
-\]
-Using the KKT condition (\ref{eq:kkt}), this can be rewritten as
-\begin{equation} \label{eq:cost_decrease_cond}
-	\frac{N_{\hat{\omega}}}{N} > \left( \frac{N+1}{N} \right) p_{\hat{\omega}}.
-\end{equation}
-The left-hand side of (\ref{eq:cost_decrease_cond}) is the empirical probability of scenario $\hat{\omega}$ given by the observations used to solve (\ref{eq:lrlp_two_stage}).
-The right-hand side contains $p_{\hat{\omega}}$, the worst-case probability of scenario $\hat{\omega}$ computed by solving (\ref{eq:lrlp_two_stage}), using a total of $N$ observations.
-
-We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
-This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt}.
-
-Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
-Let $L = \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
-That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in LRLP-2.
-We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
-\begin{align}
-	\min_{\omega \in L} \ & \sum_{\omega \in L} q_\omega \nonumber \\
-	\mbox{s.t.} & \sum_\omega N_\omega \log q_\omega \geq \gamma \label{eq:lb_probability} \\
-	& \sum_\omega q_\omega = 1 \nonumber \\
-	& q_\omega \geq 0, \ \forall \omega, \nonumber
-\end{align}
-where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:kkt}). 
-Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations. 
-Let $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$. Note that $\min_{\omega \in L} \sum_{\omega \in L} q_\omega \leq \frac{N_L}{N}$, because the maximum likelihood distribution is always within the likelihood ambiguity set. We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
-
-We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program
-\begin{align}
-	-\min_{\mu \geq 0,\lambda \geq 0} \ & \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu, \label{eq:prob_cost_decrease}
-\end{align}
-where $\bar{N} = N(\log N - 1) - \log\gamma'$.
-
-We can view the optimal value of (\ref{eq:prob_cost_decrease}) as a function of three parameters: the total sample size $N$, the relative likelihood parameter $\gamma'$, and the number of observations in the set $L$, $N_L$.
-The behavior of this lower bound estimate is studied in Figure \ref{fig:prob_cost_decrease_nd_n} as a function of the ratio $\tfrac{N_L}{N}$, and in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} as a function of the relative likelihood parameter $\gamma'$.
-Figure \ref{fig:prob_cost_decrease_nd_n} shows that the estimated lower bound on the probability of optimal cost decrease stays relatively close to the identity line for most values of $\gamma'$, getting closer to the identity line as  $\gamma'$ is increased; i.e., the ambiguity set (or robustness) is decreased.
-Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} give a closer look at how (\ref{eq:prob_cost_decrease}) differs from $\tfrac{N_L}{N}$ as $\gamma'$ is changed.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=.5\textwidth]{images/prob_dec_cost_v_nl_n_20}
-	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
-	\label{fig:prob_cost_decrease_nd_n}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\subfloat[][$N_L=50$ $\left(\frac{N_L}{N} = 0.25\right)$]{
-	   \label{fig:prob_cost_decrease_gp}
-	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context}}
-	\subfloat[][$N_L=10,50,100,150$ and $190$]{
-	   \label{fig:prob_cost_decrease_gp_multiple}
-	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context_multiple}}
-	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
-\end{figure}
-
-Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the LRLP-2.
-The first two of these parameters are also parameters of the LRLP-2 problem (\ref{eq:lrlp_two_stage}).
-The third, $N_L$, is computed from the optimal solution of (\ref{eq:lrlp_two_stage}) via (\ref{eq:kkt}) and (\ref{eq:cost_decrease_cond}).
-As such, $N_L$ should be viewed as changing with $\gamma'$.
-In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
-This behavior is studied in Section \ref{sec:comp_results}.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Decomposition-Based Solution Method} \label{sec:soln_algorithm}
-
-As the model gets larger, as in our water application presented in Section~\ref{sec:comp_results}, a direct solution of LRLP-2 becomes computationally expensive. 
-Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. In this section, we propose a Bender's decomposition-based method for solving LRLP-2.
-Our algorithm uses the LRLP-2 second-stage problems $h_\omega(\x,\lambda,\mu)$ (\ref{eq:lrlp_second_stage}) to form the cuts, ensuring a linear master problem.
-The algorithm removes constraint (\ref{eq:lrlp_feas_constraint}) from the second-stage problem (\ref{eq:lrlp_second_stage}) and exchanges it with a series of feasibility constraints (or cuts) in the first-stage problem.
-Making this change ensures that the second-stage problems are solved using the formulation of $h^\dagger_\omega(\x)$ for SLP-2 given in  (\ref{eq:slp_second_stage}), and is more efficient.
-The master problem is given by
-\begin{align}
-	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \bar{N}\lambda + \theta \label{eq:master_problem}\\
-	\st \ & A\x = \b \nonumber \\
-	& \theta \geq T_j (\x,\lambda,\mu)^T + t_j, \ j \in J \nonumber \\
-	& \mu \geq M_k \x + m_k, \ k \in K \nonumber \\
-	& \x,\lambda \geq 0, \nonumber
-\end{align}
-where $T_j (\x,\lambda,\mu)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:lrlp_feas_constraint}), and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
-We next discuss these cuts in more detail.
-
-\subsection{Objective Cuts}
-
-Let $(\xh,\lh,\mh)$ be the candidate solution from the master problem (\ref{eq:master_problem}).
-An objective cut can be computed by solving the SLP-2 subproblems $h^\dagger_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the LRLP-2 subproblems as
-\begin{align*}
-	\dfrac{\partial h_\omega}{\partial \x}(\xh,\lh,\mh) & = \left(\dfrac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega \\
-	\dfrac{\partial h_\omega}{\partial \lambda}(\xh,\lh,\mh) & = N + N\log\lh - N \log(\mh - h^\dagger_\omega(\xh)) \\
-	\dfrac{\partial h_\omega}{\partial \mu}(\xh,\lh,\mh) & = \dfrac{-N\lh}{\mh - h^\dagger_\omega(\xh)}
-\end{align*}
-Recall that $h^\dagger_\omega(\x) = \min_{y^\omega \geq 0} \{\q^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
-The cuts are then given by
-\begin{align*}
-	T_j^\omega & = 
-	\left( \begin{array}{ccc}
-		\left(\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega, 
-			 & N + N\log\lh - N\log(\mh - h^\dagger_\omega(\xh)), 
-			 & -\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}
-	\end{array} \right) \\
-	t_j^\omega & = \frac{N \lh h^\dagger_\omega(\xh) - N \lh \pi^{*,\omega}B\xh}{\mh - h^\dagger_\omega(\xh)}.
-\end{align*}
-
-For the single-cut master problem proposed, $T_j = \sum_\omega \frac{N_\omega}{N} T_j^\omega$ and $t_j = \sum_\omega \frac{N_\omega}{N} t_j^\omega$.
-
-\subsection{Feasibility Cuts}
-After the subproblems $h^\dagger_\omega(\xh)$ are solved, it may be the case that $\mh - h^\dagger_\omega(\xh) < 0$ for some $\omega$, rendering $\mh$ infeasible.
-This is corrected using the feasibility problem
-\begin{align*}
-	U_\omega(\x,\mu) = \min_{y_\omega,z \geq 0} \ & z \\
-	\st \ & z + \mu - \q^\omega y^\omega \geq 0 \\
-	& D^\omega y^\omega = \d^\omega + B^\omega \x,
-\end{align*}
-which is solved by $z^* = h^\dagger_\omega(\x) - \mu$.
-The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$ and $\frac{\partial z^*}{\partial \mu} = -1$.
-Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
-\begin{align*}
-	U_\omega(\x,\mu) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) + h^\dagger_\omega(\xh) - \mh,
-\end{align*}
-and setting $U_\omega(\x,\mu) = 0$ to find a feasible solution gives the feasibility cut
-\[
-	\mu \geq \pi^{*,\omega}B^\omega \x + (h^\dagger_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
-\]
-
-Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
-This can be done quickly by minimizing the objective function of (\ref{eq:lrlp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$.
-We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h^\dagger_\omega(\xh)} = 1$ with Newton's method.
-
-\subsection{Decomposition Algorithm}
-
-We solve the LRLP-2 with the following decomposition algorithm with tolerance level $\texttt{TOL}$
-
-\begin{algorithmic}
-	\State Initialize $z_l = -\infty, z_u = \infty$
-	\State Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$
-	\State Solve all second stage scenarios $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
-	\State Initialize $\lambda \gets 1$, $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
-	\State Generate initial objective cut
-	\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
-		\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
-		\State Solve sub-problems $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
-		\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu)$
-		\If{$\mu < \max_\omega h^\dagger_\omega(\x)$}
-			\State Generate feasibility cut
-			\State Find $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
-		\Else
-			\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
-		\EndIf
-		\State Generate objective cut
-		\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
-			\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
-			\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
-			\State $p_\omega \gets \frac{\lambda_\text{best} N_\omega}{\mu_\text{best} - h^\dagger_\omega(\x_\text{best})}$ for $i = 1, \dots, n$
-		\EndIf
-	\EndWhile
-\end{algorithmic}
-
-\subsection{Computational Enhancements}
+\subsubsection{Computational Enhancements}
 
 In order to enhance the performance of the above decomposition-based algorithm, we made some adjustments.
 First, we included an $L_\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
@@ -479,7 +384,103 @@ Because we are also interested in the worst-case LRO probabilities given in the 
 This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Application and Computational Results} \label{sec:comp_results}
+\section{Results}
+% \subsection{The Value of Data} \label{sec:value}
+% 
+% With a data driven formulation such as LRLP-2, it is natural to ask how the behavior changes as more data is gathered.
+% In particular, for robust formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
+% For instance, for our water application, initial estimates might show that water demand would be high or low with approximately equal probabilities. 
+% Based on new data, later studies could give low demand an increased weight.  
+% For LRLP-2, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information will make the model less conservative because low water demand results in lower costs and our belief is increased that the future demand will be low.  
+% In this section, we present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
+% 
+% Consider again the deterministic equivalent formulation of LRLP-2 in (\ref{eq:lrlp_det_equiv}).
+% Let $f_N(\x,\mu,\lambda) =  \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda$ $(\log\lambda$ $- \log(\mu-h^\dagger(\x)))$ be the objective function, and $z_N = \min_{\x,\mu,\lambda} f_N(\x,\mu,\lambda)$.
+% We wish to find a simple estimate of the decrease in the optimal cost associated with taking an additional sample, $z_N - z_{N+1}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
+% 
+% Let $\x^*_N, \mu^*_N,\lambda^*_N \in \argmin f_N(\x,\mu,\lambda)$ be optimal solutions to the $N$-sample problem.
+% Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
+% Let $\hat{\omega}$ be the scenario that is selected with the additional sample, then 
+% \[
+% 	z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) = \left[ \overline{N} - \overline{N+1} - \log \lambda^*_N + \log(\mu^*_N - h^\dagger_{\hat{\omega}}(\x^*_N)) \right] \lambda^*_N.
+% \]
+% We can bound $\overline{N} - \overline{N+1} = N\log N - (N+1)\log(N+1) + 1$ by using the tangent lines
+% \[
+% 	\log \x + 1 \leq (\x+1)\log(\x+1) - \x\log \x \leq \log(\x+1) + 1
+% \]
+% to get $\overline{N} - \overline{N+1} \geq -\log(N+1)$.
+% 
+% Combining these results gives the condition
+% \[
+% 	z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) \geq \left[ -\log(N+1) - \log\lambda^*_N + \log(\mu^*_N-h^\dagger(\x^*_N))\right]\lambda^*_N > 0.
+% \]
+% Note that $\lambda^*_N > 0$, so to guarantee a drop in optimal cost we must show that the first term is positive.
+% This then simplifies to
+% \[
+% 	\frac{\mu^*_N - h^\dagger(\x^*_N)}{\lambda^*_N(N+1)} > 1.
+% \]
+% Using the KKT condition (\ref{eq:kkt}), this can be rewritten as
+% \begin{equation} \label{eq:cost_decrease_cond}
+% 	\frac{N_{\hat{\omega}}}{N} > \left( \frac{N+1}{N} \right) p_{\hat{\omega}}.
+% \end{equation}
+% The left-hand side of (\ref{eq:cost_decrease_cond}) is the empirical probability of scenario $\hat{\omega}$ given by the observations used to solve (\ref{eq:lrlp_two_stage}).
+% The right-hand side contains $p_{\hat{\omega}}$, the worst-case probability of scenario $\hat{\omega}$ computed by solving (\ref{eq:lrlp_two_stage}), using a total of $N$ observations.
+% 
+% We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
+% This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt}.
+% 
+% Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
+% Let $L = \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
+% That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in LRLP-2.
+% We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
+% \begin{align}
+% 	\min_{\omega \in L} \ & \sum_{\omega \in L} q_\omega \nonumber \\
+% 	\mbox{s.t.} & \sum_\omega N_\omega \log q_\omega \geq \gamma \label{eq:lb_probability} \\
+% 	& \sum_\omega q_\omega = 1 \nonumber \\
+% 	& q_\omega \geq 0, \ \forall \omega, \nonumber
+% \end{align}
+% where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:kkt}). 
+% Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations. 
+% Let $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$. Note that $\min_{\omega \in L} \sum_{\omega \in L} q_\omega \leq \frac{N_L}{N}$, because the maximum likelihood distribution is always within the likelihood ambiguity set. We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
+% 
+% We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program
+% \begin{align}
+% 	-\min_{\mu \geq 0,\lambda \geq 0} \ & \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu, \label{eq:prob_cost_decrease}
+% \end{align}
+% where $\bar{N} = N(\log N - 1) - \log\gamma'$.
+% 
+% We can view the optimal value of (\ref{eq:prob_cost_decrease}) as a function of three parameters: the total sample size $N$, the relative likelihood parameter $\gamma'$, and the number of observations in the set $L$, $N_L$.
+% The behavior of this lower bound estimate is studied in Figure \ref{fig:prob_cost_decrease_nd_n} as a function of the ratio $\tfrac{N_L}{N}$, and in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} as a function of the relative likelihood parameter $\gamma'$.
+% Figure \ref{fig:prob_cost_decrease_nd_n} shows that the estimated lower bound on the probability of optimal cost decrease stays relatively close to the identity line for most values of $\gamma'$, getting closer to the identity line as  $\gamma'$ is increased; i.e., the ambiguity set (or robustness) is decreased.
+% Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} give a closer look at how (\ref{eq:prob_cost_decrease}) differs from $\tfrac{N_L}{N}$ as $\gamma'$ is changed.
+% 
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=.5\textwidth]{images/prob_dec_cost_v_nl_n_20}
+% 	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
+% 	\label{fig:prob_cost_decrease_nd_n}
+% \end{figure}
+% 
+% \begin{figure}
+% 	\centering
+% 	\subfloat[][$N_L=50$ $\left(\frac{N_L}{N} = 0.25\right)$]{
+% 	   \label{fig:prob_cost_decrease_gp}
+% 	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context}}
+% 	\subfloat[][$N_L=10,50,100,150$ and $190$]{
+% 	   \label{fig:prob_cost_decrease_gp_multiple}
+% 	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context_multiple}}
+% 	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
+% \end{figure}
+% 
+% Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the LRLP-2.
+% The first two of these parameters are also parameters of the LRLP-2 problem (\ref{eq:lrlp_two_stage}).
+% The third, $N_L$, is computed from the optimal solution of (\ref{eq:lrlp_two_stage}) via (\ref{eq:kkt}) and (\ref{eq:cost_decrease_cond}).
+% As such, $N_L$ should be viewed as changing with $\gamma'$.
+% In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
+% This behavior is studied in Section \ref{sec:comp_results}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Application and Computational Results} \label{sec:comp_results}
 
 Using the generalized network model (\ref{eq:gen_network_two_stage}) of Colorado River water allocation in the southeastern portion of Tucson, we created a likelihood robust water allocation problem of the form LRLP-2.
 The southeastern portion of Tucson is a newly developing area and is expected to grow considerably. 
@@ -497,7 +498,7 @@ Each scenario is assumed to have five observations.
 The high population scenarios are more costly as the system needs to meet demand or pay for unmet demand.
 The low population scenarios, on the other hand, are not as costly. 
 % The supply variability seems to have a nominal effect.
-We applied the decomposition-based solution algorithm presented in Section \ref{sec:soln_algorithm} to solve this model and selected tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
+% We applied the decomposition-based solution algorithm presented in Section \ref{sec:soln_algorithm} to solve this model and selected tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
 
 Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.
 When $\gamma'$ is close to $1$, we use the maximum likelihood distribution, which has equal $\tfrac{1}{4}$ probabilities on each of the four scenarios.
@@ -508,21 +509,21 @@ A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, o
 
 %\subsection{Value of Data}
 
-The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
-Figure \ref{fig:water_prob_decrease} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
-The dashed line in Figure \ref{fig:water_prob_decrease} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
-Because the low-population scenarios have lower costs, an additional sample of either low-population scenario will result in a lower expected cost.
-This is what we see through most of the computed values of $\gamma'$, with $\frac{N_L}{N} = 0.5$, indicating that the sufficient condition (\ref{eq:cost_decrease_cond}) was satisfied for both low-population scenarios.
-For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero.
-This occurs because (\ref{eq:cost_decrease_cond}) only compares scenario probabilities in the empirical ($N_\omega / N$) and worst-case ($p_\omega$) distributions and does not use the computed cost of the scenarios.
-As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabilities become so close the empirical probabilities that (\ref{eq:cost_decrease_cond}) can no longer be satisfied, resulting in $\frac{N_L}{N}$ decreasing to zero.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=.5\textwidth]{images/water_prob_decrease}
-	\caption{Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.  The red line shows the upper bound probability $\tfrac{N_L}{N}$.}
-	\label{fig:water_prob_decrease}
-\end{figure}
+% The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
+% Figure \ref{fig:water_prob_decrease} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
+% The dashed line in Figure \ref{fig:water_prob_decrease} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
+% Because the low-population scenarios have lower costs, an additional sample of either low-population scenario will result in a lower expected cost.
+% This is what we see through most of the computed values of $\gamma'$, with $\frac{N_L}{N} = 0.5$, indicating that the sufficient condition (\ref{eq:cost_decrease_cond}) was satisfied for both low-population scenarios.
+% For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero.
+% This occurs because (\ref{eq:cost_decrease_cond}) only compares scenario probabilities in the empirical ($N_\omega / N$) and worst-case ($p_\omega$) distributions and does not use the computed cost of the scenarios.
+% As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabilities become so close the empirical probabilities that (\ref{eq:cost_decrease_cond}) can no longer be satisfied, resulting in $\frac{N_L}{N}$ decreasing to zero.
+% 
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=.5\textwidth]{images/water_prob_decrease}
+% 	\caption{Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.  The red line shows the upper bound probability $\tfrac{N_L}{N}$.}
+% 	\label{fig:water_prob_decrease}
+% \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and Future Work}
