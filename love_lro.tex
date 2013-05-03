@@ -235,48 +235,47 @@ Constraint \eqref{eq:lrlp_primal_probability}, along with nonnegativity constrai
 Let $0 \leq \gamma' \leq 1$ be the \emph{relative likelihood parameter} that expresses $\gamma$ as a {\it proportion} of the maximum likelihood; i.e., $\gamma = \log( \gamma' \prod_\omega (\tfrac{N_\omega}{N})^{N_\omega})$.
 In the rest of the paper, we will be referring to $\gamma'$. 
 
-
-Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:lrlp_primal_liklihood}) and (\ref{eq:lrlp_primal_probability}), respectively, yields
-\begin{align*}
-	\min_{\lambda,\mu} \ & \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda(\log\lambda - \log(\mu-\q^\omega y^\omega)) \\
-	\st \ & \lambda \geq 0 \\
-	& \mu \geq \q^\omega y^\omega, \ \forall \omega,
-\end{align*}
-where $\bar{N} = N(\log N - 1) - \log\gamma'$.
-Combining the two minimizations gives LRLP-2 in extensive form
-\begin{align}
-	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda(\log\lambda - \log(\mu-\q^\omega y^\omega)) \nonumber \\
-	\st \ & A\x = \b \nonumber \\
-	& -B^\omega \x + D^\omega y^\omega = \d^\omega,\ \forall \omega \label{eq:lrlp_det_equiv} \\
-	& \mu \geq \q^\omega y^\omega, \ \forall \omega \nonumber \\
-	& \x,\lambda,y^\omega \geq 0, \ \forall \omega. \nonumber
-\end{align}
-
-Finally, we wish to return the LRLP-2 to two-stage formulation.
-All terms inside the sum over $\omega$ will be put into the second stage.
-To make the formulation as similar to SLP-2 as possible, we choose to express the second stage as an expected value using the maximum likelihood distribution $\frac{N_\omega}{N}$.
-The formulation becomes
-\begin{align}
-	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \bar{N}\lambda + \sum_\omega \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu) \nonumber \\
-	\st \ & A\x = \b \label{eq:lrlp_two_stage} \\
-	& \x,\lambda \geq 0, \nonumber
-\end{align}
-where
-\begin{align}
-	h_\omega(\x,\lambda,\mu) = \min_{y^\omega} \ & N\lambda (\log\lambda - \log(\mu - \q^\omega y^\omega)) \label{eq:lrlp_second_stage} \\
-	\st \ & -B^\omega \x + D^\omega y^\omega = \d^\omega \nonumber \\
-	& \mu - \q^\omega y^\omega \geq 0 \label{eq:lrlp_feas_constraint} \\
-	& y^\omega \geq 0. \nonumber
-\end{align}
-
-
-Since $\log$ is uniformly increasing, we can rewrite the second stage problem as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
-Thus we can state the second stage of LRLP-2 in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h^\dagger_\omega(\x))\right]$.
-
-As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_equiv}) give the relation between primal and dual variables
-\begin{equation}
-	p_\omega = \frac{\lambda N_\omega}{\mu - h^\dagger_\omega(\x)}. \label{eq:kkt}
-\end{equation}
+% Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:lrlp_primal_liklihood}) and (\ref{eq:lrlp_primal_probability}), respectively, yields
+% \begin{align*}
+% 	\min_{\lambda,\mu} \ & \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda(\log\lambda - \log(\mu-\q^\omega y^\omega)) \\
+% 	\st \ & \lambda \geq 0 \\
+% 	& \mu \geq \q^\omega y^\omega, \ \forall \omega,
+% \end{align*}
+% where $\bar{N} = N(\log N - 1) - \log\gamma'$.
+% Combining the two minimizations gives LRLP-2 in extensive form
+% \begin{align}
+% 	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda(\log\lambda - \log(\mu-\q^\omega y^\omega)) \nonumber \\
+% 	\st \ & A\x = \b \nonumber \\
+% 	& -B^\omega \x + D^\omega y^\omega = \d^\omega,\ \forall \omega \label{eq:lrlp_det_equiv} \\
+% 	& \mu \geq \q^\omega y^\omega, \ \forall \omega \nonumber \\
+% 	& \x,\lambda,y^\omega \geq 0, \ \forall \omega. \nonumber
+% \end{align}
+% 
+% Finally, we wish to return the LRLP-2 to two-stage formulation.
+% All terms inside the sum over $\omega$ will be put into the second stage.
+% To make the formulation as similar to SLP-2 as possible, we choose to express the second stage as an expected value using the maximum likelihood distribution $\frac{N_\omega}{N}$.
+% The formulation becomes
+% \begin{align}
+% 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \bar{N}\lambda + \sum_\omega \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu) \nonumber \\
+% 	\st \ & A\x = \b \label{eq:lrlp_two_stage} \\
+% 	& \x,\lambda \geq 0, \nonumber
+% \end{align}
+% where
+% \begin{align}
+% 	h_\omega(\x,\lambda,\mu) = \min_{y^\omega} \ & N\lambda (\log\lambda - \log(\mu - \q^\omega y^\omega)) \label{eq:lrlp_second_stage} \\
+% 	\st \ & -B^\omega \x + D^\omega y^\omega = \d^\omega \nonumber \\
+% 	& \mu - \q^\omega y^\omega \geq 0 \label{eq:lrlp_feas_constraint} \\
+% 	& y^\omega \geq 0. \nonumber
+% \end{align}
+% 
+% 
+% Since $\log$ is uniformly increasing, we can rewrite the second stage problem as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
+% Thus we can state the second stage of LRLP-2 in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h^\dagger_\omega(\x))\right]$.
+% 
+% As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_equiv}) give the relation between primal and dual variables
+% \begin{equation}
+% 	p_\omega = \frac{\lambda N_\omega}{\mu - h^\dagger_\omega(\x)}. \label{eq:kkt}
+% \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \subsection{Decomposition-Based Solution Method} \label{sec:soln_algorithm}
@@ -371,15 +370,15 @@ As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_
 % 		\EndIf
 % 	\EndWhile
 % \end{algorithmic}
-
-\subsubsection{Computational Enhancements}
-
-In order to enhance the performance of the above decomposition-based algorithm, we made some adjustments.
-First, we included an $L_\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
-The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
-
-Because we are also interested in the worst-case LRO probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_\omega \right| < \texttt{TOL2}$ when the algorithm is completed.
-This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
+% 
+% \subsubsection{Computational Enhancements}
+% 
+% In order to enhance the performance of the above decomposition-based algorithm, we made some adjustments.
+% First, we included an $L_\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
+% The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
+% 
+% Because we are also interested in the worst-case LRO probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_\omega \right| < \texttt{TOL2}$ when the algorithm is completed.
+% This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
