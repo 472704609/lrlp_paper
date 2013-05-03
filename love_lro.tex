@@ -508,6 +508,12 @@ As $\gamma'$ becomes smaller, the worst-case distribution continues moving towar
 We can see that as $\gamma'$ becomes zero, the worst-case distribution will focus only on this most expensive scenario.
 A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation) in an effort to meet demands in a least-costly way.
 
+It is natural to ask what value of $\gamma'$ gives the best results.
+We can determine this because the likelihood ambiguity region is related to the Kullback-Leibler (KL) divergence, a well studied concept in statistics.
+We use the fact that, under an appropriate normalization, the KL divergence has a $\chi^2$ distribution asymptotically.
+Using this fact, we find that choosing $\gamma' = \exp(-\chi^2_{n-1,1-\alpha}/2)$ for a problem with $n$ scenarios will result in an ambiguity region that is that contains the true distribution with probability $1-\alpha$.
+Then choosing $n = 4$ and $\alpha = 0.05$ yields $\gamma' \approx 0.02$.
+
 %\subsection{Value of Data}
 
 % The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
