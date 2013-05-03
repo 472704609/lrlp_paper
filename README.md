@@ -6,5 +6,7 @@ Like the OMRP paper, I have set this up so that each sentence is on its own line
 Unlike the OMRP paper, this repository has two branches:
 
 * *master* Most changes should be made on master.
+* *water_sustainability_report* contains the much abbreviated paper for the WSP fellowship.
+    This paper is required to have a title page, have 4-6 pages of text in the format that I have changed it to, and to include any figures in additional pages at the end.  I have put the figures in an appendix.
+* *winter_simulation_proceedings* to make the WSC proceedings paper.
 * *iserc* Changes specific to the ISERC paper should be made here.
-    Whenever we need to update the ISERC paper, I will merge the changes from master into this branch
