@@ -490,11 +490,11 @@ The model has a total of $P = 41$ time periods, representing years 2010--2050.
 % We use $P_1 = 10$ time periods for the first stage, and four second-stage scenarios are constructed from high (WISP) and low (TAZ) population estimates along with high and low estimates for the amount of water available for use.
 For each time period, the network has 62 nodes representing demand for potable and nonpotable (reclaimed) water, pumps, water treatment plants, and the available water supply from the Colorado River.
 The network in each time period has 102 arcs, representing the pipe network carrying the water between the nodes physically and connecting the network to the five reservoirs that connect the time stages in the model.
-We use $P_1 = 10$ time periods for the first stage.
+We use $P_1 = 5$ time periods for the first stage.
 Uncertainty in the second stage takes the form of uncertain population (thus, demand for water) and supply of water.
 There are a total of 4 scenarios considered in this test instance: (i) high population, high supply, (ii) high population, low supply, (iii) low population, high supply, and (iv) low population, low supply.
 Specific numbers for the population and water availability are given in Table \ref{tab:scenario_description}.
-Each scenario is assumed to have five observations.
+Each scenario is assumed to have one observation.
 The high population scenarios are more costly as the system needs to meet demand or pay for unmet demand.
 The low population scenarios, on the other hand, are not as costly. 
 % The supply variability seems to have a nominal effect.
@@ -503,8 +503,9 @@ The low population scenarios, on the other hand, are not as costly.
 Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.
 When $\gamma'$ is close to $1$, we use the maximum likelihood distribution, which has equal $\tfrac{1}{4}$ probabilities on each of the four scenarios.
 As $\gamma'$ is decreased, the ambiguity set increases, and the worst-case distribution used by LRLP-2 changes.
-It gives higher than $\tfrac{1}{4}$ probability to the two high-population scenarios and lower than $\tfrac{1}{4}$ probability to the two low-population scenarios, making the solution more robust to costly scenarios.
-Note that the scenarios fall into two similar pairs because the cost of each scenario depends strongly on the projected demand but only weakly on the projected supply of Colorado River water.
+For values of $\gamma'$ larger than about $0.15$, the worst case distribution assigns probability larger than $\tfrac{1}{4}$ to each of the high population scenarios, and probability smaller than $\tfrac{1}{4}$ to the low population scenarios.
+As $\gamma'$ becomes smaller, the worst-case distribution continues moving towards the high population-low supply scenario, the costliest of the four.
+We can see that as $\gamma'$ becomes zero, the worst-case distribution will focus only on this most expensive scenario.
 A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation) in an effort to meet demands in a least-costly way.
 
 %\subsection{Value of Data}
@@ -612,9 +613,9 @@ This work has also been partially supported by the National Science Foundation t
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=.5\textwidth]{images/worst_case_probability}
+	\includegraphics[width=.7\textwidth]{images/worst_case_probability}
 	\caption{
-		Worst-case distribution for the likelihood robust water allocation problem.
+		The probability of each of the four scenarios of the worst-case distribution for different values of the likelihood parameter $\gamma'$.
 	}
 	\label{fig:worst_case}
 \end{figure}
