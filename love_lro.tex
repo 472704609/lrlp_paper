@@ -514,6 +514,11 @@ We use the fact that, under an appropriate normalization, the KL divergence has 
 Using this fact, we find that choosing $\gamma' = \exp(-\chi^2_{n-1,1-\alpha}/2)$ for a problem with $n$ scenarios will result in an ambiguity region that is that contains the true distribution with probability $1-\alpha$.
 Then choosing $n = 4$ and $\alpha = 0.05$ yields $\gamma' \approx 0.02$.
 
+The Tucson water model was originally designed to help determine the usefulness of installing decentralized water treatment facilities in the southeastern area.
+One possible change is illustrated in Figure \ref{fig:zones_wwtp}, where a decentralized wastewater treatment plant has been built in elevation zone GS.
+We investigated the cost savings of installing an additional decentralized facility, as shown in Figure \ref{fig:worst_case_savings}.
+Our results show that the additional treatment plant would result in cost savings over its purchase price within the 40-year time window of the model.
+
 %\subsection{Value of Data}
 
 % The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
@@ -538,12 +543,13 @@ Then choosing $n = 4$ and $\alpha = 0.05$ yields $\gamma' \approx 0.02$.
 
 In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of Wang et al.\ \cite{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted LRLP-2.
 The LRO models use the empirical likelihood function to define an ambiguity set of probability distributions using observed data and optimize the worst-case expected cost with respect to this likelihood ambiguity set.
-We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution. 
-We have also provided a Bender's decomposition-based solution algorithm for the LRLP-2 and applied this method to planning future water distribution in Tucson, Arizona.
+% We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution. 
+We have% also provided a Bender's decomposition-based solution algorithm for the LRLP-2 and 
+applied this method to planning future water distribution in Tucson, Arizona.
 
 Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
 In addition to more varied estimates for future population, we will integrate climate change predictions into the model to generate scenarios for future water supply from the Colorado River. 
-This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner. On the methodological side, we plan to provide guidelines on selecting the robustness parameter $\gamma'$ with respect to the sample size and investigate the asymptotic behavior of the model as the sample size increases. 
+This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner.
 
 \section*{Acknowledgements}
 This work has also been partially supported by the National Science Foundation through grant CMMI-1151226.
@@ -597,6 +603,16 @@ This work has also been partially supported by the National Science Foundation t
 	\label{fig:zones_split}
 \end{figure}
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=.8\textwidth]{images/zones_south}
+	\caption{
+		Layout of south elevation zones F---H with a decentralized wastewater treatment plant in zone GS.
+	}
+	\label{fig:zones_wwtp}
+\end{figure}
+
+
 \begin{table}[~ht]
 	\centering
 	\begin{tabular}{|c|cc||c|}
@@ -624,6 +640,17 @@ This work has also been partially supported by the National Science Foundation t
 		The probability of each of the four scenarios of the worst-case distribution for different values of the likelihood parameter $\gamma'$.
 	}
 	\label{fig:worst_case}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=.7\textwidth]{images/worst_case_cost_savings_3}
+	\caption{
+		Total savings on operating costs over 40 years from installing an additional wastewater treatment plant.
+		The cost of the plant is \$40 million, indicated by the black line.
+		The recommended likelihood parameter of $\gamma' = 0.02$ is indicated by the red line.
+	}
+	\label{fig:worst_case_savings}
 \end{figure}
 
 \end{document}
