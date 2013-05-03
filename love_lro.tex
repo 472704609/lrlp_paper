@@ -544,10 +544,78 @@ This work has also been partially supported by the National Science Foundation t
 
 \pagebreak
 
-\begin{figure}
+\appendix
+
+\section{Water Distribution Model of Tucson}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=.7\textwidth]{images/tucson_elevation}
+	\caption{
+		The southeastern region of Tucson considered in the water model, marked with a purple border.
+	}
+	\label{fig:tucson_map}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=.8\textwidth]{images/nodes_central}
+	\caption{
+		Network layout of the centralized water treatment system in Tucson.
+		Nodes represent treatment facilities, arcs (arrows) representation transportation systems between nodes.
+		Color coding: blue represents potable water, purple shows nonpotable water, and black shows wastewater.
+	}
+	\label{fig:nodes_central}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=.8\textwidth]{images/zones_c_e}
+	\caption{
+		Network layout of demand in elevation zones C---E of the southeastern region shown in Figure \ref{fig:tucson_map}.
+	}
+	\label{fig:zones_c_e}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=.8\textwidth]{images/zones_split}
+	\caption{
+		Network layout of demand in elevation zones F---H of the southeastern region shown in Figure \ref{fig:tucson_map}.
+		Highway I-10 splits these zones into north and south sections, with no water infrastructure crossing the highway.
+	}
+	\label{fig:zones_split}
+\end{figure}
+
+\begin{table}[~ht]
+	\centering
+	\begin{tabular}{|c|cc||c|}
+		\hline
+		& \multicolumn{2}{|c||}{Population} & Supply \\
+		Estimate & 2010 & 2050 & (CAP/yr) \\
+		\hline
+		\hline
+		Low  & 33,304 & 371,804 & 130,000 \\
+		\hline
+		High & 40,705 & 762,427 & 140,000 \\
+		\hline
+	\end{tabular}
+	\caption{
+		Population of the southeastern region shown in Figure \ref{fig:tucson_map} in the low and high population estimates, along with the low and high estimates for amount of CAP water available per year.
+		Note that the estimates for population and CAP availability are independent.
+	}
+\end{table}
+
+~
+
+\section{Results}
+
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=.5\textwidth]{images/worst_case_probability}
-	\caption{Worst-case distribution for the likelihood robust water allocation problem.}
+	\caption{
+		Worst-case distribution for the likelihood robust water allocation problem.
+	}
 	\label{fig:worst_case}
 \end{figure}
 
