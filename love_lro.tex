@@ -108,23 +108,18 @@ More than half of Tucson's water, for instance, comes from this source.
 The Colorado River Basin has experienced a sustained period of drought in recent years, which has led to questions about the adequacy of the Colorado to meet future demands, especially as the population of Arizona (and of other states that depend on this water source) increases.
 Thus, the problem of allocating Colorado water is of critical importance. 
 
-%The southeastern portion of Tucson shown in Figure \ref{fig:tucson_map} is a newly developing area and is expected to grow considerably. 
-%The LRLP-2 water allocation model would help authorities with future water plans in this area while being robust to uncertainties in water supplies and demands.
-
-In this work, we model, solve, and analyze a robust water allocation problem to optimally allocate Colorado River water to different users over 40 years in the southeastern part of Tucson.
-There are many uncertainties in this water allocation problem---two of most important ones are water supply and water demands.  
-On the water demand side, the southeastern portion of Tucson is expected to grow  during the time horizon considered; therefore, the water demand is expected to increase but by how much is uncertain. 
-On the water supply side, it is well recognized that the reliability of the Colorado River system under future climate variability is critically important to the long-term well-being of Arizona and the other six states that depend on this water supply \cite{usbr_colorado_climate}. 
-The current approach of estimating water supply using climate models is to use Global Circulation Models (GCM) to generate regional rainfall and temperature scenarios by the so-called statistical downscaling techniques \cite{christensen_lettenmaier_07,dibike_caulibaly_05}. 
-Even though we have some idea about these uncertainties, there is considerable ambiguity as to how to model these uncertainties and how to make long-term decisions under such ambiguous uncertainties. 
-The work presented here aims to tackle this important question applies it to a water allocation problem in Tucson, AZ. 
+In this work, we model, solve, and analyze a robust water allocation problem to optimally allocate Colorado River water to different users over 40 years in the southeastern part of Tucson shown in Figure \ref{fig:tucson_map}.
+There are many uncertainties in this water allocation problem---two of most important ones are water supply and water demands.
+On the water demand side, the southeastern portion of Tucson is expected to grow  during the time horizon considered; therefore, the water demand is expected to increase but by how much is uncertain.
+On the water supply side, it is well recognized that the reliability of the Colorado River system under future climate variability is critically important to the long-term well-being of Arizona and the other six states that depend on this water supply \cite{usbr_colorado_climate}.
+The current approach of estimating water supply using climate models is to use Global Circulation Models (GCM) to generate regional rainfall and temperature scenarios by the so-called statistical downscaling techniques \cite{christensen_lettenmaier_07,dibike_caulibaly_05}.
+Even though we have some idea about these uncertainties, there is considerable ambiguity as to how to model these uncertainties and how to make long-term decisions under such ambiguous uncertainties.
+The work presented here aims to tackle this important question applies our solution to a water allocation problem in Tucson, AZ.
 This would help authorities with future water plans in this area of Tucson while being robust to uncertainties in water supplies and demands.
 
-
-Our methodology uses a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
+Our approach uses a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
 More general models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
 Our model is modified to incorporate ambiguous future uncertainty by using the {\it Likelihood Robust Optimization (LRO)} approach of Wang, Glynn and Ye \cite{wang2010likelihood}.
-
 
 LRO is a data-driven method that uses observations of random or unknown parameters to account not only for inherent stochasticity of a problem, but the uncertainty of the probabilistic model itself.
 This is especially important in our application as we are looking 40 years into the future and there is considerable ambiguity in the uncertainties.
@@ -133,13 +128,10 @@ The size of the problem is polynomial in the number of scenarios used, making it
 Furthermore, the scenarios used in the LRO can represent select ones that are of interest to the authorities. 
 For instance, the US Bureau of Reclamation uses an approach called the {\it scenario planning} that examines water demand and supply scenarios over the next 50 years \cite{usbr_11}.  
 Similar studies are being conducted by Tucson Water  \cite{cityofTucsonWaterPlan}.
-%LRO fits this practice well because the scenario planning process results in several scenarios that the agencies would especially like to be robust against.
 
-
-In this report, we first discuss the methods use in Section \ref{sec:methods}, and point out some key results in Section \ref{sec:results}.
-Any figures and tables mentioned are included in the appendix.
+In this report, we first discuss the methods used in Section \ref{sec:methods}, and point out some key results in Section \ref{sec:results}.
+Any figures and tables mentioned are included in the appendices.
 We end with a short summary and future work.
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
