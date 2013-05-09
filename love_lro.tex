@@ -250,14 +250,34 @@ where
 	& y^\omega \geq 0. \nonumber
 \end{align}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Properties of LRLP-2}
 
+\subsection{Coherent Risk Measure}
+As noted in \cite{wang2010likelihood}, the LRLP-2 problem can be viewed as a coherent risk measure.
+A coherent risk measure (in the basic sense), as defined in \cite{rockafellar2007coherent}, is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that
+\begin{enumerate}
+	\item ${\cal R}(C) = C$ for all constants $C$,
+	\item ${\cal R}((1-\lambda)X + \lambda X') \leq (1-\lambda){\cal R}(X) + \lambda {\cal R}(X')$, i.e., $\cal R$ is convex,
+	\item ${\cal R}(X) \leq {\cal R}(X')$ when $X \leq X'$, i.e., $\cal R$ is monotonic,
+	\item ${\cal R}(\lambda X) = \lambda {\cal R}(X)$, i.e., $\cal R$ is positively homogeneous.
+\end{enumerate}
+LRLP-2 can be written in the form of a risk envelope in the primal form (\ref{eq:lrlp_primal}) with the change of variables $Q_\omega = \frac{p_\omega}{N_\omega/N}$, with $Q_\omega = 0$ when $N_\omega = 0$.
+The inner maximization then becomes $\max_{Q \in {\cal Q}} \e{Qh^\dagger(x)}$, where $Q$ and $h^\dagger(x)$ are the random variables defined by $\{Q_\omega\}$ and $\{h^\dagger_\omega(x)\}$, respectively, and $\cal Q$ is replicates constraints (\ref{eq:lrlp_primal_liklihood}) and (\ref{eq:lrlp_primal_probability}) by $\e{\log(Q)} \geq \frac{1}{N} \log \gamma'$ and $\e{Q} = 1$, respectively.
+Here, all expectations are taken with respect to the maximum likelihood distribution.
+
+\subsection{Time Structure}
 Since $\log$ is uniformly increasing, we can rewrite the second stage problem as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
 Thus we can state the second stage of LRLP-2 in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h^\dagger_\omega(\x))\right]$.
 
+\subsection{KKT Conditions}
 As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_equiv}) give the relation between primal and dual variables
 \begin{equation}
 	p_\omega = \frac{\lambda N_\omega}{\mu - h^\dagger_\omega(\x)}. \label{eq:kkt}
 \end{equation}
+
+\subsection{Relation to KL-Divergence}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Value of Data} \label{sec:value}
