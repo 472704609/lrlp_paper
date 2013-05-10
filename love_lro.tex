@@ -353,35 +353,43 @@ Based on new data, later studies could give low demand an increased weight.
 For LRLP-2, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information will make the model less conservative because low water demand results in lower costs and our belief is increased that the future demand will be low.  
 In this section, we present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
 
-Consider again the deterministic equivalent formulation of LRLP-2 in (\ref{eq:lrlp_det_equiv}).
-Let $f_N(\x,\mu,\lambda) =  \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda$ $(\log\lambda$ $- \log(\mu-h^\dagger(\x)))$ be the objective function, and $z_N = \min_{\x,\mu,\lambda} f_N(\x,\mu,\lambda)$.
-We wish to find a simple estimate of the decrease in the optimal cost associated with taking an additional sample, $z_N - z_{N+1}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
+\begin{proposition}
+	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the LRLP-2 if the following condition is satisfied
+	\begin{equation} \label{eq:cost_decrease_cond}
+		\frac{N_{\hat{\omega}}}{N} > \left( \frac{N+1}{N} \right) p_{\hat{\omega}},
+	\end{equation}
+	where $p_{\hat{\omega}}$ is the probability of scenario $\hat{\omega}$ in the worst-case distribution.
+\end{proposition}
 
-Let $\x^*_N, \mu^*_N,\lambda^*_N \in \argmin f_N(\x,\mu,\lambda)$ be optimal solutions to the $N$-sample problem.
-Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
-Let $\hat{\omega}$ be the scenario that is selected with the additional sample, then 
-\[
-	z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) = \left[ \overline{N} - \overline{N+1} - \log \lambda^*_N + \log(\mu^*_N - h^\dagger_{\hat{\omega}}(\x^*_N)) \right] \lambda^*_N.
-\]
-We can bound $\overline{N} - \overline{N+1} = N\log N - (N+1)\log(N+1) + 1$ by using the tangent lines
-\[
-	\log \x + 1 \leq (\x+1)\log(\x+1) - \x\log \x \leq \log(\x+1) + 1
-\]
-to get $\overline{N} - \overline{N+1} \geq -\log(N+1)$.
+\begin{proof}
+	Consider again the deterministic equivalent formulation of LRLP-2 in (\ref{eq:lrlp_det_equiv}).
+	Let $f_N(\x,\mu,\lambda) =  \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda$ $(\log\lambda$ $- \log(\mu-h^\dagger(\x)))$ be the objective function, and $z_N = \min_{\x,\mu,\lambda} f_N(\x,\mu,\lambda)$.
+	We wish to find a simple estimate of the decrease in the optimal cost associated with taking an additional sample, $z_N - z_{N+1}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
 
-Combining these results gives the condition
-\[
-	z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) \geq \left[ -\log(N+1) - \log\lambda^*_N + \log(\mu^*_N-h^\dagger(\x^*_N))\right]\lambda^*_N > 0.
-\]
-Note that $\lambda^*_N > 0$, so to guarantee a drop in optimal cost we must show that the first term is positive.
-This then simplifies to
-\[
-	\frac{\mu^*_N - h^\dagger(\x^*_N)}{\lambda^*_N(N+1)} > 1.
-\]
-Using the KKT condition (\ref{eq:kkt}), this can be rewritten as
-\begin{equation} \label{eq:cost_decrease_cond}
-	\frac{N_{\hat{\omega}}}{N} > \left( \frac{N+1}{N} \right) p_{\hat{\omega}}.
-\end{equation}
+	Let $\x^*_N, \mu^*_N,\lambda^*_N \in \argmin f_N(\x,\mu,\lambda)$ be optimal solutions to the $N$-sample problem.
+	Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
+	Let $\hat{\omega}$ be the scenario that is selected with the additional sample, then
+	\[
+		z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) = \left[ \overline{N} - \overline{N+1} - \log \lambda^*_N + \log(\mu^*_N - h^\dagger_{\hat{\omega}}(\x^*_N)) \right] \lambda^*_N.
+	\]
+	We can bound $\overline{N} - \overline{N+1} = N\log N - (N+1)\log(N+1) + 1$ by using the tangent lines
+	\[
+		\log \x + 1 \leq (\x+1)\log(\x+1) - \x\log \x \leq \log(\x+1) + 1
+	\]
+	to get $\overline{N} - \overline{N+1} \geq -\log(N+1)$.
+
+	Combining these results gives the condition
+	\[
+		z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) \geq \left[ -\log(N+1) - \log\lambda^*_N + \log(\mu^*_N-h^\dagger(\x^*_N))\right]\lambda^*_N > 0.
+	\]
+	Note that $\lambda^*_N > 0$, so to guarantee a drop in optimal cost we must show that the first term is positive.
+	This then simplifies to
+	\[
+		\frac{\mu^*_N - h^\dagger(\x^*_N)}{\lambda^*_N(N+1)} > 1.
+	\]
+	Using the KKT condition (\ref{eq:kkt}), this can be rewritten as (\ref{eq:cost_decrease_cond}).
+\end{proof}
+
 The left-hand side of (\ref{eq:cost_decrease_cond}) is the empirical probability of scenario $\hat{\omega}$ given by the observations used to solve (\ref{eq:lrlp_two_stage}).
 The right-hand side contains $p_{\hat{\omega}}$, the worst-case probability of scenario $\hat{\omega}$ computed by solving (\ref{eq:lrlp_two_stage}), using a total of $N$ observations.
 
@@ -391,22 +399,28 @@ This is equivalent to saying that an additional observation of $\hat{\omega}$ wi
 Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
 Let $L = \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
 That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in LRLP-2.
-We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
-\begin{align}
-	\min_{\omega \in L} \ & \sum_{\omega \in L} q_\omega \nonumber \\
-	\mbox{s.t.} & \sum_\omega N_\omega \log q_\omega \geq \gamma \label{eq:lb_probability} \\
-	& \sum_\omega q_\omega = 1 \nonumber \\
-	& q_\omega \geq 0, \ \forall \omega, \nonumber
-\end{align}
-where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:kkt}). 
-Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations. 
-Let $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$. Note that $\min_{\omega \in L} \sum_{\omega \in L} q_\omega \leq \frac{N_L}{N}$, because the maximum likelihood distribution is always within the likelihood ambiguity set. We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
 
-We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program
-\begin{align}
-	-\min_{\mu \geq 0,\lambda \geq 0} \ & \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu, \label{eq:prob_cost_decrease}
-\end{align}
-where $\bar{N} = N(\log N - 1) - \log\gamma'$.
+\begin{proposition}
+	An approximate lower bound on the probability of selecting a scenario in the set $L= \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$ can be found by solving 
+	\begin{equation} \label{eq:prob_cost_decrease}
+		-\min_{\mu \geq 0,\lambda \geq 0} \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu.
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
+	We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
+	\begin{align}
+		\min_{\omega \in L} \ & \sum_{\omega \in L} q_\omega \nonumber \\
+		\mbox{s.t.} & \sum_\omega N_\omega \log q_\omega \geq \gamma \label{eq:lb_probability} \\
+		& \sum_\omega q_\omega = 1 \nonumber \\
+		& q_\omega \geq 0, \ \forall \omega, \nonumber
+	\end{align}
+	where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:kkt}). 
+	Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations. 
+	Let $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$. Note that $\min_{\omega \in L} \sum_{\omega \in L} q_\omega \leq \frac{N_L}{N}$, because the maximum likelihood distribution is always within the likelihood ambiguity set. We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
+
+	We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program (\ref{eq:prob_cost_decrease}).
+\end{proof}
 
 We can view the optimal value of (\ref{eq:prob_cost_decrease}) as a function of three parameters: the total sample size $N$, the relative likelihood parameter $\gamma'$, and the number of observations in the set $L$, $N_L$.
 The behavior of this lower bound estimate is studied in Figure \ref{fig:prob_cost_decrease_nd_n} as a function of the ratio $\tfrac{N_L}{N}$, and in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} as a function of the relative likelihood parameter $\gamma'$.
