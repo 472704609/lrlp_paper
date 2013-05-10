@@ -283,8 +283,12 @@ Note that being a coherent risk measure implies that LRLP-2 is a convex problem.
 The convexity of LRO was also noted in \cite{wang2010likelihood}.
 
 \subsection{Time Structure}
-Since $\log$ is uniformly increasing, we can rewrite the second stage problem as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
+LRLP-2 has the same second-stage problems as SLP-2.
+Since $\log$ is uniformly increasing, we can rewrite the second stage problem (\ref{eq:lrlp_second_stage}) as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
 Thus we can state the second stage of LRLP-2 in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h^\dagger_\omega(\x))\right]$.
+
+This preservation of the time structure allows us to easily convert (sub-)derivatives of $h^\dagger_\omega(\x)$ to (sub-)derivatives of $h_\omega(\x,\lambda,\mu)$.
+We will use this in the decomposition method provided in Section \ref{sec:soln_algorithm}.
 
 \subsection{KKT Conditions}
 As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_equiv}) give the relation between primal and dual variables
