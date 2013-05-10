@@ -314,6 +314,16 @@ Thus, if we want to choose $\gamma'$ to generate a $100(1-\alpha)\%$ confidence 
 \end{equation}
 Note that $\gamma'$ constant asymptotically produces constant-size confidence regions.
 
+Wang et. al. \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:lrlp_primal_liklihood}) which yields a Monte Carlo method of establishing a value for $\gamma'$.
+Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}_\omega = \frac{N_\omega}{N}$ as fixed, Wang et. al. \cite{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
+This distribution is the Dirichlet distribution $Dir(\beta)$, which has density
+\[
+	\frac{1}{B(\beta)} \prod_{\omega=1}^n p_\omega^{\beta_\omega-1}
+\]
+where the normalizing factor is $B(\beta) = \frac{\prod_{\omega=1}^n \Gamma(\beta_\omega)}{\Gamma\left( \sum_{\omega=1}^n \beta_\omega \right)}$.
+The unknown true distribution can then be modeled as coming from a distribution $Dir(\beta)$ with $\beta_\omega = N_\omega + 1$, and $\gamma'$ chosen such that $\P^*\left\{ \prod_{\omega=1}^n p_\omega^{N_\omega} \geq \gamma' \prod_{\omega=1}^n \hat{p}_\omega^{N_\omega} \right\}$.
+We then estimate $\gamma'$ by Monte Carlo sampling from the distribution $Dir(\beta)$.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Value of Data} \label{sec:value}
 
