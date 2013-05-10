@@ -296,8 +296,12 @@ As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_
 	p_\omega = \frac{\lambda N_\omega}{\mu - h^\dagger_\omega(\x)}. \label{eq:kkt}
 \end{equation}
 
-\subsection{Relation to KL-Divergence}
-
+\subsection{Relation to KL Divergence}
+The likelihood condition (\ref{eq:lrlp_primal_liklihood}) can be written in the form of a Kullback-Leibler divergence condition, i.e., (\ref{eq:lrlp_primal_liklihood}) can be rewritten as
+\[
+	\sum_{\omega=1}^n \frac{N_\omega}{N} \log\left( \frac{N_\omega/N}{p_\omega} \right) \leq \frac{1}{N} \log \frac{1}{\gamma'},
+\]
+where $\sum_{\omega=1}^n q_\omega \log \frac{q_\omega}{p_\omega}$ is the KL divergence of the distributions $D_{KL}(q,p)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Value of Data} \label{sec:value}
