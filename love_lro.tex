@@ -1,25 +1,90 @@
-\documentclass[11pt]{article}
+%**************************************************************************
+%*
+%*  Paper: ``INSTRUCTIONS FOR AUTHORS OF LATEX DOCUMENTS''
+%*
+%*  Publication: 2013 Winter Simulation Conference Author Kit
+%*
+%*  Filename: wsc13paper.tex
+%*
+%*  Date: January 31, 2001   Time:  9:45 PM
+%*      BASE of current version: Feb 01, 2010 (primary WSC'10 LaTeX file)
+%*
+%*  Word Processing System: TeXnicCenter and MiKTeX
+%*
+%*
+%*  All files need the following
+\input{wsc13style.tex}     % download from author kit.  Style files for wsc formatting. Don't remove this line - required for generating the final paper!
 
-% \usepackage{default}
-% \usepackage{fullpage}
-\usepackage[margin=1in]{geometry}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{setspace}
+\documentclass{wscpaperproc}
+\usepackage{latexsym}
+%\usepackage{caption}
 \usepackage{graphicx}
+\usepackage{mathptmx}
+
 \usepackage{subcaption}
-\usepackage{url}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
+%
+%****************************************************************************
+% AUTHOR: You may want to use some of these packages. (Optional)
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{amsthm}
+%****************************************************************************
 
-\bibliographystyle{plain}
 
-\author{David~Love and G\"{u}zin~Bayraksan}
 
-\title{Two-Stage Likelihood Robust Linear Program: Properties and Application to Water Allocation under Uncertainty}
-\date{}
+%
+%****************************************************************************
+% AUTHOR: If you do not wish to use hyperlinks, then just comment
+% out the hyperref usepackage commands below.
+
+%% This version of the command is used if you use pdflatex. In this case you
+%% cannot use ps or eps files for graphics, but pdf, jpeg, png etc are fine.
+
+\usepackage[pdftex,colorlinks=true,urlcolor=blue,citecolor=black,anchorcolor=black,linkcolor=black]{hyperref}
+
+%% The next versions of the hyperref command are used if you adopt the
+%% outdated latex-dvips-ps2pdf route in generating your pdf file. In
+%% this case you can use ps or eps files for graphics, but not pdf, jpeg, png etc.
+%% However, the final pdf file should embed all fonts required which means that you have to use file
+%% formats which can embed fonts. Please note that the final PDF file will not be generated on your computer!
+%% If you are using WinEdt or PCTeX, then use the following. If you are using
+%% Y&Y TeX then replace "dvips" with "dvipsone"
+
+%%\usepackage[dvips,colorlinks=true,urlcolor=blue,citecolor=black,%
+%% anchorcolor=black,linkcolor=black]{hyperref}
+%****************************************************************************
+
+
+%
+%****************************************************************************
+%*
+%* AUTHOR: YOUR CALL!  Document-specific macros can come here.
+%*
+%****************************************************************************
+
+% If you use theoremes
+\newtheoremstyle{wsc}% hnamei
+{3pt}% hSpace abovei
+{3pt}% hSpace belowi
+{}% hBody fonti
+{}% hIndent amounti1
+{\bf}% hTheorem head fontbf
+{}% hPunctuation after theorem headi
+{.5em}% hSpace after theorem headi2
+{}% hTheorem head spec (can be left empty, meaning `normal')i
+
+\theoremstyle{wsc}
+\newtheorem{theorem}{Theorem}
+\renewcommand{\thetheorem}{ \arabic{theorem}}
+\newtheorem{corollary}[theorem]{Corollary}
+\renewcommand{\thecorollary}{\arabic{corollary}}
+\newtheorem{definition}{Definition}
+\renewcommand{\thedefinition}{\arabic{definition}}
 
 % Frequently used general mathematics
 \newcommand{\R}{{\mathbb{R}}}
@@ -56,29 +121,64 @@
 % Epiconvergence for LRLP-2
 \newcommand{\ptrue}{p^{\text{true}}}
 
-% Useful mathematics functions
-\newcommand{\keywords}[1]{\par\noindent\enspace\ignorespaces\textbf{Keywords:} #1}
-% \newcommand{\keywords}[1]{\par\addvspace\baselineskip\noindent\keywordname\enspace\ignorespaces #1}
 \DeclareMathOperator*{\argmin}{argmin}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}[theorem]{Definition}
+
 \newcommand{\st}{\mbox{s.t.}}
 
+%#########################################################
+%*
+%*  The Document.
+%*
 \begin{document}
 
-\maketitle
+%***************************************************************************
+% AUTHOR: AUTHOR NAMES GO HERE
+% FORMAT AUTHORS NAMES Like: Author1, Author2 and Author3 (last names)
+%
+%		You need to change the author listing below!
+%               Please list ALL authors using last name only, separate by a comma except
+%               for the last author, separate with "and"
+%
+\WSCpagesetup{Love and Bayraksan}
 
+% AUTHOR: Enter the title, all letters in upper case
+\title{TWO-STAGE LIKELIHOOD ROBUST LINEAR PROGRAM: PROPERTIES AND APPLICATION TO WATER ALLOCATION UNDER UNCERTAINTY}
+
+% AUTHOR: Enter the authors of the article, see end of the example document for further examples
+\author{David Love \\ [12pt]
+Graduate Interdisciplinary Program in Applied Mathematics\\
+University of Arizona\\
+Tucson, AZ 85721, USA\\
+% Multiple authors are entered as follows.
+\and
+G\"{u}zin Bayraksan\\ [12pt]
+Integrated Systems Engineering\\
+The Ohio State University\\
+Columbus, OH 43210, USA\\
+}
+
+<<<<<<< HEAD
 \begin{abstract}
 	We adapt and extend the likelihood robust optimization method recently proposed by Wang, Glynn, and Ye to a two-stage setting.
 	We examine the value of collecting additional data and the cost of finding a solution robust to an ambiguous probability distribution.
 	A decomposition-based solution algorithm to solve the resulting model is given.
 	We apply the model to examine a long-term water allocation problem in the southeast area of Tucson, AZ under ambiguous distribution of future available supply and demand and present computational results.
 \end{abstract}
+=======
+>>>>>>> Change document type to WSC
 
-\keywords{Optimization under uncertainty, water resources management,  ambiguous stochastic programming, robust optimization, environmental sustainability}
+
+
+
+
+\maketitle
+
+\section*{ABSTRACT}
+We adapt and extend the likelihood robust optimization method recently proposed by Wang, Glynn, and Ye to examine water allocation under the ambiguous distribution of future available supply and demand in a two-stage setting.
+We examine the value of collecting additional data and the cost of finding a solution robust to an ambiguous probability distribution.
+A decomposition-based solution algorithm to solve the resulting model is given.
+Computational results are presented on a long-term water allocation problem in southeast area of Tucson.
 
 \section{Introduction and Motivation}
 
@@ -720,6 +820,9 @@ This work has also been partially supported by the National Science Foundation t
 
 An earlier version of this paper appeared in the Proceedings of the 2013 Industrial and Systems Engineering Research Conference \cite{love2013likelihood}.
 
+\section*{References}
+
+\bibliographystyle{wsc}
 \bibliography{love_lro}
 
 
@@ -735,3 +838,4 @@ Her research interests include Monte Carlo sampling methods for stochastic progr
 Her email address is \url{bayraksan.1@osu.edu} and her web page is \url{http://www-iwse.eng.ohio-state.edu/biosketch_GBayraksan.cfm}
 
 \end{document}
+
