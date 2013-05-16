@@ -407,62 +407,62 @@ In this section, we present a simple method of estimating the probability that t
 We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
 This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt}.
 
-Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
-Let $L = \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
-That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in LRLP-2.
-
-\begin{proposition}
-	An approximate lower bound on the probability of selecting a scenario in the set $L= \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$ can be found by solving 
-	\begin{equation} \label{eq:prob_cost_decrease}
-		-\min_{\mu \geq 0,\lambda \geq 0} \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu,
-	\end{equation}
-	where $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$.
-\end{proposition}
-
-\begin{proof}
-	We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
-	\begin{align}
-		\min_{\omega \in L} \ & \sum_{\omega \in L} q_\omega \nonumber \\
-		\mbox{s.t.} & \sum_\omega N_\omega \log q_\omega \geq \gamma \label{eq:lb_probability} \\
-		& \sum_\omega q_\omega = 1 \nonumber \\
-		& q_\omega \geq 0, \ \forall \omega, \nonumber
-	\end{align}
-	where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:kkt}). 
-	Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations.
-	Note that $\min_{\omega \in L} \sum_{\omega \in L} q_\omega \leq \frac{N_L}{N}$, because the maximum likelihood distribution is always within the likelihood ambiguity set. We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
-
-	We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program (\ref{eq:prob_cost_decrease}).
-\end{proof}
-
-We can view the optimal value of (\ref{eq:prob_cost_decrease}) as a function of three parameters: the total sample size $N$, the relative likelihood parameter $\gamma'$, and the number of observations $N_L$ in the set $L$.
-The behavior of this lower bound estimate is studied in Figure \ref{fig:prob_cost_decrease_nd_n} as a function of the ratio $\tfrac{N_L}{N}$, and in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} as a function of the relative likelihood parameter $\gamma'$.
-Figure \ref{fig:prob_cost_decrease_nd_n} shows that the estimated lower bound on the probability of optimal cost decrease stays relatively close to the identity line for most values of $\gamma'$, getting closer to the identity line as  $\gamma'$ is increased; i.e., the ambiguity set (or robustness) is decreased.
-Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} give a closer look at how (\ref{eq:prob_cost_decrease}) differs from $\tfrac{N_L}{N}$ as $\gamma'$ is changed.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=.5\textwidth]{images/prob_dec_cost_v_nl_n_20}
-	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
-	\label{fig:prob_cost_decrease_nd_n}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\subfloat[][$N_L=50$ $\left(\frac{N_L}{N} = 0.25\right)$]{
-	   \label{fig:prob_cost_decrease_gp}
-	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context}}
-	\subfloat[][$N_L=10,50,100,150$ and $190$]{
-	   \label{fig:prob_cost_decrease_gp_multiple}
-	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context_multiple}}
-	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
-\end{figure}
-
-Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the LRLP-2.
-The first two of these parameters are also parameters of the LRLP-2 problem (\ref{eq:lrlp_two_stage}).
-The third, $N_L$, is computed from the optimal solution of (\ref{eq:lrlp_two_stage}) via (\ref{eq:kkt}) and (\ref{eq:cost_decrease_cond}).
-As such, $N_L$ should be viewed as changing with $\gamma'$.
-In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
-This behavior is studied in Section \ref{sec:comp_results}.
+% Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
+% Let $L = \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
+% That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in LRLP-2.
+% 
+% \begin{proposition}
+% 	An approximate lower bound on the probability of selecting a scenario in the set $L= \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$ can be found by solving 
+% 	\begin{equation} \label{eq:prob_cost_decrease}
+% 		-\min_{\mu \geq 0,\lambda \geq 0} \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu,
+% 	\end{equation}
+% 	where $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$.
+% \end{proposition}
+% 
+% \begin{proof}
+% 	We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
+% 	\begin{align}
+% 		\min_{\omega \in L} \ & \sum_{\omega \in L} q_\omega \nonumber \\
+% 		\mbox{s.t.} & \sum_\omega N_\omega \log q_\omega \geq \gamma \label{eq:lb_probability} \\
+% 		& \sum_\omega q_\omega = 1 \nonumber \\
+% 		& q_\omega \geq 0, \ \forall \omega, \nonumber
+% 	\end{align}
+% 	where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:kkt}). 
+% 	Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations.
+% 	Note that $\min_{\omega \in L} \sum_{\omega \in L} q_\omega \leq \frac{N_L}{N}$, because the maximum likelihood distribution is always within the likelihood ambiguity set. We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
+% 
+% 	We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program (\ref{eq:prob_cost_decrease}).
+% \end{proof}
+% 
+% We can view the optimal value of (\ref{eq:prob_cost_decrease}) as a function of three parameters: the total sample size $N$, the relative likelihood parameter $\gamma'$, and the number of observations $N_L$ in the set $L$.
+% The behavior of this lower bound estimate is studied in Figure \ref{fig:prob_cost_decrease_nd_n} as a function of the ratio $\tfrac{N_L}{N}$, and in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} as a function of the relative likelihood parameter $\gamma'$.
+% Figure \ref{fig:prob_cost_decrease_nd_n} shows that the estimated lower bound on the probability of optimal cost decrease stays relatively close to the identity line for most values of $\gamma'$, getting closer to the identity line as  $\gamma'$ is increased; i.e., the ambiguity set (or robustness) is decreased.
+% Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} give a closer look at how (\ref{eq:prob_cost_decrease}) differs from $\tfrac{N_L}{N}$ as $\gamma'$ is changed.
+% 
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=.5\textwidth]{images/prob_dec_cost_v_nl_n_20}
+% 	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
+% 	\label{fig:prob_cost_decrease_nd_n}
+% \end{figure}
+% 
+% \begin{figure}
+% 	\centering
+% 	\subfloat[][$N_L=50$ $\left(\frac{N_L}{N} = 0.25\right)$]{
+% 	   \label{fig:prob_cost_decrease_gp}
+% 	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context}}
+% 	\subfloat[][$N_L=10,50,100,150$ and $190$]{
+% 	   \label{fig:prob_cost_decrease_gp_multiple}
+% 	   \includegraphics[width=.4\textwidth]{images/prob_dec_cost_v_gammaprime_no_context_multiple}}
+% 	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
+% \end{figure}
+% 
+% Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the LRLP-2.
+% The first two of these parameters are also parameters of the LRLP-2 problem (\ref{eq:lrlp_two_stage}).
+% The third, $N_L$, is computed from the optimal solution of (\ref{eq:lrlp_two_stage}) via (\ref{eq:kkt}) and (\ref{eq:cost_decrease_cond}).
+% As such, $N_L$ should be viewed as changing with $\gamma'$.
+% In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
+% This behavior is studied in Section \ref{sec:comp_results}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Decomposition-Based Solution Method} \label{sec:soln_algorithm}
@@ -653,21 +653,21 @@ A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, o
 
 %\subsection{Value of Data}
 
-The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
-Figure \ref{fig:water_prob_decrease} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
-The dashed line in Figure \ref{fig:water_prob_decrease} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
-Because the low-population scenarios have lower costs, an additional sample of either low-population scenario will result in a lower expected cost.
-This is what we see through most of the computed values of $\gamma'$, with $\frac{N_L}{N} = 0.5$, indicating that the sufficient condition (\ref{eq:cost_decrease_cond}) was satisfied for both low-population scenarios.
-For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero.
-This occurs because (\ref{eq:cost_decrease_cond}) only compares scenario probabilities in the empirical ($N_\omega / N$) and worst-case ($p_\omega$) distributions and does not use the computed cost of the scenarios.
-As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabilities become so close the empirical probabilities that (\ref{eq:cost_decrease_cond}) can no longer be satisfied, resulting in $\frac{N_L}{N}$ decreasing to zero.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=.5\textwidth]{images/water_prob_decrease}
-	\caption{Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.  The red line shows the upper bound probability $\tfrac{N_L}{N}$.}
-	\label{fig:water_prob_decrease}
-\end{figure}
+% The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
+% Figure \ref{fig:water_prob_decrease} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
+% The dashed line in Figure \ref{fig:water_prob_decrease} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
+% Because the low-population scenarios have lower costs, an additional sample of either low-population scenario will result in a lower expected cost.
+% This is what we see through most of the computed values of $\gamma'$, with $\frac{N_L}{N} = 0.5$, indicating that the sufficient condition (\ref{eq:cost_decrease_cond}) was satisfied for both low-population scenarios.
+% For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero.
+% This occurs because (\ref{eq:cost_decrease_cond}) only compares scenario probabilities in the empirical ($N_\omega / N$) and worst-case ($p_\omega$) distributions and does not use the computed cost of the scenarios.
+% As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabilities become so close the empirical probabilities that (\ref{eq:cost_decrease_cond}) can no longer be satisfied, resulting in $\frac{N_L}{N}$ decreasing to zero.
+% 
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=.5\textwidth]{images/water_prob_decrease}
+% 	\caption{Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.  The red line shows the upper bound probability $\tfrac{N_L}{N}$.}
+% 	\label{fig:water_prob_decrease}
+% \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and Future Work}
