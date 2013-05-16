@@ -21,3 +21,12 @@
 # Temporary Files #
 ###################
 .*.swp # vim lock file
+
+# WSC Automatic Files #
+###################
+psfig.sty
+wsc.bst
+wsc.sty
+wscbib.tex
+wscpaperproc.cls
+wscsetup.sty
