@@ -441,82 +441,87 @@ The master problem is given by
 	& \x,\lambda \geq 0, \nonumber
 \end{align}
 where $T_j (\x,\lambda,\mu)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:lrlp_feas_constraint}), and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
-We next discuss these cuts in more detail.
+The proposed algorithm follows.
+For details on its derivation, see \cite{love2013likelihood}.
 
-\subsection{Objective Cuts}
+% \subsection{Objective Cuts}
 
-Let $(\xh,\lh,\mh)$ be the candidate solution from the master problem (\ref{eq:master_problem}).
-An objective cut can be computed by solving the SLP-2 subproblems $h^\dagger_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the LRLP-2 subproblems as
-\begin{align*}
-	\dfrac{\partial h_\omega}{\partial \x}(\xh,\lh,\mh) & = \left(\dfrac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega \\
-	\dfrac{\partial h_\omega}{\partial \lambda}(\xh,\lh,\mh) & = N + N\log\lh - N \log(\mh - h^\dagger_\omega(\xh)) \\
-	\dfrac{\partial h_\omega}{\partial \mu}(\xh,\lh,\mh) & = \dfrac{-N\lh}{\mh - h^\dagger_\omega(\xh)}
-\end{align*}
-Recall that $h^\dagger_\omega(\x) = \min_{y^\omega \geq 0} \{\q^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
-The cuts are then given by
-\begin{align*}
-	T_j^\omega & = 
-	\left( \begin{array}{ccc}
-		\left(\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega, 
-			 & N + N\log\lh - N\log(\mh - h^\dagger_\omega(\xh)), 
-			 & -\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}
-	\end{array} \right) \\
-	t_j^\omega & = \frac{N \lh h^\dagger_\omega(\xh) - N \lh \pi^{*,\omega}B\xh}{\mh - h^\dagger_\omega(\xh)}.
-\end{align*}
+% Let $(\xh,\lh,\mh)$ be the candidate solution from the master problem (\ref{eq:master_problem}).
+% An objective cut can be computed by solving the SLP-2 subproblems $h^\dagger_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the LRLP-2 subproblems as
+% \begin{align*}
+% 	\dfrac{\partial h_\omega}{\partial \x}(\xh,\lh,\mh) & = \left(\dfrac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega \\
+% 	\dfrac{\partial h_\omega}{\partial \lambda}(\xh,\lh,\mh) & = N + N\log\lh - N \log(\mh - h^\dagger_\omega(\xh)) \\
+% 	\dfrac{\partial h_\omega}{\partial \mu}(\xh,\lh,\mh) & = \dfrac{-N\lh}{\mh - h^\dagger_\omega(\xh)}
+% \end{align*}
+% Recall that $h^\dagger_\omega(\x) = \min_{y^\omega \geq 0} \{\q^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
+% The cuts are then given by
+% \begin{align*}
+% 	T_j^\omega & = 
+% 	\left( \begin{array}{ccc}
+% 		\left(\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega, 
+% 			 & N + N\log\lh - N\log(\mh - h^\dagger_\omega(\xh)), 
+% 			 & -\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}
+% 	\end{array} \right) \\
+% 	t_j^\omega & = \frac{N \lh h^\dagger_\omega(\xh) - N \lh \pi^{*,\omega}B\xh}{\mh - h^\dagger_\omega(\xh)}.
+% \end{align*}
 
-For the single-cut master problem proposed, $T_j = \sum_\omega \frac{N_\omega}{N} T_j^\omega$ and $t_j = \sum_\omega \frac{N_\omega}{N} t_j^\omega$.
+% For the single-cut master problem proposed, $T_j = \sum_\omega \frac{N_\omega}{N} T_j^\omega$ and $t_j = \sum_\omega \frac{N_\omega}{N} t_j^\omega$.
 
-\subsection{Feasibility Cuts}
-After the subproblems $h^\dagger_\omega(\xh)$ are solved, it may be the case that $\mh - h^\dagger_\omega(\xh) < 0$ for some $\omega$, rendering $\mh$ infeasible.
-This is corrected using the feasibility problem
-\begin{align*}
-	U_\omega(\x,\mu) = \min_{y_\omega,z \geq 0} \ & z \\
-	\st \ & z + \mu - \q^\omega y^\omega \geq 0 \\
-	& D^\omega y^\omega = \d^\omega + B^\omega \x,
-\end{align*}
-which is solved by $z^* = h^\dagger_\omega(\x) - \mu$.
-The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$ and $\frac{\partial z^*}{\partial \mu} = -1$.
-Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
-\begin{align*}
-	U_\omega(\x,\mu) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) + h^\dagger_\omega(\xh) - \mh,
-\end{align*}
-and setting $U_\omega(\x,\mu) = 0$ to find a feasible solution gives the feasibility cut
-\[
-	\mu \geq \pi^{*,\omega}B^\omega \x + (h^\dagger_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
-\]
+% \subsection{Feasibility Cuts}
+% After the subproblems $h^\dagger_\omega(\xh)$ are solved, it may be the case that $\mh - h^\dagger_\omega(\xh) < 0$ for some $\omega$, rendering $\mh$ infeasible.
+% This is corrected using the feasibility problem
+% \begin{align*}
+% 	U_\omega(\x,\mu) = \min_{y_\omega,z \geq 0} \ & z \\
+% 	\st \ & z + \mu - \q^\omega y^\omega \geq 0 \\
+% 	& D^\omega y^\omega = \d^\omega + B^\omega \x,
+% \end{align*}
+% which is solved by $z^* = h^\dagger_\omega(\x) - \mu$.
+% The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$ and $\frac{\partial z^*}{\partial \mu} = -1$.
+% Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
+% \begin{align*}
+% 	U_\omega(\x,\mu) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) + h^\dagger_\omega(\xh) - \mh,
+% \end{align*}
+% and setting $U_\omega(\x,\mu) = 0$ to find a feasible solution gives the feasibility cut
+% \[
+% 	\mu \geq \pi^{*,\omega}B^\omega \x + (h^\dagger_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
+% \]
 
-Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
-This can be done quickly by minimizing the objective function of (\ref{eq:lrlp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$.
-We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h^\dagger_\omega(\xh)} = 1$ with Newton's method.
+% Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
+% This can be done quickly by minimizing the objective function of (\ref{eq:lrlp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$.
+% We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h^\dagger_\omega(\xh)} = 1$ with Newton's method.
 
-\subsection{Decomposition Algorithm}
+% \subsection{Decomposition Algorithm}
 
-We solve the LRLP-2 with the following decomposition algorithm with tolerance level $\texttt{TOL}$
+% We solve the LRLP-2 with the following decomposition algorithm with tolerance level $\texttt{TOL}$
 
-\begin{algorithmic}
-	\State Initialize $z_l = -\infty, z_u = \infty$
-	\State Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$
-	\State Solve all second stage scenarios $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
-	\State Initialize $\lambda \gets 1$, $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
-	\State Generate initial objective cut
-	\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
-		\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
-		\State Solve sub-problems $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
-		\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu)$
-		\If{$\mu < \max_\omega h^\dagger_\omega(\x)$}
-			\State Generate feasibility cut
-			\State Find $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
-		\Else
-			\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
-		\EndIf
-		\State Generate objective cut
-		\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
-			\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
-			\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
-			\State $p_\omega \gets \frac{\lambda_\text{best} N_\omega}{\mu_\text{best} - h^\dagger_\omega(\x_\text{best})}$ for $i = 1, \dots, n$
-		\EndIf
-	\EndWhile
-\end{algorithmic}
+% \begin{figure}
+	\begin{algorithmic}
+		\State Initialize $z_l = -\infty, z_u = \infty$
+		\State Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$
+		\State Solve all second stage scenarios $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
+		\State Initialize $\lambda \gets 1$, $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
+		\State Generate initial objective cut
+		\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
+			\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
+			\State Solve sub-problems $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
+			\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu)$
+			\If{$\mu < \max_\omega h^\dagger_\omega(\x)$}
+				\State Generate feasibility cut
+				\State Find $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
+			\Else
+				\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
+			\EndIf
+			\State Generate objective cut
+			\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
+				\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
+				\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
+				\State $p_\omega \gets \frac{\lambda_\text{best} N_\omega}{\mu_\text{best} - h^\dagger_\omega(\x_\text{best})}$ for $i = 1, \dots, n$
+			\EndIf
+		\EndWhile
+	\end{algorithmic}
+% 	\caption{Proposed Bender's Decomposition algorithm for solving LRLP-2}
+% 	\label{fig:algorithm}
+% \end{figure}
 
 \subsection{Computational Enhancements}
 
