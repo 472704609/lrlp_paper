@@ -330,9 +330,7 @@ This probability can be estimated by Monte Carlo sampling.
 
 With a data driven formulation such as LRLP-2, it is natural to ask how the behavior changes as more data is gathered.
 In particular, for robust formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
-For instance, for our water application, initial estimates might show that water demand would be high or low with approximately equal probabilities. 
-Based on new data, later studies could give low demand an increased weight.  
-For LRLP-2, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information will make the model less conservative because low water demand results in lower costs and our belief is increased that the future demand will be low.  
+For LRLP-2, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst case distribution from the ambiguity set.  
 In this section, we present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
 
 \begin{proposition}
@@ -377,14 +375,14 @@ A proof of this proposition was given in \cite{love2013likelihood}.
 We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
 This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt}.
 
-Finally, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
+Next, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
 Let $L = \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
 That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in LRLP-2.
 
 \begin{proposition}
 	An approximate lower bound on the probability of selecting a scenario in the set $L= \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$ can be found by solving 
 	\begin{equation} \label{eq:prob_cost_decrease}
-		-\min_{\mu \geq 0,\lambda \geq 0} \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu,
+		-\min_{\mu \geq 0,\lambda \geq 0} \left\{ \mu + \bar{N}\lambda + N\lambda\log\lambda - \lambda N_L \log(\mu + 1) - \lambda (N-N_L) \log\mu \right\},
 	\end{equation}
 	where $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$.
 \end{proposition}
@@ -464,7 +462,7 @@ Let $\Xi' \subset \Xi$ be a measure 1 set such that $\hat{p}^N_\omega(\xi) \righ
 	\]
 	and use the fact that each term in parentheses $\phi(t) = -\log t + t - 1$ is convex, non-negative for $t \geq 0$, and $\phi(1) = 0$.
 	
-	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\max_\omega |p_\omega - \hat{p}^N_\omega| > \frac{\epsilon}{2} \Rightarrow D_{KL}(\hat{p}^N,p) > \frac{1}{N'} \log\left(\frac{1}{\gamma'}\right)$.
+	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - \hat{p}^N_\omega| > \frac{\epsilon}{2} \Rightarrow D_{KL}(\hat{p}^N,p) > \frac{1}{N} \log\left(\frac{1}{\gamma'}\right)$.
 	First, bound the KL divergence by
 	\begin{align*}
 		D_{KL}(\hat{p}^N,p) & = \sum_{\omega=1}^n \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \\
@@ -591,8 +589,8 @@ In order to enhance the performance of the above decomposition-based algorithm, 
 First, we included an $L_\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
 The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
 
-Because we are also interested in the worst-case LRO probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_\omega \right| < \texttt{TOL2}$ when the algorithm is completed.
-This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
+% Because we are also interested in the worst-case LRO probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_\omega \right| < \texttt{TOL2}$ when the algorithm is completed.
+% This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Application and Computational Results} \label{sec:comp_results}
@@ -655,7 +653,7 @@ Each scenario is assumed to have five observations.
 The high population scenarios are more costly as the system needs to meet demand or pay for unmet demand.
 The low population scenarios, on the other hand, are not as costly. 
 % The supply variability seems to have a nominal effect.
-We applied the decomposition-based solution algorithm presented in Section \ref{sec:soln_algorithm} to solve this model and selected tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
+We applied the decomposition-based solution algorithm presented in Section \ref{sec:soln_algorithm} to solve this model.% and selected tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
 
 \subsection{Computational Results}
 
@@ -714,7 +712,7 @@ We have also provided a Bender's decomposition-based solution algorithm for the 
 
 Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
 In addition to more varied estimates for future population, we will integrate climate change predictions into the model to generate scenarios for future water supply from the Colorado River. 
-This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner. On the methodological side, we plan to provide guidelines on selecting the robustness parameter $\gamma'$ with respect to the sample size and investigate the asymptotic behavior of the model as the sample size increases. 
+This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner. On the methodological side, we plan to generalize our results to the more general $\phi$-divergence case of \cite{bental2011robust}.
 
 \section*{Acknowledgements}
 Support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
