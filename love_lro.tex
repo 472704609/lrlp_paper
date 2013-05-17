@@ -182,30 +182,30 @@ We apply the model to examine a long-term water allocation problem in the southe
 In practice, many optimization problems can be modeled by stochastic programs minimizing an expected value of an uncertain objective function.
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
 Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions, and optimizes the expected cost relative to the worst distribution in the uncertainty set.
-One approach to this has been recently proposed by Wang, Glen and Ye \cite{wang2010likelihood} is to use a set of distributions that are within a sufficiently high empirical likelihood for a given set of observations.
+One approach to this has been recently proposed by \citeN{wang2010likelihood} is to use a set of distributions that are within a sufficiently high empirical likelihood for a given set of observations.
 The result is called the Likelihood Robust Optimization (LRO) method.
 In this paper, we adapt and extend LRO to a more general two-stage stochastic linear program with recourse, and examine the properties of the resulting model.
 We then develop a simple condition for assessing the value of collecting extra data.
 Finally, we develop a modified Bender's Decomposition to solve the LRO and apply the above results to a water distribution planning problem.
 
 Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost \cite{dupacova_87}.
-Shapiro and Kleywegt \cite{shapiro2002minimax} and Shapiro and Ahmed \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
+\citeN{shapiro2002minimax} and \citeN{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
 
 Distributionally robust methods have been drawing considerable attention in recent years.
-Erdo{\u{g}}an and Iyengar \cite{erdogan2006ambiguous} studied chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
-Calafiore and Campi \cite{calafiore2005uncertain} developed a data-driven method for generating feasible solutions to chance constrained problems, and later Calafiore and El Ghaoui \cite{calafiore2006distributionally} developed a method for converting distributionally robust chance constraints into second-order cone constraints.
-Jiang and Guan \cite{jiang2012data} developed an exact approach to solving data-driven chance constrained programs.
-Delage and Ye \cite{delage_ye_10} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
-Ben-Tal \cite{bental2011robust} studies distributionally robust stochastic programs when the uncertainty region is defined by selecting distributions using a $\phi$-divergence.
-The method of Likelihood Robust Optimization proposed in \cite{wang2010likelihood} that we adapt in this paper is a special case of the $\phi$-divergence measures of \cite{bental2011robust}.
+\citeN{erdogan2006ambiguous} studied chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
+\citeN{calafiore2005uncertain} developed a data-driven method for generating feasible solutions to chance constrained problems, and later \citeN{calafiore2006distributionally} developed a method for converting distributionally robust chance constraints into second-order cone constraints.
+\citeN{jiang2012data} developed an exact approach to solving data-driven chance constrained programs.
+\citeN{delage_ye_10} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
+\shortciteN{bental2011robust} studies distributionally robust stochastic programs when the uncertainty region is defined by selecting distributions using a $\phi$-divergence.
+The method of Likelihood Robust Optimization proposed in \citeN{wang2010likelihood} that we adapt in this paper is a special case of the $\phi$-divergence measures of \shortciteN{bental2011robust}.
 
 The LRO is an attractive approach because the uncertainty set of distributions is determined by the Kullback-Leibler divergence from a ``nominal'' distribution.
 Furthermore, only those scenarios of interest are used directly in the calculations.
 These scenarios can come from direct observation, results of simulation, from expert opinion regarding scenarios that the decision maker would especially like to be robust against.
 Because the LRO depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
 
-We apply LRO to a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
-Other models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
+We apply LRO to a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by \shortciteN{draper_etal_03}.
+Other models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \shortcite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
 
 This paper is organized as follows: Section \ref{sec:lrlp2} presents the extension of LRO model to a two-stage stochastic program with recourse.
 Section \ref{sec:properties} describes basic properties of LRO;
@@ -270,7 +270,7 @@ The resulting minimax formulation of LRLP-2 is
 	& \x \geq 0 \nonumber \\
 	& y^\omega, p_\omega \geq 0,\ \forall \omega. \label{eq:nonneg}
 \end{align}
-Following Wang et al.\ \cite{wang2010likelihood}, we have introduced the {\it likelihood parameter} $\gamma$, and used it to construct the ambiguity set of distributions $\{p_\omega\}_{\omega=1}^{n}$ satisfying constraints (\ref{eq:lrlp_primal_liklihood}), (\ref{eq:lrlp_primal_probability}), and (\ref{eq:nonneg}).
+Following \citeN{wang2010likelihood}, we have introduced the {\it likelihood parameter} $\gamma$, and used it to construct the ambiguity set of distributions $\{p_\omega\}_{\omega=1}^{n}$ satisfying constraints (\ref{eq:lrlp_primal_liklihood}), (\ref{eq:lrlp_primal_probability}), and (\ref{eq:nonneg}).
 Note the likelihood constraint \eqref{eq:lrlp_primal_liklihood} is equivalent to $\prod_{\omega=1}^n p_\omega^{N_\omega} \geq e^\gamma$, which explicitly states that the empirical likelihood should be above a certain desired level dictated by $e^\gamma$. 
 Constraint \eqref{eq:lrlp_primal_probability}, along with nonnegativity constraints on $p_\omega$ given in (\ref{eq:nonneg}), simply ensure that $\{p_\omega\}_{\omega=1}^{n}$ constitutes a probability distribution. 
 Let $0 \leq \gamma' \leq 1$ be the \emph{relative likelihood parameter} that expresses $\gamma$ as a {\it proportion} of the maximum likelihood; i.e., $\gamma = \log( \gamma' \prod_\omega (\tfrac{N_\omega}{N})^{N_\omega})$.
@@ -317,11 +317,11 @@ where
 \label{sec:properties}
 
 In this section, we list some basic properties of LRLP-2.
-Most of these have already been noted in \cite{wang2010likelihood} and \cite{bental2011robust}, but we list them for completeness and some of these properties help with our special solution method.
+Most of these have already been noted in \citeN{wang2010likelihood} and \shortciteN{bental2011robust}, but we list them for completeness and some of these properties help with our special solution method.
 
 \subsection{Coherent Risk Measure}
-As noted in \cite{wang2010likelihood}, the LRLP-2 problem can be viewed as minimizing a coherent risk measure.
-A coherent risk measure (in the basic sense), as defined in \cite{rockafellar2007coherent}, is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that
+As noted in \citeN{wang2010likelihood}, the LRLP-2 problem can be viewed as minimizing a coherent risk measure.
+A coherent risk measure (in the basic sense), as defined in \citeN{rockafellar2007coherent}, is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that
 \begin{enumerate}
 	\item ${\cal R}(C) = C$ for all constants $C$,
 	\item ${\cal R}((1-\lambda)X + \lambda X') \leq (1-\lambda){\cal R}(X) + \lambda {\cal R}(X')$, i.e., $\cal R$ is convex,
@@ -346,7 +346,7 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 \end{proof}
 
 Note that being a coherent risk measure implies that LRLP-2 is a convex problem.
-The convexity of LRO was also noted in \cite{wang2010likelihood}.
+The convexity of LRO was also noted in \citeN{wang2010likelihood}.
 
 \subsection{Time Structure}
 LRLP-2 has the same second-stage problems as SLP-2.
@@ -361,7 +361,7 @@ Since LRLP-2 is a convex optimization problem, the KKT conditions for (\ref{eq:l
 \begin{equation}
 	p_\omega = \frac{\lambda N_\omega}{\mu - h^\dagger_\omega(\x)}. \label{eq:kkt}
 \end{equation}
-This is essentially the same condition identified in \cite{wang2010likelihood} for the newsvendor problem but for the more general case we consider here.
+This is essentially the same condition identified in \citeN{wang2010likelihood} for the newsvendor problem but for the more general case we consider here.
 
 \subsection{Relation to KL Divergence}
 The likelihood (\ref{eq:lrlp_primal_liklihood}) and relative likelihood (\ref{eq:lrlp_rel_likelihood_constraint}) constraints can be written in the form of a Kullback-Leibler divergence condition, i.e., (\ref{eq:lrlp_primal_liklihood}) can be rewritten as
@@ -376,15 +376,15 @@ So the LRO constraint (\ref{eq:lrlp_primal_liklihood}) essentially restricts the
 \label{sec:robust_level}
 
 We have introduced the relative likelihood parameter $\gamma'$, but have not yet made any recommendations on how to choose it.
-Remark 3.1 of \cite{pardo2005statistical} shows that $2ND_{KL}(\hat{p}^N, \ptrue) \Rightarrow \chi^2_{n-1}$, where $\ptrue$ is the true distribution from which the empirical distribution $\hat{p}^N$ is sampled, $\Rightarrow$ indicates convergence in distribution, and $\chi^2_{n-1}$ is a $\chi^2$ distribution with $n-1$ degrees of freedom.
+Remark 3.1 of \citeN{pardo2005statistical} shows that $2ND_{KL}(\hat{p}^N, \ptrue) \Rightarrow \chi^2_{n-1}$, where $\ptrue$ is the true distribution from which the empirical distribution $\hat{p}^N$ is sampled, $\Rightarrow$ indicates convergence in distribution, and $\chi^2_{n-1}$ is a $\chi^2$ distribution with $n-1$ degrees of freedom.
 Thus, to choose $\gamma'$ to generate a $100(1-\alpha)\%$ confidence region on the true distribution, select the asymptotic value
 \begin{equation} \label{eq:asymptotic_gamma}
 	\gamma' = \exp \left( -\frac{\chi^2_{n-1,1-\alpha}}{2} \right).
 \end{equation}
 Note that $\gamma'$ constant asymptotically produces constant-size confidence regions.
 
-Wang et. al. \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:lrlp_primal_liklihood}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
-Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}^N_\omega = \frac{N_\omega}{N}$ as fixed, Wang et. al. \cite{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
+\citeN{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:lrlp_primal_liklihood}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
+Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}^N_\omega = \frac{N_\omega}{N}$ as fixed, \citeN{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
 This is the Dirichlet distribution $Dir(\beta)$, which has density
 \[
 	\frac{1}{B(\beta)} \prod_{\omega=1}^n p_\omega^{\beta_\omega-1}
@@ -429,7 +429,7 @@ In this section, we present a simple method of estimating the probability that t
 	where $p_{\hat{\omega}}$ is the probability of scenario $\hat{\omega}$ in the worst-case distribution.
 \end{proposition}
 
-A proof of this proposition was given in \cite{love2013likelihood}.
+A proof of this proposition was given in \citeN{love2013likelihood}.
 
 % \begin{proof}
 % 	Consider again the deterministic equivalent formulation of LRLP-2 in (\ref{eq:lrlp_det_equiv}).
@@ -475,7 +475,7 @@ That is, $L$ gives the set of scenarios that, if sampled one more observation, w
 	where $N_L = \sum_{\omega \in L} N_\omega$ be the number of observations in set $L$.
 \end{proposition}
 
-Please see \cite{love2013likelihood} for a proof.
+Please see \citeN{love2013likelihood} for a proof.
 
 % \begin{proof}
 % 	We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
@@ -569,7 +569,7 @@ In the next theorem, we establish the proof that the optimal value and solution 
 \end{theorem}
 
 \begin{proof}
-	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:lrlp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ and lower semicontinuous and locally lower Lipschitz with respect to $x$.
+	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \citeN{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:lrlp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ and lower semicontinuous and locally lower Lipschitz with respect to $x$.
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -590,7 +590,7 @@ The master problem is given by
 \end{align}
 where $T_j (\x,\lambda,\mu)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:lrlp_feas_constraint}), and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
 The proposed algorithm follows.
-For details on its derivation, see \cite{love2013likelihood}.
+For details on its derivation, see \citeN{love2013likelihood}.
 
 % \subsection{Objective Cuts}
 
@@ -691,7 +691,7 @@ The nodes represent available water supply from the Colorado River, water treatm
 The arcs represent the conveyance system (pipes, etc.) that carry water between the nodes. 
 Water can be stored in between time periods in reservoirs to meet future demands. 
 The model aims to find the minimal cost water flows considering energy, treatment, storage, and transportation costs over the planning period. 
-Generalized network water allocation models have been used to find water allocations and delivery reliabilities and to assess values of different water use operations; see, e.g., \cite{draper_etal_03}. 
+Generalized network water allocation models have been used to find water allocations and delivery reliabilities and to assess values of different water use operations; see, e.g., \shortciteN{draper_etal_03}. 
 
 Water flows on arc $(i,j) \in A$ during time period $t = 1, \dots, P$ are represented by decisions $x_{ijt}$.
 Each arc $(i,j) \in A$ and time period $t$ has a unit cost $c_{ijt}^x$, loss coefficient $0 \leq a_{ijt} \leq 1$ to account for evaporation, leakage from the pipes, etc., and bounds on the flow $l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x$.
@@ -793,14 +793,14 @@ As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabiliti
 \section{CONCLUSION AND FUTURE WORK}
 \label{sec:concl}
 
-In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of Wang et al.\ \cite{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted LRLP-2.
+In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of \citeN{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted LRLP-2.
 The LRO models use the empirical likelihood function to define an ambiguity set of probability distributions using observed data and optimize the worst-case expected cost with respect to this likelihood ambiguity set.
 We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution. 
 We have also provided a Bender's decomposition-based solution algorithm for the LRLP-2 and applied this method to planning future water distribution in Tucson, Arizona.
 
 Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
 In addition to more varied estimates for future population, we will integrate climate change predictions into the model to generate scenarios for future water supply from the Colorado River. 
-This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner. On the methodological side, we plan to generalize our results to the more general $\phi$-divergence case of \cite{bental2011robust}.
+This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner. On the methodological side, we plan to generalize our results to the more general $\phi$-divergence case of \shortciteN{bental2011robust}.
 
 \section*{ACKNOWLEDGEMENTS}
 Support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
