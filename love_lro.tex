@@ -187,7 +187,7 @@ Note the likelihood constraint \eqref{eq:lrlp_primal_liklihood} is equivalent to
 Constraint \eqref{eq:lrlp_primal_probability}, along with nonnegativity constraints on $p_\omega$ given in (\ref{eq:nonneg}), simply ensure that $\{p_\omega\}_{\omega=1}^{n}$ constitutes a probability distribution. 
 Let $0 \leq \gamma' \leq 1$ be the \emph{relative likelihood parameter} that expresses $\gamma$ as a {\it proportion} of the maximum likelihood; i.e., $\gamma = \log( \gamma' \prod_\omega (\tfrac{N_\omega}{N})^{N_\omega})$.
 Using $\gamma'$, constraint (\ref{eq:lrlp_primal_liklihood}) can be rewritten as
-\begin{equation} \label{eq:lrlp:rel_likelihood_constraint}
+\begin{equation} \label{eq:lrlp_rel_likelihood_constraint}
 	\sum_{\omega=1}^n N_\omega \log\left( \frac{p_\omega}{N_\omega/N} \right) \geq \log \gamma'.
 \end{equation}
 
@@ -225,8 +225,11 @@ where
 \end{align}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Properties of LRLP-2}
+\section{Basic Properties of LRLP-2}
 \label{sec:properties}
+
+In this section, we list some basic properties of LRLP-2.
+Most of these have already been noted in \cite{wang2010likelihood} and \cite{bental2011robust}, but we list them for completeness and some of these properties help with our special solution method.
 
 \subsection{Coherent Risk Measure}
 As noted in \cite{wang2010likelihood}, the LRLP-2 problem can be viewed as minimizing a coherent risk measure.
@@ -262,21 +265,23 @@ LRLP-2 has the same second-stage problems as SLP-2.
 Since $\log$ is uniformly increasing, we can rewrite the second stage problem (\ref{eq:lrlp_second_stage}) as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
 Thus we can state the second stage of LRLP-2 in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h^\dagger_\omega(\x))\right]$.
 
-This preservation of the time structure allows us to easily convert (sub-)derivatives of $h^\dagger_\omega(\x)$ to (sub-)derivatives of $h_\omega(\x,\lambda,\mu)$.
+This preservation of the time structure allows us to easily convert \mbox{(sub-)derivatives} of $h^\dagger_\omega(\x)$ to \mbox{(sub-)derivatives} of $h_\omega(\x,\lambda,\mu)$.
 We will use this in the decomposition method provided in Section \ref{sec:soln_algorithm}.
 
 \subsection{KKT Conditions}
-As noted in \cite{wang2010likelihood}, the KKT conditions for (\ref{eq:lrlp_det_equiv}) give the relation between primal and dual variables
+Since LRLP-2 is a convex optimization problem, the KKT conditions for (\ref{eq:lrlp_det_equiv}) give the relation between primal and dual variables
 \begin{equation}
 	p_\omega = \frac{\lambda N_\omega}{\mu - h^\dagger_\omega(\x)}. \label{eq:kkt}
 \end{equation}
+This is essentially the same condition identified in \cite{wang2010likelihood} for the newsvendor problem but for the more general case we consider here.
 
 \subsection{Relation to KL Divergence}
-The likelihood condition (\ref{eq:lrlp_primal_liklihood}) can be written in the form of a Kullback-Leibler divergence condition, i.e., (\ref{eq:lrlp_primal_liklihood}) can be rewritten as
+The likelihood (\ref{eq:lrlp_primal_liklihood}) and relative likelihood (\ref{eq:lrlp_rel_likelihood_constraint}) constraints can be written in the form of a Kullback-Leibler divergence condition, i.e., (\ref{eq:lrlp_primal_liklihood}) can be rewritten as
 \[
 	\sum_{\omega=1}^n \frac{N_\omega}{N} \log\left( \frac{N_\omega/N}{p_\omega} \right) \leq \frac{1}{N} \log \frac{1}{\gamma'},
 \]
-where $\sum_{\omega=1}^n q_\omega \log \frac{q_\omega}{p_\omega}$ is the KL divergence of the distributions $D_{KL}(q,p)$.
+where $\sum_{\omega=1}^n q_\omega \log \frac{q_\omega}{p_\omega}$ is the KL divergence $D_{KL}(q,p)$ of distributions $p = \{p_\omega\}_{\omega=1}^n$ and $q = \{q_\omega\}_{\omega=1}^n$.
+So the LRO constraint (\ref{eq:lrlp_primal_liklihood}) essentially restricts the set of distributions to be sufficiently close to the empirical distribution in terms of the KL divergence.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Level of Robustness}
