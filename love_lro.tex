@@ -589,7 +589,7 @@ The master problem is given by
 	& \x,\lambda \geq 0, \nonumber
 \end{align}
 where $T_j (\x,\lambda,\mu)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:lrlp_feas_constraint}), and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
-The proposed algorithm follows.
+The proposed algorithm is shown in Figure \ref{fig:algorithm}.
 For details on its derivation, see \citeN{love2013likelihood}.
 
 % \subsection{Objective Cuts}
@@ -642,7 +642,7 @@ For details on its derivation, see \citeN{love2013likelihood}.
 
 % We solve the LRLP-2 with the following decomposition algorithm with tolerance level $\texttt{TOL}$
 
-% \begin{figure}
+\begin{figure}
 	\begin{algorithmic}
 		\State Initialize $z_l = -\infty, z_u = \infty$
 		\State Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$
@@ -667,9 +667,9 @@ For details on its derivation, see \citeN{love2013likelihood}.
 			\EndIf
 		\EndWhile
 	\end{algorithmic}
-% 	\caption{Proposed Bender's Decomposition algorithm for solving LRLP-2}
-% 	\label{fig:algorithm}
-% \end{figure}
+	\caption{Proposed Bender's Decomposition algorithm for solving LRLP-2}
+	\label{fig:algorithm}
+\end{figure}
 
 \subsection{Computational Enhancements}
 
