@@ -289,13 +289,13 @@ So the LRO constraint (\ref{eq:lrlp_primal_liklihood}) essentially restricts the
 
 We have introduced the relative likelihood parameter $\gamma'$, but have not yet made any recommendations on how to choose it.
 Remark 3.1 of \cite{pardo2005statistical} shows that $2ND_{KL}(\hat{p}^N, \ptrue) \Rightarrow \chi^2_{n-1}$, where $\ptrue$ is the true distribution from which the empirical distribution $\hat{p}^N$ is sampled, $\Rightarrow$ indicates convergence in distribution, and $\chi^2_{n-1}$ is a $\chi^2$ distribution with $n-1$ degrees of freedom.
-Thus, if we want to choose $\gamma'$ to generate a $100(1-\alpha)\%$ confidence region on the true distribution, select the asymptotic value
+Thus, to choose $\gamma'$ to generate a $100(1-\alpha)\%$ confidence region on the true distribution, select the asymptotic value
 \begin{equation} \label{eq:asymptotic_gamma}
 	\gamma' = \exp \left( -\frac{\chi^2_{n-1,1-\alpha}}{2} \right).
 \end{equation}
 Note that $\gamma'$ constant asymptotically produces constant-size confidence regions.
 
-Wang et. al. \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:lrlp_primal_liklihood}) which yields a Monte Carlo method of establishing a value for $\gamma'$.
+Wang et. al. \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:lrlp_primal_liklihood}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
 Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}^N_\omega = \frac{N_\omega}{N}$ as fixed, Wang et. al. \cite{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
 This is the Dirichlet distribution $Dir(\beta)$, which has density
 \[
