@@ -132,26 +132,29 @@ Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 \section{LRLP-2 Formulation}
 \label{sec:lrlp2}
 
-We begin with a two-stage stochastic linear program with recourse (SLP-2), formulated as
+We begin with a two-stage stochastic linear program with recourse (SLP-2).
+Let $\x$ be a vector of of first stage decision variables with cost vector $\c$, constraint matrix $A$ and right hand side $\b$.
+We assume a finite distribution given by $p_\omega$ with scenarios indexed by $\omega = 1, \dots, n$.
+The SLP-2 is
 \begin{align}
-	\min_\x \ & \c\x + \sum_{\omega=1}^n p_\omega h^\dagger(\x) \label{eq:slp_first_stage} \\
-	\st \ & A\x = \b \nonumber  \\
-	&\ \ \ \x \geq 0 \nonumber
+	\min_\x \ & \left\{ \c\x + \sum_{\omega=1}^n p_\omega h^\dagger_\omega(\x) : A\X = b, \x \geq 0 \right\} \label{eq:slp_first_stage}% \\
+% 	\st \ & A\x = \b \nonumber  \\
+% 	&\ \ \ \x \geq 0 \nonumber
 \end{align}
 where
 \begin{align}
-	h^\dagger_\omega(\x) = \min_{y^\omega} \ & \q^\omega y^\omega \label{eq:slp_second_stage} \\
-	\st \ & D^\omega y^\omega = B^\omega \x + \d^\omega \nonumber \\
-	& \ \ \ y^\omega \geq 0. \nonumber
+	h^\dagger_\omega(\x) = \min_{y^\omega} \ & \left\{ \q^\omega y^\omega : D^\omega y^\omega = B^\omega \x + \d^\omega, y^\omega \geq 0 \right\} \label{eq:slp_second_stage}% \\
+% 	\st \ & D^\omega y^\omega = B^\omega \x + \d^\omega \nonumber \\
+% 	& \ \ \ y^\omega \geq 0. \nonumber
 \end{align}
-For simplicity we assume relatively complete recourse; i.e., the second-stage problems $h^\dagger_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem.
+We assume relatively complete recourse; i.e., the second-stage problems $h^\dagger_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem.
 
-The SLP-2 formulation assumes that the distribution $\{p_\omega\}$ is known.
+The SLP-2 formulation assumes that the distribution $\{p_\omega\}_{\omega=1}^n$ is known.
 However, in many applications, including our water planning, the distribution is itself unknown.
 One technique to deal with this is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions which is believed to contain the true distribution.
 In the likelihood robust formulation, we assume scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations. 
-In SLP-2, this would correspond to probability of scenario $\omega$ to be $p_\omega = N_\omega / N$, which is the maximum likelihood distribution. 
-The {\it ambiguity set}, however, is defined by the set of distributions with sufficiently high empirical likelihood $\prod_{\omega=1}^n p_\omega^{N_\omega}$. 
+In SLP-2, this would correspond to probability of scenario $\omega$ to be $\hat{p}^N_\omega = N_\omega / N$, which is the maximum likelihood distribution. 
+The ambiguity set, however, is defined by the set of distributions with sufficiently high empirical likelihood $\prod_{\omega=1}^n p_\omega^{N_\omega}$. 
 By replacing the specific distribution in SLP-2 with a set of distributions with  high empirical likelihood, we create a model that we refer to as two-stage likelihood robust linear program with recourse (LRLP-2).
 
 To derive the LRLP-2, we begin by writing SLP-2 given in \eqref{eq:slp_first_stage}--\eqref{eq:slp_second_stage} in extensive form
@@ -172,19 +175,21 @@ Then, the objective function is minimized with respect to this worst-case distri
 The resulting minimax formulation of LRLP-2 is
 \begin{align}
 	\min_{\x,y^\omega} \max_p \ & \c\x + \sum_\omega p_\omega \q^\omega y^\omega \label{eq:lrlp_primal}\\
-	\st \ & A\x = \b \nonumber \\
+	\st \ & A\x = \b, \x \geq 0 \nonumber \\
 	& -B^\omega \x + D^\omega y^\omega = \d^\omega,\ \forall \omega \nonumber \\
-	& \sum_\omega N_\omega \log p_\omega \geq \gamma & (\lambda) \label{eq:lrlp_primal_liklihood} \\
-	& \sum_\omega p_\omega = 1 & (\mu) \label{eq:lrlp_primal_probability} \\
+	& \sum_\omega N_\omega \log p_\omega \geq \gamma \label{eq:lrlp_primal_liklihood} \\
+	& \sum_\omega p_\omega = 1 \label{eq:lrlp_primal_probability} \\
 	& \x \geq 0 \nonumber \\
-	& y^\omega, p_\omega \geq 0,\ \forall \omega. \nonumber
+	& y^\omega, p_\omega \geq 0,\ \forall \omega. \label{eq:nonneg}
 \end{align}
-Following Wang et al.\ \cite{wang2010likelihood}, we have introduced the likelihood parameter $\gamma$, and used it to construct the ambiguity set of distributions $\{p_\omega\}$ satisfying constraints (\ref{eq:lrlp_primal_liklihood}) and (\ref{eq:lrlp_primal_probability}).
-Note the likelihood constraint \eqref{eq:lrlp_primal_liklihood} is equivalent to $\prod_{\omega=1}^n p_\omega^{N_\omega} \geq e^\gamma$, which explicitly states that the empirical likelihood should be above a certain desired level dictated by $\gamma$. 
-Constraint \eqref{eq:lrlp_primal_probability}, along with nonnegativity constraints on $p_\omega$, simply ensures that $\{p_\omega\}$ constitutes a probability distribution. 
+Following Wang et al.\ \cite{wang2010likelihood}, we have introduced the {\it likelihood parameter} $\gamma$, and used it to construct the ambiguity set of distributions $\{p_\omega\}_{\omega=1}^{n}$ satisfying constraints (\ref{eq:lrlp_primal_liklihood}), (\ref{eq:lrlp_primal_probability}), and (\ref{eq:nonneg}).
+Note the likelihood constraint \eqref{eq:lrlp_primal_liklihood} is equivalent to $\prod_{\omega=1}^n p_\omega^{N_\omega} \geq e^\gamma$, which explicitly states that the empirical likelihood should be above a certain desired level dictated by $e^\gamma$. 
+Constraint \eqref{eq:lrlp_primal_probability}, along with nonnegativity constraints on $p_\omega$ given in (\ref{eq:nonneg}), simply ensure that $\{p_\omega\}_{\omega=1}^{n}$ constitutes a probability distribution. 
 Let $0 \leq \gamma' \leq 1$ be the \emph{relative likelihood parameter} that expresses $\gamma$ as a {\it proportion} of the maximum likelihood; i.e., $\gamma = \log( \gamma' \prod_\omega (\tfrac{N_\omega}{N})^{N_\omega})$.
-In the rest of the paper, we will be referring to $\gamma'$. 
-
+Using $\gamma'$, constraint (\ref{eq:lrlp_primal_liklihood}) can be rewritten as
+\begin{equation} \label{eq:lrlp:rel_likelihood_constraint}
+	\sum_{\omega=1}^n N_\omega \log\left( \frac{p_\omega}{N_\omega/N} \right) \geq \log \gamma'.
+\end{equation}
 
 Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:lrlp_primal_liklihood}) and (\ref{eq:lrlp_primal_probability}), respectively, yields
 \begin{align*}
