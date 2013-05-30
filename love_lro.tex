@@ -198,10 +198,14 @@ In recent years, there has been a growing interest in distributionally robust me
 \citeN{delage_ye_10} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
 \shortciteN{bental2011robust} studies distributionally robust stochastic programs when the uncertainty region is defined by selecting distributions using a $\phi$-divergence.
 
-The method of Likelihood Robust Optimization proposed in \citeN{wang2010likelihood} that we adapt in this paper is a special case of the $\phi$-divergence measures of \shortciteN{bental2011robust}. 
-In particular, it defines the uncertainty set of distributions by the Kullback-Leibler (KL) divergence (a special case of $\phi$-divergence) from a ``nominal'' distribution. 
-The recent work of \citeN{huhong2013} studies such problems with ambiguous uncertainty either in the objective or the constraints where uncertainty sets defined by KL-divergence.  
+The method of Likelihood Robust Optimization proposed in \citeN{wang2010likelihood} that we adapt in this paper is a special case of the $\phi$-divergence measures of \shortciteN{bental2011robust}.
+In particular, it defines the uncertainty set of distributions by the Kullback-Leibler (KL) divergence (a special case of $\phi$-divergence) from a ``nominal'' distribution.
 The contributions of our work are that it provides (i) a simple condition to determine if an additional observation will change the worst-case distribution used in the optimal solution, (ii) asymptotic analysis to discuss conditions under which the optimal value and solution set LRLP-2 will converge to the two-stage stochastic program with recourse under the true distribution, (iii) a specialized decomposition-based algorithm to solve the resulting model,  and (iv) application to water allocation problem under ambiguous uncertainty. 
+
+The recent work of \citeN{huhong2013} studies similar problems with ambiguous uncertainty either in the objective or the constraints where the uncertainty sets are defined by KL-divergence.
+\citeN{huhong2013} differs from this work by considering a continuous distributions, and doesn't relate the nominal distribution to observational data.
+They produce a similar dual problem using the nominal distribution, which differs from this work by making use of the moment generating function.
+Our results also provide one quantification of the value of additional data, and apply the LRO method specifically to a two stage problem, and to water allocation.
 
 The LRO is an attractive data-driven approach because it uses the data directly.
 Furthermore, only those data points or scenarios of interest are used directly in the calculations.
