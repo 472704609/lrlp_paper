@@ -163,7 +163,7 @@ Columbus, OH 43210, USA\\
 \maketitle
 
 \section*{ABSTRACT}
-We adapt and extend the likelihood robust optimization method recently proposed by Wang, Glynn, and Ye for newsvendor problem to a more general two-stage setting.
+We adapt and extend the likelihood robust optimization method recently proposed by Wang, Glynn, and Ye for the newsvendor problem to a more general two-stage setting.
 We examine the value of collecting additional data and the cost of finding a solution robust to an ambiguous probability distribution.
 A decomposition-based solution algorithm to solve the resulting model is given.
 We apply the model to examine a long-term water allocation problem in the southeast area of Tucson, AZ under ambiguous distribution of future available supply and demand and present computational results.
@@ -188,7 +188,8 @@ In this paper, we adapt and extend LRO to a more general setting of two-stage st
 We examine the properties of the resulting model and develop a simple condition for assessing the value of collecting extra data.
 Finally, we present a modified Bender's Decomposition to solve the LRO and apply the above results to a water distribution planning problem.
 
-LRLP-2 is an ambiguous stochastic program that is modeled a two-stage minimax problem. Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{dupacova_87}.
+LRLP-2 is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
+Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{dupacova_87}.
 \citeN{shapiro2002minimax} and \citeN{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
 
 In recent years, there has been a growing interest in distributionally robust methods.
@@ -202,13 +203,12 @@ The method of Likelihood Robust Optimization proposed in \citeN{wang2010likeliho
 In particular, it defines the uncertainty set of distributions by the Kullback-Leibler (KL) divergence (a special case of $\phi$-divergence) from a ``nominal'' distribution.
 The contributions of our work are that it provides (i) a simple condition to determine if an additional observation will change the worst-case distribution used in the optimal solution, (ii) asymptotic analysis to discuss conditions under which the optimal value and solution set LRLP-2 will converge to the two-stage stochastic program with recourse under the true distribution, (iii) a specialized decomposition-based algorithm to solve the resulting model,  and (iv) application to water allocation problem under ambiguous uncertainty. 
 
-The recent work of \citeN{huhong2013} studies similar problems with ambiguous uncertainty either in the objective or the constraints where the uncertainty sets are defined by KL-divergence.
+The recent work of \citeN{huhong2013} studies similar problems with ambiguous uncertainty either in the objective or the constraints where the uncertainty sets are defined by the KL-divergence.
 \citeN{huhong2013} differs from this work by considering a continuous distributions, and doesn't relate the nominal distribution to observational data.
 They produce a similar dual problem using the nominal distribution, which differs from this work by making use of the moment generating function.
 Our results also provide one quantification of the value of additional data, and apply the LRO method specifically to a two stage problem, and to water allocation.
 
-The LRO is an attractive data-driven approach because it uses the data directly.
-Furthermore, only those data points or scenarios of interest are used directly in the calculations.
+The LRO is an attractive data-driven approach because it uses the data directly; and only those data points or scenarios of interest are used in the calculations.
 These scenarios can come from direct observation, results of simulation, from expert opinion regarding scenarios that the decision maker would especially like to be robust against.
 Because the LRO depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
 
@@ -335,7 +335,7 @@ A coherent risk measure (in the basic sense), as defined in \citeN{rockafellar20
 	\item ${\cal R}((1-\lambda)X + \lambda X') \leq (1-\lambda){\cal R}(X) + \lambda {\cal R}(X')$, i.e., $\cal R$ is convex,
 	\item ${\cal R}(X) \leq {\cal R}(X')$ when $X \leq X'$, i.e., $\cal R$ is monotonic,
 	\item  ${\cal R}(X) \leq 0$ when $||X^k - X||_2 \rightarrow 0$ with ${\cal R}(X^k) \leq 0$, i.e., $\cal R$ is closed, 
-	\item ${\cal R}(\lambda X) = \lambda {\cal R}(X)$, i.e., $\cal R$ is positively homogeneous.
+	\item ${\cal R}(\lambda X) = \lambda {\cal R}(X)$ for $\lambda > 0$, i.e., $\cal R$ is positively homogeneous.
 \end{enumerate}
 
 \begin{proposition}\label{prop:coherent}
@@ -390,7 +390,7 @@ Thus, to choose $\gamma'$ to generate a $100(1-\alpha)\%$ confidence region on t
 \begin{equation} \label{eq:asymptotic_gamma}
 	\gamma' = \exp \left( -\frac{\chi^2_{n-1,1-\alpha}}{2} \right).
 \end{equation}
-Note that $\gamma'$ constant asymptotically produces constant-size confidence regions.
+Note that keeping $\gamma'$ constant asymptotically produces constant-size confidence regions.
 
 \citeN{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:lrlp_primal_liklihood}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
 Our computational test indicate that this Monte Carlo estimate converges to $\gamma'$ given in (\ref{eq:asymptotic_gamma}) as more data is collected. 
@@ -739,7 +739,6 @@ The deterministic model is a multi-period generalized network flow model.
 %	& l_{jt}^r \leq r_{jt} \leq u_{sjt}^r, \ \ \ \forall j,t.
 %\end{align*}
 The model is converted to a two-stage stochastic model with $P_1$ periods in the first stage and $P-P_1$ stages in the second stage.
-We assume that the supplies and demands are uncertain, as well as the bounds on the decision variables.
 \begin{align}
 	\min_{(x,s,r) \in L^1} \ & \sum_{(i,j) \in A} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n p_\omega h^\dagger_\omega(s) \label{eq:gen_network_two_stage} \\
 	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt},\ \ \ \ \forall j, 1 \leq t \leq P_1, \notag
@@ -750,6 +749,8 @@ where the second stage problems
 	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}^\omega, \ \ \ \ \forall j, P_1+1 \leq t \leq P, \notag
 \end{align}
 and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower and upper variable bounds.
+Note that we assume that the supplies and demands are uncertain, as well as the bounds on the decision variables.
+
 From this point on, 
 % In the rest of the paper, we simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows.
 in the first stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply/demand parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
