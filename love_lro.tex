@@ -328,77 +328,93 @@ The next (green) band has one $N_\omega = 0$, followed by red with two and cyan 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Classification of $\phi$-Divergences}
 
-I spent some time thinking about methods for choosing a $\phi$-divergence recently.
-Recall the $\phi$-divergence constraint, defined by
-\[
-	I_\phi(p,q) = \sum q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho,
-\]
-where $q$ is the central distribution defining the ambiguity region containing $p$.
+We present a classification of $\phi$-divergences into four types, resulting from an examination of the limiting behavior of $\phi(t)$ as $t \rightarrow 0$ and $t \rightarrow \infty$.
+Different classifications may be suitable to different problem types and desired qualities in the ambiguous model.
 
-To choose a value of $\rho$, we use the fact that
-\[
-	\frac{2N}{\phi''(1)} I_\phi(\ptrue,\hat{p}),
-\]
-has a $\chi^2$ distribution asymptotically, where $N$ is the number of samples, $\ptrue$ is the true distribution and $\hat{p}$ is the empirical distribution.
-However, if $\phi''(1) = 0$ or is undefined, there seems to be no known asymptotic method for choosing appropriate values of $\rho$.
-This gives some possible insight on which $\phi$ to avoid, but not which to choose.
+As motivation, consider a self-adjoint $\phi$-divergence, which satisfies the relation
+\begin{equation} \label{eq:self_adjoint_classification}
+	\frac{\phi(t)}{t} = \phi\left(\frac{1}{t}\right),
+\end{equation}
+and consider $t \rightarrow \infty$.
+If both sides of (\ref{eq:self_adjoint_classification}) are finite in the limit, then we see a similarity between the boundedness of $\phi(t)$ for $t < 1$ and linear growth of $\phi(t)$ for $t > 1$.
+On the other hand, infinite limits of (\ref{eq:self_adjoint_classification}) indicate a similarity between superlinear growth of $\phi(t)$ for $t > 1$ and no bound on $\phi(t)$ for $t < 1$.
 
-Given that we are free to choose $\rho$, the main factor that distinguishes continuous $\phi$-divergences\footnote{i.e., not CVaR-type divergences} is how $\phi(t)$ weights $t$ vs. $\tfrac{1}{t}$.
-That is, $\phi$-divergences differ mainly in how much $p_\omega > q_\omega$ ($t = \tfrac{p_\omega}{q_\omega} > 1$) is penalized vs. how much $p_\omega < q_\omega$ ($t < 1$) is penalized.
-The literature hints at this by looking at the adjoint of $\phi$ given by
-\[
-	\tilde{\phi}(t) = t \phi\left(\frac{1}{t}\right),
-\]
-so $I_{\tilde{\phi}}(q,p) = I_\phi(p,q)$.
-Notice that a self-adjoint $\phi$ satisfies the relation $\frac{\phi(t)}{t} = \phi\left(\frac{1}{t}\right)$.
-
-Look now at the limiting cases of the divergence summands $q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right)$, i.e., when $t = \frac{p_\omega}{q_\omega} \rightarrow 0$ or $\infty$:
+In the LRLP-2, $\phi$ has arguments given by ratios of probabilities, $\tfrac{p_\omega}{q_\omega}$, and the limits $t \rightarrow 0$ and $t \rightarrow \infty$ correspond to the cases when $p_\omega = 0$ and $q_\omega = 0$, respectively.
+Consider each of these limiting cases:
 \begin{itemize}
-	\item $p_\omega = 0$ but $q_\omega > 0$: The contribution to the divergence is given by $q_\omega \lim_{t \searrow 0} \phi(t)$.
+	\item $p_\omega = 0$ but $q_\omega > 0$ ($\lim_{t \searrow 0} \phi(t)$):
 	\begin{itemize}
 		\item If $\lim_{t \searrow 0} \phi(t) = \infty$, the ambiguity region will never contain distributions with $p_\omega = 0$ but $q_\omega > 0$.
 		\item On the other hand, if $\lim_{t \searrow 0} \phi(t) < \infty$, the ambiguity region could contain such a distribution, provided $q_\omega$ is sufficiently small.
+			We say that such a distribution can \emph{suppress} scenario $\omega$.
 	\end{itemize}
-	\item $p_\omega > 0$ but $q_\omega = 0$: The contribution to the divergence is given by $p_\omega \lim_{t \nearrow 0} \frac{\phi(t)}{t}$.
+	\item $p_\omega > 0$ but $q_\omega = 0$ ($\lim_{t \nearrow 0} \frac{\phi(t)}{t}$):
 	\begin{itemize}
 		\item If $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$, the ambiguity region will never contain distributions with $p_\omega > 0$ but $q_\omega = 0$.
 		\item On the other hand, if $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$, the ambiguity region will admit sufficiently small $p_\omega$.
+			We say that such a distribution can \emph{pop} scenario $\omega$.
 	\end{itemize}
-	\item $p_\omega = 0$ but $q_\omega = 0$: This has no divergence, as would be expected.
+	\item $p_\omega = 0$ but $q_\omega = 0$: Such a situation has no contribution to the divergence, since $0 \phi\left(\tfrac{0}{0}\right) = 0$.
 \end{itemize}
 
-\begin{samepage}
-	These two possibilities for finite vs. infinite limits breaks $\phi$-divergences into four classes.
-	Here are some common examples for $\phi$-divergences in each class:
-	\begin{enumerate}
-		\item $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$ and $\lim_{t \searrow 0} \phi(t) = \infty$ are satisfied by the Burg entropy and the $\chi^2$ distance.
-		\item $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$ and $\lim_{t \searrow 0} \phi(t) < \infty$ are satisfied by the adjoints of the previous two: the Kullback-Leibler divergence and the Modified $\chi^2$ distance.
-		\item $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$ and $\lim_{t \searrow 0} \phi(t) = \infty$ are satisfied by the J-divergence, which is the sum of the Burg entropy and the Kullback-Leibler divergence.
-		\item $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$ and $\lim_{t \searrow 0} \phi(t) < \infty$ are satisfied by the Hellinger distance (and the Variation distance, but this is ruled out by the lack of an asymptotic confidence interval).
-	\end{enumerate}
-\end{samepage}
+These two categories describing suppressing and popping behavior in $\phi$-divergences create four distinct categories.
+Examples of divergences in each category are given in Table \ref{tb:phi_categories}.
 
-We may consider the type of data we have when trying to decide which $\phi$-divergence is most sensible for our problem.
-Consider cases where each type of limiting behavior is desirable:
-\begin{itemize}
-	\item $p_\omega = 0$ but $q_\omega > 0$: In many applications, we may want $\lim_{t \searrow 0} \phi(t) =  \infty$.
-		If $q$ is the empirical distribution, it makes sense to exclude distributions with $p_\omega = 0$ from the ambiguity region.
-		
-		On the other hand, if $q$ is generated from expert opinion, we may want the additional robustness that could come from $\lim_{t \searrow 0} \phi(t) < \infty$ and allowing the worst-case distribution to exclude optimistic scenarios.
-	\item $p_\omega > 0$ but $q_\omega = 0$: In the case of $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$, the ambiguity region will not include positive probabilities for any unobserved scenarios.
-		This corresponds to the advertised case of the LRO, where unobserved data can safely be discarded.
-		
-		On the other hand, selecting $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$ will allow the ambiguity region to model scenarios that haven't been observed, but are known to be possible.
-		This suggests the possibility of combining observation with expert opinion by choosing $q_\omega = 0$ for any expert-generated scenarios that have never been observed, and finding a solution robust to hypothetical scenarios without the guesswork of assigning it a number of observations.
-\end{itemize}
+\begin{table}
+	\centering
+	\begin{tabular}{l|p{.3\textwidth}p{.3\textwidth}}
+		 & Can Suppress Scenarios & Cannot Suppress Scenarios \\
+		 \hline
+		 Can Pop Scenarios %
+			& \parbox{.3\textwidth}{Hellinger} %
+			& \parbox{.3\textwidth}{Burg Entropy,\\$\chi^2$-distance} \\
+		 Cannot Pop Scenarios %
+			& \parbox{.3\textwidth}{Kullback-Leibler divergence,\\Modified $\chi^2$-distance} %
+			& \parbox{.3\textwidth}{J-Divergence}
+	\end{tabular}
+	\caption{
+		Examples of $\phi$-divergences fitting into each category.
+	}
+	\label{tb:phi_categories}
+\end{table}
 
-Using these observations about the limiting behavior, we might make the following recommendations about choosing a $\phi$-divergence:
-\begin{itemize}
-	\item If the problem is purely data-driven with little theoretical understanding, choose \#3 and use the J-divergence.
-	\item If the scenarios are generated purely by expert opinion, choose \#2 and use either the Kullback-Leibler divergence or the Modified $\chi^2$ distance.
-	\item If you have a mix of sampled data and expert opinion, choose \#1 and use either the Burg entropy of the $\chi^2$ distance.
-	\item I can't think of a situation that really calls for \#4.
-\end{itemize}
+\subsection{Modeling Considerations When Choosing a Divergence}
+
+We offer some suggestions for choosing an appropriate $\phi$-divergence classification for the data available.
+First, consider whether to choose a distribution that can suppress scenarios.
+If the problem scenarios come from high-quality observed data, you may wish to avoid divergences that can suppress scenarios.
+However, if the data in poorly sampled, or comes from opinion rather than observation of simulation, it may be desirable to have the option of suppressing scenarios may result in a solution with better robustness properties.
+
+Next, consider whether to choose a distribution that allows for popping scenarios.
+If the problem scenarios come strictly from observation, with little theoretical understanding of the problem, we suggest choosing a divergence that cannot pop scenarios.
+However, if the problem scenarios come from a mix of observed/simulated data and expert opinion about possibilities of interest, then divergences that can pop scenarios present an interesting modeling choice.
+This allows for including interesting but unobserved scenarios, and allowing the mathematical program to assign an appropriate probability to them.
+
+\subsection{Additional Details about Divergences that can Suppress}
+
+Suppressing a scenario is made possible by having $\lim_{t \searrow 0} \phi(t) < \infty$, but there are two further possibilities for such divergences: (1) $\phi'(0) < \infty$ and (2) $\lim_{t \searrow 0} \phi'(t) = \infty$.
+This subclassification leads to two different behaviors in $\phi^*(s)$: either (1) $\phi^*(s) = c$ for some constant $c < 0$ and  $s < \underline{s}$; or (2) $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
+By the primal-dual variable relation $p_\omega = q_\omega \phi^{*\prime}(s_\omega) = q_\omega \phi^{*\prime}\left(\frac{h_\omega(x) - \mu}{\lambda}\right)$, we see two different possibilities for suppressing scenarios:
+\begin{enumerate}
+	\item If $\phi'(0) < \infty$, then all scenarios that satisfy the relation $h_\omega(x) \leq \mu + \underline{s}\lambda$ are suppressed.
+		As $\rho$ increases, scenarios tend to be suppressed one at a time.
+	\item Otherwise, scenarios can only be suppressed if $s_\omega = -\infty$, which can only occur if $\lambda = 0$.
+		Consequently, this solution must also have $\mu = \max_\omega h_\omega(x)$ in order to maintain a probability distribution.
+		This also means that all but the most expensive scenario(s) will vanish simultaneously.
+		Divergences of this type can be difficult to deal with numerically when suppression occurs.
+\end{enumerate}
+
+\subsection{Additional Details about Divergences that can Pop}
+
+Divergence that can pop a scenario have $\phi(t)$ that grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s}$ on the domain of $\phi^*(s)$.
+The primal-dual variable relation specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
+Thus, popping a scenario can only occur when the right-hand side may also be undefined, i.e., when $s_\omega = \bar{s}$, for which $\infty \in \partial \phi^*(s_\omega)$.
+
+Note that, because $s_\omega = \frac{h_\omega(x) - \mu}{\lambda}$, only the most expensive scenario could be popped.
+Thus, when including unobserved scenarios, only those that might be the most costly at the optimal solution need to be included.
+
+Additionally, note that finding the probability of the popped scenario cannot be done by differentiating $\phi^*$ as with other scenarios, thus the probability must be calculated with $\sum_\omega p_\omega = 1$.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Some Special $\phi$-Divergences}
