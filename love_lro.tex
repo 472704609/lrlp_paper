@@ -31,9 +31,10 @@
 
 % Commands for probability
 \renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
 \newcommand{\p}[1]{\P \left[ #1 \right]}
-\newcommand{\e}[1]{\mathbb{E} \left[ #1 \right]}
-\newcommand{\ee}[2]{\mathbb{E}_{#1} \left[ #2 \right]}
+\newcommand{\e}[1]{\E \left[ #1 \right]}
+\newcommand{\ee}[2]{\E_{#1} \left[ #2 \right]}
 
 % Definitions of variables
 \newcommand{\X}{X}
@@ -327,8 +328,256 @@ The next (green) band has one $N_\omega = 0$, followed by red with two and cyan 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Classification of $\phi$-Divergences}
 
+I spent some time thinking about methods for choosing a $\phi$-divergence recently.
+Recall the $\phi$-divergence constraint, defined by
+\[
+	I_\phi(p,q) = \sum q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho,
+\]
+where $q$ is the central distribution defining the ambiguity region containing $p$.
+
+To choose a value of $\rho$, we use the fact that
+\[
+	\frac{2N}{\phi''(1)} I_\phi(\ptrue,\hat{p}),
+\]
+has a $\chi^2$ distribution asymptotically, where $N$ is the number of samples, $\ptrue$ is the true distribution and $\hat{p}$ is the empirical distribution.
+However, if $\phi''(1) = 0$ or is undefined, there seems to be no known asymptotic method for choosing appropriate values of $\rho$.
+This gives some possible insight on which $\phi$ to avoid, but not which to choose.
+
+Given that we are free to choose $\rho$, the main factor that distinguishes continuous $\phi$-divergences\footnote{i.e., not CVaR-type divergences} is how $\phi(t)$ weights $t$ vs. $\tfrac{1}{t}$.
+That is, $\phi$-divergences differ mainly in how much $p_\omega > q_\omega$ ($t = \tfrac{p_\omega}{q_\omega} > 1$) is penalized vs. how much $p_\omega < q_\omega$ ($t < 1$) is penalized.
+The literature hints at this by looking at the adjoint of $\phi$ given by
+\[
+	\tilde{\phi}(t) = t \phi\left(\frac{1}{t}\right),
+\]
+so $I_{\tilde{\phi}}(q,p) = I_\phi(p,q)$.
+Notice that a self-adjoint $\phi$ satisfies the relation $\frac{\phi(t)}{t} = \phi\left(\frac{1}{t}\right)$.
+
+Look now at the limiting cases of the divergence summands $q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right)$, i.e., when $t = \frac{p_\omega}{q_\omega} \rightarrow 0$ or $\infty$:
+\begin{itemize}
+	\item $p_\omega = 0$ but $q_\omega > 0$: The contribution to the divergence is given by $q_\omega \lim_{t \searrow 0} \phi(t)$.
+	\begin{itemize}
+		\item If $\lim_{t \searrow 0} \phi(t) = \infty$, the ambiguity region will never contain distributions with $p_\omega = 0$ but $q_\omega > 0$.
+		\item On the other hand, if $\lim_{t \searrow 0} \phi(t) < \infty$, the ambiguity region could contain such a distribution, provided $q_\omega$ is sufficiently small.
+	\end{itemize}
+	\item $p_\omega > 0$ but $q_\omega = 0$: The contribution to the divergence is given by $p_\omega \lim_{t \nearrow 0} \frac{\phi(t)}{t}$.
+	\begin{itemize}
+		\item If $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$, the ambiguity region will never contain distributions with $p_\omega > 0$ but $q_\omega = 0$.
+		\item On the other hand, if $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$, the ambiguity region will admit sufficiently small $p_\omega$.
+	\end{itemize}
+	\item $p_\omega = 0$ but $q_\omega = 0$: This has no divergence, as would be expected.
+\end{itemize}
+
+\begin{samepage}
+	These two possibilities for finite vs. infinite limits breaks $\phi$-divergences into four classes.
+	Here are some common examples for $\phi$-divergences in each class:
+	\begin{enumerate}
+		\item $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$ and $\lim_{t \searrow 0} \phi(t) = \infty$ are satisfied by the Burg entropy and the $\chi^2$ distance.
+		\item $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$ and $\lim_{t \searrow 0} \phi(t) < \infty$ are satisfied by the adjoints of the previous two: the Kullback-Leibler divergence and the Modified $\chi^2$ distance.
+		\item $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$ and $\lim_{t \searrow 0} \phi(t) = \infty$ are satisfied by the J-divergence, which is the sum of the Burg entropy and the Kullback-Leibler divergence.
+		\item $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$ and $\lim_{t \searrow 0} \phi(t) < \infty$ are satisfied by the Hellinger distance (and the Variation distance, but this is ruled out by the lack of an asymptotic confidence interval).
+	\end{enumerate}
+\end{samepage}
+
+We may consider the type of data we have when trying to decide which $\phi$-divergence is most sensible for our problem.
+Consider cases where each type of limiting behavior is desirable:
+\begin{itemize}
+	\item $p_\omega = 0$ but $q_\omega > 0$: In many applications, we may want $\lim_{t \searrow 0} \phi(t) =  \infty$.
+		If $q$ is the empirical distribution, it makes sense to exclude distributions with $p_\omega = 0$ from the ambiguity region.
+		
+		On the other hand, if $q$ is generated from expert opinion, we may want the additional robustness that could come from $\lim_{t \searrow 0} \phi(t) < \infty$ and allowing the worst-case distribution to exclude optimistic scenarios.
+	\item $p_\omega > 0$ but $q_\omega = 0$: In the case of $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$, the ambiguity region will not include positive probabilities for any unobserved scenarios.
+		This corresponds to the advertised case of the LRO, where unobserved data can safely be discarded.
+		
+		On the other hand, selecting $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$ will allow the ambiguity region to model scenarios that haven't been observed, but are known to be possible.
+		This suggests the possibility of combining observation with expert opinion by choosing $q_\omega = 0$ for any expert-generated scenarios that have never been observed, and finding a solution robust to hypothetical scenarios without the guesswork of assigning it a number of observations.
+\end{itemize}
+
+Using these observations about the limiting behavior, we might make the following recommendations about choosing a $\phi$-divergence:
+\begin{itemize}
+	\item If the problem is purely data-driven with little theoretical understanding, choose \#3 and use the J-divergence.
+	\item If the scenarios are generated purely by expert opinion, choose \#2 and use either the Kullback-Leibler divergence or the Modified $\chi^2$ distance.
+	\item If you have a mix of sampled data and expert opinion, choose \#1 and use either the Burg entropy of the $\chi^2$ distance.
+	\item I can't think of a situation that really calls for \#4.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Some Special $\phi$-Divergences}
+
+\subsection*{CVaR}
+
+To my surprise, it appears that CVaR can be represented with a $\phi$-divergence.
+Begin with the risk envelope form of CVaR
+\[
+	\mbox{CVaR}(X) = \sup_{\{P | P \leq \frac{1}{1-\alpha}, \e{P} = 1, P \geq 0\}} \e{PX}.
+\]
+We need to transform the requirement $P \leq \frac{1}{1-\alpha}$ to be of the form $I_\phi(p,q) \leq \rho$.
+Ben-Tal uses $q_\omega$ as the central measure, and $P$ is defined as a density with respect to the central measure, so in the discrete case $P$ is the vector $p_\omega/q_\omega$.
+Thus we need to write $p_\omega/q_\omega \leq \frac{1}{1-\alpha}\ \forall \omega$ as $I_\phi(p,q) = \sum_\omega q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho$.
+The only way I can think to do this is with
+\[
+	\phi(t) = \begin{cases}
+	          	0 & 0 \leq t \leq \frac{1}{1-\alpha} \\
+	          	\infty & \text{otherwise},
+	          \end{cases}
+\]
+with $\rho = 0$.
+Thus $I_\phi(p,q) = 0 \Leftrightarrow \phi\left(\frac{p_\omega}{q_\omega}\right) = 0 \ \forall \omega \Leftrightarrow \frac{p_\omega}{q_\omega} \leq \frac{1}{1-\alpha} \ \forall \omega$.
+
+Interestingly, this $\phi$-divergence seems useless from the point of view of statistical inference.
+Also, I don't think this will epiconverge to the stochastic program when taking $q_\omega = \frac{N_\omega}{N}$.
+
+We can reconstruct CVaR from this $\phi$-divergence.
+I calculate
+\[
+	\phi^*(s) = \sup_{t \geq 0} \{ st - \phi(t) \} = \begin{cases}
+	                                                 	0 & s < 0 \\
+	                                                 	\frac{1}{1-\alpha} s & s \geq 0.
+	                                                 \end{cases}
+\]
+Then finding the worst-case distribution as above corresponds to the dual problem
+\begin{align*}
+	\sup_{\{P | P \leq \frac{1}{1-\alpha}, \e{P} = 1, P \geq 0\}} \e{PX} & = \min_{\mu,\lambda} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left( \frac{X-\mu}{\lambda} \right) \\
+	& = \min_{\mu,\lambda} \mu + 0\lambda + \lambda \sum_\omega q_\omega \max\left\{ 0, \frac{1}{1-\alpha} \frac{X-\mu}{\lambda} \right\} \\
+	& = \min_{\mu} \mu + \frac{1}{1-\alpha} \sum_\omega q_\omega \max\left\{ 0, X-\mu \right\} \\
+	& = \min_{\mu} \mu + \frac{1}{1-\alpha} \e{[X-\mu]^+},
+\end{align*}
+which is one definition of CVaR.
+
+\subsection{``Reverse'' CVaR}
+
+I noticed that two distributions only ``count'' as being far apart if $t > \frac{1}{1-\beta}$, i.e., if $p_\omega > \frac{q_\omega}{10\beta}$ for some $\omega$.
+There is no penalty associated with $p_\omega$ being too small.
+So I wondered about a divergence with $t$ bounded below, as in
+\[
+	\phi(t) = 
+	\begin{cases}
+		0 & t \geq 1-\beta \\
+		\infty & t < 1-\beta.
+	\end{cases}
+\]
+This results in
+\[
+	\phi^*(s) = 
+	\begin{cases}
+		(1-\beta)s & s \leq 0 \\
+		\infty & s > 0,
+	\end{cases}
+\]
+and the associated optimization problem is
+\begin{equation} \label{eq:basic_optimization}
+	\min_{\lambda \geq 0,\mu} \rho\lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right).
+\end{equation}
+As in the CVaR case, all finite values of $\rho$ are equivalent to $\rho=0$, so we can set that.
+The bound on $s$ induces the bound $h_\omega(x) - \mu \leq 0$, or $\mu \geq \sup_\omega h_\omega(x)$.
+Then we have
+\begin{align*}
+	\min_{\mu \geq \sup_\omega h_\omega(x)} \mu - (1-\beta)\e{\mu-h(x)} & = \min_{\mu \geq \sup_\omega h_\omega(x)} \beta \mu + (1-\beta)\e{h(x)} \\
+	& = \beta \sup_\omega h_\omega(x) + (1-\beta)\e{h(x)}.
+\end{align*}
+Thus we get a convex combination of the worst-case outcome and the mean outcome.
+
+\subsection{Combination of CVaR and Expectation}
+
+\begin{description}
+	\item[Question:] Can you use $\phi$-divergence to construct a convex combination of $\e{h}$ and $\mbox{CVaR}_\delta[h]$?
+	\item[Answer:] Yes
+	\item[Intuition:] For both $\E$ and CVaR, we need $\phi^*(s)$ to be (at least piecewise) linear, and without an upper bound on $s$.
+	As far as I know, the only way to satisfy these properties is with hard bounds on $\phi(t)$.
+\end{description}
+
+So I decided to try
+\[
+	\phi(t) = 
+	\begin{cases}
+		0 & 1-\alpha \leq t \leq \frac{1}{1-\beta} \\
+		\infty & \text{otherwise}.
+	\end{cases}
+\]
+Again, we use $\rho = 0$, since the only possible divergences are $0$ and $\infty$.
+
+This gives the conjugate
+\[
+	\phi^*(s) = 
+	\begin{cases}
+		(1-\alpha) s & s < 0 \\
+		\frac{1}{1-\beta} s & s \geq 0.
+	\end{cases}
+\]
+So we have the problem
+\begin{align*}
+	\min_{\lambda,\mu} \rho \lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) & = \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{1}{1-\beta} (h_\omega(x)-\mu) \right\}.
+\end{align*}
+Now, CVaR includes a $\e{[\cdot]^+}$ term, which I need to find in the maximum formula.
+Noting that $1-\alpha < 1 < \frac{1}{1-\beta}$, I rewrote the maximum as
+\[
+	\max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{1}{1-\beta} (h_\omega(x)-\mu) \right\} = (1-\alpha)(h_\omega(x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(x)-\mu \right]^+.
+\]
+Then working with the linear term and writing in terms of expectations we get
+\[
+	(1-\alpha)\e{h(x)} + \min_\mu \alpha\mu + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \e{h(x)-\mu}^+
+\]
+which simplifies to
+\[
+	(1-\alpha)\e{h(x)} + \alpha \min_\mu \left\{ \mu + \left(1 - \frac{\beta}{\alpha(1-\beta)+\beta}\right)^{-1} \e{h(x)-\mu}^+ \right\}
+\]
+and thus
+\[
+	(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)].
+\]
+
+\subsection{Variation-type Divergences}
+
+The variation divergence is given by $\phi(t) = |t-1|$, which will result in piecewise-linear $\phi^*$.
+In general, $\phi$-divergences have a left-of-one range bounded by $\phi(0)$ and a right-of-one range bounded by $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
+Consequently, we can restrict $\rho \leq 1$ for variation-type divergences.
+
+\subsubsection{Right-sided Variation}
+
+First, we can look only at the right-side of the variation, i.e., $\phi(t) = [t-1]^+$.
+This yields
+\[
+	\phi^*(s) = 
+	\begin{cases}
+		[s]^+ & s \leq 1 \\
+		\infty & s > 1.
+	\end{cases}
+\]
+The upper bound on $s$ yields $\frac{h_\omega(x)-\mu}{\lambda} \leq 1$ or $\lambda \geq \sup_\omega h_\omega(x) - \mu$.
+Then starting from (\ref{eq:basic_optimization}),
+\begin{align*}
+	\min \rho\lambda + \mu + \lambda \sum_\omega q_\omega \left[ \frac{h_\omega(x) - \mu}{\lambda} \right]^+ & = \min_{\lambda \geq \sup_\omega h_\omega(x) - \mu, \mu} \rho\lambda + \mu + \sum_\omega q_\omega \left[ h_\omega(x) - \mu \right]^+ \\
+	& = \min_\mu \rho(\sup_\omega h_\omega(x) - \mu) + \mu \e{\left[h(x)-\mu\right]^+} \\
+	& = \rho \sup_\omega h_\omega(x) + \min_\mu (1-\rho)\mu + \e{\left[h(x)-\mu\right]^+} \\
+	& = \rho \sup_\omega h_\omega(x) + (1-\rho) \left( \min_\mu \mu + \frac{1}{1-\rho}\e{\left[h(x)-\mu\right]^+}\right) \\
+	& = \rho \sup_\omega h_\omega(x) + (1-\rho) \mbox{CVaR}_\rho(h(x)).
+\end{align*}
+This time we get a convex combination between the supremum and CVaR.
+
+\subsubsection{Left-sided Variation}
+
+The results start getting much messier here.
+The left-sided variation is $\phi(t) = [1-t]^+$, which gives
+\[
+	\phi^*(s) = 
+	\begin{cases}
+		-1 & s < -1 \\
+		s & -1 \leq s \leq 0 \\
+		\infty & s > 0.
+	\end{cases}
+\]
+Once again, we have the condition $\mu \geq \sup_\omega h_\omega(x)$.
+The center linear portion will induce a CVaR-like behavior for $\frac{h_\omega(x)-\mu}{\lambda} \geq -1$, or $\mu - \lambda \leq h_\omega(x)$.
+However, the opposite condition behaves only as $\lambda$.
+Let $\bar{q} = \p{h_\omega(x) \geq \mu - \lambda}$, then using equation (\ref{eq:basic_optimization}),
+\begin{align*}
+	\min_{\lambda \geq 0,\mu} \rho\lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right) 
+	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + \mu - \lambda(1-\bar{q}) + \sum_{\omega : h_\omega(x) \geq \mu - \lambda} q_\omega (h_\omega(x) - \mu) \\
+	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + (1-\bar{q})(\mu-\lambda) + \sum_{\omega : h_\omega(x) \geq \mu - \lambda} q_\omega h_\omega(x) \\
+	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + (1-\bar{q})(\mu-\lambda) + \bar{q} \mbox{CVaR}_{1-\bar{q}}(h(x)).
+\end{align*}
+$\mu-\lambda$, being the quantity that defines $\bar{q}$, is like $\mbox{VaR}(h(x))$.
+I don't know that having VaR in there makes any sense, though.
+I also can't think of any other way to simplify the above.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Value of Data} \label{sec:value}
