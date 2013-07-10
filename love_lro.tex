@@ -419,127 +419,138 @@ Additionally, note that finding the probability of the popped scenario cannot be
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Some Special $\phi$-Divergences}
 
-\subsection*{CVaR}
+The class of $\phi$-divergence constrained problems includes some interesting special cases, which we document here.
 
-To my surprise, it appears that CVaR can be represented with a $\phi$-divergence.
-Begin with the risk envelope form of CVaR
-\[
-	\mbox{CVaR}(X) = \sup_{\{P | P \leq \frac{1}{1-\alpha}, \e{P} = 1, P \geq 0\}} \e{PX}.
-\]
-We need to transform the requirement $P \leq \frac{1}{1-\alpha}$ to be of the form $I_\phi(p,q) \leq \rho$.
-Ben-Tal uses $q_\omega$ as the central measure, and $P$ is defined as a density with respect to the central measure, so in the discrete case $P$ is the vector $p_\omega/q_\omega$.
-Thus we need to write $p_\omega/q_\omega \leq \frac{1}{1-\alpha}\ \forall \omega$ as $I_\phi(p,q) = \sum_\omega q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho$.
-The only way I can think to do this is with
-\[
-	\phi(t) = \begin{cases}
-	          	0 & 0 \leq t \leq \frac{1}{1-\alpha} \\
-	          	\infty & \text{otherwise},
-	          \end{cases}
-\]
-with $\rho = 0$.
-Thus $I_\phi(p,q) = 0 \Leftrightarrow \phi\left(\frac{p_\omega}{q_\omega}\right) = 0 \ \forall \omega \Leftrightarrow \frac{p_\omega}{q_\omega} \leq \frac{1}{1-\alpha} \ \forall \omega$.
+\subsection{Conditional Value-at-Risk}
 
-Interestingly, this $\phi$-divergence seems useless from the point of view of statistical inference.
-Also, I don't think this will epiconverge to the stochastic program when taking $q_\omega = \frac{N_\omega}{N}$.
+The coherent risk measure Conditional Value-at-Risk (CVaR) is well studied in financial applications.
+\begin{theorem} \label{thm:cvar}
+	CVaR is equivalent to the $\phi$-divergence constrained problem with 
+	\[
+		\phi(t) = \
+		\begin{cases}
+			0 & 0 \leq t \leq \frac{1}{1-\beta} \\
+			\infty & \text{otherwise},
+		\end{cases}
+	\]
+	for $0 < \beta < 1$.
+\end{theorem}
 
-We can reconstruct CVaR from this $\phi$-divergence.
-I calculate
-\[
-	\phi^*(s) = \sup_{t \geq 0} \{ st - \phi(t) \} = \begin{cases}
-	                                                 	0 & s < 0 \\
-	                                                 	\frac{1}{1-\alpha} s & s \geq 0.
-	                                                 \end{cases}
-\]
-Then finding the worst-case distribution as above corresponds to the dual problem
-\begin{align*}
-	\sup_{\{P | P \leq \frac{1}{1-\alpha}, \e{P} = 1, P \geq 0\}} \e{PX} & = \min_{\mu,\lambda} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left( \frac{X-\mu}{\lambda} \right) \\
-	& = \min_{\mu,\lambda} \mu + 0\lambda + \lambda \sum_\omega q_\omega \max\left\{ 0, \frac{1}{1-\alpha} \frac{X-\mu}{\lambda} \right\} \\
-	& = \min_{\mu} \mu + \frac{1}{1-\alpha} \sum_\omega q_\omega \max\left\{ 0, X-\mu \right\} \\
-	& = \min_{\mu} \mu + \frac{1}{1-\alpha} \e{[X-\mu]^+},
-\end{align*}
-which is one definition of CVaR.
+\begin{proof}
+	First, note that for a random cost $h_\omega(x)$, $\mbox{CVaR}_\beta(H(x)) = \sup_{P \in \mathcal{P}} \{\e{PH(x)}\}$, where the risk envelope is given by
+	\[
+		\mathcal{P} = \left\{ P \left| P \leq \frac{1}{1-\beta}, \e{P} = 1, P \geq 0 \right.\right\}.
+	\]
+	This risk envelope motivates the choice of $\phi(t)$.
+	
+	Note that this $\phi$ only admits two distance values: $0$ or $\infty$.
+	Thus any choice of $\rho < \infty$ is equivalent to $\rho = 0$, which can be chosen without loss of generality.
+	
+	The conjugate is
+	\[
+	\phi^*(s) = \
+		\begin{cases}
+			0 & s < 0 \\
+			\frac{1}{1-\beta} s & s \geq 0,
+		\end{cases}
+	\]
+	which results in the objective function given by
+	\begin{align*}
+		\min_{\mu,\lambda} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left( \frac{h_\omega(x)-\mu}{\lambda} \right) & = \min_{\mu,\lambda} \mu + 0\lambda + \lambda \sum_\omega q_\omega \max\left\{ 0, \frac{1}{1-\beta} \frac{h_\omega(x)-\mu}{\lambda} \right\} \\
+		& = \min_{\mu} \mu + \frac{1}{1-\beta} \sum_\omega q_\omega \max\left\{ 0, h_\omega(x)-\mu \right\} \\
+		& = \min_{\mu} \mu + \frac{1}{1-\beta} \e{[H(x)-\mu]^+},
+	\end{align*}
+	which is one definition of CVaR.
+\end{proof}
 
 \subsection{``Reverse'' CVaR}
 
-I noticed that two distributions only ``count'' as being far apart if $t > \frac{1}{1-\beta}$, i.e., if $p_\omega > \frac{q_\omega}{10\beta}$ for some $\omega$.
-There is no penalty associated with $p_\omega$ being too small.
-So I wondered about a divergence with $t$ bounded below, as in
-\[
-	\phi(t) = 
-	\begin{cases}
-		0 & t \geq 1-\beta \\
-		\infty & t < 1-\beta.
-	\end{cases}
-\]
-This results in
-\[
-	\phi^*(s) = 
-	\begin{cases}
-		(1-\beta)s & s \leq 0 \\
-		\infty & s > 0,
-	\end{cases}
-\]
-and the associated optimization problem is
-\begin{equation} \label{eq:basic_optimization}
-	\min_{\lambda \geq 0,\mu} \rho\lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right).
-\end{equation}
-As in the CVaR case, all finite values of $\rho$ are equivalent to $\rho=0$, so we can set that.
-The bound on $s$ induces the bound $h_\omega(x) - \mu \leq 0$, or $\mu \geq \sup_\omega h_\omega(x)$.
-Then we have
-\begin{align*}
-	\min_{\mu \geq \sup_\omega h_\omega(x)} \mu - (1-\beta)\e{\mu-h(x)} & = \min_{\mu \geq \sup_\omega h_\omega(x)} \beta \mu + (1-\beta)\e{h(x)} \\
-	& = \beta \sup_\omega h_\omega(x) + (1-\beta)\e{h(x)}.
-\end{align*}
-Thus we get a convex combination of the worst-case outcome and the mean outcome.
+The CVaR $\phi$-divergence is bounded above, which leads to the question of what happens when a divergence is bounded below.
+The next theorem answers this question.
+
+\begin{theorem} \label{thm:reverse_cvar}
+	The $\phi$-divergence constrained problem with
+	\[
+		\phi(t) = \
+		\begin{cases}
+			0 & t \geq 1-\beta \\
+			\infty & t < 1-\beta,
+		\end{cases}
+	\]
+	for $0 < \beta < 1$ is equivalent to $\beta \sup_\omega h_\omega(x) + (1-\beta)\e{h(x)}$, where the expectation is taken with respect to the nominal distribution $q$.
+\end{theorem}
+
+\begin{proof}
+	As in the proof for CVaR, let $\rho = 0$ without loss of generality.
+	The conjugate is
+	\[
+		\phi^*(s) = 
+		\begin{cases}
+			(1-\beta)s & s \leq 0 \\
+			\infty & s > 0,
+		\end{cases}
+	\]
+	Thus the objective function becomes
+	\begin{align*}
+		\min_{\lambda \geq 0,\mu} \rho\lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right) & = \min_{\mu \geq \sup_\omega h_\omega(x)} \mu - (1-\beta)\e{\mu-h(x)} \\
+		& = \min_{\mu \geq \sup_\omega h_\omega(x)} \beta \mu + (1-\beta)\e{h(x)} \\
+		& = \beta \sup_\omega h_\omega(x) + (1-\beta)\e{h(x)}. \qedhere
+	\end{align*}
+\end{proof}
 
 \subsection{Combination of CVaR and Expectation}
 
-\begin{description}
-	\item[Question:] Can you use $\phi$-divergence to construct a convex combination of $\e{h}$ and $\mbox{CVaR}_\delta[h]$?
-	\item[Answer:] Yes
-	\item[Intuition:] For both $\E$ and CVaR, we need $\phi^*(s)$ to be (at least piecewise) linear, and without an upper bound on $s$.
-	As far as I know, the only way to satisfy these properties is with hard bounds on $\phi(t)$.
-\end{description}
+An objective function taking a weighted sum of expected value and CVaR often comes up in practice.
+The next theorem shows how to generate a convex combination of expectation and CVaR.
 
-So I decided to try
-\[
-	\phi(t) = 
-	\begin{cases}
-		0 & 1-\alpha \leq t \leq \frac{1}{1-\beta} \\
-		\infty & \text{otherwise}.
-	\end{cases}
-\]
-Again, we use $\rho = 0$, since the only possible divergences are $0$ and $\infty$.
+\begin{theorem}\label{them:expectation_cvar}
+	The $\phi$-divergence constrained problem with
+	\[
+		\phi(t) = 
+		\begin{cases}
+			0 & 1-\alpha \leq t \leq \frac{1}{1-\beta} \\
+			\infty & \text{otherwise},
+		\end{cases}
+	\]
+	for $\alpha,\beta \in (0,1)$ is equivalent to 
+	\[
+		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)].
+	\]
+\end{theorem}
 
-This gives the conjugate
-\[
-	\phi^*(s) = 
-	\begin{cases}
-		(1-\alpha) s & s < 0 \\
-		\frac{1}{1-\beta} s & s \geq 0.
-	\end{cases}
-\]
-So we have the problem
-\begin{align*}
-	\min_{\lambda,\mu} \rho \lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) & = \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{1}{1-\beta} (h_\omega(x)-\mu) \right\}.
-\end{align*}
-Now, CVaR includes a $\e{[\cdot]^+}$ term, which I need to find in the maximum formula.
-Noting that $1-\alpha < 1 < \frac{1}{1-\beta}$, I rewrote the maximum as
-\[
-	\max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{1}{1-\beta} (h_\omega(x)-\mu) \right\} = (1-\alpha)(h_\omega(x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(x)-\mu \right]^+.
-\]
-Then working with the linear term and writing in terms of expectations we get
-\[
-	(1-\alpha)\e{h(x)} + \min_\mu \alpha\mu + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \e{h(x)-\mu}^+
-\]
-which simplifies to
-\[
-	(1-\alpha)\e{h(x)} + \alpha \min_\mu \left\{ \mu + \left(1 - \frac{\beta}{\alpha(1-\beta)+\beta}\right)^{-1} \e{h(x)-\mu}^+ \right\}
-\]
-and thus
-\[
-	(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)].
-\]
+\begin{proof}
+	Without loss of generality, let $\rho = 0$.
+	The conjugate is
+	\[
+		\phi^*(s) = 
+		\begin{cases}
+			(1-\alpha) s & s < 0 \\
+			\frac{1}{1-\beta} s & s \geq 0.
+		\end{cases}
+	\]
+	
+	This gives the problem
+	\begin{align*}
+		\min_{\lambda,\mu} \rho \lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) & = \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{1}{1-\beta} (h_\omega(x)-\mu) \right\}.
+	\end{align*}
+	Now, CVaR includes a $\e{[\cdot]^+}$ term, which I need to find in the maximum formula.
+	Noting that $1-\alpha < 1 < \frac{1}{1-\beta}$, I rewrote the maximum as
+	\[
+		\max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{1}{1-\beta} (h_\omega(x)-\mu) \right\} = (1-\alpha)(h_\omega(x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(x)-\mu \right]^+.
+	\]
+	Then working with the linear term and writing in terms of expectations we get
+	\[
+		(1-\alpha)\e{h(x)} + \min_\mu \alpha\mu + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \e{h(x)-\mu}^+
+	\]
+	which simplifies to
+	\[
+		(1-\alpha)\e{h(x)} + \alpha \min_\mu \left\{ \mu + \left(1 - \frac{\beta}{\alpha(1-\beta)+\beta}\right)^{-1} \e{h(x)-\mu}^+ \right\}
+	\]
+	and thus
+	\[
+		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)]. \qedhere
+	\]
+\end{proof}
 
 \subsection{Variation-type Divergences}
 
