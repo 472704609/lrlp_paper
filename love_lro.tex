@@ -65,6 +65,7 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
 \newtheorem{definition}[theorem]{Definition}
 \newcommand{\st}{\mbox{s.t.}}
 
@@ -222,7 +223,7 @@ where
 \label{sec:properties}
 
 In this section, we list some basic properties of \plp.
-Most of these have already been noted in \cite{wang2010likelihood} and \cite{bental2011robust}, but we list them for completeness and some of these properties help with our special solution method.
+Most of these have already been noted in \cite{bental2011robust}, with a special case noted in \cite{wang2010likelihood}, but we list them for completeness and some of these properties help with our special solution method.
 
 \subsection{Coherent Risk Measure}
 As noted in \cite{wang2010likelihood}, the \plp\ problem can be viewed as minimizing a coherent risk measure.
@@ -231,7 +232,7 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 	\item ${\cal R}(C) = C$ for all constants $C$,
 	\item ${\cal R}((1-\lambda)X + \lambda X') \leq (1-\lambda){\cal R}(X) + \lambda {\cal R}(X')$, i.e., $\cal R$ is convex,
 	\item ${\cal R}(X) \leq {\cal R}(X')$ when $X \leq X'$, i.e., $\cal R$ is monotonic,
-	\item ${\cal R}(\lambda X) = \lambda {\cal R}(X)$, i.e., $\cal R$ is positively homogeneous.
+	\item ${\cal R}(\lambda X) = \lambda {\cal R}(X)$ for $\lambda > 0$, i.e., $\cal R$ is positively homogeneous.
 \end{enumerate}
 
 \begin{proposition}
@@ -240,41 +241,36 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 
 \begin{proof}
 	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \cite{rockafellar2007coherent}.
-	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $Q_\omega = \frac{p_\omega}{1/n}$.
+	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$.
 	Throughout the proof, all expectations are taken with respect to the uniform distribution.
 	
-	First, probability constraint (\ref{eq:plp_primal_probability}) can be written as $\e{Q} = 1$, where $Q$ is the random variable taking values $Q_\omega$ with equal probability.
-	Then the likelihood constraint (\ref{eq:plp_primal_divergence}) becomes $\sum_{\omega=1}^n N_\omega \log Q_\omega \geq \gamma - N \log n$.
-	Combining these yields the set ${\cal Q} = \{Q | \e{Q} = 1, \sum_{\omega=1}^n N_\omega \log Q_\omega \geq \gamma - N \log n \}$, a closed and convex risk envelope.
-	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{Q \in {\cal Q}} \e{Qh^\dagger(x)}$, where $h^\dagger(x)$ is the random variables defined by $\{h^\dagger_\omega(x)\}$.
+	First, probability constraint (\ref{eq:plp_primal_probability}) can be written as $\e{\tilde{p}} = 1$, where $\tilde{p}$ is the random variable taking values $\tilde{p}_\omega$ with equal probability.
+	Then the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}) becomes $\sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho$, where $\tilde{q}_\omega = \frac{q_\omega}{1/n}$ and $\frac{\phi(a/0)}{a/0} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
+	Combining these yields the set ${\cal Q} = \{\tilde{p} | \e{\tilde{p}} = 1, sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho \}$, a closed and convex risk envelope.
+	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{\tilde{p} \in {\cal Q}} \e{\tilde{p} h(x)}$, where $h(x)$ is the random variables defined by $\{h_\omega(x)\}$.
 	Thus we see that \plp\ is the minimum of a coherent risk measure.
 \end{proof}
+
+\begin{remark}
+	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$ for all $\omega$.
+	However, the case of $q_\omega = 0$ plays an important roll in the classification presented in Section \ref{sec:classification}.
+\end{remark}
+
 
 Note that being a coherent risk measure implies that \plp\ is a convex problem.
 The convexity of LRO was also noted in \cite{wang2010likelihood}.
 
 \subsection{Time Structure}
-\plp\ has the same second-stage problems as SLP-2.
-Since $\log$ is uniformly increasing, we can rewrite the second stage problem (\ref{eq:plp_second_stage}) as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
-Thus we can state the second stage of \plp\ in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h^\dagger_\omega(\x))\right]$.
-
-This preservation of the time structure allows us to easily convert \mbox{(sub-)derivatives} of $h^\dagger_\omega(\x)$ to \mbox{(sub-)derivatives} of $h_\omega(\x,\lambda,\mu)$.
+The second-stage problems are unaffected by the change from SLP-2 to \plp.
+This preservation of the time structure allows us to easily convert \mbox{(sub-)derivatives} of $h_\omega(\x)$ to \mbox{(sub-)derivatives} of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$.
 We will use this in the decomposition method provided in Section \ref{sec:soln_algorithm}.
 
-\subsection{KKT Conditions}
-Since \plp\ is a convex optimization problem, the KKT conditions for (\ref{eq:plp_det_equiv}) give the relation between primal and dual variables
-\begin{equation}
-	p_\omega = \frac{\lambda N_\omega}{\mu - h^\dagger_\omega(\x)}. \label{eq:kkt}
+\subsection{Primal-Dual Variable Relationships}
+The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives the method retrieving the worst-case distribution,
+\begin{equation} \label{eq:p_worst}
+	\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right).
 \end{equation}
-This is essentially the same condition identified in \cite{wang2010likelihood} for the newsvendor problem but for the more general case we consider here.
-
-\subsection{Relation to KL Divergence}
-The likelihood (\ref{eq:plp_primal_divergence}) and relative likelihood (\ref{eq:lrlp_rel_likelihood_constraint}) constraints can be written in the form of a Kullback-Leibler divergence condition, i.e., (\ref{eq:plp_primal_divergence}) can be rewritten as
-\[
-	\sum_{\omega=1}^n \frac{N_\omega}{N} \log\left( \frac{N_\omega/N}{p_\omega} \right) \leq \frac{1}{N} \log \frac{1}{\gamma'},
-\]
-where $\sum_{\omega=1}^n q_\omega \log \frac{q_\omega}{p_\omega}$ is the KL divergence $D_{KL}(q,p)$ of distributions $p = \{p_\omega\}_{\omega=1}^n$ and $q = \{q_\omega\}_{\omega=1}^n$.
-So the LRO constraint (\ref{eq:plp_primal_divergence}) essentially restricts the set of distributions to be sufficiently close to the empirical distribution in terms of the KL divergence.
+If $q_\omega = 0$, then either $p_\omega = 0$ or $\infty \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Level of Robustness}
@@ -319,6 +315,7 @@ The next (green) band has one $N_\omega = 0$, followed by red with two and cyan 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Classification of $\phi$-Divergences}
+\label{sec:classification}
 
 We present a classification of $\phi$-divergences into four types, resulting from an examination of the limiting behavior of $\phi(t)$ as $t \rightarrow 0$ and $t \rightarrow \infty$.
 Different classifications may be suitable to different problem types and desired qualities in the ambiguous model.
@@ -642,11 +639,11 @@ A proof of this proposition was given in \cite{love2013likelihood}.
 	\[
 		\frac{\mu^*_N - h^\dagger(\x^*_N)}{\lambda^*_N(N+1)} > 1.
 	\]
-	Using the KKT condition (\ref{eq:kkt}), this can be rewritten as (\ref{eq:cost_decrease_cond}).
+	Using the KKT condition (\ref{eq:p_worst}), this can be rewritten as (\ref{eq:cost_decrease_cond}).
 \end{proof}
 
 We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
-This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:kkt}.
+This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:p_worst}.
 
 Next, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
 Let $L = \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
@@ -670,7 +667,7 @@ Please see \cite{love2013likelihood} for a proof.
 		& \sum_\omega q_\omega = 1 \nonumber \\
 		& q_\omega \geq 0, \ \forall \omega, \nonumber
 	\end{align}
-	where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:kkt}). 
+	where we have introduced the dummy variables $q_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:p_worst}). 
 	Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations.
 	Note that $\min_{\omega \in L} \sum_{\omega \in L} q_\omega \leq \frac{N_L}{N}$, because the maximum likelihood distribution is always within the likelihood ambiguity set. We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
 
@@ -710,7 +707,7 @@ Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multi
 
 Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the \plp.
 The first two of these parameters are also parameters of the \plp\ problem (\ref{eq:plp_two_stage}).
-The third, $N_L$, is computed from the optimal solution of (\ref{eq:plp_two_stage}) via (\ref{eq:kkt}) and (\ref{eq:cost_decrease_cond}).
+The third, $N_L$, is computed from the optimal solution of (\ref{eq:plp_two_stage}) via (\ref{eq:p_worst}) and (\ref{eq:cost_decrease_cond}).
 As such, $N_L$ should be viewed as changing with $\gamma'$.
 In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
 This behavior is studied in Section \ref{sec:comp_results}.
@@ -731,7 +728,7 @@ Let $\Xi' \subset \Xi$ be a measure 1 set such that $\hat{p}^N_\omega(\xi) \righ
 
 \begin{proof}
 	Without loss of generality, we assume that $\ptrue_\omega > 0$ for all $\omega$.
-	This is valid because $\ptrue_\omega = 0 \Rightarrow \hat{p}^N_\omega = 0$, which implies $p_\omega = 0$ in the worst case distribution by (\ref{eq:kkt}).
+	This is valid because $\ptrue_\omega = 0 \Rightarrow \hat{p}^N_\omega = 0$, which implies $p_\omega = 0$ in the worst case distribution by (\ref{eq:p_worst}).
 	For simplicity, we additionally assume $\epsilon$ is chosen so that $\ptrue_\omega > \frac{\epsilon}{2}$ for all $\omega$.
 	
 	First, we note that $\max_\omega |p_\omega - \ptrue_\omega| \leq \max_\omega |p_\omega - \hat{p}^N_\omega| + \max_\omega |\hat{p}^N_\omega - \ptrue_\omega|$.
