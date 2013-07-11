@@ -552,59 +552,59 @@ The next theorem shows how to generate a convex combination of expectation and C
 	\]
 \end{proof}
 
-\subsection{Variation-type Divergences}
-
-The variation divergence is given by $\phi(t) = |t-1|$, which will result in piecewise-linear $\phi^*$.
-In general, $\phi$-divergences have a left-of-one range bounded by $\phi(0)$ and a right-of-one range bounded by $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-Consequently, we can restrict $\rho \leq 1$ for variation-type divergences.
-
-\subsubsection{Right-sided Variation}
-
-First, we can look only at the right-side of the variation, i.e., $\phi(t) = [t-1]^+$.
-This yields
-\[
-	\phi^*(s) = 
-	\begin{cases}
-		[s]^+ & s \leq 1 \\
-		\infty & s > 1.
-	\end{cases}
-\]
-The upper bound on $s$ yields $\frac{h_\omega(x)-\mu}{\lambda} \leq 1$ or $\lambda \geq \sup_\omega h_\omega(x) - \mu$.
-Then starting from (\ref{eq:basic_optimization}),
-\begin{align*}
-	\min \rho\lambda + \mu + \lambda \sum_\omega q_\omega \left[ \frac{h_\omega(x) - \mu}{\lambda} \right]^+ & = \min_{\lambda \geq \sup_\omega h_\omega(x) - \mu, \mu} \rho\lambda + \mu + \sum_\omega q_\omega \left[ h_\omega(x) - \mu \right]^+ \\
-	& = \min_\mu \rho(\sup_\omega h_\omega(x) - \mu) + \mu \e{\left[h(x)-\mu\right]^+} \\
-	& = \rho \sup_\omega h_\omega(x) + \min_\mu (1-\rho)\mu + \e{\left[h(x)-\mu\right]^+} \\
-	& = \rho \sup_\omega h_\omega(x) + (1-\rho) \left( \min_\mu \mu + \frac{1}{1-\rho}\e{\left[h(x)-\mu\right]^+}\right) \\
-	& = \rho \sup_\omega h_\omega(x) + (1-\rho) \mbox{CVaR}_\rho(h(x)).
-\end{align*}
-This time we get a convex combination between the supremum and CVaR.
-
-\subsubsection{Left-sided Variation}
-
-The results start getting much messier here.
-The left-sided variation is $\phi(t) = [1-t]^+$, which gives
-\[
-	\phi^*(s) = 
-	\begin{cases}
-		-1 & s < -1 \\
-		s & -1 \leq s \leq 0 \\
-		\infty & s > 0.
-	\end{cases}
-\]
-Once again, we have the condition $\mu \geq \sup_\omega h_\omega(x)$.
-The center linear portion will induce a CVaR-like behavior for $\frac{h_\omega(x)-\mu}{\lambda} \geq -1$, or $\mu - \lambda \leq h_\omega(x)$.
-However, the opposite condition behaves only as $\lambda$.
-Let $\bar{q} = \p{h_\omega(x) \geq \mu - \lambda}$, then using equation (\ref{eq:basic_optimization}),
-\begin{align*}
-	\min_{\lambda \geq 0,\mu} \rho\lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right) 
-	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + \mu - \lambda(1-\bar{q}) + \sum_{\omega : h_\omega(x) \geq \mu - \lambda} q_\omega (h_\omega(x) - \mu) \\
-	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + (1-\bar{q})(\mu-\lambda) + \sum_{\omega : h_\omega(x) \geq \mu - \lambda} q_\omega h_\omega(x) \\
-	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + (1-\bar{q})(\mu-\lambda) + \bar{q} \mbox{CVaR}_{1-\bar{q}}(h(x)).
-\end{align*}
-$\mu-\lambda$, being the quantity that defines $\bar{q}$, is like $\mbox{VaR}(h(x))$.
-I don't know that having VaR in there makes any sense, though.
-I also can't think of any other way to simplify the above.
+% \subsection{Variation-type Divergences}
+% 
+% The variation divergence is given by $\phi(t) = |t-1|$, which will result in piecewise-linear $\phi^*$.
+% In general, $\phi$-divergences have a left-of-one range bounded by $\phi(0)$ and a right-of-one range bounded by $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
+% Consequently, we can restrict $\rho \leq 1$ for variation-type divergences.
+% 
+% \subsubsection{Right-sided Variation}
+% 
+% First, we can look only at the right-side of the variation, i.e., $\phi(t) = [t-1]^+$.
+% This yields
+% \[
+% 	\phi^*(s) = 
+% 	\begin{cases}
+% 		[s]^+ & s \leq 1 \\
+% 		\infty & s > 1.
+% 	\end{cases}
+% \]
+% The upper bound on $s$ yields $\frac{h_\omega(x)-\mu}{\lambda} \leq 1$ or $\lambda \geq \sup_\omega h_\omega(x) - \mu$.
+% Then starting from (\ref{eq:basic_optimization}),
+% \begin{align*}
+% 	\min \rho\lambda + \mu + \lambda \sum_\omega q_\omega \left[ \frac{h_\omega(x) - \mu}{\lambda} \right]^+ & = \min_{\lambda \geq \sup_\omega h_\omega(x) - \mu, \mu} \rho\lambda + \mu + \sum_\omega q_\omega \left[ h_\omega(x) - \mu \right]^+ \\
+% 	& = \min_\mu \rho(\sup_\omega h_\omega(x) - \mu) + \mu \e{\left[h(x)-\mu\right]^+} \\
+% 	& = \rho \sup_\omega h_\omega(x) + \min_\mu (1-\rho)\mu + \e{\left[h(x)-\mu\right]^+} \\
+% 	& = \rho \sup_\omega h_\omega(x) + (1-\rho) \left( \min_\mu \mu + \frac{1}{1-\rho}\e{\left[h(x)-\mu\right]^+}\right) \\
+% 	& = \rho \sup_\omega h_\omega(x) + (1-\rho) \mbox{CVaR}_\rho(h(x)).
+% \end{align*}
+% This time we get a convex combination between the supremum and CVaR.
+% 
+% \subsubsection{Left-sided Variation}
+% 
+% The results start getting much messier here.
+% The left-sided variation is $\phi(t) = [1-t]^+$, which gives
+% \[
+% 	\phi^*(s) = 
+% 	\begin{cases}
+% 		-1 & s < -1 \\
+% 		s & -1 \leq s \leq 0 \\
+% 		\infty & s > 0.
+% 	\end{cases}
+% \]
+% Once again, we have the condition $\mu \geq \sup_\omega h_\omega(x)$.
+% The center linear portion will induce a CVaR-like behavior for $\frac{h_\omega(x)-\mu}{\lambda} \geq -1$, or $\mu - \lambda \leq h_\omega(x)$.
+% However, the opposite condition behaves only as $\lambda$.
+% Let $\bar{q} = \p{h_\omega(x) \geq \mu - \lambda}$, then using equation (\ref{eq:basic_optimization}),
+% \begin{align*}
+% 	\min_{\lambda \geq 0,\mu} \rho\lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right) 
+% 	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + \mu - \lambda(1-\bar{q}) + \sum_{\omega : h_\omega(x) \geq \mu - \lambda} q_\omega (h_\omega(x) - \mu) \\
+% 	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + (1-\bar{q})(\mu-\lambda) + \sum_{\omega : h_\omega(x) \geq \mu - \lambda} q_\omega h_\omega(x) \\
+% 	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + (1-\bar{q})(\mu-\lambda) + \bar{q} \mbox{CVaR}_{1-\bar{q}}(h(x)).
+% \end{align*}
+% $\mu-\lambda$, being the quantity that defines $\bar{q}$, is like $\mbox{VaR}(h(x))$.
+% I don't know that having VaR in there makes any sense, though.
+% I also can't think of any other way to simplify the above.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Value of Data} \label{sec:value}
