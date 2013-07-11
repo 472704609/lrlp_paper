@@ -18,7 +18,7 @@
 
 \author{David~Love and G\"{u}zin~Bayraksan}
 
-\title{Two-Stage Likelihood Robust Linear Program: Properties and Application to Water Allocation under Uncertainty}
+\title{Two-Stage $\phi$-Divergence Robust Linear Program: Properties and Application to Water Allocation under Uncertainty}
 \date{}
 
 % Frequently used general mathematics
@@ -54,7 +54,7 @@
 \renewcommand{\b}{\mathbf{b}}
 \renewcommand{\d}{\mathbf{d}}
 
-% Epiconvergence for LRLP-2
+% Epiconvergence for \plp
 \newcommand{\ptrue}{p^{\text{true}}}
 
 % Useful mathematics functions
@@ -67,6 +67,9 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 \newcommand{\st}{\mbox{s.t.}}
+
+% Naming shortcuts
+\newcommand{\plp}{$\phi$LP-2}
 
 \begin{document}
 
@@ -130,7 +133,7 @@ Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{LRLP-2 Formulation}
+\section{\plp\ Formulation}
 \label{sec:lrlp2}
 
 We begin with a two-stage stochastic linear program with recourse (SLP-2).
@@ -138,27 +141,27 @@ Let $\x$ be a vector of of first stage decision variables with cost vector $\c$,
 We assume a finite distribution given by $p_\omega$ with scenarios indexed by $\omega = 1, \dots, n$.
 The SLP-2 is
 \begin{align}
-	\min_\x \ & \left\{ \c\x + \sum_{\omega=1}^n p_\omega h^\dagger_\omega(\x) : A\X = b, \x \geq 0 \right\} \label{eq:slp_first_stage}% \\
+	\min_\x \ & \left\{ \c\x + \sum_{\omega=1}^n p_\omega h_\omega(\x) : A\x = b, \x \geq 0 \right\} \label{eq:slp_first_stage}% \\
 % 	\st \ & A\x = \b \nonumber  \\
 % 	&\ \ \ \x \geq 0 \nonumber
 \end{align}
 where
 \begin{align}
-	h^\dagger_\omega(\x) = \min_{y^\omega} \ & \left\{ \q^\omega y^\omega : D^\omega y^\omega = B^\omega \x + \d^\omega, y^\omega \geq 0 \right\} \label{eq:slp_second_stage}% \\
+	h_\omega(\x) = \min_{y^\omega} \ & \left\{ \q^\omega y^\omega : D^\omega y^\omega = B^\omega \x + \d^\omega, y^\omega \geq 0 \right\} \label{eq:slp_second_stage}% \\
 % 	\st \ & D^\omega y^\omega = B^\omega \x + \d^\omega \nonumber \\
 % 	& \ \ \ y^\omega \geq 0. \nonumber
 \end{align}
-We assume relatively complete recourse; i.e., the second-stage problems $h^\dagger_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem.
+We assume relatively complete recourse; i.e., the second-stage problems $h_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem; and that the second-stage problems $h_\omega(\x)$ are dual feasible for every feasible solution $\x$ of the first-stage problem..
 
 The SLP-2 formulation assumes that the distribution $\{p_\omega\}_{\omega=1}^n$ is known.
 However, in many applications, including our water planning, the distribution is itself unknown.
 One technique to deal with this is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions which is believed to contain the true distribution.
-In the likelihood robust formulation, we assume scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations. 
-In SLP-2, this would correspond to probability of scenario $\omega$ to be $\hat{p}^N_\omega = N_\omega / N$, which is the maximum likelihood distribution. 
-The ambiguity set, however, is defined by the set of distributions with sufficiently high empirical likelihood $\prod_{\omega=1}^n p_\omega^{N_\omega}$. 
-By replacing the specific distribution in SLP-2 with a set of distributions with  high empirical likelihood, we create a model that we refer to as two-stage likelihood robust linear program with recourse (LRLP-2).
+Ben-Tal et.\ al.\ \cite{bental2011robust} proposed at the ambiguity set could be generated with $\phi$-divergences, including only those distributions whose divergence from the nominal distribution $\{q_\omega\}_{\omega=1}^n$ is sufficiently small.
+Throughout much of this paper, we assume that $\{q_\omega\}$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, leading to the empirical distribution $\hat{p}^N_\omega = N_\omega / N$.
+In SLP-2, this would correspond to probability of scenario $\omega$ to be $\hat{p}_\omega$.
+By replacing the specific distribution in SLP-2 with a set of distributions with sufficiently close to the nominal distribution in the $\phi$-divergence sense, we create a model that we refer to as two-stage $\phi$-divergence linear program with recourse (\plp).
 
-To derive the LRLP-2, we begin by writing SLP-2 given in \eqref{eq:slp_first_stage}--\eqref{eq:slp_second_stage} in extensive form
+To derive the \plp, we begin by writing SLP-2 given in \eqref{eq:slp_first_stage}--\eqref{eq:slp_second_stage} in extensive form
 \[
 	\begin{array}{rrrl}
 		\min_{\x,y^\omega} \ & \c\x & + \sum_\omega p_\omega \q^\omega y^\omega \label{eq:slp2cost} \\
@@ -168,72 +171,61 @@ To derive the LRLP-2, we begin by writing SLP-2 given in \eqref{eq:slp_first_sta
 		& & y^\omega & \geq 0,\ \forall \omega. \nonumber
 	\end{array}
 \]
-The SLP-2 formulation is then augmented by the set of distributions with sufficiently high likelihood. 
-%selecting the worst-case distribution $p_\omega$ over the set of distributions with sufficiently high likelihood.
-%That is, instead of using a specific probability distribution as in SLP-2---for instance, by maximum likelihood estimation that results in $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$---all distributions that have sufficiently high empirical likelihood values are considered.
-To be robust against all these possible distributions, the distribution that results in the maximum expected cost is considered. 
+The SLP-2 formulation is then augmented by the set of distributions with sufficiently low divergence from $\{q_\omega\}$.
+To be robust against all these possible distributions, the distribution that results in the maximum expected cost is considered.
 Then, the objective function is minimized with respect to this worst-case distribution selected from the ambiguity set of distributions.
-The resulting minimax formulation of LRLP-2 is
+The resulting minimax formulation of \plp\ is
 \begin{align}
-	\min_{\x,y^\omega} \max_p \ & \c\x + \sum_\omega p_\omega \q^\omega y^\omega \label{eq:lrlp_primal}\\
+	\min_{\x,y^\omega} \max_p \ & \c\x + \sum_\omega p_\omega \q^\omega y^\omega \label{eq:plp_primal}\\
 	\st \ & A\x = \b, \x \geq 0 \nonumber \\
 	& -B^\omega \x + D^\omega y^\omega = \d^\omega,\ \forall \omega \nonumber \\
-	& \sum_\omega N_\omega \log p_\omega \geq \gamma \label{eq:lrlp_primal_liklihood} \\
-	& \sum_\omega p_\omega = 1 \label{eq:lrlp_primal_probability} \\
+	& \sum_\omega q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho \label{eq:plp_primal_divergence} \\
+	& \sum_\omega p_\omega = 1 \label{eq:plp_primal_probability} \\
 	& \x \geq 0 \nonumber \\
 	& y^\omega, p_\omega \geq 0,\ \forall \omega. \label{eq:nonneg}
 \end{align}
-Following Wang et al.\ \cite{wang2010likelihood}, we have introduced the {\it likelihood parameter} $\gamma$, and used it to construct the ambiguity set of distributions $\{p_\omega\}_{\omega=1}^{n}$ satisfying constraints (\ref{eq:lrlp_primal_liklihood}), (\ref{eq:lrlp_primal_probability}), and (\ref{eq:nonneg}).
-Note the likelihood constraint \eqref{eq:lrlp_primal_liklihood} is equivalent to $\prod_{\omega=1}^n p_\omega^{N_\omega} \geq e^\gamma$, which explicitly states that the empirical likelihood should be above a certain desired level dictated by $e^\gamma$. 
-Constraint \eqref{eq:lrlp_primal_probability}, along with nonnegativity constraints on $p_\omega$ given in (\ref{eq:nonneg}), simply ensure that $\{p_\omega\}_{\omega=1}^{n}$ constitutes a probability distribution. 
-Let $0 \leq \gamma' \leq 1$ be the \emph{relative likelihood parameter} that expresses $\gamma$ as a {\it proportion} of the maximum likelihood; i.e., $\gamma = \log( \gamma' \prod_\omega (\tfrac{N_\omega}{N})^{N_\omega})$.
-Using $\gamma'$, constraint (\ref{eq:lrlp_primal_liklihood}) can be rewritten as
-\begin{equation} \label{eq:lrlp_rel_likelihood_constraint}
-	\sum_{\omega=1}^n N_\omega \log\left( \frac{p_\omega}{N_\omega/N} \right) \geq \log \gamma'.
-\end{equation}
 
-Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:lrlp_primal_liklihood}) and (\ref{eq:lrlp_primal_probability}), respectively, yields
+Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, yields
 \begin{align*}
-	\min_{\lambda,\mu} \ & \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda(\log\lambda - \log(\mu-\q^\omega y^\omega)) \\
+	\min_{\lambda,\mu} \ & \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left(\frac{\q^\omega y^\omega - \mu}{\lambda}\right) \\
 	\st \ & \lambda \geq 0 \\
-	& \mu \geq \q^\omega y^\omega, \ \forall \omega,
+	& \frac{\q^\omega y^\omega - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega,
 \end{align*}
-where $\bar{N} = N(\log N - 1) - \log\gamma'$.
-Combining the two minimizations gives LRLP-2 in extensive form
+See Theorem 1 of \cite{bental2011robust} for a derivation of the derivation of the dual problem.
+Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
+
+Combining the two minimizations gives \plp\ in extensive form
 \begin{align}
-	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda(\log\lambda - \log(\mu-\q^\omega y^\omega)) \nonumber \\
+	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \rho \lambda + \sum_\omega q_\omega \phi^*\left(\frac{\q^\omega y^\omega - \mu}{\lambda}\right) \nonumber \\
 	\st \ & A\x = \b \nonumber \\
-	& -B^\omega \x + D^\omega y^\omega = \d^\omega,\ \forall \omega \label{eq:lrlp_det_equiv} \\
-	& \mu \geq \q^\omega y^\omega, \ \forall \omega \nonumber \\
+	& -B^\omega \x + D^\omega y^\omega = \d^\omega,\ \forall \omega \label{eq:plp_det_equiv} \\
+	& \frac{\q^\omega y^\omega - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \nonumber \\
 	& \x,\lambda,y^\omega \geq 0, \ \forall \omega. \nonumber
 \end{align}
 
-Finally, we wish to return the LRLP-2 to two-stage formulation.
-All terms inside the sum over $\omega$ will be put into the second stage.
-To make the formulation as similar to SLP-2 as possible, we choose to express the second stage as an expected value using the maximum likelihood distribution $\frac{N_\omega}{N}$.
-The formulation becomes
+Finally, we wish to return the \plp\ to two-stage formulation.
 \begin{align}
-	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \bar{N}\lambda + \sum_\omega \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu) \nonumber \\
-	\st \ & A\x = \b \label{eq:lrlp_two_stage} \\
+	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \nonumber \\
+	\st \ & A\x = \b \label{eq:plp_two_stage} \\
+	& \frac{\q^\omega y^\omega - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \label{eq:plp_feas_constraint}\\
 	& \x,\lambda \geq 0, \nonumber
 \end{align}
 where
 \begin{align}
-	h_\omega(\x,\lambda,\mu) = \min_{y^\omega} \ & N\lambda (\log\lambda - \log(\mu - \q^\omega y^\omega)) \label{eq:lrlp_second_stage} \\
+	h_\omega(\x,\lambda,\mu) = \q^\omega y^\omega \label{eq:plp_second_stage} \\
 	\st \ & -B^\omega \x + D^\omega y^\omega = \d^\omega \nonumber \\
-	& \mu - \q^\omega y^\omega \geq 0 \label{eq:lrlp_feas_constraint} \\
 	& y^\omega \geq 0. \nonumber
 \end{align}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Basic Properties of LRLP-2}
+\section{Basic Properties of \plp}
 \label{sec:properties}
 
-In this section, we list some basic properties of LRLP-2.
+In this section, we list some basic properties of \plp.
 Most of these have already been noted in \cite{wang2010likelihood} and \cite{bental2011robust}, but we list them for completeness and some of these properties help with our special solution method.
 
 \subsection{Coherent Risk Measure}
-As noted in \cite{wang2010likelihood}, the LRLP-2 problem can be viewed as minimizing a coherent risk measure.
+As noted in \cite{wang2010likelihood}, the \plp\ problem can be viewed as minimizing a coherent risk measure.
 A coherent risk measure (in the basic sense), as defined in \cite{rockafellar2007coherent}, is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that
 \begin{enumerate}
 	\item ${\cal R}(C) = C$ for all constants $C$,
@@ -243,46 +235,46 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 \end{enumerate}
 
 \begin{proposition}
-	LRLP-2 is equivalent to minimizing a coherent risk measure.
+	\plp\ is equivalent to minimizing a coherent risk measure.
 \end{proposition}
 
 \begin{proof}
 	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \cite{rockafellar2007coherent}.
-	We will show that LRLP-2 can be written in the form of a risk envelope in the primal form (\ref{eq:lrlp_primal}) with the change of variables $Q_\omega = \frac{p_\omega}{1/n}$.
+	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $Q_\omega = \frac{p_\omega}{1/n}$.
 	Throughout the proof, all expectations are taken with respect to the uniform distribution.
 	
-	First, probability constraint (\ref{eq:lrlp_primal_probability}) can be written as $\e{Q} = 1$, where $Q$ is the random variable taking values $Q_\omega$ with equal probability.
-	Then the likelihood constraint (\ref{eq:lrlp_primal_liklihood}) becomes $\sum_{\omega=1}^n N_\omega \log Q_\omega \geq \gamma - N \log n$.
+	First, probability constraint (\ref{eq:plp_primal_probability}) can be written as $\e{Q} = 1$, where $Q$ is the random variable taking values $Q_\omega$ with equal probability.
+	Then the likelihood constraint (\ref{eq:plp_primal_divergence}) becomes $\sum_{\omega=1}^n N_\omega \log Q_\omega \geq \gamma - N \log n$.
 	Combining these yields the set ${\cal Q} = \{Q | \e{Q} = 1, \sum_{\omega=1}^n N_\omega \log Q_\omega \geq \gamma - N \log n \}$, a closed and convex risk envelope.
-	Finally, we can rewrite the inner maximization of (\ref{eq:lrlp_primal}) as $\max_{Q \in {\cal Q}} \e{Qh^\dagger(x)}$, where $h^\dagger(x)$ is the random variables defined by $\{h^\dagger_\omega(x)\}$.
-	Thus we see that LRLP-2 is the minimum of a coherent risk measure.
+	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{Q \in {\cal Q}} \e{Qh^\dagger(x)}$, where $h^\dagger(x)$ is the random variables defined by $\{h^\dagger_\omega(x)\}$.
+	Thus we see that \plp\ is the minimum of a coherent risk measure.
 \end{proof}
 
-Note that being a coherent risk measure implies that LRLP-2 is a convex problem.
+Note that being a coherent risk measure implies that \plp\ is a convex problem.
 The convexity of LRO was also noted in \cite{wang2010likelihood}.
 
 \subsection{Time Structure}
-LRLP-2 has the same second-stage problems as SLP-2.
-Since $\log$ is uniformly increasing, we can rewrite the second stage problem (\ref{eq:lrlp_second_stage}) as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
-Thus we can state the second stage of LRLP-2 in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h^\dagger_\omega(\x))\right]$.
+\plp\ has the same second-stage problems as SLP-2.
+Since $\log$ is uniformly increasing, we can rewrite the second stage problem (\ref{eq:plp_second_stage}) as $h_\omega(\x,\lambda,\mu) = (-N\lambda) \log(\mu - \min_{y^\omega \in Y^\omega} \q^\omega y^\omega )$ with $Y^\omega = \{y^\omega | -B^\omega \x + D^\omega y^\omega = \d^\omega, \mu - \q^\omega y^\omega \geq 0, y^\omega \geq 0\}$.
+Thus we can state the second stage of \plp\ in terms of the second stage of SLP-2, $h_\omega(\x,\lambda,\mu) = N\lambda\left[\log\lambda - \log(\mu - h^\dagger_\omega(\x))\right]$.
 
 This preservation of the time structure allows us to easily convert \mbox{(sub-)derivatives} of $h^\dagger_\omega(\x)$ to \mbox{(sub-)derivatives} of $h_\omega(\x,\lambda,\mu)$.
 We will use this in the decomposition method provided in Section \ref{sec:soln_algorithm}.
 
 \subsection{KKT Conditions}
-Since LRLP-2 is a convex optimization problem, the KKT conditions for (\ref{eq:lrlp_det_equiv}) give the relation between primal and dual variables
+Since \plp\ is a convex optimization problem, the KKT conditions for (\ref{eq:plp_det_equiv}) give the relation between primal and dual variables
 \begin{equation}
 	p_\omega = \frac{\lambda N_\omega}{\mu - h^\dagger_\omega(\x)}. \label{eq:kkt}
 \end{equation}
 This is essentially the same condition identified in \cite{wang2010likelihood} for the newsvendor problem but for the more general case we consider here.
 
 \subsection{Relation to KL Divergence}
-The likelihood (\ref{eq:lrlp_primal_liklihood}) and relative likelihood (\ref{eq:lrlp_rel_likelihood_constraint}) constraints can be written in the form of a Kullback-Leibler divergence condition, i.e., (\ref{eq:lrlp_primal_liklihood}) can be rewritten as
+The likelihood (\ref{eq:plp_primal_divergence}) and relative likelihood (\ref{eq:lrlp_rel_likelihood_constraint}) constraints can be written in the form of a Kullback-Leibler divergence condition, i.e., (\ref{eq:plp_primal_divergence}) can be rewritten as
 \[
 	\sum_{\omega=1}^n \frac{N_\omega}{N} \log\left( \frac{N_\omega/N}{p_\omega} \right) \leq \frac{1}{N} \log \frac{1}{\gamma'},
 \]
 where $\sum_{\omega=1}^n q_\omega \log \frac{q_\omega}{p_\omega}$ is the KL divergence $D_{KL}(q,p)$ of distributions $p = \{p_\omega\}_{\omega=1}^n$ and $q = \{q_\omega\}_{\omega=1}^n$.
-So the LRO constraint (\ref{eq:lrlp_primal_liklihood}) essentially restricts the set of distributions to be sufficiently close to the empirical distribution in terms of the KL divergence.
+So the LRO constraint (\ref{eq:plp_primal_divergence}) essentially restricts the set of distributions to be sufficiently close to the empirical distribution in terms of the KL divergence.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Level of Robustness}
@@ -296,7 +288,7 @@ Thus, to choose $\gamma'$ to generate a $100(1-\alpha)\%$ confidence region on t
 \end{equation}
 Note that $\gamma'$ constant asymptotically produces constant-size confidence regions.
 
-Wang et. al. \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:lrlp_primal_liklihood}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
+Wang et. al. \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:plp_primal_divergence}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
 Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}^N_\omega = \frac{N_\omega}{N}$ as fixed, Wang et. al. \cite{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
 This is the Dirichlet distribution $Dir(\beta)$, which has density
 \[
@@ -339,7 +331,7 @@ and consider $t \rightarrow \infty$.
 If both sides of (\ref{eq:self_adjoint_classification}) are finite in the limit, then we see a similarity between the boundedness of $\phi(t)$ for $t < 1$ and linear growth of $\phi(t)$ for $t > 1$.
 On the other hand, infinite limits of (\ref{eq:self_adjoint_classification}) indicate a similarity between superlinear growth of $\phi(t)$ for $t > 1$ and no bound on $\phi(t)$ for $t < 1$.
 
-In the LRLP-2, $\phi$ has arguments given by ratios of probabilities, $\tfrac{p_\omega}{q_\omega}$, and the limits $t \rightarrow 0$ and $t \rightarrow \infty$ correspond to the cases when $p_\omega = 0$ and $q_\omega = 0$, respectively.
+In the \plp, $\phi$ has arguments given by ratios of probabilities, $\tfrac{p_\omega}{q_\omega}$, and the limits $t \rightarrow 0$ and $t \rightarrow \infty$ correspond to the cases when $p_\omega = 0$ and $q_\omega = 0$, respectively.
 Consider each of these limiting cases:
 \begin{itemize}
 	\item $p_\omega = 0$ but $q_\omega > 0$ ($\lim_{t \searrow 0} \phi(t)$):
@@ -609,13 +601,13 @@ The next theorem shows how to generate a convex combination of expectation and C
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Value of Data} \label{sec:value}
 
-With a data driven formulation such as LRLP-2, it is natural to ask how the behavior changes as more data is gathered.
-In particular, for robust formulations like LRLP-2 one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
-For LRLP-2, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst case distribution from the ambiguity set.  
+With a data driven formulation such as \plp, it is natural to ask how the behavior changes as more data is gathered.
+In particular, for robust formulations like \plp\ one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
+For \plp, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst case distribution from the ambiguity set.  
 In this section, we present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
 
 \begin{proposition}
-	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the LRLP-2 if the following condition is satisfied
+	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied
 	\begin{equation} \label{eq:cost_decrease_cond}
 		\frac{N_{\hat{\omega}}}{N} > \left( \frac{N+1}{N} \right) p_{\hat{\omega}},
 	\end{equation}
@@ -625,7 +617,7 @@ In this section, we present a simple method of estimating the probability that t
 A proof of this proposition was given in \cite{love2013likelihood}.
 
 \begin{proof}
-	Consider again the deterministic equivalent formulation of LRLP-2 in (\ref{eq:lrlp_det_equiv}).
+	Consider again the deterministic equivalent formulation of \plp\ in (\ref{eq:plp_det_equiv}).
 	Let $f_N(\x,\mu,\lambda) =  \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda$ $(\log\lambda$ $- \log(\mu-h^\dagger(\x)))$ be the objective function, and $z_N = \min_{\x,\mu,\lambda} f_N(\x,\mu,\lambda)$.
 	We wish to find a simple estimate of the decrease in the optimal cost associated with taking an additional sample, $z_N - z_{N+1}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
 
@@ -658,7 +650,7 @@ This is equivalent to saying that an additional observation of $\hat{\omega}$ wi
 
 Next, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
 Let $L = \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$, where $p_\omega$ is the worst-case distribution discussed above.
-That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in LRLP-2.
+That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in \plp.
 
 \begin{proposition}
 	An approximate lower bound on the probability of selecting a scenario in the set $L= \left\{ \omega : \frac{N_{\omega}}{N} > \left( \frac{N+1}{N} \right) p_\omega \right\}$ can be found by solving 
@@ -671,7 +663,7 @@ That is, $L$ gives the set of scenarios that, if sampled one more observation, w
 Please see \cite{love2013likelihood} for a proof.
 
 \begin{proof}
-	We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate LRLP-2 given in (\ref{eq:lrlp_primal_liklihood}) to solve the minimization problem
+	We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate \plp\ given in (\ref{eq:plp_primal_divergence}) to solve the minimization problem
 	\begin{align}
 		\min_{\omega \in L} \ & \sum_{\omega \in L} q_\omega \nonumber \\
 		\mbox{s.t.} & \sum_\omega N_\omega \log q_\omega \geq \gamma \label{eq:lb_probability} \\
@@ -693,7 +685,7 @@ Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multi
 \begin{figure}
 	\centering
 	\includegraphics[width=.5\textwidth]{images/prob_dec_cost_v_nl_n_20}
-	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
+	\caption{The probability that an additional sample decreases the optimal cost of the \plp\ as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
 	\label{fig:prob_cost_decrease_nd_n}
 \end{figure}
 
@@ -713,21 +705,21 @@ Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multi
 		}
 	   \label{fig:prob_cost_decrease_gp_multiple}
 	\end{subfigure}%
-	\caption{The probability that an additional sample decreases the optimal cost of the LRLP-2 as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
+	\caption{The probability that an additional sample decreases the optimal cost of the \plp\ as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
 \end{figure}
 
-Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the LRLP-2.
-The first two of these parameters are also parameters of the LRLP-2 problem (\ref{eq:lrlp_two_stage}).
-The third, $N_L$, is computed from the optimal solution of (\ref{eq:lrlp_two_stage}) via (\ref{eq:kkt}) and (\ref{eq:cost_decrease_cond}).
+Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the \plp.
+The first two of these parameters are also parameters of the \plp\ problem (\ref{eq:plp_two_stage}).
+The third, $N_L$, is computed from the optimal solution of (\ref{eq:plp_two_stage}) via (\ref{eq:kkt}) and (\ref{eq:cost_decrease_cond}).
 As such, $N_L$ should be viewed as changing with $\gamma'$.
 In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
 This behavior is studied in Section \ref{sec:comp_results}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Asymptotic Analysis of LRLP-2}
+\section{Asymptotic Analysis of \plp}
 \label{sec:epiconvergence}
 
-We now wish to show that the optimal value and solution of LRLP-2 converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\ptrue$.
+We now wish to show that the optimal value and solution of \plp\ converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\ptrue$.
 We begin by showing that the worst-case distribution converges weakly to the true distribution as $N \rightarrow \infty$.
 
 Let the probability space $(\Xi,{\cal F},\P^\infty)$ be the space associated with taking infinitely many samples from the distribution $\ptrue$.
@@ -763,23 +755,23 @@ Let $\Xi' \subset \Xi$ be a measure 1 set such that $\hat{p}^N_\omega(\xi) \righ
 	Then choose $N'$ to satisfy $\min_\omega \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{1}{N'} \log\left(\frac{1}{\gamma'}\right)$.
 \end{proof}
 
-Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:lrlp_primal}) converge weakly to $\ptrue$.
-In the next theorem, we establish the proof that the optimal value and solution of LRLP-2 converges to that of the SLP-2 with distribution $\ptrue$ by establishing the epiconvergence of LRLP-2 to SLP-2.
+Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\ptrue$.
+In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\ptrue$ by establishing the epiconvergence of \plp\ to SLP-2.
 \begin{theorem}
-	LRLP-2 (\ref{eq:lrlp_two_stage}) epiconverges to SLP-2 (\ref{eq:slp_first_stage}) with distribution $p = \ptrue$.
+	\plp\ (\ref{eq:plp_two_stage}) epiconverges to SLP-2 (\ref{eq:slp_first_stage}) with distribution $p = \ptrue$.
 \end{theorem}
 
 \begin{proof}
-	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:lrlp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ and lower semicontinuous and locally lower Lipschitz with respect to $x$.
+	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ and lower semicontinuous and locally lower Lipschitz with respect to $x$.
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Decomposition-Based Solution Method} \label{sec:soln_algorithm}
 
-As the model gets larger, as in our water application presented in Section~\ref{sec:comp_results}, a direct solution of LRLP-2 becomes computationally expensive. 
-Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. In this section, we propose a Bender's decomposition-based method for solving LRLP-2.
-Our algorithm uses the LRLP-2 second-stage problems $h_\omega(\x,\lambda,\mu)$ (\ref{eq:lrlp_second_stage}) to form the cuts, ensuring a linear master problem.
-The algorithm removes constraint (\ref{eq:lrlp_feas_constraint}) from the second-stage problem (\ref{eq:lrlp_second_stage}) and exchanges it with a series of feasibility constraints (or cuts) in the first-stage problem.
+As the model gets larger, as in our water application presented in Section~\ref{sec:comp_results}, a direct solution of \plp\ becomes computationally expensive. 
+Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. In this section, we propose a Bender's decomposition-based method for solving \plp.
+Our algorithm uses the \plp\ second-stage problems $h_\omega(\x,\lambda,\mu)$ (\ref{eq:plp_second_stage}) to form the cuts, ensuring a linear master problem.
+The algorithm removes constraint (\ref{eq:plp_feas_constraint}) from the second-stage problem (\ref{eq:plp_second_stage}) and exchanges it with a series of feasibility constraints (or cuts) in the first-stage problem.
 Making this change ensures that the second-stage problems are solved using the formulation of $h^\dagger_\omega(\x)$ for SLP-2 given in  (\ref{eq:slp_second_stage}), and is more efficient.
 The master problem is given by
 \begin{align}
@@ -789,14 +781,14 @@ The master problem is given by
 	& \mu \geq M_k \x + m_k, \ k \in K \nonumber \\
 	& \x,\lambda \geq 0, \nonumber
 \end{align}
-where $T_j (\x,\lambda,\mu)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:lrlp_feas_constraint}), and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
+where $T_j (\x,\lambda,\mu)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}), and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
 The proposed algorithm follows.
 For details on its derivation, see \cite{love2013likelihood}.
 
 \subsection{Objective Cuts}
 
 Let $(\xh,\lh,\mh)$ be the candidate solution from the master problem (\ref{eq:master_problem}).
-An objective cut can be computed by solving the SLP-2 subproblems $h^\dagger_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the LRLP-2 subproblems as
+An objective cut can be computed by solving the SLP-2 subproblems $h^\dagger_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the \plp\ subproblems as
 \begin{align*}
 	\dfrac{\partial h_\omega}{\partial \x}(\xh,\lh,\mh) & = \left(\dfrac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega \\
 	\dfrac{\partial h_\omega}{\partial \lambda}(\xh,\lh,\mh) & = N + N\log\lh - N \log(\mh - h^\dagger_\omega(\xh)) \\
@@ -836,12 +828,12 @@ and setting $U_\omega(\x,\mu) = 0$ to find a feasible solution gives the feasibi
 \]
 
 Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
-This can be done quickly by minimizing the objective function of (\ref{eq:lrlp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$.
+This can be done quickly by minimizing the objective function of (\ref{eq:plp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$.
 We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h^\dagger_\omega(\xh)} = 1$ with Newton's method.
 
 \subsection{Decomposition Algorithm}
 
-We solve the LRLP-2 with the following decomposition algorithm with tolerance level $\texttt{TOL}$
+We solve the \plp\ with the following decomposition algorithm with tolerance level $\texttt{TOL}$
 
 % \begin{figure}
 	\begin{algorithmic}
@@ -868,7 +860,7 @@ We solve the LRLP-2 with the following decomposition algorithm with tolerance le
 			\EndIf
 		\EndWhile
 	\end{algorithmic}
-% 	\caption{Proposed Bender's Decomposition algorithm for solving LRLP-2}
+% 	\caption{Proposed Bender's Decomposition algorithm for solving \plp}
 % 	\label{fig:algorithm}
 % \end{figure}
 
@@ -887,7 +879,7 @@ This must be satisfied in addition to the original condition $z_u - z_l < \textt
 \subsection{Generalized Network Water Model} 
 \label{ssec:network_model}
 
-We applied LRLP-2 to a multi-period generalized network flow model of Colorado River water allocation in Tucson, defined by a set of nodes and directed arcs $(N,\: A)$.
+We applied \plp\ to a multi-period generalized network flow model of Colorado River water allocation in Tucson, defined by a set of nodes and directed arcs $(N,\: A)$.
 The nodes represent available water supply from the Colorado River, water treatment plants, reservoirs, and water demand sites.
 The arcs represent the conveyance system (pipes, etc.) that carry water between the nodes. 
 Water can be stored in between time periods in reservoirs to meet future demands. 
@@ -926,9 +918,9 @@ and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower a
 % In the first stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply/demand parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
 % In the second stage, we denote the decisions as $\y^\omega$, the costs as $\q^\omega$, the supply/demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.
 
-% Using the generalized network model (\ref{eq:gen_network_two_stage}) of Colorado River water allocation in the southeastern portion of Tucson, we created a likelihood robust water allocation problem of the form LRLP-2.
+% Using the generalized network model (\ref{eq:gen_network_two_stage}) of Colorado River water allocation in the southeastern portion of Tucson, we created a likelihood robust water allocation problem of the form \plp.
 % The southeastern portion of Tucson is a newly developing area and is expected to grow considerably. 
-% The LRLP-2 water allocation model would help authorities with future water plans in this area while being robust to uncertainties in water supplies and demands.
+% The \plp\ water allocation model would help authorities with future water plans in this area while being robust to uncertainties in water supplies and demands.
 
 The model has a total of $P = 41$ time periods, representing years 2010--2050. 
 %, with projections coming from studies WISP \cite{??} and TAZ \cite{??}.
@@ -948,7 +940,7 @@ We applied the decomposition-based solution algorithm presented in Section \ref{
 
 Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.
 When $\gamma'$ is close to $1$, we use the maximum likelihood distribution, which has equal $\tfrac{1}{4}$ probabilities on each of the four scenarios.
-As $\gamma'$ is decreased, the ambiguity set increases, and the worst-case distribution used by LRLP-2 changes.
+As $\gamma'$ is decreased, the ambiguity set increases, and the worst-case distribution used by \plp\ changes.
 It gives higher than $\tfrac{1}{4}$ probability to the two high-population scenarios and lower than $\tfrac{1}{4}$ probability to the two low-population scenarios, making the solution more robust to costly scenarios.
 Note that the scenarios fall into two similar pairs because the cost of each scenario depends strongly on the projected demand but only weakly on the projected supply of Colorado River water.
 A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation) in an effort to meet demands in a least-costly way.
@@ -994,10 +986,10 @@ As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabiliti
 \section{Conclusion and Future Work}
 \label{sec:concl}
 
-In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of Wang et al.\ \cite{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted LRLP-2.
+In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of Wang et al.\ \cite{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted \plp.
 The LRO models use the empirical likelihood function to define an ambiguity set of probability distributions using observed data and optimize the worst-case expected cost with respect to this likelihood ambiguity set.
 We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution. 
-We have also provided a Bender's decomposition-based solution algorithm for the LRLP-2 and applied this method to planning future water distribution in Tucson, Arizona.
+We have also provided a Bender's decomposition-based solution algorithm for the \plp\ and applied this method to planning future water distribution in Tucson, Arizona.
 
 Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
 In addition to more varied estimates for future population, we will integrate climate change predictions into the model to generate scenarios for future water supply from the Colorado River. 
