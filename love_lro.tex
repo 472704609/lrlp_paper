@@ -615,14 +615,14 @@ A proof of this proposition was given in \cite{love2013likelihood}.
 
 \begin{proof}
 	Consider again the deterministic equivalent formulation of \plp\ in (\ref{eq:plp_det_equiv}).
-	Let $f_N(\x,\mu,\lambda) =  \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda$ $(\log\lambda$ $- \log(\mu-h^\dagger(\x)))$ be the objective function, and $z_N = \min_{\x,\mu,\lambda} f_N(\x,\mu,\lambda)$.
+	Let $f_N(\x,\mu,\lambda) =  \c\x + \mu + \bar{N}\lambda + \sum_\omega N_\omega\lambda$ $(\log\lambda$ $- \log(\mu-h(\x)))$ be the objective function, and $z_N = \min_{\x,\mu,\lambda} f_N(\x,\mu,\lambda)$.
 	We wish to find a simple estimate of the decrease in the optimal cost associated with taking an additional sample, $z_N - z_{N+1}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
 
 	Let $\x^*_N, \mu^*_N,\lambda^*_N \in \argmin f_N(\x,\mu,\lambda)$ be optimal solutions to the $N$-sample problem.
 	Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
 	Let $\hat{\omega}$ be the scenario that is selected with the additional sample, then
 	\[
-		z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) = \left[ \overline{N} - \overline{N+1} - \log \lambda^*_N + \log(\mu^*_N - h^\dagger_{\hat{\omega}}(\x^*_N)) \right] \lambda^*_N.
+		z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) = \left[ \overline{N} - \overline{N+1} - \log \lambda^*_N + \log(\mu^*_N - h_{\hat{\omega}}(\x^*_N)) \right] \lambda^*_N.
 	\]
 	We can bound $\overline{N} - \overline{N+1} = N\log N - (N+1)\log(N+1) + 1$ by using the tangent lines
 	\[
@@ -632,12 +632,12 @@ A proof of this proposition was given in \cite{love2013likelihood}.
 
 	Combining these results gives the condition
 	\[
-		z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) \geq \left[ -\log(N+1) - \log\lambda^*_N + \log(\mu^*_N-h^\dagger(\x^*_N))\right]\lambda^*_N > 0.
+		z_N - f_{N+1}(\x^*_N,\mu^*_N,\lambda^*_N) \geq \left[ -\log(N+1) - \log\lambda^*_N + \log(\mu^*_N-h(\x^*_N))\right]\lambda^*_N > 0.
 	\]
 	Note that $\lambda^*_N > 0$, so to guarantee a drop in optimal cost we must show that the first term is positive.
 	This then simplifies to
 	\[
-		\frac{\mu^*_N - h^\dagger(\x^*_N)}{\lambda^*_N(N+1)} > 1.
+		\frac{\mu^*_N - h(\x^*_N)}{\lambda^*_N(N+1)} > 1.
 	\]
 	Using the KKT condition (\ref{eq:p_worst}), this can be rewritten as (\ref{eq:cost_decrease_cond}).
 \end{proof}
@@ -767,66 +767,68 @@ In the next theorem, we establish the proof that the optimal value and solution 
 
 As the model gets larger, as in our water application presented in Section~\ref{sec:comp_results}, a direct solution of \plp\ becomes computationally expensive. 
 Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. In this section, we propose a Bender's decomposition-based method for solving \plp.
-Our algorithm uses the \plp\ second-stage problems $h_\omega(\x,\lambda,\mu)$ (\ref{eq:plp_second_stage}) to form the cuts, ensuring a linear master problem.
-The algorithm removes constraint (\ref{eq:plp_feas_constraint}) from the second-stage problem (\ref{eq:plp_second_stage}) and exchanges it with a series of feasibility constraints (or cuts) in the first-stage problem.
-Making this change ensures that the second-stage problems are solved using the formulation of $h^\dagger_\omega(\x)$ for SLP-2 given in  (\ref{eq:slp_second_stage}), and is more efficient.
+The algorithm removes feasibility constraint (\ref{eq:plp_feas_constraint})  and exchanges it with a series of feasibility cuts in the first-stage problem.
 The master problem is given by
 \begin{align}
-	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \bar{N}\lambda + \theta \label{eq:master_problem}\\
+	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \theta \label{eq:master_problem}\\
 	\st \ & A\x = \b \nonumber \\
 	& \theta \geq T_j (\x,\lambda,\mu)^T + t_j, \ j \in J \nonumber \\
-	& \mu \geq M_k \x + m_k, \ k \in K \nonumber \\
+	& \mu + \bar{s}\lambda \geq M_k \x + m_k, \ k \in K \nonumber \\
 	& \x,\lambda \geq 0, \nonumber
 \end{align}
-where $T_j (\x,\lambda,\mu)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}), and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
+where $T_j (\x,\mu,\lambda)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}) if $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} < \infty$, and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
 The proposed algorithm follows.
-For details on its derivation, see \cite{love2013likelihood}.
 
 \subsection{Objective Cuts}
 
-Let $(\xh,\lh,\mh)$ be the candidate solution from the master problem (\ref{eq:master_problem}).
-An objective cut can be computed by solving the SLP-2 subproblems $h^\dagger_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the \plp\ subproblems as
+Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}), and let 
+\[
+	h^\dagger_\omega(\x,\mu,\lambda) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)
+\]
+be the nonlinear portion of the objective function which will be used to generate the objective cuts.
+An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the \plp\ subproblems as
 \begin{align*}
-	\dfrac{\partial h_\omega}{\partial \x}(\xh,\lh,\mh) & = \left(\dfrac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega \\
-	\dfrac{\partial h_\omega}{\partial \lambda}(\xh,\lh,\mh) & = N + N\log\lh - N \log(\mh - h^\dagger_\omega(\xh)) \\
-	\dfrac{\partial h_\omega}{\partial \mu}(\xh,\lh,\mh) & = \dfrac{-N\lh}{\mh - h^\dagger_\omega(\xh)}
+	\dfrac{\partial h^\dagger_\omega}{\partial \x}(\xh,\mh,\lh) & = \phi^{*\prime}(s_\omega(\xh,\mu,\lh)) \pi^{*,\omega}B^\omega \\
+	\dfrac{\partial h^\dagger_\omega}{\partial \mu}(\xh,\mh,\lh) & = -\phi^{*\prime}(s_\omega(\xh,\mu,\lh)) \\
+	\dfrac{\partial h^\dagger_\omega}{\partial \lambda}(\xh,\mh,\lh) & = \phi^*(s_\omega(\xh,\mu,\lh)) - \phi^{*\prime}(s_\omega(\xh,\mu,\lh))s_\omega(\xh,\mu,\lh),
 \end{align*}
-Recall that $h^\dagger_\omega(\x) = \min_{y^\omega \geq 0} \{\q^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
+where $s_\omega(\xh,\mh,\lh) = \frac{h_\omega(\x) - \mu}{\lambda}$.
+Recall that $h_\omega(\x) = \min_{y^\omega \geq 0} \{\q^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
 The cuts are then given by
 \begin{align*}
 	T_j^\omega & = 
 	\left( \begin{array}{ccc}
-		\left(\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}\right) \pi^{*,\omega} B^\omega, 
-			 & N + N\log\lh - N\log(\mh - h^\dagger_\omega(\xh)), 
-			 & -\frac{N\lh}{\mh - h^\dagger_\omega(\xh)}
+		\phi^{*\prime}(s_\omega(\xh,\mu,\lh)) \pi^{*,\omega}B^\omega, 
+			 & -\phi^{*\prime}(s_\omega(\xh,\mu,\lh)), 
+			 & \phi^*(s_\omega(\xh,\mu,\lh)) - \phi^{*\prime}(s_\omega(\xh,\mu,\lh))s_\omega(\xh,\mu,\lh)
 	\end{array} \right) \\
-	t_j^\omega & = \frac{N \lh h^\dagger_\omega(\xh) - N \lh \pi^{*,\omega}B\xh}{\mh - h^\dagger_\omega(\xh)}.
+	t_j^\omega & = \lh \phi^{*\prime}(s_\omega(\xh,\mh,\lh))\left[s_\omega(\xh,\mh,\lh) - \frac{\pi^{*,\omega}B^\omega\xh - \mh}{\lh}\right].
 \end{align*}
 
 For the single-cut master problem proposed, $T_j = \sum_\omega \frac{N_\omega}{N} T_j^\omega$ and $t_j = \sum_\omega \frac{N_\omega}{N} t_j^\omega$.
 
 \subsection{Feasibility Cuts}
-After the subproblems $h^\dagger_\omega(\xh)$ are solved, it may be the case that $\mh - h^\dagger_\omega(\xh) < 0$ for some $\omega$, rendering $\mh$ infeasible.
+After the subproblems $h^\dagger_\omega(\xh)$ are solved, it may be the case that $\frac{h_\omega(\xh)-\mh}{\lh} < \bar{s}$ for some $\omega$, rendering $\mh$ and $\lh$ infeasible.
 This is corrected using the feasibility problem
 \begin{align*}
-	U_\omega(\x,\mu) = \min_{y_\omega,z \geq 0} \ & z \\
-	\st \ & z + \mu - \q^\omega y^\omega \geq 0 \\
-	& D^\omega y^\omega = \d^\omega + B^\omega \x,
+	U_\omega(\x,\mu,\lambda) = \min_{y^\omega \geq 0, z \geq 0} \ & z \\
+	\st \ & z + \bar{s}\lambda + \mu - q^\omega y^\omega \geq 0 \\
+	& D^\omega y^\omega = d^\omega + B^\omega x,
 \end{align*}
-which is solved by $z^* = h^\dagger_\omega(\x) - \mu$.
-The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$ and $\frac{\partial z^*}{\partial \mu} = -1$.
+which is solved by $z = h_\omega(x) - \bar{s}\lambda - \mu$.
+The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$, $\frac{\partial z^*}{\partial \mu} = -1$, and $\frac{\partial z^*}{\partial \lambda} = -\bar{s}$.
 Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
 \begin{align*}
-	U_\omega(\x,\mu) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) + h^\dagger_\omega(\xh) - \mh,
+	U_\omega(\x,\mu,\lambda) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) - \bar{s}(\lambda - \lh) + (h_\omega(\xh) - \mh - \bar{s}\lh),
 \end{align*}
-and setting $U_\omega(\x,\mu) = 0$ to find a feasible solution gives the feasibility cut
+and setting $U_\omega(\x,\mu,\lambda) = 0$ to find a feasible solution gives the feasibility cut
 \[
-	\mu \geq \pi^{*,\omega}B^\omega \x + (h^\dagger_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
+	\mu + \bar{s} \lambda \geq \pi^{*,\omega}B^\omega \x + (h_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
 \]
 
-Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
-This can be done quickly by minimizing the objective function of (\ref{eq:plp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$.
-We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h^\dagger_\omega(\xh)} = 1$ with Newton's method.
+% Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
+% This can be done quickly by minimizing the objective function of (\ref{eq:plp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h_\omega(\xh))$.
+% We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h_\omega(\xh)} = 1$ with Newton's method.
 
 \subsection{Decomposition Algorithm}
 
@@ -836,16 +838,16 @@ We solve the \plp\ with the following decomposition algorithm with tolerance lev
 	\begin{algorithmic}
 		\State Initialize $z_l = -\infty, z_u = \infty$
 		\State Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$
-		\State Solve all second stage scenarios $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
-		\State Initialize $\lambda \gets 1$, $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
+		\State Solve all second stage scenarios $h_\omega(\x)$ (\ref{eq:slp_second_stage})
+		\State Initialize $\lambda \gets 1$, $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
 		\State Generate initial objective cut
 		\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
 			\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
-			\State Solve sub-problems $h^\dagger_\omega(\x)$ (\ref{eq:slp_second_stage})
-			\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n \frac{N_\omega}{N} h_\omega(\x,\lambda,\mu)$
-			\If{$\mu < \max_\omega h^\dagger_\omega(\x)$}
+			\State Solve sub-problems $h_\omega(\x)$ (\ref{eq:slp_second_stage})
+			\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h_\omega(\x,\lambda,\mu)$
+			\If{$\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$}
 				\State Generate feasibility cut
-				\State Find $\mu$ that minimizes $\mu - \sum_\omega N_\omega \lh \log(\mu - h^\dagger_\omega(\xh))$
+				\State Find $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
 			\Else
 				\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
 			\EndIf
@@ -853,7 +855,7 @@ We solve the \plp\ with the following decomposition algorithm with tolerance lev
 			\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
 				\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
 				\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
-				\State $p_\omega \gets \frac{\lambda_\text{best} N_\omega}{\mu_\text{best} - h^\dagger_\omega(\x_\text{best})}$ for $i = 1, \dots, n$
+				\State $p_\omega \gets \phi^{*\prime}(\tfrac{h_\omega(\x) - \mu}{\lambda})$ for $\omega = 1, \dots, n$
 			\EndIf
 		\EndWhile
 	\end{algorithmic}
@@ -867,7 +869,7 @@ In order to enhance the performance of the above decomposition-based algorithm, 
 First, we included an $L_\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
 The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
 
-Because we are also interested in the worst-case LRO probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_\omega \right| < \texttt{TOL2}$ when the algorithm is completed.
+Because we are also interested in the worst-case probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_\omega \right| < \texttt{TOL2}$ when the algorithm is completed.
 This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -901,12 +903,12 @@ The deterministic model is a multi-period generalized network flow model of the 
 The model is converted to a two-stage stochastic model with $P_1$ periods in the first stage and $P-P_1$ stages in the second stage.
 We assume that the supplies and demands are uncertain, as well as the bounds on the decision variables.
 \begin{align}
-	\min_{(x,s,r) \in L^1} \ & \sum_{(i,j) \in A} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n p_\omega h^\dagger_\omega(s) \label{eq:gen_network_two_stage} \\
+	\min_{(x,s,r) \in L^1} \ & \sum_{(i,j) \in A} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n p_\omega h_\omega(s) \label{eq:gen_network_two_stage} \\
 	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt},\ \ \ \ \forall j, 1 \leq t \leq P_1, \notag
 \end{align}
 where the second stage problems
 \begin{align}
-	h^\dagger_\omega(s) = \min_{(x,s,r) \in L^2_\omega} \ & \sum_{(i,j) \in A} \sum_{t=P_1+1}^{P} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=P_1+1}^{P} c_{jt}^s s_{jt} \label{eq:gen_network_second_stage} \\
+	h_\omega(s) = \min_{(x,s,r) \in L^2_\omega} \ & \sum_{(i,j) \in A} \sum_{t=P_1+1}^{P} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=P_1+1}^{P} c_{jt}^s s_{jt} \label{eq:gen_network_second_stage} \\
 	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}^\omega, \ \ \ \ \forall j, P_1+1 \leq t \leq P, \notag
 \end{align}
 and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower and upper variable bounds.
