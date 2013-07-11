@@ -276,42 +276,42 @@ If $q_\omega = 0$, then either $p_\omega = 0$ or $\infty \in \partial \phi^*\lef
 \section{The Level of Robustness}
 \label{sec:robust_level}
 
-We have introduced the relative likelihood parameter $\gamma'$, but have not yet made any recommendations on how to choose it.
-Remark 3.1 of \cite{pardo2005statistical} shows that $2ND_{KL}(\hat{p}^N, \ptrue) \Rightarrow \chi^2_{n-1}$, where $\ptrue$ is the true distribution from which the empirical distribution $\hat{p}^N$ is sampled, $\Rightarrow$ indicates convergence in distribution, and $\chi^2_{n-1}$ is a $\chi^2$ distribution with $n-1$ degrees of freedom.
-Thus, to choose $\gamma'$ to generate a $100(1-\alpha)\%$ confidence region on the true distribution, select the asymptotic value
-\begin{equation} \label{eq:asymptotic_gamma}
-	\gamma' = \exp \left( -\frac{\chi^2_{n-1,1-\alpha}}{2} \right).
+The literature on $\phi$-divergences provides some insight on choosing a reasonable asymptotic value of $\rho$.
+Theorem 3.1 of \cite{pardo2005statistical} shows that the statistic $T^\phi_N(\hat{p},\ptrue) = \frac{2N}{\phi''(1)} \sum_{\omega=1}^n \ptrue_\omega \phi\left(\frac{\hat{p}_\omega}{\ptrue_\omega}\right)$ converges in distribution to a $\chi^2$-distribution with $n-1$ degrees of freedom.
+Ben-Tal \cite{bental2011robust} then uses this result to suggest the asymptotic value
+\begin{equation} \label{eq:asymptotic_rho}
+	\rho = \frac{\phi''(1)}{2N} \chi^2_{n-1,1-\alpha},
 \end{equation}
-Note that $\gamma'$ constant asymptotically produces constant-size confidence regions.
+where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
 
-Wang et. al. \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:plp_primal_divergence}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
-Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}^N_\omega = \frac{N_\omega}{N}$ as fixed, Wang et. al. \cite{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
-This is the Dirichlet distribution $Dir(\beta)$, which has density
-\[
-	\frac{1}{B(\beta)} \prod_{\omega=1}^n p_\omega^{\beta_\omega-1}
-\]
-where the normalizing factor is $B(\beta) = \frac{\prod_{\omega=1}^n \Gamma(\beta_\omega)}{\Gamma\left( \sum_{\omega=1}^n \beta_\omega \right)}$.
-The unknown true distribution can then be modeled as coming from a $Dir(\beta)$ distribution with parameters $\beta_\omega = N_\omega + 1$.
-The parameter $\gamma'$ is chosen such that $\P^*\left\{ \prod_{\omega=1}^n p_\omega^{N_\omega} \geq \gamma' \prod_{\omega=1}^n (\hat{p}^N_\omega)^{N_\omega} \right\}$.
-This probability can be estimated by Monte Carlo sampling.
-
-Figure \ref{fig:gammaprime_by_sample} shows the estimated values of $\gamma'$ for a $95\%$ confidence region for distributions with $n = 10$ scenarios.
-You can notice four distinct, color-coded ``bands'' of values of $\gamma'$.
-These bands are determine by the size of the set $\{\omega | N_\omega = 0\}$, i.e., the number of scenarios which have not been sampled.
-The highest band, in blue, has all $N_\omega > 0$.
-The next (green) band has one $N_\omega = 0$, followed by red with two and cyan with three.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=.6\textwidth]{images/gammaprime_diff_samples_dim_10}
-	\caption{
-		Computed estimates for $\gamma'$ to achieve a $95\%$ confidence region using the Dirichlet distribution.
-		Each point estimate was computed using a randomly generated $n=10$ dimensional probability distribution from which $N$ samples were selected.
-		The value of $\gamma'$ was estimated by Monte Carlo sampling from $Dir(\beta)$ with $\beta_\omega = N_\omega + 1$.
-		The color indicates how many of the $n$ scenarios were not represented in the $N$ samples: blue indicates that all $N_\omega > 0$, green has exactly one $N_\omega = 0$, red has two, and cyan has three.
-	}
-	\label{fig:gammaprime_by_sample}
-\end{figure}
+% Wang et. al. \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:plp_primal_divergence}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
+% Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}^N_\omega = \frac{N_\omega}{N}$ as fixed, Wang et. al. \cite{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
+% This is the Dirichlet distribution $Dir(\beta)$, which has density
+% \[
+% 	\frac{1}{B(\beta)} \prod_{\omega=1}^n p_\omega^{\beta_\omega-1}
+% \]
+% where the normalizing factor is $B(\beta) = \frac{\prod_{\omega=1}^n \Gamma(\beta_\omega)}{\Gamma\left( \sum_{\omega=1}^n \beta_\omega \right)}$.
+% The unknown true distribution can then be modeled as coming from a $Dir(\beta)$ distribution with parameters $\beta_\omega = N_\omega + 1$.
+% The parameter $\gamma'$ is chosen such that $\P^*\left\{ \prod_{\omega=1}^n p_\omega^{N_\omega} \geq \gamma' \prod_{\omega=1}^n (\hat{p}^N_\omega)^{N_\omega} \right\}$.
+% This probability can be estimated by Monte Carlo sampling.
+% 
+% Figure \ref{fig:gammaprime_by_sample} shows the estimated values of $\gamma'$ for a $95\%$ confidence region for distributions with $n = 10$ scenarios.
+% You can notice four distinct, color-coded ``bands'' of values of $\gamma'$.
+% These bands are determine by the size of the set $\{\omega | N_\omega = 0\}$, i.e., the number of scenarios which have not been sampled.
+% The highest band, in blue, has all $N_\omega > 0$.
+% The next (green) band has one $N_\omega = 0$, followed by red with two and cyan with three.
+% 
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=.6\textwidth]{images/gammaprime_diff_samples_dim_10}
+% 	\caption{
+% 		Computed estimates for $\gamma'$ to achieve a $95\%$ confidence region using the Dirichlet distribution.
+% 		Each point estimate was computed using a randomly generated $n=10$ dimensional probability distribution from which $N$ samples were selected.
+% 		The value of $\gamma'$ was estimated by Monte Carlo sampling from $Dir(\beta)$ with $\beta_\omega = N_\omega + 1$.
+% 		The color indicates how many of the $n$ scenarios were not represented in the $N$ samples: blue indicates that all $N_\omega > 0$, green has exactly one $N_\omega = 0$, red has two, and cyan has three.
+% 	}
+% 	\label{fig:gammaprime_by_sample}
+% \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Classification of $\phi$-Divergences}
