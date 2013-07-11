@@ -531,12 +531,12 @@ The next theorem shows how to generate a convex combination of expectation and C
 	
 	This gives the problem
 	\begin{align*}
-		\min_{\lambda,\mu} \rho \lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) & = \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{1}{1-\beta} (h_\omega(x)-\mu) \right\}.
+		\min_{\lambda,\mu} \rho \lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) & = \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\}.
 	\end{align*}
 	Now, CVaR includes a $\e{[\cdot]^+}$ term, which I need to find in the maximum formula.
 	Noting that $1-\alpha < 1 < \frac{1}{1-\beta}$, I rewrote the maximum as
 	\[
-		\max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{1}{1-\beta} (h_\omega(x)-\mu) \right\} = (1-\alpha)(h_\omega(x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(x)-\mu \right]^+.
+		\max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\} = (1-\alpha)(h_\omega(x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(x)-\mu \right]^+.
 	\]
 	Then working with the linear term and writing in terms of expectations we get
 	\[
@@ -1017,7 +1017,9 @@ An earlier version of this paper appeared in the Proceedings of the 2013 Industr
 
 \noindent {\bf DAVID LOVE} is a graduate student in the Graduate Interdisciplinary Program in Applied Mathematics at the University of Arizona.
 His research interests include distributionally robust stochastic programming and water resources management.
-His email address is \url{dlove@math.arizona.edu} and his web page is \url{http://math.arizona.edu/~dlove}.\\
+His email address is \url{dlove@math.arizona.edu} and his web page is \url{http://math.arizona.edu/~dlove}.
+
+\bigskip
 
 \noindent {\bf G\"{U}ZIN BAYRAKSAN} is an Associate Professor of Integrated Systems Engineering at the Ohio State University.
 Her research interests include Monte Carlo sampling methods for stochastic programming and applications to water resources.
