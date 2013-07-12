@@ -752,36 +752,33 @@ That is, $L$ gives the set of scenarios that, if sampled one more observation, w
 \label{sec:epiconvergence}
 
 We now wish to show that the optimal value and solution of \plp\ converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\ptrue$.
+This convergence requires that the sequence of nominal distributions $q^N$ converge to the true distribution $\ptrue$ in $L^\infty$, a situation that is satisfied if $q^N$ is the empirical distribution.
+In the proof, we assume $q^N = \hat{p}^N$.
 We begin by showing that the worst-case distribution converges weakly to the true distribution as $N \rightarrow \infty$.
 
 Let the probability space $(\Xi,{\cal F},\P^\infty)$ be the space associated with taking infinitely many samples from the distribution $\ptrue$.
 Let $\Xi' \subset \Xi$ be a measure 1 set such that $\hat{p}^N_\omega(\xi) \rightarrow \ptrue_\omega$ for all $\omega = 1, \dots, n$.
 
 \begin{proposition} \label{prop:weak_conv}
-	Let $p \neq \ptrue$.  For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $D_{KL}(\hat{p}^N,p) \leq \frac{1}{N} \log\left(\frac{1}{\gamma'}\right) \Rightarrow \max_\omega |p_\omega - \ptrue_\omega| \leq \epsilon$.
+	Let $p \neq \ptrue$.
+	For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $I_{\phi}(\hat{p}^N,p) \leq \frac{\rho_0}{N} \Rightarrow \max_\omega |p_\omega - \ptrue_\omega| \leq \epsilon$.
 \end{proposition}
 
 \begin{proof}
-	Without loss of generality, we assume that $\ptrue_\omega > 0$ for all $\omega$.
-	This is valid because $\ptrue_\omega = 0 \Rightarrow \hat{p}^N_\omega = 0$, which implies $p_\omega = 0$ in the worst case distribution by (\ref{eq:p_worst}).
-	For simplicity, we additionally assume $\epsilon$ is chosen so that $\ptrue_\omega > \frac{\epsilon}{2}$ for all $\omega$.
+	Let $Z = \{\omega : \ptrue_\omega = 0\}$ be the set of impossible scenarios.
+	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \ptrue_\omega > \frac{\epsilon}{2}$.
 	
 	First, we note that $\max_\omega |p_\omega - \ptrue_\omega| \leq \max_\omega |p_\omega - \hat{p}^N_\omega| + \max_\omega |\hat{p}^N_\omega - \ptrue_\omega|$.
 	Let $N''$ be such that $\max_\omega |\hat{p}^N_\omega - \ptrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
 	
-	Next, we use the alternate form of the KL divergence
-	\[
-		D_{KL}(\hat{p}^N,p) = \sum_{\omega=1}^n \hat{p}^N_\omega \left( - \log \frac{p_\omega}{\hat{p}^N_\omega} + \frac{p_\omega}{\hat{p}^N_\omega} - 1 \right),
-	\]
-	and use the fact that each term in parentheses $\phi(t) = -\log t + t - 1$ is convex, non-negative for $t \geq 0$, and $\phi(1) = 0$.
-	
 	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - \hat{p}^N_\omega| > \frac{\epsilon}{2} \Rightarrow D_{KL}(\hat{p}^N,p) > \frac{1}{N} \log\left(\frac{1}{\gamma'}\right)$.
 	First, bound the KL divergence by
 	\begin{align*}
-		D_{KL}(\hat{p}^N,p) & = \sum_{\omega=1}^n \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \\
-		& \geq \min_\omega \{\hat{p}^N_\omega\} \cdot \max_\omega \left\{ \phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \right\} \\
-		& \geq \min_\omega \{\hat{p}^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \\
-		& \geq \min_\omega \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\},
+		I_{\phi}(\hat{p}^N,p) & = \sum_{\omega=1}^n \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \\
+		& = \bar{s} \sum_{\omega \in Z} p_\omega \mathbb{I}_{\bar{s} < \infty} + \sum_{\omega \notin X} \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \\
+		& \geq 0 + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \right\} \\
+		& \geq \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \\
+		& \geq \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\},
 	\end{align*}
 	where the second inequality is true because $\phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{\hat{p}^N_\omega+\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right), \phi\left( \frac{\hat{p}^N_\omega-\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
 	Then choose $N'$ to satisfy $\min_\omega \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{1}{N'} \log\left(\frac{1}{\gamma'}\right)$.
