@@ -61,12 +61,18 @@
 \newcommand{\keywords}[1]{\par\noindent\enspace\ignorespaces\textbf{Keywords:} #1}
 % \newcommand{\keywords}[1]{\par\addvspace\baselineskip\noindent\keywordname\enspace\ignorespaces #1}
 \DeclareMathOperator*{\argmin}{argmin}
+\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
 \newcommand{\st}{\mbox{s.t.}}
 
 % Naming shortcuts
@@ -511,6 +517,12 @@ The coherent risk measure Conditional Value-at-Risk (CVaR) is well studied in fi
 	which is one definition of CVaR.
 \end{proof}
 
+\begin{remark}
+	We see that $\phi(0) = 0$, indicating that CVaR will suppress some scenarios.
+	This appears in the definition of CVaR as the positive part in the expected value, $e{[h(x)-\mu]^+}$.
+	Scenarios cannot be popped because the expectation is taken with respect to the nominal distribution.
+\end{remark}
+
 \subsection{``Reverse'' CVaR}
 
 The CVaR $\phi$-divergence is bounded above, which leads to the question of what happens when a divergence is bounded below.
@@ -545,6 +557,12 @@ The next theorem answers this question.
 		& = \beta \sup_\omega h_\omega(x) + (1-\beta)\e{h(x)}. \qedhere
 	\end{align*}
 \end{proof}
+
+\begin{remark}
+	$\lim_{t \rightarrow \infty} \frac{\phi(t)}{t} = 0$, indicating that this divergence will pop scenarios.
+	This behavior appears due to the $\sup_\omega h_\omega(x)$.
+	However, $\phi(0) = \infty$ indicates that scenarios will not be suppressed, which is demonstrated by the expectation term $\e{h(x)}$, which takes into account every scenario with positive nominal probability.
+\end{remark}
 
 \subsection{Combination of CVaR and Expectation}
 
@@ -599,6 +617,10 @@ The next theorem shows how to generate a convex combination of expectation and C
 		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)]. \qedhere
 	\]
 \end{proof}
+
+\begin{remark}
+	This divergence will neither pop (because both the expectation and CVaR term are taken with respect to the nominal distribution) nor suppress (because the expectation term includes every scenario).
+\end{remark}
 
 % \subsection{Variation-type Divergences}
 % 
