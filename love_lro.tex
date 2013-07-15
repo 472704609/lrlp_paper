@@ -132,6 +132,64 @@ and Section \ref{sec:epiconvergence} discusses the asymptotic properties of LRO.
 In Section \ref{sec:soln_algorithm} we present a decomposition method for solving the LRO model; and in Section \ref{sec:comp_results} we present a generalized network water model and computational results for its LRO model.
 Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction to $\phi$-Divergences}
+\label{sec:phi_divergences}
+
+In this section we define the concept of a $\phi$-divergence, and describe some of the properties that will be used through the remainder of the paper.
+Pardo \cite{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
+Many results in this section can be also found in Ben-Tal et.\ al.\ \cite{bental2011robust}.
+
+The $\phi$-divergence has been used to measure the ``distance'' between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$, especially when $p$ and $q$ are probability vectors, i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
+The $\phi$-divergence is defined by
+\[
+	I_\phi(p,q) = \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right),
+\]
+where $\phi(t)$ is a convex function on $t \geq 0$ such that $\phi(1) = 0$, and with the additional interpretations that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and $0 \phi(0/0) = 0$.
+Throughout this paper we assume that both $p$ and $q$ are probability vectors, we can additionally assume without loss of generality that $\phi(t) \geq 0$.
+The function $\phi(t)$ can be modified as $\psi(t) = \phi(t) - c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t$, and $I_\psi(p,q) = I_\phi(p,q)$ for all vectors $p,q$.
+If $\phi(t)$ is differentiable at $t = 1$ this can be done by selecting $c = \phi'(1)$.
+
+$\phi$-divergences are not, in general, metrics.
+For example, most $\phi$-divergences no not satisfy the triangle inequality, and many are not symmetric in the sense that $I_\phi(p,q) \neq I_\phi(q,p)$.
+The exception is the Variation distance, which is equivalent to the $L^1$-distance between the vectors.
+
+A $\phi$-divergence has an adjoint, defined by
+\begin{equation} \label{eq:adjoint}
+	\tilde{\phi}(t) = t \phi\left(\frac{1}{t}\right),
+\end{equation}
+satisfies all criteria for a $\phi$-divergence \cite{bental1991certainty}, and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
+Divergences that are symmetric with respect to the input vectors are known as self-adjoint.
+
+As in shown \cite{bental2011robust}, the problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
+\begin{equation} \label{eq:conjugate}
+	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}.
+\end{equation}
+The conjugate $\phi^*$ is a nondecreasing function, and may be undefined above some upper bound $\bar{s}$.
+
+Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
+For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain, i.e., $s$ such that $\phi^*(s) < \infty$.
+
+\begin{table}
+	\centering
+	\begin{tabular}{lccccc}
+		\hline \\
+		Divergence                        & $\phi(t)$          & $\tilde{\phi}(t)$               & $\phi(t), t \geq 0$   & $I_\phi(p,q)$     & $\phi^*(s)$ \\
+		\hline
+		Kullback-Leibler                  & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ & $e^s - 1$ \\
+		Burg Entropy                      & $\phi_b$           & $\phi_{kl}$                     & $-\log t + t - 1$     & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(1-s),\ s < 1$  \\
+		$\chi^2$-Distance                 & $\phi_{\chi^2}$    & $\phi_{m\chi^2}$                & $\frac{1}{t} (t-1)^2$ & $\sum \frac{(p_\omega-q_\omega)^2}{p_\omega}$              & $2 - 2\sqrt{1-s}$  \\
+		Modified $\chi^2$-Dist.           & $\phi_{m\chi^2}$   & $\phi_{\chi^2}$                 & $(t-1)^2$             & $\sum \frac{(p_\omega - q_\omega)^2}{q_\omega}$            & $\begin{cases} -1 & s < -2 \\ s + \frac{s^2}{4} & s \geq -2 \end{cases}$ \\
+% 		$\chi$-div,  $\theta > 1$ & $\phi_\chi^\theta$ & $t^{1-\theta}\phi_\chi^\theta$ & $|t-1|^\theta$         & $\sum q_\omega |1-\frac{p_\omega}{q_\omega}|^\theta$       & $\begin{cases} -1 & s \leq -\theta \\ s + (\theta-1)\left(\frac{|s|}{\theta}\right)^\frac{\theta}{\theta-1}  & s \geq -\theta \end{cases}$ \\
+		Hellinger                         & $\phi_h$           & $\phi_h$                        & $(\sqrt{t} - 1)^2$    & $\sum (\sqrt{p_\omega} - \sqrt{q_\omega})^2$               & $\frac{s}{1-s},\ s < 1$ \\
+		Variation Distance                & $\phi_v$           & $\phi_v$                        & $|t-1|$               & $\sum |p_\omega - q_\omega|$                               & $\begin{cases} -1 & s \leq -1 \\ s & -1 \leq s \leq 1 \end{cases}$ \\
+	\hline
+	\end{tabular}
+	\caption{
+		Definitions of some common $\phi$-divergences, along with their adjoints $\tilde{\phi}(t)$ and conjugates $\phi^*(s)$.
+	}
+	\label{tb:phi_definitions}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{\plp\ Formulation}
@@ -355,7 +413,7 @@ Examples of divergences in each category are given in Table \ref{tb:phi_categori
 		 & Can Suppress Scenarios & Cannot Suppress Scenarios \\
 		 \hline
 		 Can Pop Scenarios %
-			& \parbox{.3\textwidth}{Hellinger} %
+			& \parbox{.3\textwidth}{Hellinger,\\Variation Distance} %
 			& \parbox{.3\textwidth}{Burg Entropy,\\$\chi^2$-distance} \\
 		 Cannot Pop Scenarios %
 			& \parbox{.3\textwidth}{Kullback-Leibler divergence,\\Modified $\chi^2$-distance} %
