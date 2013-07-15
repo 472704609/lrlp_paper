@@ -438,6 +438,7 @@ However, if the problem scenarios come from a mix of observed/simulated data and
 This allows for including interesting but unobserved scenarios, and allowing the mathematical program to assign an appropriate probability to them.
 
 \subsection{Additional Details about Divergences that can Suppress}
+\label{ssec:suppress}
 
 Suppressing a scenario is made possible by having $\lim_{t \searrow 0} \phi(t) < \infty$, but there are two further possibilities for such divergences: (1) $\phi'(0) < \infty$ and (2) $\lim_{t \searrow 0} \phi'(t) = \infty$.
 This subclassification leads to two different behaviors in $\phi^*(s)$: either (1) $\phi^*(s) = c$ for some constant $c < 0$ and  $s < \underline{s}$; or (2) $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
@@ -452,6 +453,7 @@ By the primal-dual variable relation $p_\omega = q_\omega \phi^{*\prime}(s_\omeg
 \end{enumerate}
 
 \subsection{Additional Details about Divergences that can Pop}
+\label{ssec:pop}
 
 Divergence that can pop a scenario have $\phi(t)$ that grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s}$ on the domain of $\phi^*(s)$.
 The primal-dual variable relation specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
@@ -461,7 +463,6 @@ Note that, because $s_\omega = \frac{h_\omega(x) - \mu}{\lambda}$, only the most
 Thus, when including unobserved scenarios, only those that might be the most costly at the optimal solution need to be included.
 
 Additionally, note that finding the probability of the popped scenario cannot be done by differentiating $\phi^*$ as with other scenarios, thus the probability must be calculated with $\sum_\omega p_\omega = 1$.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Some Special $\phi$-Divergences}
@@ -853,7 +854,8 @@ In the next theorem, we establish the proof that the optimal value and solution 
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Decomposition-Based Solution Method} \label{sec:soln_algorithm}
+\section{Decomposition-Based Solution Method}
+\label{sec:soln_algorithm}
 
 As the model gets larger, as in our water application presented in Section~\ref{sec:comp_results}, a direct solution of \plp\ becomes computationally expensive. 
 Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. In this section, we propose a Bender's decomposition-based method for solving \plp.
@@ -964,6 +966,57 @@ This must be satisfied in addition to the original condition $z_u - z_l < \textt
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Application and Computational Results} \label{sec:comp_results}
+
+\subsection{Computational Behavior of $\phi$-Divergences}
+\label{ssec:computational_classification}
+
+Section \ref{sec:classification} discussed a method of classifying $\phi$-divergences into four types based on two criteria: whether a $\phi$-divergences allows distributions that suppress certain scenarios (i.e., allows $p_\omega = 0$ while $q_\omega > 0$); and whether a $\phi$-divergence allows distributions that pop a scenario that is impossible in the nominal distribution (i.e., allows $p_\omega > 0$ while $q_\omega = 0$).
+In this section we present computational results demonstrating the suppressing and popping behavior of different divergences.
+The categorization of several $\phi$-divergences can be found in Table \ref{tb:phi_categories}.
+
+All plots in this section were computed using a toy problem with $n = 4$ scenarios to allow for a clear picture of how the probabilities change with $\rho$.
+In this problem, the second scenario (displayed in green) is the most costly, and thus the only candidate for popping if its nominal probability vanishes.
+Furthermore, the second scenario will eventually have unit probability in suppressing divergences.
+All scenarios are assumed to have a single observation, unless popping behavior is being demonstrated.
+
+We begin with an examination of the divergences that can suppress scenarios in Figure \ref{fig:suppress}.
+Figure \ref{fig:suppress} shows how the worst-case distribution changes with $\rho$ for both the Modified $\chi^2$ divergence (left) and the Kullback-Leibler divergence (right).
+As shown in Section \ref{ssec:suppress}, the Modified $\chi^2$ distance suppresses scenarios one-at-a-time, starting with the least expensive; while the Kullback-Leibler divergence will suppress all but the most costly scenario simultaneously.
+
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\includegraphics[width=\textwidth]{images/mchi2}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\includegraphics[width=\textwidth]{images/kl}
+	\end{subfigure}
+	\caption{
+		Examples of distributions that can suppress: Modified $\chi^2$ distance (left) and Kullback-Leibler Divergence (right).
+		Notice that the Modified $\chi^2$ distance suppresses scenarios one at a time, while the Kullback-Leibler Divergence suppresses all three lower-cost scenarios simultaneously.
+	}
+	\label{fig:suppress}
+\end{figure}
+
+An example of a $\phi$-divergence that suppress, the Burg entropy, is given in Figure \ref{fig:pop}.
+The left plot in Figure \ref{fig:pop} demonstrates the worst-case distribution assuming that all scenarios have a single observation.
+The right plot shows the worst-case distribution when all scenarios but the most costly have a single observations, while the most costly scenario is unobserved.
+Notice, in particular, that the probability of the most costly scenario becomes small as $\rho$ decreases.
+Other divergences that can pop but not suppress look qualitatively similar.
+
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\includegraphics[width=\textwidth]{images/burg}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\includegraphics[width=\textwidth]{images/burg_zero}
+	\end{subfigure}
+	\caption{
+		Example of a distribution that can pop: the Burg entropy.
+		The left figure shows the worst-case distribution assuming that all scenarios have a single observation.
+		The right figure demonstrates the most costly scenario entering the worst-case distribution despite it having no observations.
+	}
+	\label{fig:pop}
+\end{figure}
 
 \subsection{Generalized Network Water Model} 
 \label{ssec:network_model}
