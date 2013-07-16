@@ -106,33 +106,42 @@ In practice, many optimization problems can be modeled by stochastic programs mi
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
 Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions, and optimizes the expected cost relative to the worst distribution in the uncertainty set.
 One approach to this has been recently proposed by Wang, Glen and Ye \cite{wang2010likelihood} is to use a set of distributions that are within a sufficiently high empirical likelihood for a given set of observations.
-The result is called the Likelihood Robust Optimization (LRO) method.
-In this paper, we adapt and extend LRO to a more general two-stage stochastic linear program with recourse, and examine the properties of the resulting model.
-We then develop a simple condition for assessing the value of collecting extra data.
-Finally, we develop a modified Bender's Decomposition to solve the LRO and apply the above results to a water distribution planning problem.
+This is called the Likelihood Robust Optimization (LRO) method.
+In this paper, we adapt and extend LRO to a more general setting of two-stage stochastic linear program with recourse and call this the two-stage likelihood robust linear program (LRLP-2). 
+We examine the properties of the resulting model and develop a simple condition for assessing the value of collecting extra data.
+Finally, we present a modified Bender's Decomposition to solve the LRO and apply the above results to a water distribution planning problem.
 
-Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost \cite{dupacova_87}.
+LRLP-2 is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
+Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{dupacova_87}.
 Shapiro and Kleywegt \cite{shapiro2002minimax} and Shapiro and Ahmed \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
 
-Distributionally robust methods have been drawing considerable attention in recent years.
-Erdo{\u{g}}an and Iyengar \cite{erdogan2006ambiguous} studied chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
-Calafiore and Campi \cite{calafiore2005uncertain} developed a data-driven method for generating feasible solutions to chance constrained problems, and later Calafiore and El Ghaoui \cite{calafiore2006distributionally} developed a method for converting distributionally robust chance constraints into second-order cone constraints.
-Jiang and Guan \cite{jiang2012data} developed an exact approach to solving data-driven chance constrained programs.
+In recent years, there has been a growing interest in distributionally robust methods.
+Erdo{\u{g}}an and Iyengar \cite{erdogan2006ambiguous} study chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
+Calafiore and Campi \cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later Calafiore and El Ghaoui \cite{calafiore2006distributionally} developed a method for converting distributionally robust chance constraints into second-order cone constraints.
+Jiang and Guan \cite{jiang2012data} develop an exact approach to solving data-driven chance constrained programs.
 Delage and Ye \cite{delage_ye_10} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
 Ben-Tal \cite{bental2011robust} studies distributionally robust stochastic programs when the uncertainty region is defined by selecting distributions using a $\phi$-divergence.
-The method of Likelihood Robust Optimization proposed in \cite{wang2010likelihood} that we adapt in this paper is a special case of the $\phi$-divergence measures of \cite{bental2011robust}.
 
-The LRO is an attractive approach because the uncertainty set of distributions is determined by the Kullback-Leibler divergence from a ``nominal'' distribution.
-Furthermore, only those scenarios of interest are used directly in the calculations.
+The method of Likelihood Robust Optimization proposed in \cite{wang2010likelihood} that we adapt in this paper is a special case of the $\phi$-divergence measures of \cite{bental2011robust}.
+In particular, it defines the uncertainty set of distributions by the Kullback-Leibler (KL) divergence (a special case of $\phi$-divergence) from a ``nominal'' distribution.
+The contributions of our work are that it provides (i) a simple condition to determine if an additional observation will change the worst-case distribution used in the optimal solution, (ii) asymptotic analysis to discuss conditions under which the optimal value and solution set LRLP-2 will converge to the two-stage stochastic program with recourse under the true distribution, (iii) a specialized decomposition-based algorithm to solve the resulting model,  and (iv) application to water allocation problem under ambiguous uncertainty. 
+
+The recent work of \cite{hukullback} studies similar problems with ambiguous uncertainty either in the objective or the constraints where the uncertainty sets are defined by the KL-divergence.
+\cite{hukullback} differs from this work by considering a continuous distributions, and doesn't relate the nominal distribution to observational data.
+They produce a similar dual problem using the nominal distribution, which differs from this work by making use of the moment generating function.
+Our results also provide one quantification of the value of additional data, and apply the LRO method specifically to a two stage problem, and to water allocation.
+
+The LRO is an attractive data-driven approach because it uses the data directly; and only those data points or scenarios of interest are used in the calculations.
 These scenarios can come from direct observation, results of simulation, from expert opinion regarding scenarios that the decision maker would especially like to be robust against.
 Because the LRO depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
 
 We apply LRO to a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
 Other models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
+Our model is modified to incorporate ambiguous future uncertainty by using the LRO approach.
 
-This paper is organized as follows: Section \ref{sec:lrlp2} presents the extension of LRO model to a two-stage stochastic program with recourse.
-Section \ref{sec:properties} describes basic properties of LRO;
-Section \ref{sec:robust_level} gives a method of selecting the level of robustness;
+This paper is organized as follows.
+Section \ref{sec:lrlp2} presents the extension of LRO model to a two-stage stochastic program with recourse.
+Section \ref{sec:properties} describes basic properties of LRO and discusses how to select the level of robustness;
 Section \ref{sec:value} discusses the value of collecting additional data;
 and Section \ref{sec:epiconvergence} discusses the asymptotic properties of LRO.
 In Section \ref{sec:soln_algorithm} we present a decomposition method for solving the LRO model; and in Section \ref{sec:comp_results} we present a generalized network water model and computational results for its LRO model.
