@@ -7,6 +7,7 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{setspace}
+\usepackage{paralist}
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{url}
@@ -105,46 +106,52 @@
 In practice, many optimization problems can be modeled by stochastic programs minimizing an expected value of an uncertain objective function.
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
 Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions, and optimizes the expected cost relative to the worst distribution in the uncertainty set.
-One approach to this has been recently proposed by Wang, Glen and Ye \cite{wang2010likelihood} is to use a set of distributions that are within a sufficiently high empirical likelihood for a given set of observations.
-This is called the Likelihood Robust Optimization (LRO) method.
-In this paper, we adapt and extend LRO to a more general setting of two-stage stochastic linear program with recourse and call this the two-stage likelihood robust linear program (LRLP-2). 
+One approach to this has been recently proposed by Ben-Tal et.\ al.\ \cite{bental2011robust} is to use a set of distributions that are sufficiently small $\phi$-divergence from a given ``nominal'' distribution.
+Of particular interest is the case when the nominal distribution is determined by observation by making it an empirical distribution.
+In this paper, we adapt the $\phi$-divergence method to the setting of a two-stage stochastic linear program with recourse and call this the two-stage $\phi$-divergence linear program (\plp). 
 We examine the properties of the resulting model and develop a simple condition for assessing the value of collecting extra data.
-Finally, we present a modified Bender's Decomposition to solve the LRO and apply the above results to a water distribution planning problem.
+Finally, we present a modified Bender's Decomposition to solve the \plp and apply the above results to a water distribution planning problem.
 
-LRLP-2 is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
+\plp is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
 Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{dupacova_87}.
 Shapiro and Kleywegt \cite{shapiro2002minimax} and Shapiro and Ahmed \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
 
 In recent years, there has been a growing interest in distributionally robust methods.
 Erdo{\u{g}}an and Iyengar \cite{erdogan2006ambiguous} study chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
-Calafiore and Campi \cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later Calafiore and El Ghaoui \cite{calafiore2006distributionally} developed a method for converting distributionally robust chance constraints into second-order cone constraints.
+Calafiore and Campi \cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later Calafiore and El Ghaoui \cite{calafiore2006distributionally} develop a method for converting distributionally robust chance constraints into second-order cone constraints.
 Jiang and Guan \cite{jiang2012data} develop an exact approach to solving data-driven chance constrained programs.
 Delage and Ye \cite{delage_ye_10} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
-Ben-Tal \cite{bental2011robust} studies distributionally robust stochastic programs when the uncertainty region is defined by selecting distributions using a $\phi$-divergence.
 
-The method of Likelihood Robust Optimization proposed in \cite{wang2010likelihood} that we adapt in this paper is a special case of the $\phi$-divergence measures of \cite{bental2011robust}.
-In particular, it defines the uncertainty set of distributions by the Kullback-Leibler (KL) divergence (a special case of $\phi$-divergence) from a ``nominal'' distribution.
-The contributions of our work are that it provides (i) a simple condition to determine if an additional observation will change the worst-case distribution used in the optimal solution, (ii) asymptotic analysis to discuss conditions under which the optimal value and solution set LRLP-2 will converge to the two-stage stochastic program with recourse under the true distribution, (iii) a specialized decomposition-based algorithm to solve the resulting model,  and (iv) application to water allocation problem under ambiguous uncertainty. 
-
-The recent work of \cite{hukullback} studies similar problems with ambiguous uncertainty either in the objective or the constraints where the uncertainty sets are defined by the KL-divergence.
-\cite{hukullback} differs from this work by considering a continuous distributions, and doesn't relate the nominal distribution to observational data.
-They produce a similar dual problem using the nominal distribution, which differs from this work by making use of the moment generating function.
+Two recent papers by Wang, Glynn and Ye \cite{wang2010likelihood} and by Hu and Hong \cite{hukullback} provide similar studies using a specific $\phi$-divergence that is described in Section \ref{sec:phi_divergences}.
+Both papers produce similar dual problems similar to that presented in \cite{bental2011robust} and used here.
+\cite{hukullback} differs from this work and from \cite{wang2010likelihood} by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
 Our results also provide one quantification of the value of additional data, and apply the LRO method specifically to a two stage problem, and to water allocation.
 
-The LRO is an attractive data-driven approach because it uses the data directly; and only those data points or scenarios of interest are used in the calculations.
+The $\phi$-divergence method is an attractive data-driven approach because it uses the data directly; and only those data points or scenarios of interest are used in the calculations.
 These scenarios can come from direct observation, results of simulation, from expert opinion regarding scenarios that the decision maker would especially like to be robust against.
-Because the LRO depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
+Because the \plp depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
 
-We apply LRO to a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
+We apply \plp to a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
 Other models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
-Our model is modified to incorporate ambiguous future uncertainty by using the LRO approach.
+Our model is modified to incorporate ambiguous future uncertainty by using the $\phi$-divergence approach.
+
+The contributions of our work are that it provides
+\begin{inparaenum}[\itshape (i\upshape)]
+	\item a classification of $\phi$-divergences and insight on which class is useful for certain model types,
+	\item a simple condition to determine if an additional observation will change the worst-case distribution used in the optimal solution, 
+	\item asymptotic analysis to discuss conditions under which the optimal value and solution set \plp will converge to the two-stage stochastic program with recourse under the true distribution, 
+	\item a specialized decomposition-based algorithm to solve the resulting model,  and 
+	\item application to water allocation problem under ambiguous uncertainty. 
+\end{inparaenum}
 
 This paper is organized as follows.
-Section \ref{sec:lrlp2} presents the extension of LRO model to a two-stage stochastic program with recourse.
-Section \ref{sec:properties} describes basic properties of LRO and discusses how to select the level of robustness;
+Section \ref{sec:phi_divergences} introduces the $\phi$-divergence and presents some useful properties.
+Section \ref{sec:plp2} presents the derivation of $\phi$-divergence model for a two-stage stochastic program with recourse.
+Sections \ref{sec:properties} and \ref{sec:robust_level} describes basic properties of \plp and discusses how to select the level of robustness;
+Sections \ref{sec:classification} and \ref{sec:special_phi} present a classification of $\phi$-divergences and some special cases of $\phi$; 
 Section \ref{sec:value} discusses the value of collecting additional data;
-and Section \ref{sec:epiconvergence} discusses the asymptotic properties of LRO.
-In Section \ref{sec:soln_algorithm} we present a decomposition method for solving the LRO model; and in Section \ref{sec:comp_results} we present a generalized network water model and computational results for its LRO model.
+and Section \ref{sec:epiconvergence} discusses the asymptotic properties of \plp.
+In Section \ref{sec:soln_algorithm} we present a decomposition method for solving the \plp model; and in Section \ref{sec:comp_results} we present a generalized network water model and computational results for its \plp model.
 Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -213,7 +220,7 @@ Note that both previous papers disagree with the naming convention given here by
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{\plp\ Formulation}
-\label{sec:lrlp2}
+\label{sec:plp2}
 
 We begin with a two-stage stochastic linear program with recourse (SLP-2).
 Let $\x$ be a vector of of first stage decision variables with cost vector $\c$, constraint matrix $A$ and right hand side $\b$.
@@ -525,6 +532,7 @@ The next proposition makes this statement rigorous.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Some Special $\phi$-Divergences}
+\label{sec:special_phi}
 
 The class of $\phi$-divergence constrained problems includes some interesting special cases, which we document here.
 
