@@ -1211,14 +1211,15 @@ As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabiliti
 \section{Conclusion and Future Work}
 \label{sec:concl}
 
-In this paper, we proposed an extension of the Likelihood Robust Optimization (LRO) method of Wang et al.\ \cite{wang2010likelihood} to general two-stage stochastic programs with recourse, creating a two-stage likelihood robust program with recourse, denoted \plp.
-The LRO models use the empirical likelihood function to define an ambiguity set of probability distributions using observed data and optimize the worst-case expected cost with respect to this likelihood ambiguity set.
+In this paper, we proposed an implementation of the $\phi$-divergence constrained distributionally robust optimization method of Ben-Tal et.\ al.\ \cite{bental2011robust} for two-stage stochastic linear programs with recourse, creating a two-stage $\phi$-divergence linear program with recourse, denoted \plp.
+The \plp uses a $\phi$-divergence to define an ambiguity set of probability distributions, possibly using observed data, and optimizes the worst-case expected cost with respect to this ambiguity set.
+We provided a classification of $\phi$-divergences that may be useful in determining which is most appropriate in practice for several model types.
 We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution. 
 We have also provided a Bender's decomposition-based solution algorithm for the \plp\ and applied this method to planning future water distribution in Tucson, Arizona.
 
 Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
 In addition to more varied estimates for future population, we will integrate climate change predictions into the model to generate scenarios for future water supply from the Colorado River. 
-This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner. On the methodological side, we plan to generalize our results to the more general $\phi$-divergence case of \cite{bental2011robust}.
+This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner.
 
 \section*{Acknowledgements}
 Support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
