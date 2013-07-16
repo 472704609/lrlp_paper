@@ -463,12 +463,51 @@ By the primal-dual variable relation $p_\omega = q_\omega \phi^{*\prime}(s_\omeg
 
 Divergence that can pop a scenario have $\phi(t)$ that grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ on the domain of $\phi^*(s)$.
 The primal-dual variable relation specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
-Thus, popping a scenario can only occur when the right-hand side may also be undefined, i.e., when $s_\omega = \bar{s}$, for which $\infty \in \partial \phi^*(s_\omega)$.
+Intuitively, we can think of $\frac{p_\omega}{0} = \infty$ if $p_\omega > 0$, and thus popping a scenario can only occur when the right-hand side subderivative also includes $\infty$.
+This, in tern, occurs only when $s_\omega = \bar{s}$.
 
-Note that, because $s_\omega = \frac{h_\omega(x) - \mu}{\lambda}$, only the most expensive scenario could be popped.
-Thus, when including unobserved scenarios, only those that might be the most costly at the optimal solution need to be included.
+The next proposition makes this statement rigorous.
 
-Additionally, note that finding the probability of the popped scenario cannot be done by differentiating $\phi^*$ as with other scenarios, thus the probability must be calculated with $\sum_\omega p_\omega = 1$.
+\begin{proposition} \label{prop:pop}
+	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if $s_\omega = \frac{h_\omega(x) - \mu}{\lambda} = \bar{s}$.
+\end{proposition}
+
+\begin{proof}
+	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust}.
+	For this proof, we assume for simplicity that the first stage cost vector $\c = 0$.
+	
+	We begin with the Legangrian of of (\ref{eq:plp_primal}), $\mathcal{L}(p,\mu,\lambda) = \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(x) + (1-\sum_{\omega=1}^n)\mu + (\rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right)$, for which we generate the dual problem as
+	\begin{align}
+		\min_{\lambda \geq 0, \mu} \mathcal{L}(p,\mu,\lambda) & = \min_{\lambda \geq 0, \mu} \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(x) + (1-\sum_{\omega=1}^n)\mu + (\rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \nonumber \\
+		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \sum_{\omega=1}^n \max_{p_\omega \geq 0} p_\omega (h_\omega(x) - \mu) - q_\omega \lambda \phi\left(\frac{p_\omega}{q_\omega}\right) \label{eq:pop_proof_detail_1} \\
+		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t \geq 0} \left\{ \frac{h_\omega(x) - \mu}{\lambda} t - \phi(t) \right\} \label{eq:pop_proof_detail_2} \\
+		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right), \nonumber
+	\end{align}
+	where $t = \frac{p_\omega}{q_\omega}$.
+	
+	To account for the possibility that $q_\omega = 0$ and demonstrate popping behavior, equality (\ref{eq:pop_proof_detail_2}) must be modified slightly.
+	Consider a term in the summation in (\ref{eq:pop_proof_detail_1}) for which $q_\omega = 0$,
+	\begin{align}
+		\max_{p_\omega \geq 0} p_\omega (h_\omega(x) - \mu) - q_\omega \lambda \phi\left(\frac{p_\omega}{q_\omega}\right) & = \max_{p_\omega \geq 0} p_\omega (h_\omega(x) - \mu) - 0 \lambda \phi\left(\frac{p_\omega}{0}\right) \nonumber \\
+		& = \max_{p_\omega \geq 0} p_\omega (h_\omega(x) - \mu) - \lambda p_\omega \bar{s} \nonumber \\
+		& = \max_{p_\omega \geq 0} p_\omega \left( h_\omega(x) - \mu - \bar{s} \lambda \right). \label{eq:pop_proof_condition}
+	\end{align}
+	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(x) - \mu - \bar{s} \lambda \right)$, or equivalently, relation between $\frac{h_\omega(s) - \mu}{\lambda}$ and $\bar{s}$.
+	There are three cases:
+	\begin{description}
+		\item[Case 1: $\frac{h_\omega(s) - \mu}{\lambda} > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(s) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
+		\item[Case 2: $\frac{h_\omega(s) - \mu}{\lambda} < \bar{s}$] selects $p_\omega = 0$.
+		\item[Case 3: $\frac{h_\omega(s) - \mu}{\lambda} = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero. \qedhere
+	\end{description}
+\end{proof}
+
+\begin{remark}
+	Because $s_\omega = \frac{h_\omega(x) - \mu}{\lambda}$, $s_\omega \leq \bar{s}$ for all $\omega$ and $s_\omega = \bar{s}$ for any popped scenarios, only the most expensive scenario could be popped.
+\end{remark}
+
+\begin{remark}
+	Finding the probability of the popped scenario cannot be done by differentiating $\phi^*$ as with other scenarios, thus the probability must be calculated with $\sum_\omega p_\omega = 1$.
+\end{remark}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Some Special $\phi$-Divergences}
