@@ -700,7 +700,7 @@ To be consistent with the known $\phi$-divergence results stated in Section \ref
 	
 	With this change of variables, the objective function is given by
 	\[
-		f_N(\x,\mu,\kappa) = c\x + \mu + N\rho_N \kappa + \sum_{\omega = 1}^n N_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) \right].
+		f_N(\x,\mu,\kappa) = c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) \right].
 	\]
 	Let $z_N = \min_{\x,\mu,\kappa} f_N(\x,\mu,\kappa)$.
 	We wish to find a simple estimate of the decrease in the optimal cost, $z_N - z_{N+1}$, associated with taking an additional sample of, say, $\hat{\omega}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
@@ -711,7 +711,7 @@ To be consistent with the known $\phi$-divergence results stated in Section \ref
 
 	The $N+1$ sample problem is
 	\[
-		cx + \mu + (N+1)\rho_{N+1} \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(x) - \mu}{(N+1)\kappa} \right) \right],
+		cx + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(x) - \mu}{(N+1)\kappa} \right) \right],
 	\]
 	where $N'_\omega$ is the number of observations of $\omega$ after $N+1$ total observations.
 	Then the difference between the two optimal costs is
@@ -725,7 +725,7 @@ To be consistent with the known $\phi$-divergence results stated in Section \ref
 	\end{equation}
 
 	Let $s^N_\omega = \frac{h^\dagger_\omega(x) - \mu}{N\kappa}$ and $s^{N+1}_\omega = \frac{h^\dagger_\omega(x) - \mu}{(N+1)\kappa}$.
-	The difference $\phi^*(s^N_\omega) - -\phi^*(s^{N+1}_\omega)$ will be approximated by the derivative.
+	The difference $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega)$ will be approximated by the derivative.
 	Note that $\phi^*(s)$ is nondecreasing because $\phi(t)$ is confined to the first quadrant.
 	First, for $s^N_\omega > 0$
 	\begin{align*}
@@ -756,7 +756,7 @@ To be consistent with the known $\phi$-divergence results stated in Section \ref
 	\begin{equation} \label{eq:main_value_derivation}
 		\sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega > \phi^*(s^{N+1}_\omega).
 	\end{equation}
-	Returning to the original variables, we get $s^\omega_{N+1} \frac{N}{N+1} \frac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$
+	Finally, return to the original variables with the substitution $s^\omega_{N+1} = \frac{N}{N+1} \frac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$
 \end{proof}
 
 We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
@@ -838,11 +838,11 @@ In the proof, we assume $q^N = \hat{p}^N$.
 We begin by showing that the worst-case distribution converges weakly to the true distribution as $N \rightarrow \infty$.
 
 Let the probability space $(\Xi,{\cal F},\P^\infty)$ be the space associated with taking infinitely many samples from the distribution $\ptrue$.
-Let $\Xi' \subset \Xi$ be a measure 1 set such that $\hat{p}^N_\omega(\xi) \rightarrow \ptrue_\omega$ for all $\omega = 1, \dots, n$.
+Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert \hat{p}^N(\xi) - \ptrue \Vert_\infty \rightarrow 0$.
 
 \begin{proposition} \label{prop:weak_conv}
 	Let $p \neq \ptrue$.
-	For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $I_{\phi}(\hat{p}^N,p) \leq \frac{\rho_0}{N} \Rightarrow \max_\omega |p_\omega - \ptrue_\omega| \leq \epsilon$.
+	For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $I_{\phi}(p,\hat{p}^N) \leq \frac{\rho_0}{N} \Rightarrow \max_\omega |p_\omega - \ptrue_\omega| \leq \epsilon$.
 \end{proposition}
 
 \begin{proof}
@@ -852,17 +852,20 @@ Let $\Xi' \subset \Xi$ be a measure 1 set such that $\hat{p}^N_\omega(\xi) \righ
 	First, we note that $\max_\omega |p_\omega - \ptrue_\omega| \leq \max_\omega |p_\omega - \hat{p}^N_\omega| + \max_\omega |\hat{p}^N_\omega - \ptrue_\omega|$.
 	Let $N''$ be such that $\max_\omega |\hat{p}^N_\omega - \ptrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
 	
-	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - \hat{p}^N_\omega| > \frac{\epsilon}{2} \Rightarrow D_{KL}(\hat{p}^N,p) > \frac{1}{N} \log\left(\frac{1}{\gamma'}\right)$.
-	First, bound the KL divergence by
-	\begin{align*}
-		I_{\phi}(\hat{p}^N,p) & = \sum_{\omega=1}^n \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \\
-		& = \bar{s} \sum_{\omega \in Z} p_\omega \mathbb{I}_{\bar{s} < \infty} + \sum_{\omega \notin X} \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \\
-		& \geq 0 + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \right\} \\
-		& \geq \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \\
-		& \geq \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\},
-	\end{align*}
-	where the second inequality is true because $\phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{\hat{p}^N_\omega+\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right), \phi\left( \frac{\hat{p}^N_\omega-\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
-	Then choose $N'$ to satisfy $\min_\omega \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{1}{N'} \log\left(\frac{1}{\gamma'}\right)$.
+	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - \hat{p}^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,\hat{p}) > \frac{\rho_0}{N}$.
+	First, bound the divergence by
+	\begin{align}
+		I_{\phi}(p,\hat{p}^N) & = \sum_{\omega=1}^n \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \nonumber \\
+		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \nonumber \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \right\} \nonumber \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
+	\end{align}
+	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios), and zero otherwise.
+	
+	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{\hat{p}^N_\omega+\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right), \phi\left( \frac{\hat{p}^N_\omega-\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
+	
+	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
 \end{proof}
 
 Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\ptrue$.
@@ -872,7 +875,7 @@ In the next theorem, we establish the proof that the optimal value and solution 
 \end{theorem}
 
 \begin{proof}
-	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ and lower semicontinuous and locally lower Lipschitz with respect to $x$.
+	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp is convex).
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -886,69 +889,15 @@ The master problem is given by
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \theta \label{eq:master_problem}\\
 	\st \ & A\x = \b \nonumber \\
-	& \theta \geq T_j (\x,\lambda,\mu)^T + t_j, \ j \in J \nonumber \\
+	& \theta \geq T_j (\x,\mu,\lambda)^T + t_j, \ j \in J \nonumber \\
 	& \mu + \bar{s}\lambda \geq M_k \x + m_k, \ k \in K \nonumber \\
 	& \x,\lambda \geq 0, \nonumber
 \end{align}
 where $T_j (\x,\mu,\lambda)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}) if $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} < \infty$, and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
-The proposed algorithm follows.
+The proposed algorithm is shown in Figure \ref{fig:algorithm}.
 
-\subsection{Objective Cuts}
-
-Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}), and let 
-\[
-	h^\dagger_\omega(\x,\mu,\lambda) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)
-\]
-be the nonlinear portion of the objective function which will be used to generate the objective cuts.
-An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the \plp\ subproblems as
-\begin{align*}
-	\dfrac{\partial h^\dagger_\omega}{\partial \x}(\xh,\mh,\lh) & = \phi^{*\prime}(s_\omega(\xh,\mu,\lh)) \pi^{*,\omega}B^\omega \\
-	\dfrac{\partial h^\dagger_\omega}{\partial \mu}(\xh,\mh,\lh) & = -\phi^{*\prime}(s_\omega(\xh,\mu,\lh)) \\
-	\dfrac{\partial h^\dagger_\omega}{\partial \lambda}(\xh,\mh,\lh) & = \phi^*(s_\omega(\xh,\mu,\lh)) - \phi^{*\prime}(s_\omega(\xh,\mu,\lh))s_\omega(\xh,\mu,\lh),
-\end{align*}
-where $s_\omega(\xh,\mh,\lh) = \frac{h_\omega(\x) - \mu}{\lambda}$.
-Recall that $h_\omega(\x) = \min_{y^\omega \geq 0} \{\k^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
-The cuts are then given by
-\begin{align*}
-	T_j^\omega & = 
-	\left( \begin{array}{ccc}
-		\phi^{*\prime}(s_\omega(\xh,\mu,\lh)) \pi^{*,\omega}B^\omega, 
-			 & -\phi^{*\prime}(s_\omega(\xh,\mu,\lh)), 
-			 & \phi^*(s_\omega(\xh,\mu,\lh)) - \phi^{*\prime}(s_\omega(\xh,\mu,\lh))s_\omega(\xh,\mu,\lh)
-	\end{array} \right) \\
-	t_j^\omega & = \lh \phi^{*\prime}(s_\omega(\xh,\mh,\lh))\left[s_\omega(\xh,\mh,\lh) - \frac{\pi^{*,\omega}B^\omega\xh - \mh}{\lh}\right].
-\end{align*}
-
-For the single-cut master problem proposed, $T_j = \sum_\omega \frac{N_\omega}{N} T_j^\omega$ and $t_j = \sum_\omega \frac{N_\omega}{N} t_j^\omega$.
-
-\subsection{Feasibility Cuts}
-After the subproblems $h^\dagger_\omega(\xh)$ are solved, it may be the case that $\frac{h_\omega(\xh)-\mh}{\lh} < \bar{s}$ for some $\omega$, rendering $\mh$ and $\lh$ infeasible.
-This is corrected using the feasibility problem
-\begin{align*}
-	U_\omega(\x,\mu,\lambda) = \min_{y^\omega \geq 0, z \geq 0} \ & z \\
-	\st \ & z + \bar{s}\lambda + \mu - q^\omega y^\omega \geq 0 \\
-	& D^\omega y^\omega = d^\omega + B^\omega x,
-\end{align*}
-which is solved by $z = h_\omega(x) - \bar{s}\lambda - \mu$.
-The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$, $\frac{\partial z^*}{\partial \mu} = -1$, and $\frac{\partial z^*}{\partial \lambda} = -\bar{s}$.
-Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
-\begin{align*}
-	U_\omega(\x,\mu,\lambda) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) - \bar{s}(\lambda - \lh) + (h_\omega(\xh) - \mh - \bar{s}\lh),
-\end{align*}
-and setting $U_\omega(\x,\mu,\lambda) = 0$ to find a feasible solution gives the feasibility cut
-\[
-	\mu + \bar{s} \lambda \geq \pi^{*,\omega}B^\omega \x + (h_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
-\]
-
-% Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
-% This can be done quickly by minimizing the objective function of (\ref{eq:plp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h_\omega(\xh))$.
-% We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h_\omega(\xh)} = 1$ with Newton's method.
-
-\subsection{Decomposition Algorithm}
-
-We solve the \plp\ with the following decomposition algorithm with tolerance level $\texttt{TOL}$
-
-% \begin{figure}
+\begin{figure}
+	\centering
 	\begin{algorithmic}
 		\State Initialize $z_l = -\infty, z_u = \infty$
 		\State Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$
@@ -973,9 +922,60 @@ We solve the \plp\ with the following decomposition algorithm with tolerance lev
 			\EndIf
 		\EndWhile
 	\end{algorithmic}
-% 	\caption{Proposed Bender's Decomposition algorithm for solving \plp}
-% 	\label{fig:algorithm}
-% \end{figure}
+	\caption{Proposed Bender's Decomposition algorithm for solving \plp}
+	\label{fig:algorithm}
+\end{figure}
+
+\subsection{Objective Cuts}
+
+Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}), and let 
+\[
+	h^\dagger_\omega(\x,\mu,\lambda) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)
+\]
+be the nonlinear portion of the objective function which will be used to generate the objective cuts.
+An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the \plp\ subproblems as
+\begin{align*}
+	\dfrac{\partial h^\dagger_\omega}{\partial \x}(\xh,\mh,\lh) & = \phi^{*\prime}(s_\omega(\xh,\mh,\lh)) \pi^{*,\omega}B^\omega \\
+	\dfrac{\partial h^\dagger_\omega}{\partial \mu}(\xh,\mh,\lh) & = -\phi^{*\prime}(s_\omega(\xh,\mh,\lh)) \\
+	\dfrac{\partial h^\dagger_\omega}{\partial \lambda}(\xh,\mh,\lh) & = \phi^*(s_\omega(\xh,\mh,\lh)) - \phi^{*\prime}(s_\omega(\xh,\mh,\lh))s_\omega(\xh,\mh,\lh),
+\end{align*}
+where $s_\omega(\xh,\mh,\lh) = \frac{h_\omega(\xh) - \mh}{\lh}$.
+Recall that $h_\omega(\x) = \min_{y^\omega \geq 0} \{\k^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
+The cuts are then given by
+\begin{align*}
+	T_j^\omega & = 
+	\left( \begin{array}{ccc}
+		\phi^{*\prime}(s_\omega(\xh,\mh,\lh)) \pi^{*,\omega}B^\omega, 
+			 & -\phi^{*\prime}(s_\omega(\xh,\mh,\lh)), 
+			 & \phi^*(s_\omega(\xh,\mh,\lh)) - \phi^{*\prime}(s_\omega(\xh,\mh,\lh))s_\omega(\xh,\mh,\lh)
+	\end{array} \right) \\
+	t_j^\omega & = \lh \phi^{*\prime}(s_\omega(\xh,\mh,\lh))\left[s_\omega(\xh,\mh,\lh) - \frac{\pi^{*,\omega}B^\omega\xh - \mh}{\lh}\right].
+\end{align*}
+
+For the single-cut master problem proposed, $T_j = \sum_\omega q_\omega T_j^\omega$ and $t_j = \sum_\omega q_\omega t_j^\omega$.
+
+\subsection{Feasibility Cuts}
+After the subproblems $h_\omega(\xh)$ are solved, it may be the case that $\frac{h_\omega(\xh)-\mh}{\lh} < \bar{s}$ for some $\omega$, rendering $\mh$ and $\lh$ infeasible.
+This is corrected using the feasibility problem
+\begin{align*}
+	U_\omega(\x,\mu,\lambda) = \min_{y^\omega \geq 0, z \geq 0} \ & z \\
+	\st \ & z + \bar{s}\lambda + \mu - q^\omega y^\omega \geq 0 \\
+	& D^\omega y^\omega = d^\omega + B^\omega x,
+\end{align*}
+which is solved by $z = h_\omega(x) - \bar{s}\lambda - \mu$.
+The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$, $\frac{\partial z^*}{\partial \mu} = -1$, and $\frac{\partial z^*}{\partial \lambda} = -\bar{s}$.
+Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
+\begin{align*}
+	U_\omega(\x,\mu,\lambda) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) - \bar{s}(\lambda - \lh) + (h_\omega(\xh) - \mh - \bar{s}\lh),
+\end{align*}
+and setting $U_\omega(\x,\mu,\lambda) = 0$ to find a feasible solution gives the feasibility cut
+\[
+	\mu + \bar{s} \lambda \geq \pi^{*,\omega}B^\omega \x + (h_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
+\]
+
+% Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
+% This can be done quickly by minimizing the objective function of (\ref{eq:plp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h_\omega(\xh))$.
+% We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h_\omega(\xh)} = 1$ with Newton's method.
 
 \subsection{Computational Enhancements}
 
@@ -997,7 +997,7 @@ In this section we present computational results demonstrating the suppressing a
 The categorization of several $\phi$-divergences can be found in Table \ref{tb:phi_categories}.
 
 All plots in this section were computed using a toy problem with $n = 4$ scenarios to allow for a clear picture of how the probabilities change with $\rho$.
-In this problem, the second scenario (displayed in green) is the most costly, and thus the only candidate for popping if its nominal probability vanishes.
+In this problem, the second scenario (displayed in green in Figures \ref{fig:suppress} and \ref{fig:pop}) is the most costly, and thus the only candidate for popping if its nominal probability vanishes.
 Furthermore, the second scenario will eventually have unit probability in suppressing divergences.
 All scenarios are assumed to have a single observation, unless popping behavior is being demonstrated.
 
@@ -1019,7 +1019,7 @@ As shown in Section \ref{ssec:suppress}, the Modified $\chi^2$ distance suppress
 	\label{fig:suppress}
 \end{figure}
 
-An example of a $\phi$-divergence that suppress, the Burg entropy, is given in Figure \ref{fig:pop}.
+An example of a $\phi$-divergence that can pop, the Burg entropy, is given in Figure \ref{fig:pop}.
 The left plot in Figure \ref{fig:pop} demonstrates the worst-case distribution assuming that all scenarios have a single observation.
 The right plot shows the worst-case distribution when all scenarios but the most costly have a single observations, while the most costly scenario is unobserved.
 Notice, in particular, that the probability of the most costly scenario becomes small as $\rho$ decreases.
