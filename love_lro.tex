@@ -175,6 +175,10 @@ The conjugate $\phi^*$ is a nondecreasing function, and may be undefined above s
 
 Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
 For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain, i.e., $\{s : \phi^*(s) < \infty$.
+Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' that is somewhat different from the others.
+The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy $\phi_l(t) \geq 0$.
+This divergence is included because Hu and Hong \cite{hukullback} and Wang et.\ al.\ \cite{wang2010likelihood} both use it to formulate a distributionally robust program.
+Note that both previous papers disagree with the naming convention given here by referring to the Likelihood divergence as the ``Kullback-Leibler divergence.''
 
 \begin{table}
 	\centering
@@ -184,6 +188,7 @@ For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjug
 		\hline
 		Kullback-Leibler                  & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ & $e^s - 1$ \\
 		Burg Entropy                      & $\phi_b$           & $\phi_{kl}$                     & $-\log t + t - 1$     & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(1-s),\ s < 1$  \\
+		Likelihood                        & $\phi_l$           & N.A.                      & $-\log t$             & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(-s) - 1,\ s < 0$ \\
 		$\chi^2$-Distance                 & $\phi_{\chi^2}$    & $\phi_{m\chi^2}$                & $\frac{1}{t} (t-1)^2$ & $\sum \frac{(p_\omega-q_\omega)^2}{p_\omega}$              & $2 - 2\sqrt{1-s}$  \\
 		Modified $\chi^2$-Dist.           & $\phi_{m\chi^2}$   & $\phi_{\chi^2}$                 & $(t-1)^2$             & $\sum \frac{(p_\omega - q_\omega)^2}{q_\omega}$            & $\begin{cases} -1 & s < -2 \\ s + \frac{s^2}{4} & s \geq -2 \end{cases}$ \\
 % 		$\chi$-div,  $\theta > 1$ & $\phi_\chi^\theta$ & $t^{1-\theta}\phi_\chi^\theta$ & $|t-1|^\theta$         & $\sum q_\omega |1-\frac{p_\omega}{q_\omega}|^\theta$       & $\begin{cases} -1 & s \leq -\theta \\ s + (\theta-1)\left(\frac{|s|}{\theta}\right)^\frac{\theta}{\theta-1}  & s \geq -\theta \end{cases}$ \\
