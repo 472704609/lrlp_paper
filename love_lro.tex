@@ -148,10 +148,8 @@ The contributions of our work are that it provides
 This paper is organized as follows.
 Section \ref{sec:phi_divergences} introduces the $\phi$-divergence and presents some useful properties.
 Section \ref{sec:plp2} presents the derivation of $\phi$-divergence model for a two-stage stochastic program with recourse.
-Sections \ref{sec:properties} and \ref{sec:robust_level} describes basic properties of \plp and discusses how to select the level of robustness;
+Sections \ref{sec:properties} describes properties of \plp, including its asymptotic properties, how to select the level of robustness, and an analysis of the value of collecting additional data;
 Sections \ref{sec:classification} and \ref{sec:special_phi} present a classification of $\phi$-divergences and some special cases of $\phi$; 
-Section \ref{sec:value} discusses the value of collecting additional data;
-and Section \ref{sec:epiconvergence} discusses the asymptotic properties of \plp.
 In Section \ref{sec:soln_algorithm} we present a decomposition method for solving the \plp model; and in Section \ref{sec:comp_results} we present a generalized network water model and computational results for its \plp model.
 Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 
@@ -305,13 +303,15 @@ where
 \end{align}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Basic Properties of \plp}
+\section{Properties of \plp}
 \label{sec:properties}
 
 In this section, we list some basic properties of \plp.
 Most of these have already been noted in \cite{bental2011robust}, with a special case of LRO noted in \cite{wang2010likelihood}, but we list them for completeness and because some of these properties help with our special solution method.
 
-\subsection{Coherent Risk Measure}
+\subsection{Basic Properties}
+
+\subsubsection{Coherent Risk Measure}
 As noted in \cite{wang2010likelihood}, the \plp\ problem can be viewed as minimizing a coherent risk measure.
 A coherent risk measure (in the basic sense), as defined in \cite{rockafellar2007coherent}, is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that
 \begin{enumerate}
@@ -346,12 +346,12 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 Note that being a coherent risk measure implies that \plp\ is a convex problem.
 The convexity of LRO was also noted in \cite{wang2010likelihood}.
 
-\subsection{Time Structure}
+\subsubsection{Time Structure}
 The second-stage problems are unaffected by the change from SLP-2 to \plp.
 This preservation of the time structure allows us to easily convert \mbox{(sub-)derivatives} of $h_\omega(\x)$ to \mbox{(sub-)derivatives} of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$.
 We will use this in the decomposition method provided in Section \ref{sec:soln_algorithm}.
 
-\subsection{Primal-Dual Variable Relationships}
+\subsubsection{Primal-Dual Variable Relationships}
 The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives the method retrieving the worst-case distribution,
 \begin{equation} \label{eq:p_worst}
 	\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right).
@@ -359,8 +359,8 @@ The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two
 If $q_\omega = 0$, then either $p_\omega = 0$ or $\infty \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The Level of Robustness}
-\label{sec:robust_level}
+\subsection{The Level of Robustness}
+\label{ssec:robust_level}
 
 The literature on $\phi$-divergences provides some insight on choosing a reasonable asymptotic value of $\rho$.
 Theorem 3.1 of \cite{pardo2005statistical} shows that the statistic $T^\phi_N(\hat{p},\ptrue) = \frac{2N}{\phi''(1)} \sum_{\omega=1}^n \ptrue_\omega \phi\left(\frac{\hat{p}_\omega}{\ptrue_\omega}\right)$ converges in distribution to a $\chi^2$-distribution with $n-1$ degrees of freedom.
@@ -398,6 +398,206 @@ where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ d
 % 	}
 % 	\label{fig:gammaprime_by_sample}
 % \end{figure}
+
+\subsection{The Value of Data} \label{ssec:value}
+
+With a data driven formulation such as \plp, it is natural to ask how the behavior changes as more data is gathered.
+In particular, for robust formulations like \plp\ one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
+For \plp, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst case distribution from the ambiguity set.  
+In this section, we present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
+
+To get such a condition, we must consider how $\rho$ changes as additional samples are taken, and use $\rho_N$ in this section to emphasize the dependence on sample size.
+To be consistent with the known $\phi$-divergence results stated in Section \ref{ssec:robust_level}, we assume $\rho_N = \frac{\rho_0}{N}$.
+
+\begin{proposition}
+	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied
+	\begin{equation} \label{eq:cost_decrease_cond}
+		\sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right),
+	\end{equation}
+	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solves the $N$-sample problem.
+\end{proposition}
+
+\begin{proof}
+	We begin this proof with the change of variables $\kappa = \frac{\lambda}{N}$, and note that $N\rho_N = \rho_0$ is constant.
+	
+	With this change of variables, the objective function is given by
+	\[
+		f_N(\x,\mu,\kappa) = c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) \right].
+	\]
+	Let $z_N = \min_{\x,\mu,\kappa} f_N(\x,\mu,\kappa)$.
+	We wish to find a simple estimate of the decrease in the optimal cost, $z_N - z_{N+1}$, associated with taking an additional sample of, say, $\hat{\omega}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
+	
+	Let $(\x^*_N,\mu^*_N,\kappa^*_N)$ minimize $f_N$.
+	Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
+	We will find scenarios $\hat{\omega}$ such that $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N) > 0$.
+
+	The $N+1$ sample problem is
+	\[
+		cx + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(x) - \mu}{(N+1)\kappa} \right) \right],
+	\]
+	where $N'_\omega$ is the number of observations of $\omega$ after $N+1$ total observations.
+	Then the difference between the two optimal costs is
+	\[
+		\kappa \sum_{\omega=1}^n \left[ N_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{N\kappa} \right) - N'_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{(N+1)\kappa} \right) \right],
+	\]
+	which must be positive to guarantee a drop in optimal cost.
+	Let $\hat{\omega}$ be the scenario observed on the next observation, then we can rewrite the condition as
+	\begin{equation} \label{eq:raw_cond}
+		\kappa \sum_{\omega=1}^n N_\omega \left[ \phi^*\left(\frac{h_\omega(x) - \mu}{N\kappa} \right) - \phi^*\left(\frac{h_\omega(x) - \mu}{(N+1)\kappa} \right) \right] - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0.
+	\end{equation}
+
+	Let $s^N_\omega = \frac{h^\dagger_\omega(x) - \mu}{N\kappa}$ and $s^{N+1}_\omega = \frac{h^\dagger_\omega(x) - \mu}{(N+1)\kappa}$.
+	The difference $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega)$ will be approximated by the derivative.
+	Note that $\phi^*(s)$ is nondecreasing because $\phi(t)$ is confined to the first quadrant.
+	First, for $s^N_\omega > 0$
+	\begin{align*}
+		\phi^{*\prime}(s^N_\omega) - \phi^{*\prime}(s^{N+1}_\omega) & \geq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|.
+	\end{align*}
+	Then for $s^N_\omega < 0$
+	\begin{align*}
+		\phi^{*\prime}(s^{N+1}_\omega) - \phi^{*\prime}(s^N_\omega) & \leq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|,
+	\end{align*}
+	and thus
+	\begin{align*}
+		\phi^{*\prime}(s^N_\omega) - \phi^{*\prime}(s^{N+1}_\omega) & \geq -\phi^{*\prime}(s^{N+1}_\omega) |\Delta s|.
+	\end{align*}
+	Furthermore, 
+	\[
+		|\Delta s| = | s^{N+1}_\omega - s^N_\omega | = \frac{|s^{N+1}_\omega|}{N},
+	\]
+	and so both cases reduce to
+	\[
+		\phi^{*\prime}(s^N_\omega) - \phi^{*\prime}(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega.
+	\]
+
+	Now we can guarantee (\ref{eq:raw_cond}) is satisfied with the condition
+	\[
+		\kappa \sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega - \kappa \phi^*\left(\frac{h^\dagger_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0,
+	\]
+	or, rearranging and dividing by $\kappa > 0$,
+	\begin{equation} \label{eq:main_value_derivation}
+		\sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega > \phi^*(s^{N+1}_\omega).
+	\end{equation}
+	Finally, return to the original variables with the substitution $s^\omega_{N+1} = \frac{N}{N+1} \frac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$
+\end{proof}
+
+We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
+This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:p_worst}.
+
+Next, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
+Let $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$.
+That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in \plp.
+
+\begin{proposition}
+	An approximate lower bound on the probability of selecting a scenario in the set $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$ can be found by solving 
+	\begin{equation} \label{eq:prob_cost_decrease}
+		-\min_{\mu,\lambda \geq 0} \left\{ \mu + \rho_N \lambda + q_L \lambda \phi^*\left(\frac{\mu-1}{\lambda}\right) + (1-q_L) \lambda \phi^*\left(\frac{\mu}{\lambda}\right) \right\},
+	\end{equation}
+	where $q_L = \sum_{\omega \in L} q_\omega$ is the probability of $L$ in the nominal distribution.
+\end{proposition}
+
+\begin{proof}
+	We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate \plp\ given in (\ref{eq:plp_primal_divergence}) to solve the minimization problem
+	\begin{align}
+		\min_{\omega \in L} \ & \sum_{\omega \in L} r_\omega \nonumber \\
+		\mbox{s.t.} & \sum_\omega q_\omega \phi\left(\frac{r_\omega}{q_\omega}\right) \leq \rho_N \label{eq:lb_probability} \\
+		& \sum_\omega r_\omega = 1 \nonumber \\
+		& q_\omega \geq 0, \ \forall \omega, \nonumber
+	\end{align}
+	where we have introduced the dummy variables $r_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:p_worst}). 
+	Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations.
+	Note that $\min_{\omega \in L} \sum_{\omega \in L} r_\omega \leq q_L$, because the maximum likelihood distribution is always within the likelihood ambiguity set.
+% 	We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
+
+	We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program (\ref{eq:prob_cost_decrease}).
+\end{proof}
+
+% We can view the optimal value of (\ref{eq:prob_cost_decrease}) as a function of three parameters: the total sample size $N$, the relative likelihood parameter $\gamma'$, and the number of observations $N_L$ in the set $L$.
+% The behavior of this lower bound estimate is studied in Figure \ref{fig:prob_cost_decrease_nd_n} as a function of the ratio $\tfrac{N_L}{N}$, and in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} as a function of the relative likelihood parameter $\gamma'$.
+% Figure \ref{fig:prob_cost_decrease_nd_n} shows that the estimated lower bound on the probability of optimal cost decrease stays relatively close to the identity line for most values of $\gamma'$, getting closer to the identity line as  $\gamma'$ is increased; i.e., the ambiguity set (or robustness) is decreased.
+% Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} give a closer look at how (\ref{eq:prob_cost_decrease}) differs from $\tfrac{N_L}{N}$ as $\gamma'$ is changed.
+% 
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=.5\textwidth]{images/prob_dec_cost_v_nl_n_20}
+% 	\caption{The probability that an additional sample decreases the optimal cost of the \plp\ as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
+% 	\label{fig:prob_cost_decrease_nd_n}
+% \end{figure}
+% 
+% \begin{figure}
+% 	\centering
+% 	\begin{subfigure}{.5\textwidth}
+% 	   \includegraphics[width=\textwidth]{images/prob_dec_cost_v_gammaprime_no_context}
+% 	   \caption{
+% 			$N_L=50$ $\left(\frac{N_L}{N} = 0.25\right)$
+% 		}
+% 	   \label{fig:prob_cost_decrease_gp}
+% 	\end{subfigure}%
+% 	\begin{subfigure}{.5\textwidth}
+% 	   \includegraphics[width=\textwidth]{images/prob_dec_cost_v_gammaprime_no_context_multiple}
+% 	   \caption{
+% 			$N_L=10,50,100,150$ and $190$
+% 		}
+% 	   \label{fig:prob_cost_decrease_gp_multiple}
+% 	\end{subfigure}%
+% 	\caption{The probability that an additional sample decreases the optimal cost of the \plp\ as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
+% \end{figure}
+% 
+% Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the \plp.
+% The first two of these parameters are also parameters of the \plp\ problem (\ref{eq:plp_two_stage}).
+% The third, $N_L$, is computed from the optimal solution of (\ref{eq:plp_two_stage}) via (\ref{eq:p_worst}) and (\ref{eq:cost_decrease_cond}).
+% As such, $N_L$ should be viewed as changing with $\gamma'$.
+% In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
+% This behavior is studied in Section \ref{sec:comp_results}.
+
+\subsection{Asymptotic Analysis of \plp}
+\label{ssec:epiconvergence}
+
+We now wish to show that the optimal value and solution of \plp\ converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\ptrue$.
+This convergence requires that the sequence of nominal distributions $q^N$ converge to the true distribution $\ptrue$ in $L^\infty$, a situation that is satisfied if $q^N$ is the empirical distribution.
+In the proof, we assume $q^N = \hat{p}^N$.
+We begin by showing that the worst-case distribution converges weakly to the true distribution as $N \rightarrow \infty$.
+
+Let the probability space $(\Xi,{\cal F},\P^\infty)$ be the space associated with taking infinitely many samples from the distribution $\ptrue$.
+Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert \hat{p}^N(\xi) - \ptrue \Vert_\infty \rightarrow 0$.
+
+\begin{proposition} \label{prop:weak_conv}
+	Let $p \neq \ptrue$.
+	For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $I_{\phi}(p,\hat{p}^N) \leq \frac{\rho_0}{N} \Rightarrow \max_\omega |p_\omega - \ptrue_\omega| \leq \epsilon$.
+\end{proposition}
+
+\begin{proof}
+	Let $Z = \{\omega : \ptrue_\omega = 0\}$ be the set of impossible scenarios.
+	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \ptrue_\omega > \frac{\epsilon}{2}$.
+	
+	First, we note that $\max_\omega |p_\omega - \ptrue_\omega| \leq \max_\omega |p_\omega - \hat{p}^N_\omega| + \max_\omega |\hat{p}^N_\omega - \ptrue_\omega|$.
+	Let $N''$ be such that $\max_\omega |\hat{p}^N_\omega - \ptrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
+	
+	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - \hat{p}^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,\hat{p}) > \frac{\rho_0}{N}$.
+	First, bound the divergence by
+	\begin{align}
+		I_{\phi}(p,\hat{p}^N) & = \sum_{\omega=1}^n \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \nonumber \\
+		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \nonumber \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \right\} \nonumber \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
+	\end{align}
+	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios), and zero otherwise.
+	
+	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{\hat{p}^N_\omega+\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right), \phi\left( \frac{\hat{p}^N_\omega-\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
+	
+	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
+\end{proof}
+
+Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\ptrue$.
+In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\ptrue$ by establishing the epiconvergence of \plp\ to SLP-2.
+\begin{theorem}
+	\plp\ (\ref{eq:plp_two_stage}) epiconverges to SLP-2 (\ref{eq:slp_first_stage}) with distribution $p = \ptrue$.
+\end{theorem}
+
+\begin{proof}
+	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp is convex).
+\end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Classification of $\phi$-Divergences}
@@ -739,208 +939,6 @@ The next theorem shows how to generate a convex combination of expectation and C
 % I also can't think of any other way to simplify the above.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The Value of Data} \label{sec:value}
-
-With a data driven formulation such as \plp, it is natural to ask how the behavior changes as more data is gathered.
-In particular, for robust formulations like \plp\ one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
-For \plp, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst case distribution from the ambiguity set.  
-In this section, we present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
-
-To get such a condition, we must consider how $\rho$ changes as additional samples are taken, and use $\rho_N$ in this section to emphasize the dependence on sample size.
-To be consistent with the known $\phi$-divergence results stated in Section \ref{sec:robust_level}, we assume $\rho_N = \frac{\rho_0}{N}$.
-
-\begin{proposition}
-	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied
-	\begin{equation} \label{eq:cost_decrease_cond}
-		\sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right),
-	\end{equation}
-	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solves the $N$-sample problem.
-\end{proposition}
-
-\begin{proof}
-	We begin this proof with the change of variables $\kappa = \frac{\lambda}{N}$, and note that $N\rho_N = \rho_0$ is constant.
-	
-	With this change of variables, the objective function is given by
-	\[
-		f_N(\x,\mu,\kappa) = c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) \right].
-	\]
-	Let $z_N = \min_{\x,\mu,\kappa} f_N(\x,\mu,\kappa)$.
-	We wish to find a simple estimate of the decrease in the optimal cost, $z_N - z_{N+1}$, associated with taking an additional sample of, say, $\hat{\omega}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
-	
-	Let $(\x^*_N,\mu^*_N,\kappa^*_N)$ minimize $f_N$.
-	Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
-	We will find scenarios $\hat{\omega}$ such that $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N) > 0$.
-
-	The $N+1$ sample problem is
-	\[
-		cx + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(x) - \mu}{(N+1)\kappa} \right) \right],
-	\]
-	where $N'_\omega$ is the number of observations of $\omega$ after $N+1$ total observations.
-	Then the difference between the two optimal costs is
-	\[
-		\kappa \sum_{\omega=1}^n \left[ N_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{N\kappa} \right) - N'_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{(N+1)\kappa} \right) \right],
-	\]
-	which must be positive to guarantee a drop in optimal cost.
-	Let $\hat{\omega}$ be the scenario observed on the next observation, then we can rewrite the condition as
-	\begin{equation} \label{eq:raw_cond}
-		\kappa \sum_{\omega=1}^n N_\omega \left[ \phi^*\left(\frac{h_\omega(x) - \mu}{N\kappa} \right) - \phi^*\left(\frac{h_\omega(x) - \mu}{(N+1)\kappa} \right) \right] - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0.
-	\end{equation}
-
-	Let $s^N_\omega = \frac{h^\dagger_\omega(x) - \mu}{N\kappa}$ and $s^{N+1}_\omega = \frac{h^\dagger_\omega(x) - \mu}{(N+1)\kappa}$.
-	The difference $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega)$ will be approximated by the derivative.
-	Note that $\phi^*(s)$ is nondecreasing because $\phi(t)$ is confined to the first quadrant.
-	First, for $s^N_\omega > 0$
-	\begin{align*}
-		\phi^{*\prime}(s^N_\omega) - \phi^{*\prime}(s^{N+1}_\omega) & \geq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|.
-	\end{align*}
-	Then for $s^N_\omega < 0$
-	\begin{align*}
-		\phi^{*\prime}(s^{N+1}_\omega) - \phi^{*\prime}(s^N_\omega) & \leq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|,
-	\end{align*}
-	and thus
-	\begin{align*}
-		\phi^{*\prime}(s^N_\omega) - \phi^{*\prime}(s^{N+1}_\omega) & \geq -\phi^{*\prime}(s^{N+1}_\omega) |\Delta s|.
-	\end{align*}
-	Furthermore, 
-	\[
-		|\Delta s| = | s^{N+1}_\omega - s^N_\omega | = \frac{|s^{N+1}_\omega|}{N},
-	\]
-	and so both cases reduce to
-	\[
-		\phi^{*\prime}(s^N_\omega) - \phi^{*\prime}(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega.
-	\]
-
-	Now we can guarantee (\ref{eq:raw_cond}) is satisfied with the condition
-	\[
-		\kappa \sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega - \kappa \phi^*\left(\frac{h^\dagger_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0,
-	\]
-	or, rearranging and dividing by $\kappa > 0$,
-	\begin{equation} \label{eq:main_value_derivation}
-		\sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega > \phi^*(s^{N+1}_\omega).
-	\end{equation}
-	Finally, return to the original variables with the substitution $s^\omega_{N+1} = \frac{N}{N+1} \frac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$
-\end{proof}
-
-We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
-This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:p_worst}.
-
-Next, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
-Let $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$.
-That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in \plp.
-
-\begin{proposition}
-	An approximate lower bound on the probability of selecting a scenario in the set $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$ can be found by solving 
-	\begin{equation} \label{eq:prob_cost_decrease}
-		-\min_{\mu,\lambda \geq 0} \left\{ \mu + \rho_N \lambda + q_L \lambda \phi^*\left(\frac{\mu-1}{\lambda}\right) + (1-q_L) \lambda \phi^*\left(\frac{\mu}{\lambda}\right) \right\},
-	\end{equation}
-	where $q_L = \sum_{\omega \in L} q_\omega$ is the probability of $L$ in the nominal distribution.
-\end{proposition}
-
-\begin{proof}
-	We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate \plp\ given in (\ref{eq:plp_primal_divergence}) to solve the minimization problem
-	\begin{align}
-		\min_{\omega \in L} \ & \sum_{\omega \in L} r_\omega \nonumber \\
-		\mbox{s.t.} & \sum_\omega q_\omega \phi\left(\frac{r_\omega}{q_\omega}\right) \leq \rho_N \label{eq:lb_probability} \\
-		& \sum_\omega r_\omega = 1 \nonumber \\
-		& q_\omega \geq 0, \ \forall \omega, \nonumber
-	\end{align}
-	where we have introduced the dummy variables $r_\omega$ to distinguish the minimization in (\ref{eq:lb_probability}) from the worst-case distribution $\{p_\omega\}$ calculated in (\ref{eq:p_worst}). 
-	Solving (\ref{eq:lb_probability}) yields an estimated lower bound on the probability that an additional sample will result a likelihood ambiguity set that does not contain the current worst-case distribution $\{p_\omega\}$ using the current set of observations.
-	Note that $\min_{\omega \in L} \sum_{\omega \in L} r_\omega \leq q_L$, because the maximum likelihood distribution is always within the likelihood ambiguity set.
-% 	We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
-
-	We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program (\ref{eq:prob_cost_decrease}).
-\end{proof}
-
-% We can view the optimal value of (\ref{eq:prob_cost_decrease}) as a function of three parameters: the total sample size $N$, the relative likelihood parameter $\gamma'$, and the number of observations $N_L$ in the set $L$.
-% The behavior of this lower bound estimate is studied in Figure \ref{fig:prob_cost_decrease_nd_n} as a function of the ratio $\tfrac{N_L}{N}$, and in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} as a function of the relative likelihood parameter $\gamma'$.
-% Figure \ref{fig:prob_cost_decrease_nd_n} shows that the estimated lower bound on the probability of optimal cost decrease stays relatively close to the identity line for most values of $\gamma'$, getting closer to the identity line as  $\gamma'$ is increased; i.e., the ambiguity set (or robustness) is decreased.
-% Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} give a closer look at how (\ref{eq:prob_cost_decrease}) differs from $\tfrac{N_L}{N}$ as $\gamma'$ is changed.
-% 
-% \begin{figure}
-% 	\centering
-% 	\includegraphics[width=.5\textwidth]{images/prob_dec_cost_v_nl_n_20}
-% 	\caption{The probability that an additional sample decreases the optimal cost of the \plp\ as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
-% 	\label{fig:prob_cost_decrease_nd_n}
-% \end{figure}
-% 
-% \begin{figure}
-% 	\centering
-% 	\begin{subfigure}{.5\textwidth}
-% 	   \includegraphics[width=\textwidth]{images/prob_dec_cost_v_gammaprime_no_context}
-% 	   \caption{
-% 			$N_L=50$ $\left(\frac{N_L}{N} = 0.25\right)$
-% 		}
-% 	   \label{fig:prob_cost_decrease_gp}
-% 	\end{subfigure}%
-% 	\begin{subfigure}{.5\textwidth}
-% 	   \includegraphics[width=\textwidth]{images/prob_dec_cost_v_gammaprime_no_context_multiple}
-% 	   \caption{
-% 			$N_L=10,50,100,150$ and $190$
-% 		}
-% 	   \label{fig:prob_cost_decrease_gp_multiple}
-% 	\end{subfigure}%
-% 	\caption{The probability that an additional sample decreases the optimal cost of the \plp\ as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
-% \end{figure}
-% 
-% Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the \plp.
-% The first two of these parameters are also parameters of the \plp\ problem (\ref{eq:plp_two_stage}).
-% The third, $N_L$, is computed from the optimal solution of (\ref{eq:plp_two_stage}) via (\ref{eq:p_worst}) and (\ref{eq:cost_decrease_cond}).
-% As such, $N_L$ should be viewed as changing with $\gamma'$.
-% In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
-% This behavior is studied in Section \ref{sec:comp_results}.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Asymptotic Analysis of \plp}
-\label{sec:epiconvergence}
-
-We now wish to show that the optimal value and solution of \plp\ converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\ptrue$.
-This convergence requires that the sequence of nominal distributions $q^N$ converge to the true distribution $\ptrue$ in $L^\infty$, a situation that is satisfied if $q^N$ is the empirical distribution.
-In the proof, we assume $q^N = \hat{p}^N$.
-We begin by showing that the worst-case distribution converges weakly to the true distribution as $N \rightarrow \infty$.
-
-Let the probability space $(\Xi,{\cal F},\P^\infty)$ be the space associated with taking infinitely many samples from the distribution $\ptrue$.
-Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert \hat{p}^N(\xi) - \ptrue \Vert_\infty \rightarrow 0$.
-
-\begin{proposition} \label{prop:weak_conv}
-	Let $p \neq \ptrue$.
-	For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $I_{\phi}(p,\hat{p}^N) \leq \frac{\rho_0}{N} \Rightarrow \max_\omega |p_\omega - \ptrue_\omega| \leq \epsilon$.
-\end{proposition}
-
-\begin{proof}
-	Let $Z = \{\omega : \ptrue_\omega = 0\}$ be the set of impossible scenarios.
-	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \ptrue_\omega > \frac{\epsilon}{2}$.
-	
-	First, we note that $\max_\omega |p_\omega - \ptrue_\omega| \leq \max_\omega |p_\omega - \hat{p}^N_\omega| + \max_\omega |\hat{p}^N_\omega - \ptrue_\omega|$.
-	Let $N''$ be such that $\max_\omega |\hat{p}^N_\omega - \ptrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
-	
-	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - \hat{p}^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,\hat{p}) > \frac{\rho_0}{N}$.
-	First, bound the divergence by
-	\begin{align}
-		I_{\phi}(p,\hat{p}^N) & = \sum_{\omega=1}^n \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \nonumber \\
-		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \nonumber \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \right\} \nonumber \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
-	\end{align}
-	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios), and zero otherwise.
-	
-	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{\hat{p}^N_\omega+\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right), \phi\left( \frac{\hat{p}^N_\omega-\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
-	
-	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
-\end{proof}
-
-Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\ptrue$.
-In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\ptrue$ by establishing the epiconvergence of \plp\ to SLP-2.
-\begin{theorem}
-	\plp\ (\ref{eq:plp_two_stage}) epiconverges to SLP-2 (\ref{eq:slp_first_stage}) with distribution $p = \ptrue$.
-\end{theorem}
-
-\begin{proof}
-	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp is convex).
-\end{proof}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Decomposition-Based Solution Method}
 \label{sec:soln_algorithm}
 
@@ -1190,7 +1188,7 @@ A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, o
 
 %\subsection{Value of Data}
 
-The results of the water model were then analyzed with the value of data techniques from Section \ref{sec:value}.
+The results of the water model were then analyzed with the value of data techniques from Section \ref{ssec:value}.
 Figure \ref{fig:water_prob_decrease} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
 The dashed line in Figure \ref{fig:water_prob_decrease} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
 Because the low-population scenarios have lower costs, an additional sample of either low-population scenario will result in a lower expected cost.
