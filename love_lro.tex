@@ -9,7 +9,7 @@
 \usepackage{setspace}
 \usepackage{paralist}
 \usepackage{graphicx}
-\usepackage{subcaption}
+\usepackage{subfig}
 \usepackage{url}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -1067,12 +1067,12 @@ Figure \ref{fig:suppress} shows how the worst-case distribution changes with $\r
 As shown in Section \ref{ssec:suppress}, the Modified $\chi^2$ distance suppresses scenarios one-at-a-time, starting with the least expensive; while the Kullback-Leibler divergence will suppress all but the most costly scenario simultaneously.
 
 \begin{figure}
-	\begin{subfigure}{.5\textwidth}
-		\includegraphics[width=\textwidth]{images/mchi2}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
-		\includegraphics[width=\textwidth]{images/kl}
-	\end{subfigure}
+	\subfloat[][Modified $\chi^2$]{
+		\includegraphics[width=.45\textwidth]{images/mchi2}
+	}%
+	\subfloat[][Kullback-Leibler]{
+		\includegraphics[width=.45\textwidth]{images/kl}
+	}
 	\caption{
 		Examples of distributions that can suppress: Modified $\chi^2$ distance (left) and Kullback-Leibler Divergence (right).
 		Notice that the Modified $\chi^2$ distance suppresses scenarios one at a time, while the Kullback-Leibler Divergence suppresses all three lower-cost scenarios simultaneously.
@@ -1087,12 +1087,12 @@ Notice, in particular, that the probability of the most costly scenario becomes 
 Other divergences that can pop but not suppress look qualitatively similar.
 
 \begin{figure}
-	\begin{subfigure}{.5\textwidth}
-		\includegraphics[width=\textwidth]{images/burg}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
-		\includegraphics[width=\textwidth]{images/burg_zero}
-	\end{subfigure}
+	\subfloat[][Observed]{
+		\includegraphics[width=.45\textwidth]{images/burg}
+	}%
+	\subfloat[][Unobserved]{
+		\includegraphics[width=.45\textwidth]{images/burg_zero}
+	}
 	\caption{
 		Example of a distribution that can pop: the Burg entropy.
 		The left figure shows the worst-case distribution assuming that all scenarios have a single observation.
@@ -1172,16 +1172,14 @@ A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, o
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{.5\textwidth}
-		\includegraphics[width=\textwidth]{images/worst_case_probability}
-		\caption{Worst case distributions}
+	\subfloat[][Worst-case distribution]{
+		\includegraphics[width=.45\textwidth]{images/worst_case_probability}
 		\label{fig:worst_case}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
-		\includegraphics[width=\textwidth]{images/water_prob_decrease}
-		\caption{Probability of cost decrease}
+	}%
+	\subfloat[][Probability of cost decrease]{
+		\includegraphics[width=.45\textwidth]{images/water_prob_decrease}
 		\label{fig:water_prob_decrease}
-	\end{subfigure}
+	}
 	\caption{%
 		(a) Worst-case distribution for the likelihood robust water allocation problem.
 		(b) Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.
