@@ -73,6 +73,7 @@
 
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{property}[theorem]{Property}
 
 \newcommand{\st}{\mbox{s.t.}}
 
@@ -311,7 +312,6 @@ Most of these have already been noted in \cite{bental2011robust}, with a special
 
 \subsection{Basic Properties}
 
-\subsubsection{Coherent Risk Measure}
 As noted in \cite{wang2010likelihood}, the \plp\ problem can be viewed as minimizing a coherent risk measure.
 A coherent risk measure (in the basic sense), as defined in \cite{rockafellar2007coherent}, is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that
 \begin{enumerate}
@@ -321,9 +321,9 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 	\item ${\cal R}(\lambda X) = \lambda {\cal R}(X)$ for $\lambda > 0$, i.e., $\cal R$ is positively homogeneous.
 \end{enumerate}
 
-\begin{proposition}
+\begin{property}
 	\plp\ is equivalent to minimizing a coherent risk measure.
-\end{proposition}
+\end{property}
 
 \begin{proof}
 	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \cite{rockafellar2007coherent}.
@@ -346,17 +346,19 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 Note that being a coherent risk measure implies that \plp\ is a convex problem.
 The convexity of LRO was also noted in \cite{wang2010likelihood}.
 
-\subsubsection{Time Structure}
-The second-stage problems are unaffected by the change from SLP-2 to \plp.
-This preservation of the time structure allows us to easily convert \mbox{(sub-)derivatives} of $h_\omega(\x)$ to \mbox{(sub-)derivatives} of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$.
-We will use this in the decomposition method provided in Section \ref{sec:soln_algorithm}.
+\begin{property}
+	The second-stage problems are unaffected by the change from SLP-2 to \plp.
+	This preservation of the time structure allows us to easily convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$.
+	We will use this in the decomposition method provided in Section \ref{sec:soln_algorithm}.
+\end{property}
 
-\subsubsection{Primal-Dual Variable Relationships}
-The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives the method retrieving the worst-case distribution,
-\begin{equation} \label{eq:p_worst}
-	\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right).
-\end{equation}
-If $q_\omega = 0$, then either $p_\omega = 0$ or $\infty \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right)$.
+\begin{property}
+	The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives the method retrieving the worst-case distribution,
+	\begin{equation} \label{eq:p_worst}
+		\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right).
+	\end{equation}
+	If $q_\omega = 0$, then either $p_\omega = 0$ or $\infty \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right)$.
+\end{property}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Level of Robustness}
