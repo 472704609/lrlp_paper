@@ -153,7 +153,7 @@
 %   \EMAIL field can be repeated if more than one author
 \ARTICLEAUTHORS{%
 \AUTHOR{David Love}
-\AFF{University of Arizona, \EMAIL{dlove@email.arizona.edu}, \URL{http://math.arizona.edu:~/dlove/}}
+\AFF{University of Arizona, \EMAIL{dlove@email.arizona.edu}, \URL{http://math.arizona.edu/~dlove/}}
 \AUTHOR{G\"{u}zin~Bayraksan}
 \AFF{The Ohio State University, \EMAIL{bayraksan.1@osu.edu}, \URL{http://www-iwse.eng.ohio-state.edu/biosketch\_GBayraksan.cfm}}
 % Enter all authors
@@ -204,7 +204,7 @@
 In practice, many optimization problems can be modeled by stochastic programs minimizing an expected value of an uncertain objective function.
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
 Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions, and optimizes the expected cost relative to the worst distribution in the uncertainty set.
-One approach to this has been recently proposed by Ben-Tal et.\ al.\ \cite{bental2011robust} is to use a set of distributions that are sufficiently small $\phi$-divergence from a given ``nominal'' distribution.
+One approach to this has been recently proposed by \cite{bental2011robust} is to use a set of distributions that are sufficiently small $\phi$-divergence from a given ``nominal'' distribution.
 Of particular interest is the case when the nominal distribution is determined by observation by making it an empirical distribution.
 In this paper, we adapt the $\phi$-divergence method to the setting of a two-stage stochastic linear program with recourse and call this the two-stage $\phi$-divergence linear program (\plp). 
 We examine the properties of the resulting model and develop a simple condition for assessing the value of collecting extra data.
@@ -212,15 +212,15 @@ Finally, we present a modified Bender's Decomposition to solve the \plp and appl
 
 \plp is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
 Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{dupacova_87}.
-Shapiro and Kleywegt \cite{shapiro2002minimax} and Shapiro and Ahmed \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
+\cite{shapiro2002minimax} and \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
 
 In recent years, there has been a growing interest in distributionally robust methods.
-Erdo{\u{g}}an and Iyengar \cite{erdogan2006ambiguous} study chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
-Calafiore and Campi \cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later Calafiore and El Ghaoui \cite{calafiore2006distributionally} develop a method for converting distributionally robust chance constraints into second-order cone constraints.
-Jiang and Guan \cite{jiang2012data} develop an exact approach to solving data-driven chance constrained programs.
-Delage and Ye \cite{delage_ye_10} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
+\cite{erdogan2006ambiguous} study chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
+\cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later \cite{calafiore2006distributionally} develop a method for converting distributionally robust chance constraints into second-order cone constraints.
+\cite{jiang2012data} develop an exact approach to solving data-driven chance constrained programs.
+\cite{delage_ye_10} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
 
-Two recent papers by Wang, Glynn and Ye \cite{wang2010likelihood} and by Hu and Hong \cite{hukullback} provide similar studies using a specific $\phi$-divergence that is described in Section \ref{sec:phi_divergences}.
+Two recent papers by \cite{wang2010likelihood} and by \cite{hukullback} provide similar studies using a specific $\phi$-divergence that is described in Section \ref{sec:phi_divergences}.
 Both papers produce similar dual problems similar to that presented in \cite{bental2011robust} and used here.
 \cite{hukullback} differs from this work and from \cite{wang2010likelihood} by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
 Our results also provide one quantification of the value of additional data, and apply the LRO method specifically to a two stage problem, and to water allocation.
@@ -229,7 +229,7 @@ The $\phi$-divergence method is an attractive data-driven approach because it us
 These scenarios can come from direct observation, results of simulation, from expert opinion regarding scenarios that the decision maker would especially like to be robust against.
 Because the \plp depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
 
-We apply \plp to a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by Draper et al.\ \cite{draper_etal_03}.
+We apply \plp to a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by \cite{draper_etal_03}.
 Other models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
 Our model is modified to incorporate ambiguous future uncertainty by using the $\phi$-divergence approach.
 
@@ -255,8 +255,8 @@ Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 \label{sec:phi_divergences}
 
 In this section we define the concept of a $\phi$-divergence, and describe some of the properties that will be used through the remainder of the paper.
-Pardo \cite{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
-Many results in this section can be also found in Ben-Tal et.\ al.\ \cite{bental2011robust}.
+\cite{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
+Many results in this section can be also found in \cite{bental2011robust}.
 
 $\phi$-divergences are used in statistics to measure the ``distance'' between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$, especially when $p$ and $q$ are probability vectors, i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
 The $\phi$-divergence is defined by
@@ -289,7 +289,7 @@ Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences,
 For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain, i.e., $\{s : \phi^*(s) < \infty$.
 Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' that is somewhat different from the others.
 The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy $\phi_l(t) \geq 0$.
-This divergence is included because Hu and Hong \cite{hukullback} and Wang et.\ al.\ \cite{wang2010likelihood} both use it to formulate a distributionally robust program.
+This divergence is included because \cite{hukullback} and \cite{wang2010likelihood} both use it to formulate a distributionally robust program.
 Note that both previous papers disagree with the naming convention given here by referring to the Likelihood divergence as the ``Kullback-Leibler divergence.''
 
 \begin{table}
@@ -339,7 +339,7 @@ We assume relatively complete recourse; i.e., the second-stage problems $h_\omeg
 The SLP-2 formulation assumes that the distribution $\{p_\omega\}_{\omega=1}^n$ is known.
 However, in many applications, including our water planning, the distribution is itself unknown.
 One technique to deal with this is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions which is believed to contain the true distribution.
-Ben-Tal et.\ al.\ \cite{bental2011robust} proposed that the ambiguity set could be generated with $\phi$-divergences, including those distributions whose divergence from the nominal distribution $q$ is sufficiently small.
+\cite{bental2011robust} proposed that the ambiguity set could be generated with $\phi$-divergences, including those distributions whose divergence from the nominal distribution $q$ is sufficiently small.
 Throughout much of this paper, we assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, leading to the empirical distribution $\hat{p}^N_\omega = N_\omega / N$.
 In SLP-2, this would correspond to probability of scenario $\omega$ to be $\hat{p}_\omega$.
 By replacing the specific distribution in SLP-2 with a set of distributions with sufficiently close to the nominal distribution in the $\phi$-divergence sense, we create a model that we refer to as two-stage $\phi$-divergence linear program with recourse (\plp).
@@ -463,14 +463,14 @@ The convexity of LRO was also noted in \cite{wang2010likelihood}.
 
 The literature on $\phi$-divergences provides some insight on choosing a reasonable asymptotic value of $\rho$.
 Theorem 3.1 of \cite{pardo2005statistical} shows that the statistic $T^\phi_N(\hat{p},\ptrue) = \frac{2N}{\phi''(1)} \sum_{\omega=1}^n \ptrue_\omega \phi\left(\frac{\hat{p}_\omega}{\ptrue_\omega}\right)$ converges in distribution to a $\chi^2$-distribution with $n-1$ degrees of freedom.
-Ben-Tal \cite{bental2011robust} then uses this result to suggest the asymptotic value
+\cite{bental2011robust} then uses this result to suggest the asymptotic value
 \begin{equation} \label{eq:asymptotic_rho}
 	\rho = \frac{\phi''(1)}{2N} \chi^2_{n-1,1-\alpha},
 \end{equation}
 where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
 
-% Wang et. al. \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:plp_primal_divergence}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
-% Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}^N_\omega = \frac{N_\omega}{N}$ as fixed, Wang et. al. \cite{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
+% \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:plp_primal_divergence}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
+% Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}^N_\omega = \frac{N_\omega}{N}$ as fixed, \cite{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
 % This is the Dirichlet distribution $Dir(\beta)$, which has density
 % \[
 % 	\frac{1}{B(\beta)} \prod_{\omega=1}^n p_\omega^{\beta_\omega-1}
@@ -1314,7 +1314,7 @@ As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabiliti
 \section{Conclusion and Future Work}
 \label{sec:concl}
 
-In this paper, we proposed an implementation of the $\phi$-divergence constrained distributionally robust optimization method of Ben-Tal et.\ al.\ \cite{bental2011robust} for two-stage stochastic linear programs with recourse, creating a two-stage $\phi$-divergence linear program with recourse, denoted \plp.
+In this paper, we proposed an implementation of the $\phi$-divergence constrained distributionally robust optimization method of \cite{bental2011robust} for two-stage stochastic linear programs with recourse, creating a two-stage $\phi$-divergence linear program with recourse, denoted \plp.
 The \plp uses a $\phi$-divergence to define an ambiguity set of probability distributions, possibly using observed data, and optimizes the worst-case expected cost with respect to this ambiguity set.
 We provided a classification of $\phi$-divergences that may be useful in determining which is most appropriate in practice for several model types.
 We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution. 
