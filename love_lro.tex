@@ -837,10 +837,8 @@ The next proposition makes this statement rigorous.
 
 The class of $\phi$-divergence constrained problems includes some interesting special cases, which we document here.
 
-\subsection{Conditional Value-at-Risk}
-
-The coherent risk measure Conditional Value-at-Risk (CVaR) is well studied in financial applications.
-\begin{theorem} \label{thm:cvar}
+\begin{example}{CVaR}
+	The coherent risk measure Conditional Value-at-Risk (CVaR) is well studied in financial applications.
 	$\text{CVaR}_\beta$ is equivalent to the $\phi$-divergence constrained problem with 
 	\[
 		\phi(t) = \
@@ -850,34 +848,7 @@ The coherent risk measure Conditional Value-at-Risk (CVaR) is well studied in fi
 		\end{cases}
 	\]
 	for $0 < \beta < 1$.
-\end{theorem}
-
-\begin{proof}
-	First, note that for a random cost $h_\omega(x)$, $\mbox{CVaR}_\beta(h(x)) = \sup_{P \in \mathcal{P}} \{\e{PH(x)}\}$, where the risk envelope is given by
-	\[
-		\mathcal{P} = \left\{ P \left| P \leq \frac{1}{1-\beta}, \e{P} = 1, P \geq 0 \right.\right\}.
-	\]
-	This risk envelope motivates the choice of $\phi(t)$.
-	
-	Note that this $\phi$ only admits two distance values: $0$ or $\infty$.
-	Thus any choice of $\rho < \infty$ is equivalent to $\rho = 0$.
-	
-	The conjugate is
-	\[
-	\phi^*(s) = \
-		\begin{cases}
-			0 & s < 0 \\
-			\frac{1}{1-\beta} s & s \geq 0,
-		\end{cases}
-	\]
-	which results in the objective function given by
-	\begin{align*}
-		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left( \frac{h_\omega(x)-\mu}{\lambda} \right) & = \min_{\lambda \geq 0, \mu} \mu + 0\lambda + \lambda \sum_\omega q_\omega \max\left\{ 0, \frac{1}{1-\beta} \frac{h_\omega(x)-\mu}{\lambda} \right\} \\
-		& = \min_{\mu} \mu + \frac{1}{1-\beta} \sum_\omega q_\omega \max\left\{ 0, h_\omega(x)-\mu \right\} \\
-		& = \min_{\mu} \mu + \frac{1}{1-\beta} \e{[h(x)-\mu]^+},
-	\end{align*}
-	which is one definition of CVaR.
-\end{proof}
+\end{example}
 
 \begin{remark}
 	We see that $\phi(0) = 0$, indicating that CVaR will suppress some scenarios.
@@ -885,12 +856,8 @@ The coherent risk measure Conditional Value-at-Risk (CVaR) is well studied in fi
 	Scenarios cannot be popped because the expectation is taken with respect to the nominal distribution.
 \end{remark}
 
-\subsection{``Reverse'' CVaR}
-
 The CVaR $\phi$-divergence is bounded above, which leads to the question of what happens when a divergence is bounded below.
-The next theorem answers this question.
-
-\begin{theorem} \label{thm:reverse_cvar}
+\begin{example}[``Reverse'' CVaR]
 	The $\phi$-divergence constrained problem with
 	\[
 		\phi(t) = \
@@ -900,25 +867,7 @@ The next theorem answers this question.
 		\end{cases}
 	\]
 	for $0 < \beta < 1$ is equivalent to $\beta \sup_\omega h_\omega(x) + (1-\beta)\e{h(x)}$, where the expectation is taken with respect to the nominal distribution $q$.
-\end{theorem}
-
-\begin{proof}
-	As in the proof for CVaR, let $\rho = 0$ without loss of generality.
-	The conjugate is
-	\[
-		\phi^*(s) = 
-		\begin{cases}
-			(1-\beta)s & s \leq 0 \\
-			\infty & s > 0,
-		\end{cases}
-	\]
-	Thus the objective function becomes
-	\begin{align*}
-		\min_{\lambda \geq 0,\mu} \rho\lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right) & = \min_{\mu \geq \sup_\omega h_\omega(x)} \mu - (1-\beta)\e{\mu-h(x)} \\
-		& = \min_{\mu \geq \sup_\omega h_\omega(x)} \beta \mu + (1-\beta)\e{h(x)} \\
-		& = \beta \sup_\omega h_\omega(x) + (1-\beta)\e{h(x)}%. \qedhere
-	\end{align*}
-\end{proof}
+\end{example}
 
 \begin{remark}
 	$\lim_{t \rightarrow \infty} \frac{\phi(t)}{t} = 0$, indicating that this divergence will pop scenarios.
@@ -926,12 +875,10 @@ The next theorem answers this question.
 	However, $\phi(0) = \infty$ indicates that scenarios will not be suppressed, which is demonstrated by the expectation term $\e{h(x)}$, which takes into account every scenario with positive nominal probability.
 \end{remark}
 
-\subsection{Combination of CVaR and Expectation}
-
 An objective function taking a weighted sum of expected value and CVaR often comes up in practice.
 The next theorem shows how to generate a convex combination of expectation and CVaR.
 
-\begin{theorem}\label{them:expectation_cvar}
+\begin{example}[Conbination CVaR and Expectation]
 	The $\phi$-divergence constrained problem with
 	\[
 		\phi(t) = 
@@ -944,43 +891,7 @@ The next theorem shows how to generate a convex combination of expectation and C
 	\[
 		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)].
 	\]
-\end{theorem}
-
-\begin{proof}
-	Without loss of generality, let $\rho = 0$.
-	The conjugate is
-	\[
-		\phi^*(s) = 
-		\begin{cases}
-			(1-\alpha) s & s < 0 \\
-			\frac{1}{1-\beta} s & s \geq 0.
-		\end{cases}
-	\]
-	
-	This gives the problem
-	\begin{align*}
-		\min_{\lambda \geq 0,\mu} & \ \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) \\
-		& = \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\}.
-	\end{align*}
-	Now, CVaR includes a $\e{[\cdot]^+}$ term, which can be found in the maximum formula.
-	Noting that $1-\alpha < 1 < \frac{1}{1-\beta}$, rewrite the maximum as
-	\begin{align*}
-		\max & \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\} \\
-		& = (1-\alpha)(h_\omega(x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(x)-\mu \right]^+.
-	\end{align*}
-	Then working with the linear term and writing in terms of expectations we get
-	\[
-		(1-\alpha)\e{h(x)} + \min_\mu \alpha\mu + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \e{h(x)-\mu}^+
-	\]
-	which simplifies to
-	\[
-		(1-\alpha)\e{h(x)} + \alpha \min_\mu \left\{ \mu + \left(1 - \frac{\beta}{\alpha(1-\beta)+\beta}\right)^{-1} \e{h(x)-\mu}^+ \right\}
-	\]
-	and thus
-	\[
-		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)].% \qedhere
-	\]
-\end{proof}
+\end{example}
 
 \begin{remark}
 	This divergence will neither pop (because both the expectation and CVaR term are taken with respect to the nominal distribution) nor suppress (because the expectation term includes every scenario).
