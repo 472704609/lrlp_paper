@@ -1945,7 +1945,8 @@ manuscript {\theMANUSCRIPTNO}\end{tabular}}}%
     \theAREAOFREVIEW
     \theMSCCLASS
     \theORMSCLASS
-    \if@BLINDREV\else\theHISTORY\fi
+    \if@BLINDREV\else %\theHISTORY
+	\fi
   \end{minipage}%
   \vspace*{0pt}
   \end{Center}}
