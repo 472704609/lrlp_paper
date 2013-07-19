@@ -208,12 +208,15 @@ Stochastic programs with uncertain objective functions have long been studied by
 In recent years, there has been a growing interest in distributionally robust methods.
 \cite{erdogan2006ambiguous} study chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
 \cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later \cite{calafiore2006distributionally} develop a method for converting distributionally robust chance constraints into second-order cone constraints.
+\cite{pflug2007ambiguity} develop a data-driven method for solving a portfolio selection problem using the Kantorovich distance to define the set of distributions to consider.
 \cite{jiang2012data} develop an exact approach to solving data-driven chance constrained programs.
 \cite{delage_ye_10} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
 
-Two recent papers by \cite{wang2010likelihood} and by \cite{hukullback} provide similar studies using a specific $\phi$-divergence that is described in Section \ref{sec:phi_divergences}.
-Both papers produce similar dual problems similar to that presented in \cite{bental2011robust} and used here.
-\cite{hukullback} differs from this work and from \cite{wang2010likelihood} by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
+Three recent papers by \cite{wang2010likelihood}, \cite{calafiore2007ambiguous}, and \cite{hukullback} provide similar studies using a specific $\phi$-divergence that is described in Section \ref{sec:phi_divergences}.
+All three make use of the Kullback-Leibler divergence to define the set of distributions.
+Both \cite{wang2010likelihood} and \cite{hukullback} produce similar dual problems similar to that presented in \cite{bental2011robust} and used here.
+\cite{hukullback} differs from this work and the others by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
+Additionally, \cite{klabjan2013robust} uses the $\chi^2$ distance, another $\phi$-divergence, to define an uncertain demand distribution for a stochastic lot-sizing problem using historical data.
 Our results also provide one quantification of the value of additional data, and apply the LRO method specifically to a two stage problem, and to water allocation.
 
 The $\phi$-divergence method is an attractive data-driven approach because it uses the data directly; and only those data points or scenarios of interest are used in the calculations.
@@ -278,10 +281,11 @@ The conjugate $\phi^*$ is a nondecreasing function, and may be undefined above s
 
 Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
 For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain, i.e., $\{s : \phi^*(s) < \infty$.
+
 Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' that is somewhat different from the others.
-The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy $\phi_l(t) \geq 0$.
-This divergence is included because \cite{hukullback} and \cite{wang2010likelihood} both use it to formulate a distributionally robust program.
-Note that both previous papers use a different naming convention than the one given here, referring to the Likelihood divergence as the ``Kullback-Leibler divergence.''
+The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy the normalizing condition $\phi_l(t) \geq 0$.
+This divergence is included because \cite{calafiore2007ambiguous}, \cite{hukullback}, and \cite{wang2010likelihood} all use it to formulate distributionally robust programs.
+Note that these papers use a different naming convention than the one given here, referring to the Likelihood divergence as the ``Kullback-Leibler divergence''--reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
 
 \begin{table}
 	\TABLE
