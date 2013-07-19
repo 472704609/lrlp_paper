@@ -1111,10 +1111,10 @@
 \fi
 
 \if@NONBLINDREV
-\RRHFirstLine{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}% default
-\RRHSecondLine{\fs.7.9.\rm Article submitted to {\it\theJOURNAL}; manuscript no. {\theMANUSCRIPTNO}}% default
-\LRHFirstLine{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}% default
-\LRHSecondLine{\fs.7.9.\rm Article submitted to {\it\theJOURNAL}; manuscript no. {\theMANUSCRIPTNO}}% default
+%\RRHFirstLine{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}% default
+%\RRHSecondLine{\fs.7.9.\rm Article submitted to {\it\theJOURNAL}; manuscript no. {\theMANUSCRIPTNO}}% default
+%\LRHFirstLine{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}% default
+%\LRHSecondLine{\fs.7.9.\rm Article submitted to {\it\theJOURNAL}; manuscript no. {\theMANUSCRIPTNO}}% default
 \fi
 
 \let\savesetoddRF=\setoddRF
@@ -1873,14 +1873,14 @@
   \begin{Center}
   \parbox[t][60pt][t]{\textwidth}{%
   \theARTICLETOPLEFT\hfill\theARTICLETOPRIGHT}\\[10pt]
-  \parbox{36pc}{\fs.10.11.\bf\textcolor{red}{Authors are encouraged to submit new papers to INFORMS journals by means of
-a style file template, which includes the journal title. However, use of a
-template does not certify that the paper has been accepted for publication
-in the named journal. INFORMS journal templates are for the exclusive
-purpose of submitting to an INFORMS journal and should not be used to
-distribute the papers in print or online or to submit the papers to another
-publication.}}
-\vspace*{12pt}
+  %\parbox{36pc}{\fs.10.11.\bf\textcolor{red}{Authors are encouraged to submit new papers to INFORMS journals by %means of
+%a style file template, which includes the journal title. However, use of a
+%template does not certify that the paper has been accepted for publication
+%in the named journal. INFORMS journal templates are for the exclusive
+%purpose of submitting to an INFORMS journal and should not be used to
+%distribute the papers in print or online or to submit the papers to another
+%publication.}}
+%\vspace*{12pt}
   \end{Center}}
 
 % default values
@@ -1919,10 +1919,10 @@ manuscript {\theMANUSCRIPTNO}\end{tabular}}}%
 
 \if@NONBLINDREV
 %
-\long\def\theARTICLETOPLEFT{{\tabcolsep0pt\fs.12.14.\bf
-\begin{tabular}{l}\HD{25}{0}Submitted to {\bi\theJOURNAL}\\
-manuscript {\theMANUSCRIPTNO}\end{tabular}}}%
-\def\theARTICLETOPRIGHT{}%
+%\long\def\theARTICLETOPLEFT{{\tabcolsep0pt\fs.12.14.\bf
+%\begin{tabular}{l}\HD{25}{0}Submitted to {\bi\theJOURNAL}\\
+%manuscript {\theMANUSCRIPTNO}\end{tabular}}}%
+%\def\theARTICLETOPRIGHT{}%
 %
 \fi
 
