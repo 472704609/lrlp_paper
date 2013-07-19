@@ -192,15 +192,6 @@
 
 \section{Introduction and Motivation}
 
-% More than 25 million people in the southwestern United States depend on the water supplied by the Lower Colorado River Basin for their livelihood.
-% More than half of Tucson's water, for instance, comes from this source.
-% The Colorado River Basin has experienced a sustained period of drought in recent years, which has led to questions about the adequacy of the Colorado to meet future demands, especially as the population of Arizona (and of other states that depend on this water source) increases.
-% Thus, the problem of allocating Colorado water is of critical importance. 
- 
-% The reliability of the Colorado River system under future climate variability is critically important to the long-term well-being of Arizona and the other six states that depend on this water supply \cite{usbr_colorado_climate}. 
-% The current approach to modeling the water supply is to use Global Circulation Models (GCM) to generate regional rainfall and temperature scenarios by the so-called statistical downscaling techniques \cite{christensen_lettenmaier_07,dibike_caulibaly_05}.  
-% The US Bureau of Reclamation also uses an approach called the {\it scenario planning} that examines water demand and supplies over the next 50 years \cite{usbr_11}.
-
 In practice, many optimization problems can be modeled by stochastic programs minimizing an expected value of an uncertain objective function.
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
 Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions, and optimizes the expected cost relative to the worst distribution in the uncertainty set.
@@ -330,9 +321,7 @@ The SLP-2 is
 \end{align}
 where
 \begin{align}
-	h_\omega(\x) = \min_{y^\omega} \ & \left\{ \k^\omega y^\omega : D^\omega y^\omega = B^\omega \x + \d^\omega, y^\omega \geq 0 \right\} \label{eq:slp_second_stage}% \\
-% 	\st \ & D^\omega y^\omega = B^\omega \x + \d^\omega \nonumber \\
-% 	& \ \ \ y^\omega \geq 0. \nonumber
+	h_\omega(\x) = \min_{y^\omega} \ & \left\{ \k^\omega y^\omega : D^\omega y^\omega = B^\omega \x + \d^\omega, y^\omega \geq 0 \right\} \label{eq:slp_second_stage}
 \end{align}
 We assume relatively complete recourse; i.e., the second-stage problems $h_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem; and that the second-stage problems $h_\omega(\x)$ are dual feasible for every feasible solution $\x$ of the first-stage problem..
 
@@ -469,35 +458,6 @@ Theorem 3.1 of \cite{pardo2005statistical} shows that the statistic $T^\phi_N(\h
 \end{equation}
 where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
 
-% \cite{wang2010likelihood} suggest a Bayesian interpretation of the likelihood constraint (\ref{eq:plp_primal_divergence}) which yields a Monte Carlo method for establishing a value for $\gamma'$.
-% Considering the observations $\{N_\omega\}$ and empirical probabilities $\hat{p}^N_\omega = \frac{N_\omega}{N}$ as fixed, \cite{wang2010likelihood} introduce a distribution $\P^*$ on the $n$-dimensional simplex whose density is proportional to the likelihood $\prod_\omega p_\omega^{N_\omega}$.
-% This is the Dirichlet distribution $Dir(\beta)$, which has density
-% \[
-% 	\frac{1}{B(\beta)} \prod_{\omega=1}^n p_\omega^{\beta_\omega-1}
-% \]
-% where the normalizing factor is $B(\beta) = \frac{\prod_{\omega=1}^n \Gamma(\beta_\omega)}{\Gamma\left( \sum_{\omega=1}^n \beta_\omega \right)}$.
-% The unknown true distribution can then be modeled as coming from a $Dir(\beta)$ distribution with parameters $\beta_\omega = N_\omega + 1$.
-% The parameter $\gamma'$ is chosen such that $\P^*\left\{ \prod_{\omega=1}^n p_\omega^{N_\omega} \geq \gamma' \prod_{\omega=1}^n (\hat{p}^N_\omega)^{N_\omega} \right\}$.
-% This probability can be estimated by Monte Carlo sampling.
-% 
-% Figure \ref{fig:gammaprime_by_sample} shows the estimated values of $\gamma'$ for a $95\%$ confidence region for distributions with $n = 10$ scenarios.
-% You can notice four distinct, color-coded ``bands'' of values of $\gamma'$.
-% These bands are determine by the size of the set $\{\omega | N_\omega = 0\}$, i.e., the number of scenarios which have not been sampled.
-% The highest band, in blue, has all $N_\omega > 0$.
-% The next (green) band has one $N_\omega = 0$, followed by red with two and cyan with three.
-% 
-% \begin{figure}
-% 	\centering
-% 	\includegraphics[width=.6\textwidth]{images/gammaprime_diff_samples_dim_10}
-% 	\caption{
-% 		Computed estimates for $\gamma'$ to achieve a $95\%$ confidence region using the Dirichlet distribution.
-% 		Each point estimate was computed using a randomly generated $n=10$ dimensional probability distribution from which $N$ samples were selected.
-% 		The value of $\gamma'$ was estimated by Monte Carlo sampling from $Dir(\beta)$ with $\beta_\omega = N_\omega + 1$.
-% 		The color indicates how many of the $n$ scenarios were not represented in the $N$ samples: blue indicates that all $N_\omega > 0$, green has exactly one $N_\omega = 0$, red has two, and cyan has three.
-% 	}
-% 	\label{fig:gammaprime_by_sample}
-% \end{figure}
-
 \subsection{The Value of Data} \label{ssec:value}
 
 With a data driven formulation such as \plp, it is natural to ask how the behavior changes as more data is gathered.
@@ -610,44 +570,6 @@ That is, $L$ gives the set of scenarios that, if sampled one more observation, w
 
 	We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program (\ref{eq:prob_cost_decrease}).
 \end{proof}
-
-% We can view the optimal value of (\ref{eq:prob_cost_decrease}) as a function of three parameters: the total sample size $N$, the relative likelihood parameter $\gamma'$, and the number of observations $N_L$ in the set $L$.
-% The behavior of this lower bound estimate is studied in Figure \ref{fig:prob_cost_decrease_nd_n} as a function of the ratio $\tfrac{N_L}{N}$, and in Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} as a function of the relative likelihood parameter $\gamma'$.
-% Figure \ref{fig:prob_cost_decrease_nd_n} shows that the estimated lower bound on the probability of optimal cost decrease stays relatively close to the identity line for most values of $\gamma'$, getting closer to the identity line as  $\gamma'$ is increased; i.e., the ambiguity set (or robustness) is decreased.
-% Figures \ref{fig:prob_cost_decrease_gp} and \ref{fig:prob_cost_decrease_gp_multiple} give a closer look at how (\ref{eq:prob_cost_decrease}) differs from $\tfrac{N_L}{N}$ as $\gamma'$ is changed.
-% 
-% \begin{figure}
-% 	\centering
-% 	\includegraphics[width=.5\textwidth]{images/prob_dec_cost_v_nl_n_20}
-% 	\caption{The probability that an additional sample decreases the optimal cost of the \plp\ as a function of the ratio $\frac{N_L}{N}$ for total sample size $N = 20$.}
-% 	\label{fig:prob_cost_decrease_nd_n}
-% \end{figure}
-% 
-% \begin{figure}
-% 	\centering
-% 	\begin{subfigure}{.5\textwidth}
-% 	   \includegraphics[width=\textwidth]{images/prob_dec_cost_v_gammaprime_no_context}
-% 	   \caption{
-% 			$N_L=50$ $\left(\frac{N_L}{N} = 0.25\right)$
-% 		}
-% 	   \label{fig:prob_cost_decrease_gp}
-% 	\end{subfigure}%
-% 	\begin{subfigure}{.5\textwidth}
-% 	   \includegraphics[width=\textwidth]{images/prob_dec_cost_v_gammaprime_no_context_multiple}
-% 	   \caption{
-% 			$N_L=10,50,100,150$ and $190$
-% 		}
-% 	   \label{fig:prob_cost_decrease_gp_multiple}
-% 	\end{subfigure}%
-% 	\caption{The probability that an additional sample decreases the optimal cost of the \plp\ as a function of $\gamma'$ for total sample size $N = 200$, (a) for a single value of $N_L = 50$ and (b) for multiple values of $N_L$.}
-% \end{figure}
-% 
-% Notice, however, that the three parameters discussed, $\gamma'$, $N$, and $N_L$ do not play the same role in the \plp.
-% The first two of these parameters are also parameters of the \plp\ problem (\ref{eq:plp_two_stage}).
-% The third, $N_L$, is computed from the optimal solution of (\ref{eq:plp_two_stage}) via (\ref{eq:p_worst}) and (\ref{eq:cost_decrease_cond}).
-% As such, $N_L$ should be viewed as changing with $\gamma'$.
-% In general, $N_L$ will decrease as $\gamma'$ increases. To see this, recall that values of  $\gamma'$ close to $1$ consider increasingly limited set of distributions, the ones closest to the maximum likelihood distribution $p_\omega = \frac{N_\omega}{N}$, $\forall \omega$. So, the condition given in (\ref{eq:cost_decrease_cond}) is satisfied for a smaller number of scenarios. As $N_L$ changes, the estimated bound on the probability of cost decrease will have one or more jump discontinuities, moving from one line to another line below it in Figure \ref{fig:prob_cost_decrease_gp_multiple}, as seen in Figure \ref{fig:water_prob_decrease}.
-% This behavior is studied in Section \ref{sec:comp_results}.
 
 \subsection{Asymptotic Analysis of \plp}
 \label{ssec:epiconvergence}
@@ -897,60 +819,6 @@ The next theorem shows how to generate a convex combination of expectation and C
 	This divergence will neither pop (because both the expectation and CVaR term are taken with respect to the nominal distribution) nor suppress (because the expectation term includes every scenario).
 \end{remark}
 
-% \subsection{Variation-type Divergences}
-% 
-% The variation divergence is given by $\phi(t) = |t-1|$, which will result in piecewise-linear $\phi^*$.
-% In general, $\phi$-divergences have a left-of-one range bounded by $\phi(0)$ and a right-of-one range bounded by $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-% Consequently, we can restrict $\rho \leq 1$ for variation-type divergences.
-% 
-% \subsubsection{Right-sided Variation}
-% 
-% First, we can look only at the right-side of the variation, i.e., $\phi(t) = [t-1]^+$.
-% This yields
-% \[
-% 	\phi^*(s) = 
-% 	\begin{cases}
-% 		[s]^+ & s \leq 1 \\
-% 		\infty & s > 1.
-% 	\end{cases}
-% \]
-% The upper bound on $s$ yields $\frac{h_\omega(x)-\mu}{\lambda} \leq 1$ or $\lambda \geq \sup_\omega h_\omega(x) - \mu$.
-% Then starting from (\ref{eq:basic_optimization}),
-% \begin{align*}
-% 	\min \rho\lambda + \mu + \lambda \sum_\omega q_\omega \left[ \frac{h_\omega(x) - \mu}{\lambda} \right]^+ & = \min_{\lambda \geq \sup_\omega h_\omega(x) - \mu, \mu} \rho\lambda + \mu + \sum_\omega q_\omega \left[ h_\omega(x) - \mu \right]^+ \\
-% 	& = \min_\mu \rho(\sup_\omega h_\omega(x) - \mu) + \mu \e{\left[h(x)-\mu\right]^+} \\
-% 	& = \rho \sup_\omega h_\omega(x) + \min_\mu (1-\rho)\mu + \e{\left[h(x)-\mu\right]^+} \\
-% 	& = \rho \sup_\omega h_\omega(x) + (1-\rho) \left( \min_\mu \mu + \frac{1}{1-\rho}\e{\left[h(x)-\mu\right]^+}\right) \\
-% 	& = \rho \sup_\omega h_\omega(x) + (1-\rho) \mbox{CVaR}_\rho(h(x)).
-% \end{align*}
-% This time we get a convex combination between the supremum and CVaR.
-% 
-% \subsubsection{Left-sided Variation}
-% 
-% The results start getting much messier here.
-% The left-sided variation is $\phi(t) = [1-t]^+$, which gives
-% \[
-% 	\phi^*(s) = 
-% 	\begin{cases}
-% 		-1 & s < -1 \\
-% 		s & -1 \leq s \leq 0 \\
-% 		\infty & s > 0.
-% 	\end{cases}
-% \]
-% Once again, we have the condition $\mu \geq \sup_\omega h_\omega(x)$.
-% The center linear portion will induce a CVaR-like behavior for $\frac{h_\omega(x)-\mu}{\lambda} \geq -1$, or $\mu - \lambda \leq h_\omega(x)$.
-% However, the opposite condition behaves only as $\lambda$.
-% Let $\bar{q} = \p{h_\omega(x) \geq \mu - \lambda}$, then using equation (\ref{eq:basic_optimization}),
-% \begin{align*}
-% 	\min_{\lambda \geq 0,\mu} \rho\lambda + \mu + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right) 
-% 	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + \mu - \lambda(1-\bar{q}) + \sum_{\omega : h_\omega(x) \geq \mu - \lambda} q_\omega (h_\omega(x) - \mu) \\
-% 	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + (1-\bar{q})(\mu-\lambda) + \sum_{\omega : h_\omega(x) \geq \mu - \lambda} q_\omega h_\omega(x) \\
-% 	& = \min_{\lambda, \mu \geq \sup_\omega h_\omega(x)} \rho\lambda + (1-\bar{q})(\mu-\lambda) + \bar{q} \mbox{CVaR}_{1-\bar{q}}(h(x)).
-% \end{align*}
-% $\mu-\lambda$, being the quantity that defines $\bar{q}$, is like $\mbox{VaR}(h(x))$.
-% I don't know that having VaR in there makes any sense, though.
-% I also can't think of any other way to simplify the above.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Decomposition-Based Solution Method}
 \label{sec:soln_algorithm}
@@ -1050,10 +918,6 @@ and setting $U_\omega(\x,\mu,\lambda) = 0$ to find a feasible solution gives the
 \[
 	\mu + \bar{s} \lambda \geq \pi^{*,\omega}B^\omega \x + (h_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
 \]
-
-% Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
-% This can be done quickly by minimizing the objective function of (\ref{eq:plp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h_\omega(\xh))$.
-% We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h_\omega(\xh)} = 1$ with Newton's method.
 
 \subsection{Computational Enhancements}
 
@@ -1156,17 +1020,7 @@ where the second stage problems
 \end{align}
 and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower and upper variable bounds.
 
-% In the rest of the paper, we simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows.
-% In the first stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply/demand parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
-% In the second stage, we denote the decisions as $\y^\omega$, the costs as $\k^\omega$, the supply/demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.
-
-% Using the generalized network model (\ref{eq:gen_network_two_stage}) of Colorado River water allocation in the southeastern portion of Tucson, we created a likelihood robust water allocation problem of the form \plp.
-% The southeastern portion of Tucson is a newly developing area and is expected to grow considerably. 
-% The \plp\ water allocation model would help authorities with future water plans in this area while being robust to uncertainties in water supplies and demands.
-
-The model has a total of $P = 41$ time periods, representing years 2010--2050. 
-%, with projections coming from studies WISP \cite{??} and TAZ \cite{??}.
-% We use $P_1 = 10$ time periods for the first stage, and four second-stage scenarios are constructed from high (WISP) and low (TAZ) population estimates along with high and low estimates for the amount of water available for use.
+The model has a total of $P = 41$ time periods, representing years 2010--2050.
 For each time period, the network has 62 nodes representing demand for potable and nonpotable (reclaimed) water, pumps, water treatment plants, and the available water supply from the Colorado River.
 The network in each time period has 102 arcs, representing the pipe network carrying the water between the nodes physically and connecting the network to the five reservoirs that connect the time stages in the model.
 We use $P_1 = 10$ time periods for the first stage.
@@ -1213,13 +1067,6 @@ This is what we see through most of the computed values of $\gamma'$, with $\fra
 For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero.
 This occurs because (\ref{eq:cost_decrease_cond}) only compares scenario probabilities in the empirical ($N_\omega / N$) and worst-case ($p_\omega$) distributions and does not use the computed cost of the scenarios.
 As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabilities become so close the empirical probabilities that (\ref{eq:cost_decrease_cond}) can no longer be satisfied, resulting in $\frac{N_L}{N}$ decreasing to zero.
-% 
-% \begin{figure}
-% 	\centering
-% 	\includegraphics[width=.5\textwidth]{images/water_prob_decrease}
-% 	\caption{Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.  The red line shows the upper bound probability $\tfrac{N_L}{N}$.}
-% 	\label{fig:water_prob_decrease}
-% \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and Future Work}
