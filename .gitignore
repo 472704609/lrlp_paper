@@ -6,7 +6,8 @@
 *.log
 *.tex.backup
 *.tex.bak
-*.tex.undo
+*.undo
+*.*.undo
 *.tex.orig
 *~
 *.bbl
