@@ -124,7 +124,7 @@ Erdo{\u{g}}an and Iyengar \cite{erdogan2006ambiguous} study chance-constrained s
 Calafiore and Campi \cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later Calafiore and El Ghaoui \cite{calafiore2006distributionally} develop a method for converting distributionally robust chance constraints into second-order cone constraints.
 Pflug and Wozabal \cite{pflug2007ambiguity} develop a data-driven method for solving a portfolio selection problem using the Kantorovich distance to define the set of distributions to consider.
 Jiang and Guan \cite{jiang2012data} develop an exact approach to solving data-driven chance constrained programs.
-Delage and Ye \cite{delage_ye_10} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
+Delage and Ye \cite{delage2010distributionally} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
 
 Three recent papers by Wang, Glynn and Ye \cite{wang2010likelihood}, Calafiori \cite{calafiore2007ambiguous}, and Hu and Hong \cite{hukullback} provide similar studies using a specific $\phi$-divergence that is described in Section \ref{sec:phi_divergences}.
 All three make use of the Kullback-Leibler divergence to define the set of distributions.
@@ -185,10 +185,10 @@ A $\phi$-divergence has an adjoint, defined by
 \begin{equation} \label{eq:adjoint}
 	\tilde{\phi}(t) = t \phi\left(\frac{1}{t}\right),
 \end{equation}
-which satisfies all criteria for a $\phi$-divergence \citep{bental1991certainty}, and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
+which satisfies all criteria for a $\phi$-divergence \cite{bental1991certainty}, and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
 Divergences that are symmetric with respect to the input vectors are known as self-adjoint.
 
-As is shown in \citep{bental2011robust}, the problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
+As is shown in \cite{bental2011robust}, the problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
 \begin{equation} \label{eq:conjugate}
 	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}.
 \end{equation}
