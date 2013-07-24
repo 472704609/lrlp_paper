@@ -251,42 +251,44 @@ Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 
 In this section we define the concept of a $\phi$-divergence, and describe some of the properties that will be used through the remainder of the paper.
 \cite{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
-Many results in this section can be also found in \cite{bental2011robust}.
+Many results in this section can be also found in \citep{bental2011robust}.
 
-$\phi$-divergences are used in statistics to measure the ``distance'' between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$, especially when $p$ and $q$ are probability vectors, i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
+$\phi$-divergences are used in statistics to measure the ``distance'' between two distributions. 
+In the discrete case, $\phi$-divergences can be used generally to measure the distance between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$, and specifically when $p$ and $q$ are probability vectors; i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
 The $\phi$-divergence is defined by
 \[
 	I_\phi(p,q) = \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right),
 \]
-where $\phi(t)$ is a convex function on $t \geq 0$ such that $\phi(1) = 0$, and with the additional interpretations that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and $0 \phi(0/0) = 0$.
+where $\phi(t)$, called the $\phi$-divergence function, is a convex function on $t \geq 0$ such that $\phi(1) = 0$, and with the additional interpretations that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and $0 \phi(0/0) = 0$.
 If both $p$ and $q$ are probability vectors, as we assume throughout this paper, we can additionally assume without loss of generality that $\phi(t) \geq 0$.
-The function $\phi(t)$ can be modified as $\psi(t) = \phi(t) - c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t$, and $I_\psi(p,q) = I_\phi(p,q)$ for all vectors $p,q$.
-If $\phi(t)$ is differentiable at $t = 1$ this can be done by selecting $c = \phi'(1)$.
+The function $\phi(t)$ can be modified as $\psi(t) = \phi(t) - c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t$, and $I_\psi(p,q) = I_\phi(p,q)$ for all probability vectors $p,q$.
+If $\phi(t)$ is differentiable at $t = 1$ this can be done by selecting $c = \phi'(1)$; see, e.g., the Likelihood divergence and Burg entropy in Table~\ref{tb:phi_definitions}.
 
 $\phi$-divergences are not, in general, metrics.
-For example, most $\phi$-divergences no not satisfy the triangle inequality, and many are not symmetric in the sense that $I_\phi(p,q) \neq I_\phi(q,p)$.
-The exception is the Variation distance, which is equivalent to the $L^1$-distance between the vectors.
+For example, most $\phi$-divergences do not satisfy the triangle inequality and many are not symmetric in the sense that $I_\phi(p,q) \neq I_\phi(q,p)$.
+One exception is the Variation distance, which is equivalent to the $L^1$-distance between the vectors.
 
 A $\phi$-divergence has an adjoint, defined by
 \begin{equation} \label{eq:adjoint}
 	\tilde{\phi}(t) = t \phi\left(\frac{1}{t}\right),
 \end{equation}
-which satisfies all criteria for a $\phi$-divergence \cite{bental1991certainty}, and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
+which satisfies all criteria for a $\phi$-divergence \citep{bental1991certainty}, and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
 Divergences that are symmetric with respect to the input vectors are known as self-adjoint.
 
-As in shown \cite{bental2011robust}, the problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
+As is shown in \citep{bental2011robust}, the problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
 \begin{equation} \label{eq:conjugate}
 	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}.
 \end{equation}
 The conjugate $\phi^*$ is a nondecreasing function, and may be undefined above some upper bound $\bar{s}$.
 
 Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
-For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain, i.e., $\{s : \phi^*(s) < \infty$.
-
+For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain; i.e., $\{s : \phi^*(s) < \infty\}$.
 Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' that is somewhat different from the others.
 The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy the normalizing condition $\phi_l(t) \geq 0$.
-This divergence is included because \cite{calafiore2007ambiguous}, \cite{hukullback}, and \cite{wang2010likelihood} all use it to formulate distributionally robust programs.
-Note that these papers use a different naming convention than the one given here, referring to the Likelihood divergence as the ``Kullback-Leibler divergence''--reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
+This divergence is included because \cite{wang2010likelihood} use it to formulate a distributionally robust newsvendor problem so that the ambiguity set of distributions have a sufficiently high empirical likelihood. 
+They refer to this as the Likelihood Robust Optimization. 
+We also note that \cite{calafiore2007ambiguous}, \cite{hukullback}, and \cite{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler divergence''---reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
+In this paper, we use $q$ as the nominal distribution. 
 
 \begin{table}
 	\TABLE
