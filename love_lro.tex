@@ -314,8 +314,14 @@ In this paper, we use $q$ as the nominal distribution.
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{\plp\ Formulation}
+\section{$\phi$-Divergence Constrained Ambiguous Stochastic Program}
 \label{sec:plp2}
+
+In this section we provide primal and dual formulations and basic properties of two-stage ambiguous stochastic linear programs constructed via $\phi$-divergences.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Formulation}
+\label{ssec:form}
 
 We begin with a two-stage stochastic linear program with recourse (SLP-2).
 Let $\x$ be a vector of of first stage decision variables with cost vector $\c$, constraint matrix $A$ and right hand side $\b$.
@@ -396,7 +402,10 @@ where
 	& y^\omega \geq 0. \nonumber
 \end{align}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Basic Properties}
+\label{ssec:basicprop}
 
 In this section, we list some basic properties of \plp.
 Most of these have already been noted in \cite{bental2011robust}, with a special case of LRO noted in \cite{wang2010likelihood}, but we list them for completeness and because some of these properties help with our special solution method.
@@ -414,7 +423,7 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 	\plp\ is equivalent to minimizing a coherent risk measure.
 \end{property}
 
-\begin{proof}
+\begin{proof}{\sc Proof of Property 2.}
 	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \cite{rockafellar2007coherent}.
 	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$.
 	Throughout the proof, all expectations are taken with respect to the uniform distribution.
@@ -424,6 +433,7 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 	Combining these yields the set ${\cal Q} = \{\tilde{p} | \e{\tilde{p}} = 1, \sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho \}$, a closed and convex risk envelope.
 	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{\tilde{p} \in {\cal Q}} \e{\tilde{p} h(x)}$, where $h(x)$ is the random variables defined by $\{h_\omega(x)\}$.
 	Thus we see that \plp\ is the minimum of a coherent risk measure.
+	\Halmos
 \end{proof}
 
 \begin{remark}
@@ -448,6 +458,8 @@ The convexity of LRO was also noted in \cite{wang2010likelihood}.
 	If $q_\omega = 0$, then either $p_\omega = 0$ or $\infty \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right)$.
 \end{property}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Level of Robustness}
 \label{ssec:robust_level}
 
