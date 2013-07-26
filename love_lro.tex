@@ -935,10 +935,7 @@ Because we are also interested in the worst-case probabilities given in the prim
 This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Application and Computational Results} \label{sec:comp_results}
-
-\subsection{Computational Behavior of $\phi$-Divergences}
-\label{ssec:computational_classification}
+\section{Numerical Illustration} \label{sec:comp_results}
 
 Section \ref{sec:classification} discussed a method of classifying $\phi$-divergences into four types based on two criteria: whether a $\phi$-divergences allows distributions that suppress certain scenarios (i.e., allows $p_\omega = 0$ while $q_\omega > 0$); and whether a $\phi$-divergence allows distributions that pop a scenario that is impossible in the nominal distribution (i.e., allows $p_\omega > 0$ while $q_\omega = 0$).
 In this section we present computational results demonstrating the suppressing and popping behavior of different divergences.
@@ -987,92 +984,6 @@ Other divergences that can pop but not suppress look qualitatively similar.
 	}
 	{}
 \end{figure}
-
-\subsection{Generalized Network Water Model} 
-\label{ssec:network_model}
-
-We applied \plp\ to a multi-period generalized network flow model of Colorado River water allocation in Tucson, defined by a set of nodes and directed arcs $(N,\: A)$.
-The nodes represent available water supply from the Colorado River, water treatment plants, reservoirs, and water demand sites.
-The arcs represent the conveyance system (pipes, etc.) that carry water between the nodes. 
-Water can be stored in between time periods in reservoirs to meet future demands. 
-The model aims to find the minimal cost water flows considering energy, treatment, storage, and transportation costs over the planning period. 
-Generalized network water allocation models have been used to find water allocations and delivery reliabilities and to assess values of different water use operations; see, e.g., \cite{draper_etal_03}. 
-
-Water flows on arc $(i,j) \in A$ during time period $t = 1, \dots, P$ are represented by decisions $x_{ijt}$.
-Each arc $(i,j) \in A$ and time period $t$ has a unit cost $c_{ijt}^x$, loss coefficient $0 \leq a_{ijt} \leq 1$ to account for evaporation, leakage from the pipes, etc., and bounds on the flow $l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x$.
-Each node $j \in N$ has a supply/demand for time period $t$, $b_{jt}$.
-Nodes representing reservoirs are able to store water between time periods.
-Stored water available at node $j$ at the beginning of time period $t$ is $s_{jt}$, with associated cost $c_{jt}^s$ and bounds $l_{jt}^s \leq s_{jt} \leq u_{jt}^s$.
-Finally, water released into the environment from node $j$ in period $t$ is given by $r_{jt}$, with bounds $l_{jt}^r \leq r_{jt} \leq u_{jt}^r$.
-The deterministic model is a multi-period generalized network flow model of the form
-\begin{align*}
-	\min_{x,s,r} \ & \sum_{(i,j) \in A} \sum_{t=1}^P c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^P c_{jt}^s s_{jt}\\
-	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \ \forall j,t \\
-	& l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x,\ \ \ \forall i,j,t \\
-	& l_{jt}^s \leq s_{jt} \leq u_{sjt}^s, \ \ \ \forall j,t \\
-	& l_{jt}^r \leq r_{jt} \leq u_{sjt}^r, \ \ \ \forall j,t.
-\end{align*}
-
-The model is converted to a two-stage stochastic model with $P_1$ periods in the first stage and $P-P_1$ stages in the second stage.
-We assume that the supplies and demands are uncertain, as well as the bounds on the decision variables.
-\begin{align}
-	\min_{(x,s,r) \in L^1} \ & \sum_{(i,j) \in A} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n p_\omega h_\omega(s) \label{eq:gen_network_two_stage} \\
-	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt},\ \ \ \ \forall j, 1 \leq t \leq P_1, \notag
-\end{align}
-where the second stage problems
-\begin{align}
-	h_\omega(s) = \min_{(x,s,r) \in L^2_\omega} \ & \sum_{(i,j) \in A} \sum_{t=P_1+1}^{P} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=P_1+1}^{P} c_{jt}^s s_{jt} \label{eq:gen_network_second_stage} \\
-	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}^\omega, \ \ \ \ \forall j, P_1+1 \leq t \leq P, \notag
-\end{align}
-and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower and upper variable bounds.
-
-The model has a total of $P = 41$ time periods, representing years 2010--2050.
-For each time period, the network has 62 nodes representing demand for potable and nonpotable (reclaimed) water, pumps, water treatment plants, and the available water supply from the Colorado River.
-The network in each time period has 102 arcs, representing the pipe network carrying the water between the nodes physically and connecting the network to the five reservoirs that connect the time stages in the model.
-We use $P_1 = 10$ time periods for the first stage.
-Uncertainty in the second stage takes the form of uncertain population (thus, demand for water) and supply of water.
-There are a total of 4 scenarios considered in this test instance: (i) high population, high supply, (ii) high population, low supply, (iii) low population, high supply, and (iv) low population, low supply.
-Each scenario is assumed to have five observations.
-The high population scenarios are more costly as the system needs to meet demand or pay for unmet demand.
-The low population scenarios, on the other hand, are not as costly. 
-% The supply variability seems to have a nominal effect.
-We applied the decomposition-based solution algorithm presented in Section \ref{sec:soln_algorithm} to solve this model.% and selected tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
-
-\subsection{Computational Results}
-
-Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.
-When $\gamma'$ is close to $1$, we use the maximum likelihood distribution, which has equal $\tfrac{1}{4}$ probabilities on each of the four scenarios.
-As $\gamma'$ is decreased, the ambiguity set increases, and the worst-case distribution used by \plp\ changes.
-It gives higher than $\tfrac{1}{4}$ probability to the two high-population scenarios and lower than $\tfrac{1}{4}$ probability to the two low-population scenarios, making the solution more robust to costly scenarios.
-Note that the scenarios fall into two similar pairs because the cost of each scenario depends strongly on the projected demand but only weakly on the projected supply of Colorado River water.
-A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation) in an effort to meet demands in a least-costly way.
-
-\begin{figure}
-	\FIGURE
-	{%
-		\includegraphics*[width=.5\textwidth]{images/worst_case_probability}%
-		\includegraphics*[width=.5\textwidth]{images/water_prob_decrease}%
-	}
-	{
-		(a) Worst-case distribution for the likelihood robust water allocation problem.
-		(b) Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.
-		The red line shows the upper bound probability $\tfrac{N_L}{N}$.
-		\label{fig:worst_case}
-		\label{fig:water_prob_decrease}
-	}
-	{}
-\end{figure}
-
-%\subsection{Value of Data}
-
-The results of the water model were then analyzed with the value of data techniques from Section \ref{ssec:value}.
-Figure \ref{fig:water_prob_decrease} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
-The dashed line in Figure \ref{fig:water_prob_decrease} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
-Because the low-population scenarios have lower costs, an additional sample of either low-population scenario will result in a lower expected cost.
-This is what we see through most of the computed values of $\gamma'$, with $\frac{N_L}{N} = 0.5$, indicating that the sufficient condition (\ref{eq:cost_decrease_cond}) was satisfied for both low-population scenarios.
-For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero.
-This occurs because (\ref{eq:cost_decrease_cond}) only compares scenario probabilities in the empirical ($N_\omega / N$) and worst-case ($p_\omega$) distributions and does not use the computed cost of the scenarios.
-As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabilities become so close the empirical probabilities that (\ref{eq:cost_decrease_cond}) can no longer be satisfied, resulting in $\frac{N_L}{N}$ decreasing to zero.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and Future Work}
