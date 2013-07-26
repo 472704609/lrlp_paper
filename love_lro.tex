@@ -85,6 +85,7 @@
 
 % Epiconvergence for \plp
 \newcommand{\ptrue}{p^{\text{true}}}
+\newcommand{\qtrue}{q^{\text{true}}}
 
 % Useful mathematics functions
 \newcommand{\keywords}[1]{\par\noindent\enspace\ignorespaces\textbf{Keywords:} #1}
@@ -408,30 +409,34 @@ where
 \label{ssec:basicprop}
 
 In this section, we list some basic properties of \plp.
-Most of these have already been noted in \cite{bental2011robust}, with a special case of LRO noted in \cite{wang2010likelihood}, but we list them for completeness and because some of these properties help with our special solution method.
-
-As noted in \cite{wang2010likelihood}, the \plp\ problem can be viewed as minimizing a coherent risk measure.
-A coherent risk measure (in the basic sense), as defined in \cite{rockafellar2007coherent}, is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that
-\begin{enumerate}
-	\item ${\cal R}(C) = C$ for all constants $C$,
-	\item ${\cal R}((1-\lambda)X + \lambda X') \leq (1-\lambda){\cal R}(X) + \lambda {\cal R}(X')$, i.e., $\cal R$ is convex,
-	\item ${\cal R}(X) \leq {\cal R}(X')$ when $X \leq X'$, i.e., $\cal R$ is monotonic,
-	\item ${\cal R}(\lambda X) = \lambda {\cal R}(X)$ for $\lambda > 0$, i.e., $\cal R$ is positively homogeneous.
-\end{enumerate}
+Most of these have already been noted earlier (e.g., \cite{bental2011robust}), but we list them for completeness and because some of these properties help with our specialized solution method.
 
 \begin{property}
+	\plp\ is a convex program.
+\end{property}
+
+\begin{property}
+	\label{prop:coherent_risk_measure}
 	\plp\ is equivalent to minimizing a coherent risk measure.
 \end{property}
 
-\begin{proof}{\sc Proof of Property 2.}
+A coherent risk measure (in the basic sense), as defined in \citep{rockafellar2007coherent}, is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that
+\begin{enumerate}
+	\item $\mathcal{R}(C) = C$ for all constants $C$,
+	\item $\mathcal{R}((1-\lambda)X + \lambda X') \leq (1-\lambda){\cal R}(X) + \lambda {\cal R}(X')$, i.e., $\mathcal{R}$ is convex,
+	\item $\mathcal{R}(X) \leq {\cal R}(X')$ when $X \leq X'$, i.e., $\mathcal{R}$ is monotonic,
+	\item $\mathcal{R}(X) \leq 0$ when $\Vert X^k - X \Vert_2 \rightarrow 0$ and $\mathcal{R}(X^k) \leq 0$, i.e., $\mathcal{R}$ is closed.
+	\item $\mathcal{R}(\lambda X) = \lambda {\cal R}(X)$ for $\lambda > 0$, i.e., $\mathcal{R}$ is positively homogeneous.
+\end{enumerate}
+
+\begin{proof}{\sc Proof of Property \ref{prop:coherent_risk_measure}.}
 	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \cite{rockafellar2007coherent}.
 	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$.
-	Throughout the proof, all expectations are taken with respect to the uniform distribution.
-	
+	Throughout the proof, all expectations are taken with respect to the discrete uniform distribution.
 	First, probability constraint (\ref{eq:plp_primal_probability}) can be written as $\e{\tilde{p}} = 1$, where $\tilde{p}$ is the random variable taking values $\tilde{p}_\omega$ with equal probability.
 	Then the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}) becomes $\sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho$, where $\tilde{q}_\omega = \frac{q_\omega}{1/n}$ and $\frac{\phi(a/0)}{a/0} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-	Combining these yields the set ${\cal Q} = \{\tilde{p} | \e{\tilde{p}} = 1, \sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho \}$, a closed and convex risk envelope.
-	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{\tilde{p} \in {\cal Q}} \e{\tilde{p} h(x)}$, where $h(x)$ is the random variables defined by $\{h_\omega(x)\}$.
+	Combining these yields the set $\mathcal{Q} = \left\{\tilde{p} : \e{\tilde{p}} = 1, \sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho \right\}$, a closed and convex risk envelope.
+	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{\tilde{p} \in \mathcal{Q}} \e{\tilde{p} h(x)}$, where $h(x)$ is the random variable defined by $\{h_\omega(x)\}_{\omega=1}^n$.
 	Thus we see that \plp\ is the minimum of a coherent risk measure.
 	\Halmos
 \end{proof}
@@ -441,35 +446,42 @@ A coherent risk measure (in the basic sense), as defined in \cite{rockafellar200
 	However, the case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}.
 \end{remark}
 
-Note that being a coherent risk measure implies that \plp\ is a convex problem.
-The convexity of LRO was also noted in \cite{wang2010likelihood}.
+Note that minimizing a coherent risk measure over a polyhedron implies that \plp\ is a convex problem.
+The convexity of LRO was also noted in \citep{wang2010likelihood}.
+In Section \ref{ssec:special_phi}, we present special $\phi$-divergences that result in CVaR, or a convex combination of expectation with CVaR or the worst-case scenario.
+
+The next two properties help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}.
 
 \begin{property}
-	The second-stage problems are unaffected by the change from SLP-2 to \plp.
-	This preservation of the time structure allows us to easily convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$.
-	We will use this in the decomposition method provided in Section \ref{sec:soln_algorithm}.
+	\plp\ preserves the time structure of SLP-2.
 \end{property}
+This preservation of the time structure allows us to easily convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$.
 
+The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives the method retrieving the worst-case distribution,
 \begin{property}
-	The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives the method retrieving the worst-case distribution,
-	\begin{equation} \label{eq:p_worst}
-		\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right).
-	\end{equation}
-	If $q_\omega = 0$, then either $p_\omega = 0$ or $\infty \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right)$.
+	The worst-case distribution can be calculated with the equations
+	\begin{align} 
+		& \frac{p_\omega}{q_\omega} \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right) \label{eq:p_worst} \\
+		& \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho \nonumber \\
+		& \sum_{\omega=1}^n p_\omega = 1 \nonumber
+	\end{align}
 \end{property}
+In many cases, (\ref{eq:p_worst}) is sufficient to calculate $\{p_\omega\}_{\omega=1}^n$.
+Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detailed in Section \ref{sec:classification}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Level of Robustness}
 \label{ssec:robust_level}
 
-The literature on $\phi$-divergences provides some insight on choosing a reasonable asymptotic value of $\rho$.
-Theorem 3.1 of \cite{pardo2005statistical} shows that the statistic $T^\phi_N(\hat{p},\ptrue) = \frac{2N}{\phi''(1)} \sum_{\omega=1}^n \ptrue_\omega \phi\left(\frac{\hat{p}_\omega}{\ptrue_\omega}\right)$ converges in distribution to a $\chi^2$-distribution with $n-1$ degrees of freedom.
+The literature on $\phi$-divergences provides some insight on choosing a reasonable asymptotic value of $\rho$ in the data-driven setting.
+Theorem 3.1 of \cite{pardo2005statistical} shows that the statistic $T^\phi_N(\hat{q},\qtrue) = \frac{2N}{\phi''(1)} \sum_{\omega=1}^n \qtrue_\omega \phi\left(\frac{\hat{q}_\omega}{\qtrue_\omega}\right)$ converges in distribution to a $\chi^2$-distribution with $n-1$ degrees of freedom, where $\hat{q}$ denotes the empirical distribution ($\hat{q}_\omega = N_\omega/N$), and $\qtrue$ denotes the underlying true distribution.
 \cite{bental2011robust} then uses this result to suggest the asymptotic value
 \begin{equation} \label{eq:asymptotic_rho}
 	\rho = \frac{\phi''(1)}{2N} \chi^2_{n-1,1-\alpha},
 \end{equation}
 where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
+For corrections for small sample sizes and more details, see \citep{pardo2005statistical} and \citep{bental2011robust}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Classification of $\phi$-Divergences}
