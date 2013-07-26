@@ -4,6 +4,7 @@
 #########
 *.aux
 *.log
+*.thm
 *.tex.backup
 *.tex.bak
 *.undo
