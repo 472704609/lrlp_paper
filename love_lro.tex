@@ -411,7 +411,7 @@ where
 In this section, we list some basic properties of \plp.
 Most of these have already been noted earlier (e.g., by \cite{bental2011robust} and others for specific $\phi$-divergences) but we list them for completeness. Some of these properties help with our specialized solution method and we refer to them in later sections.
 
-\begin{property}
+\begin{property}\label{property1}
 	\plp\ is a convex program.
 \end{property}
 
@@ -436,7 +436,6 @@ In many cases, (\ref{eq:p_worst}) is sufficient to calculate $\{p_\omega\}_{\ome
 Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detailed in Section \ref{sec:classification}.
 
 
-
 We now discuss these properties. A coherent risk measure (in the basic sense) is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that \citep{rockafellar2007coherent}
 \begin{enumerate}
 	\item $\mathcal{R}(C) = C$ for all constants $C$,
@@ -450,9 +449,10 @@ We now discuss these properties. A coherent risk measure (in the basic sense) is
 The convexity of \plp\ was also noted in \citep{bental2011robust}.
 In Section \ref{ssec:special_phi}, we present special $\phi$-divergences that result in CVaR, or a convex combination of expectation with CVaR or the worst-case scenario. 
 Properties \ref{property3} and \ref{property4} help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
-The preservation of the time structure allows us to easily convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$ and results in a speedup in the decomposition-based solution method since we only need to solve linear subproblems. 
-The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives the method retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property4}.  
+The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$, aiding in our decomposition-based solution method. 
+The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property4}.  
 Usually $\phi^*$ is differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(\frac{h_\omega(\x)-\mu}{\lambda})$. 
+
 We end this section by giving a proof of Property \ref{property2}. 
 
 
@@ -469,11 +469,9 @@ We end this section by giving a proof of Property \ref{property2}.
 \end{proof}
 
 \begin{remark}
-	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$ for all $\omega$.
+	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$, $\forall \omega$.
 	However, the case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}.
 \end{remark}
-
-
 
 
 
@@ -690,10 +688,10 @@ The next theorem shows how to generate a convex combination of expectation and C
 \end{remark}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Data Driven Considerations of \plp}
+\section{Data-Driven Considerations of \plp}
 \label{sec:properties}
 
-In this section we provide some insight into how the \plp changes as data is added: first how it might change with a single additional observation in \ref{ssec:value}, then the asymptotic results in \ref{ssec:epiconvergence}.
+In this section we provide some insight into how the \plp\ changes as data is added: first how it might change with a single additional observation in Section \ref{ssec:value}, then the asymptotic results in Section \ref{ssec:epiconvergence}.
 
 \subsection{The Value of Data} \label{ssec:value}
 
