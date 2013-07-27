@@ -168,7 +168,6 @@
 	We present a classification of $\phi$-divergences to elucidate their use for models with different properties.
 	We examine the value of collecting additional data and the convergence to the associated non-ambiguous stochastic program.
 	A decomposition-based solution algorithm to solve the resulting model is given.
-	We apply the method to a water distribution problem in Tucson, Arizona.
 }%
 
 % Sample 
@@ -204,7 +203,7 @@ One approach to this has been recently proposed by \cite{bental2011robust} is to
 Of particular interest is the case when the nominal distribution is determined by observation by making it an empirical distribution.
 In this paper, we adapt the $\phi$-divergence method to the setting of a two-stage stochastic linear program with recourse and call this the two-stage $\phi$-divergence linear program (\plp). 
 We examine the properties of the resulting model and develop a simple condition for assessing the value of collecting extra data.
-Finally, we present a modified Bender's Decomposition to solve the \plp and apply the above results to a water distribution planning problem.
+Finally, we present a modified Bender's Decomposition to solve the \plp\ and illustrate some properties of \plp\ numerically.
 
 \plp is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
 Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{zackova1966minimax,dupacova_87}.
@@ -222,23 +221,18 @@ All three make use of the Kullback-Leibler divergence to define the set of distr
 Both \cite{wang2010likelihood} and \cite{hukullback} produce similar dual problems similar to that presented in \cite{bental2011robust} and used here.
 \cite{hukullback} differs from this work and the others by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
 Additionally, \cite{klabjan2013robust} uses the $\chi^2$ distance, another $\phi$-divergence, to define an uncertain demand distribution for a stochastic lot-sizing problem using historical data.
-Our results also provide one quantification of the value of additional data, and apply the LRO method specifically to a two stage problem, and to water allocation.
+Our results also provide one quantification of the value of additional data.
 
 The $\phi$-divergence method is an attractive data-driven approach because it uses the data directly; and only those data points or scenarios of interest are used in the calculations.
 These scenarios can come from direct observation, results of simulation, from expert opinion regarding scenarios that the decision maker would especially like to be robust against.
 Because the \plp depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
 
-We apply \plp to a generalized network model of Colorado River water allocation in Tucson, Arizona motivated by the CALVIN (CALifornia Value Integrated Network) optimal water allocation model of California created by \cite{draper_etal_03}.
-Other models of Colorado River water distribution have also been studied, such as the Colorado River Reservoir Model \cite{christensen2004effects} and the Colorado River Budget Model \cite{barnett2009sustainable}.
-Our model is modified to incorporate ambiguous future uncertainty by using the $\phi$-divergence approach.
-
 The contributions of our work are that it provides
 \begin{inparaenum}[\itshape (i\upshape)]
 	\item a classification of $\phi$-divergences and insight on which class is useful for certain model types,
-	\item a simple condition to determine if an additional observation will change the worst-case distribution used in the optimal solution, 
-	\item asymptotic analysis to discuss conditions under which the optimal value and solution set \plp will converge to the two-stage stochastic program with recourse under the true distribution, 
-	\item a specialized decomposition-based algorithm to solve the resulting model,  and 
-	\item application to water allocation problem under ambiguous uncertainty. 
+	\item a simple condition to determine if an additional observation will change the worst-case distribution used in the optimal solution,
+	\item asymptotic analysis to discuss conditions under which the optimal value and solution set \plp will converge to the two-stage stochastic program with recourse under the true distribution, and
+	\item a specialized decomposition-based algorithm to solve the resulting model.
 \end{inparaenum}
 
 This paper is organized as follows.
@@ -246,7 +240,7 @@ Section \ref{sec:phi_divergences} introduces the $\phi$-divergence and presents 
 Section \ref{sec:plp2} presents the derivation of $\phi$-divergence model for a two-stage stochastic program with recourse.
 Sections \ref{sec:properties} describes properties of \plp, including its asymptotic properties, how to select the level of robustness, and an analysis of the value of collecting additional data;
 Sections \ref{sec:classification} present a classification of $\phi$-divergences and \ref{ssec:special_phi} demonstrates the classification on some special cases of $\phi$; 
-In Section \ref{sec:soln_algorithm} we present a decomposition method for solving the \plp model; and in Section \ref{sec:comp_results} we present a generalized network water model and computational results for its \plp model.
+In Section \ref{sec:soln_algorithm} we present a decomposition method for solving the \plp\ model; and in Section \ref{sec:comp_results} we present a numerical illustrations of some of the properties of the \plp\ model.
 Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -399,7 +393,8 @@ However, other $\phi$-divergences, like Hellinger distance, have a finite limit,
 \label{ssec:basicprop}
 
 In this section, we list some basic properties of \plp.
-Most of these have already been noted earlier (e.g., by \cite{bental2011robust} and others for specific $\phi$-divergences) but we list them for completeness. Some of these properties help with our specialized solution method and we refer to them in later sections.
+Most of these have already been noted earlier (e.g., by \cite{bental2011robust} and others for specific $\phi$-divergences) but we list them for completeness.
+Some of these properties help with our specialized solution method and we refer to them in later sections.
 
 \begin{property}
 	\label{property:convex}
@@ -428,7 +423,6 @@ Most of these have already been noted earlier (e.g., by \cite{bental2011robust} 
 In many cases, (\ref{eq:p_worst}) is sufficient to calculate $\{p_\omega\}_{\omega=1}^n$.
 Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detailed in Section \ref{sec:classification}.
 
-
 We now discuss these properties. A coherent risk measure (in the basic sense) is a functional ${\cal R}: L^2 \rightarrow (-\infty,\infty]$ defined on random variables such that \citep{rockafellar2007coherent}
 \begin{enumerate}
 	\item $\mathcal{R}(C) = C$ for all constants $C$,
@@ -447,7 +441,6 @@ The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two
 Usually $\phi^*$ is differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(\frac{h_\omega(\x)-\mu}{\lambda})$. 
 
 We end this section by giving a proof of Property \ref{property:coherent_risk_measure}.
-
 
 \begin{proof}{\sc Proof of Property \ref{property:coherent_risk_measure}.}
 	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \cite{rockafellar2007coherent}.
@@ -865,7 +858,7 @@ In the next theorem, we establish the proof that the optimal value and solution 
 \section{Decomposition-Based Solution Method}
 \label{sec:soln_algorithm}
 
-As the model gets larger, as in our water application presented in Section~\ref{sec:comp_results}, a direct solution of \plp\ becomes computationally expensive. 
+As the model gets larger, a direct solution of \plp\ becomes computationally expensive. 
 Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. In this section, we propose a Bender's decomposition-based method for solving \plp.
 The algorithm removes feasibility constraint (\ref{eq:plp_feas_constraint})  and exchanges it with a series of feasibility cuts in the first-stage problem.
 The master problem is given by
@@ -1023,18 +1016,14 @@ Other divergences that can pop but not suppress look qualitatively similar.
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusion and Future Work}
+\section{Conclusion}
 \label{sec:concl}
 
 In this paper, we proposed an implementation of the $\phi$-divergence constrained distributionally robust optimization method of \cite{bental2011robust} for two-stage stochastic linear programs with recourse, creating a two-stage $\phi$-divergence linear program with recourse, denoted \plp.
 The \plp uses a $\phi$-divergence to define an ambiguity set of probability distributions, possibly using observed data, and optimizes the worst-case expected cost with respect to this ambiguity set.
 We provided a classification of $\phi$-divergences that may be useful in determining which is most appropriate in practice for several model types.
 We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution. 
-We have also provided a Bender's decomposition-based solution algorithm for the \plp\ and applied this method to planning future water distribution in Tucson, Arizona.
-
-Our future work includes the following. We plan to augment the existing model first with a richer set of second-stage scenarios.
-In addition to more varied estimates for future population, we will integrate climate change predictions into the model to generate scenarios for future water supply from the Colorado River. 
-This model is intended to include a facility location problem to determine the best places for an additional waste water treatment plants to increase the use of reclaimed water in the most cost-efficient manner.
+We have also provided a Bender's decomposition-based solution algorithm for the \plp\ and used it to illustrate some of the properties of the \plp.
 
 % Acknowledgments here
 \ACKNOWLEDGMENT{%
