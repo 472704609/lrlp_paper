@@ -379,7 +379,7 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 	& \lambda \geq 0.
 \end{align*}
 
-See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, and a proof of Property \ref{property4}.
+See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, and a proof of Property \ref{property:primal_dual_relation}.
 Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 
 Finally, we wish to return the \plp\ to two-stage formulation.
@@ -401,20 +401,23 @@ However, other $\phi$-divergences, like Hellinger distance, have a finite limit,
 In this section, we list some basic properties of \plp.
 Most of these have already been noted earlier (e.g., by \cite{bental2011robust} and others for specific $\phi$-divergences) but we list them for completeness. Some of these properties help with our specialized solution method and we refer to them in later sections.
 
-\begin{property}\label{property1}
+\begin{property}
+	\label{property:convex}
 	\plp\ is a convex program.
 \end{property}
 
-\begin{property}\label{property2}
-	\label{prop:coherent_risk_measure}
+\begin{property}
+	\label{property:coherent_risk_measure}
 	\plp\ is equivalent to minimizing a coherent risk measure.
 \end{property}
 
-\begin{property}\label{property3}
+\begin{property}
+	\label{property:time_structure}
 	\plp\ preserves the time structure of SLP-2.
 \end{property}
 
-\begin{property}\label{property4}
+\begin{property}
+	\label{property:primal_dual_relation}
 	The worst-case distribution can be calculated with the equations
 	\begin{align} 
 		& \frac{p_\omega}{q_\omega} \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right) \label{eq:p_worst} \\
@@ -438,15 +441,15 @@ We now discuss these properties. A coherent risk measure (in the basic sense) is
 \noindent Note that minimizing a coherent risk measure over a polyhedron implies that \plp\ is a convex problem.
 The convexity of \plp\ was also noted in \citep{bental2011robust}.
 In Section \ref{ssec:special_phi}, we present special $\phi$-divergences that result in CVaR, or a convex combination of expectation with CVaR or the worst-case scenario. 
-Properties \ref{property3} and \ref{property4} help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
+Properties \ref{property:time_structure} and \ref{property:primal_dual_relation} help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
 The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$, aiding in our decomposition-based solution method. 
-The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property4}.  
+The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property:primal_dual_relation}.  
 Usually $\phi^*$ is differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(\frac{h_\omega(\x)-\mu}{\lambda})$. 
 
-We end this section by giving a proof of Property \ref{property2}. 
+We end this section by giving a proof of Property \ref{property:coherent_risk_measure}.
 
 
-\begin{proof}{\sc Proof of Property \ref{prop:coherent_risk_measure}.}
+\begin{proof}{\sc Proof of Property \ref{property:coherent_risk_measure}.}
 	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \cite{rockafellar2007coherent}.
 	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$.
 	Throughout the proof, all expectations are taken with respect to the discrete uniform distribution.
