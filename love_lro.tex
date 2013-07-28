@@ -372,7 +372,7 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 	& \frac{\k^\omega y^\omega - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \\
 	& \lambda \geq 0.
 \end{align*}
-See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, and a proof of Property \ref{property:primal_dual_relation}.
+See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, and also the proof of Property \ref{property:primal_dual_relation}.
 Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 
 Finally, we wish to return the \plp\ to two-stage formulation:
@@ -775,8 +775,35 @@ To be consistent with the known $\phi$-divergence results stated in Section \ref
 	Finally, return to the original variables with the substitution $s^\omega_{N+1} = \frac{N}{N+1} \frac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$
 \end{proof}
 
+
 We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
 This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:p_worst}.
+It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences and we detail this in the remark below. 
+
+\begin{remark}
+	We can use a small trick to transform condition (\ref{eq:cost_decrease_cond}) into a form that is easier to work with.
+	Recall that for any real number $c$, we can define $\phi_c(t) = \phi(t) + c(t-1)$ and $I_{\phi_c}(p,q) = I_\phi(p,q)$ for probability vectors $p$ and $q$.
+	This changes the conjugate as $\phi_c^*(s) = \phi^*(s-c) + c$.
+	For some $\phi$, we can choose $c$ such that $\phi^{*\prime}(s)$ is separable, i.e., $\phi^{*\prime}(as) = f(a) \phi^{*\prime}(s)$ for some function $f$.
+	Using this separability, we can simplify (\ref{eq:cost_decrease_cond}) for some $\phi$ as follows:
+	\begin{description}
+		\item[Burg entropy:] Choose $c = -1$, so $\phi^{*\prime}(s) = -\frac{1}{s}$, changing (\ref{eq:cost_decrease_cond}) to $\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}} < \frac{N}{N+1}$.
+		\item[$\chi^2$-distance:] Choose $c = -1$, so $\phi^{*\prime}(s) = \frac{1}{\sqrt{-s}}$, changing (\ref{eq:cost_decrease_cond}) to $\sum_\omega q_\omega \frac{q_\omega}{p_\omega} + \sqrt{\frac{N+1}{N}} < 2 \frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}$.
+		\item[Hellinger:] Choose $c = -1$ so $\phi^{*\prime}(s) = \frac{1}{s^2}$, changing (\ref{eq:cost_decrease_cond}) to $\sum_\omega q_\omega \sqrt{\frac{p_\omega}{q_\omega}} + \sqrt{\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}} < 2 \frac{N}{N+1}$.
+		\item[Modified $\chi^2$-distance:] Choose $c = 2$, so
+		\[
+			\phi^{*\prime}(s) = \
+			\begin{cases}
+				\frac{1}{2} s & s \geq 0 \\
+				0 & s < 0,
+			\end{cases}
+		\]
+		changing (\ref{eq:cost_decrease_cond}) to $2 \sum_\omega p_\omega \frac{p_\omega}{q_\omega} > \left(\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}\right)^2 + \left(\frac{N+1}{N}\right)^2$.
+	\end{description}
+\end{remark}
+
+
+
 
 Next, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
 Let $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$.
