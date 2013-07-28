@@ -359,8 +359,8 @@ The resulting minimax formulation of \plp\ is
 \end{equation}
 where the ambiguity set is
 \begin{align}
-	\mathcal{P} = & \left\{ \sum_{\omega = 1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho \right. \label{eq:plp_primal_divergence} \\
-	& \ \sum_\omega p_\omega = 1 \label{eq:plp_primal_probability} \\
+	\mathcal{P} = & \left\{ \sum_{\omega = 1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho, \right. \label{eq:plp_primal_divergence} \\
+	& \ \sum_\omega p_\omega = 1, \label{eq:plp_primal_probability} \\
 	& \ \left. p_\omega \geq 0,\ \forall \omega \right\}. \label{eq:nonneg}
 \end{align}
 We refer to (\ref{eq:plp_primal_divergence}) as the ($\phi$-)divergence constraint and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
@@ -372,21 +372,20 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 	& \frac{\k^\omega y^\omega - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \\
 	& \lambda \geq 0.
 \end{align*}
-
 See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, and a proof of Property \ref{property:primal_dual_relation}.
 Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 
-Finally, we wish to return the \plp\ to two-stage formulation.
+Finally, we wish to return the \plp\ to two-stage formulation:
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \label{eq:plp_two_stage} \\
 	\st \ & \x \in X \nonumber \\
 	& \frac{h_\omega(\x) - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \label{eq:plp_feas_constraint}\\
 	& \lambda \geq 0, \nonumber
 \end{align}
-where $h_\omega(\x)$ are the second-stage problems given in (\ref{eq:slp_second_stage}).
+where $h_\omega(\x)$ and the second-stage problems given in (\ref{eq:slp_second_stage}).
 Note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
-For some $\phi$-divergences, like the K-L divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
-However, other $\phi$-divergences, like Hellinger distance, have a finite limit, inducing this constraint.
+For some $\phi$-divergences, like the Kullback-Leibler divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
+However, other $\phi$-divergences, like the Hellinger distance, have a finite limit, inducing this constraint.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Basic Properties}
@@ -437,7 +436,7 @@ The convexity of \plp\ was also noted in \citep{bental2011robust}.
 In Section \ref{ssec:special_phi}, we present special $\phi$-divergences that result in CVaR, or a convex combination of expectation with CVaR or the worst-case scenario. 
 Properties \ref{property:time_structure} and \ref{property:primal_dual_relation} help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
 The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$, aiding in our decomposition-based solution method. 
-The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property:primal_dual_relation}.  
+The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method for retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property:primal_dual_relation}.  
 Usually $\phi^*$ is differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(\frac{h_\omega(\x)-\mu}{\lambda})$. 
 
 We end this section by giving a proof of Property \ref{property:coherent_risk_measure}.
@@ -473,7 +472,9 @@ Most $\phi$-divergences in Table~\ref{tb:phi_definitions} satisfy this different
 	\rho = \frac{\phi''(1)}{2N} \chi^2_{n-1,1-\alpha},
 \end{equation}
 where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
-For corrections for small sample sizes and more details, see \citep{pardo2005statistical} and \citep{bental2011robust}.
+For corrections for small sample sizes and more details, we refer the readers to \citep{pardo2005statistical} and \citep{bental2011robust}. 
+
+We are now ready to present the main contributions of this paper. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{A Classification of $\phi$-Divergences}
@@ -522,7 +523,7 @@ Examples of divergences in each category are given in Table \ref{tb:phi_categori
 \begin{table}
 	\TABLE
 	{
-		Examples of $\phi$-divergences fitting into each category.
+		Examples of $\phi$-divergences fitting into each category
 		\label{tb:phi_categories}
 	}
 	{\begin{tabular}{l|p{.33\textwidth}p{.33\textwidth}}
@@ -544,8 +545,8 @@ Examples of divergences in each category are given in Table \ref{tb:phi_categori
 
 We offer the following suggestions for choosing an appropriate $\phi$-divergence classification for the data available.
 First, consider whether to choose a distribution that can suppress scenarios.
-If the problem scenarios come from high-quality observed data, you may wish to avoid divergences that can suppress scenarios.
-However, if the data in poorly sampled, or comes from opinion rather than observation or simulation, the option of suppressing scenarios may result in a solution with better robustness properties.
+If the problem scenarios come from high-quality observed data, one may wish to avoid divergences that can suppress scenarios.
+However, if the data is poorly sampled or comes from opinion rather than observation or simulation, the option of suppressing scenarios may result in a solution with better robustness properties.
 
 Next, consider whether to choose a distribution that allows for popping scenarios.
 If the problem scenarios come strictly from observation, with little theoretical understanding of the problem, we suggest choosing a divergence that cannot pop scenarios.
