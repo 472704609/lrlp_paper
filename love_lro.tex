@@ -277,7 +277,7 @@ As is shown in \citep{bental2011robust}, the problem formulation involves use of
 \begin{equation} \label{eq:conjugate}
 	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}.
 \end{equation}
-The conjugate $\phi^*$ is a nondecreasing function, and may be undefined above some upper bound $\bar{s}$.
+The conjugate $\phi^*$ is a nondecreasing convex function and may be undefined above some upper bound $\bar{s}$.
 
 Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
 For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain; i.e., $\{s : \phi^*(s) < \infty\}$.
@@ -293,7 +293,7 @@ In this paper, $q$ denotes the nominal distribution.
 \begin{table}
 	\TABLE
 	{
-		Definitions of some common $\phi$-divergences, along with their adjoints $\tilde{\phi}(t)$ and conjugates $\phi^*(s)$.
+		Definitions of some common $\phi$-divergences, along with their adjoints $\tilde{\phi}(t)$ and conjugates $\phi^*(s)$
 		\label{tb:phi_definitions}
 	}
 	{\begin{tabular}{lccccc}
@@ -303,7 +303,7 @@ In this paper, $q$ denotes the nominal distribution.
 		Kullback-Leibler                  & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ & $e^s - 1$ \\
 		Burg Entropy                      & $\phi_b$           & $\phi_{kl}$                     & $-\log t + t - 1$     & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(1-s),\ s < 1$  \\
 		Likelihood                        & $\phi_l$           & $t\log t $                      & $-\log t$             & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(-s) - 1,\ s < 0$ \\
-		$\chi^2$-Distance                 & $\phi_{\chi^2}$    & $\phi_{m\chi^2}$                & $\frac{1}{t} (t-1)^2$ & $\sum \frac{(p_\omega-q_\omega)^2}{p_\omega}$              & $2 - 2\sqrt{1-s}$  \\
+		$\chi^2$-Distance                 & $\phi_{\chi^2}$    & $\phi_{m\chi^2}$                & $\frac{1}{t} (t-1)^2$ & $\sum \frac{(p_\omega-q_\omega)^2}{p_\omega}$              & $2 - 2\sqrt{1-s},\ s < 1$  \\
 		Modified $\chi^2$-Dist.           & $\phi_{m\chi^2}$   & $\phi_{\chi^2}$                 & $(t-1)^2$             & $\sum \frac{(p_\omega - q_\omega)^2}{q_\omega}$            & $\begin{cases} -1 & s < -2 \\ s + \frac{s^2}{4} & s \geq -2 \end{cases}$ \\
 % 		$\chi$-div,  $\theta > 1$ & $\phi_\chi^\theta$ & $t^{1-\theta}\phi_\chi^\theta$ & $|t-1|^\theta$         & $\sum q_\omega |1-\frac{p_\omega}{q_\omega}|^\theta$       & $\begin{cases} -1 & s \leq -\theta \\ s + (\theta-1)\left(\frac{|s|}{\theta}\right)^\frac{\theta}{\theta-1}  & s \geq -\theta \end{cases}$ \\
 		Variation Distance                & $\phi_v$           & $\phi_v$                        & $|t-1|$               & $\sum |p_\omega - q_\omega|$                               & $\begin{cases} -1 & s \leq -1 \\ s & -1 \leq s \leq 1 \end{cases}$ \\
@@ -324,17 +324,17 @@ In this section we provide primal and dual formulations and basic properties of 
 \label{ssec:form}
 
 We begin with a two-stage stochastic linear program with recourse (SLP-2).
-Let $\x$ be a vector of of first stage decision variables with cost vector $\c$, constraint matrix $\A$ and right hand side $\b$.
+Let $\x$ be a vector of first-stage decision variables with cost vector $\c$, constraint matrix $\A$ and right-hand side $\b$.
 We assume a finite distribution given by $q_\omega$ with scenarios indexed by $\omega = 1, \dots, n$.
 The SLP-2 is
 \begin{align}
-	\min_\x \ & \left\{ \c\x + \sum_{\omega=1}^n q_\omega h_\omega(\x) : \A\x = \b, \x \geq 0 \right\} \label{eq:slp_first_stage}% \\
+	\min_\x \ & \left\{ \c\x + \sum_{\omega=1}^n q_\omega h_\omega(\x) : \A\x = \b, \x \geq 0 \right\}, \label{eq:slp_first_stage}% \\
 % 	\st \ & \A\x = \b \nonumber  \\
 % 	&\ \ \ \x \geq 0 \nonumber
 \end{align}
 where
 \begin{align}
-	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \k^\omega \y^\omega : \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0 \right\} \label{eq:slp_second_stage}
+	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \k^\omega \y^\omega : \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0 \right\}. \label{eq:slp_second_stage}
 \end{align}
 We assume relatively complete recourse; i.e., the second-stage problems $h_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem; and that the second-stage problems $h_\omega(\x)$ are dual feasible for every feasible solution $\x$ of the first-stage problem.
 For convenience, we denote $X = \{x : \A\x = \b, \x \geq 0\}$ and $Y_\omega(\x) = \{\y^\omega : \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0\}$.
@@ -363,21 +363,21 @@ where the ambiguity set is
 	& \ \sum_{\omega=1}^{n} p_\omega = 1, \label{eq:plp_primal_probability} \\
 	& \ \left. p_\omega \geq 0,\ \forall \omega \right\}. \label{eq:nonneg}
 \end{align}
-We refer to (\ref{eq:plp_primal_divergence}) as the ($\phi$-)divergence constraint and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
+We refer to (\ref{eq:plp_primal_divergence}) as the $\phi$-divergence constraint and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
 
 Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual extensive form.
 \begin{align*}
-	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \rho \lambda + \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{\k^\omega y^\omega - \mu}{\lambda}\right) \\
+	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \rho \lambda + \lambda \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{\k^\omega y^\omega - \mu}{\lambda}\right) \\
 	\st \ & \x \in X, \y^\omega \in Y_\omega(x) \nonumber \\
 	& \frac{\k^\omega y^\omega - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \\
 	& \lambda \geq 0.
 \end{align*}
-See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, and also the proof of Property \ref{property:primal_dual_relation}.
+See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, and also the proof of Proposition \ref{prop:pop}.
 Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 
 Finally, we wish to return the \plp\ to two-stage formulation:
 \begin{align}
-	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \label{eq:plp_two_stage} \\
+	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \lambda \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \label{eq:plp_two_stage} \\
 	\st \ & \x \in X \nonumber \\
 	& \frac{h_\omega(\x) - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \label{eq:plp_feas_constraint}\\
 	& \lambda \geq 0, \nonumber
