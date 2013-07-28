@@ -629,7 +629,11 @@ The class of $\phi$-divergence constrained problems includes some interesting sp
 
 \begin{example}{CVaR}
 	The coherent risk measure Conditional Value-at-Risk (CVaR) is well studied in financial applications.
-	$\text{CVaR}_\beta$ is equivalent to the $\phi$-divergence constrained problem with 
+	Minimizing
+	\[
+		\c\x + \text{CVaR}_\beta(h(\x)) = \c\x + \min_{\mu \in \R} \left\{ \mu + \frac{1}{1-\beta}\e{\left[h(\x)-\mu\right]^+} \right\}
+	\]
+	is equivalent to the $\phi$-divergence constrained problem with
 	\[
 		\phi(t) = \
 		\begin{cases}
@@ -642,7 +646,7 @@ The class of $\phi$-divergence constrained problems includes some interesting sp
 
 \begin{remark}
 	We see that $\phi(0) = 0$, indicating that CVaR will suppress some scenarios.
-	This appears in the definition of CVaR as the positive part in the expected value, $e{[h(x)-\mu]^+}$.
+	This appears in the definition of CVaR as the positive part in the expected value, $\e{[h(\x)-\mu]^+}$.
 	Scenarios cannot be popped because the expectation is taken with respect to the nominal distribution.
 \end{remark}
 
@@ -656,12 +660,16 @@ The CVaR $\phi$-divergence is bounded above, which leads to the question of what
 			\infty & t < 1-\beta,
 		\end{cases}
 	\]
-	for $0 < \beta < 1$ is equivalent to $\beta \sup_\omega h_\omega(x) + (1-\beta)\e{h(x)}$, where the expectation is taken with respect to the nominal distribution $q$.
+	for $0 < \beta < 1$ is equivalent to minimizing
+	\[
+		\c\x + \beta \sup_\omega h_\omega(\x) + (1-\beta)\e{h(\x)},
+	\]
+	where the expectation is taken with respect to the nominal distribution $q$.
 \end{example}
 
 \begin{remark}
 	$\lim_{t \rightarrow \infty} \frac{\phi(t)}{t} = 0$, indicating that this divergence will pop scenarios.
-	This behavior appears due to the $\sup_\omega h_\omega(x)$.
+	This behavior appears due to the $\sup_\omega h_\omega(\x)$.
 	However, $\phi(0) = \infty$ indicates that scenarios will not be suppressed, which is demonstrated by the expectation term $\e{h(x)}$, which takes into account every scenario with positive nominal probability.
 \end{remark}
 
@@ -677,9 +685,9 @@ The next theorem shows how to generate a convex combination of expectation and C
 			\infty & \text{otherwise},
 		\end{cases}
 	\]
-	for $\alpha,\beta \in (0,1)$ is equivalent to 
+	for $\alpha,\beta \in (0,1)$ is equivalent to minimizing
 	\[
-		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)].
+		\c\x + (1-\alpha)\e{h(\x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(\x)].
 	\]
 \end{example}
 
