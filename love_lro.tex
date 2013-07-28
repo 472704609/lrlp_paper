@@ -307,7 +307,7 @@ In this paper, $q$ denotes the nominal distribution.
 		Modified $\chi^2$-Dist.           & $\phi_{m\chi^2}$   & $\phi_{\chi^2}$                 & $(t-1)^2$             & $\sum \frac{(p_\omega - q_\omega)^2}{q_\omega}$            & $\begin{cases} -1 & s < -2 \\ s + \frac{s^2}{4} & s \geq -2 \end{cases}$ \\
 % 		$\chi$-div,  $\theta > 1$ & $\phi_\chi^\theta$ & $t^{1-\theta}\phi_\chi^\theta$ & $|t-1|^\theta$         & $\sum q_\omega |1-\frac{p_\omega}{q_\omega}|^\theta$       & $\begin{cases} -1 & s \leq -\theta \\ s + (\theta-1)\left(\frac{|s|}{\theta}\right)^\frac{\theta}{\theta-1}  & s \geq -\theta \end{cases}$ \\
 		Variation Distance                & $\phi_v$           & $\phi_v$                        & $|t-1|$               & $\sum |p_\omega - q_\omega|$                               & $\begin{cases} -1 & s \leq -1 \\ s & -1 \leq s \leq 1 \end{cases}$ \\
-		Hellinger                         & $\phi_h$           & $\phi_h$                        & $(\sqrt{t} - 1)^2$    & $\sum (\sqrt{p_\omega} - \sqrt{q_\omega})^2$               & $\frac{s}{1-s},\ s < 1$ \\
+		Hellinger Distance                & $\phi_h$           & $\phi_h$                        & $(\sqrt{t} - 1)^2$    & $\sum (\sqrt{p_\omega} - \sqrt{q_\omega})^2$               & $\frac{s}{1-s},\ s < 1$ \\
 	\hline
 	\end{tabular}}
 	{}
@@ -349,25 +349,25 @@ In SLP-2, this data-driven setting would correspond to setting the probability o
 By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution with respect to $\phi$-divergence, we create a model that we refer to as two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse (\plp).
 To derive the \plp, we begin by writing SLP-2 given in \eqref{eq:slp_first_stage}--\eqref{eq:slp_second_stage} in extensive form
 \[
-	\min_{\x,\y^\omega} \left\{ \c\x + \sum_\omega p_\omega \k^\omega y^\omega : \x \in X, \y^\omega \in Y_\omega(\x) \right\}.
+	\min_{\x,\y^\omega} \left\{ \c\x + \sum_{\omega=1}^{n} p_\omega \k^\omega y^\omega : \x \in X, \y^\omega \in Y_\omega(\x) \right\}.
 \]
 The SLP-2 formulation is then augmented by the set of distributions with sufficiently low $\phi$-divergence from $q$.
 Then, the objective function is minimized with respect to this worst-case distribution selected from the ambiguity set of distributions.
 The resulting minimax formulation of \plp\ is
 \begin{equation}
-	\min_{\x \in X, \y^\omega \in Y_\omega(\x)} \max_{p \in \mathcal{P}} \left\{ \c\x + \sum_\omega p_\omega \k^\omega y^\omega \right\}, \label{eq:plp_primal}
+	\min_{\x \in X, \y^\omega \in Y_\omega(\x)} \max_{p \in \mathcal{P}} \left\{ \c\x + \sum_{\omega=1}^{n} p_\omega \k^\omega y^\omega \right\}, \label{eq:plp_primal}
 \end{equation}
 where the ambiguity set is
 \begin{align}
-	\mathcal{P} = & \left\{ \sum_{\omega = 1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho, \right. \label{eq:plp_primal_divergence} \\
-	& \ \sum_\omega p_\omega = 1, \label{eq:plp_primal_probability} \\
+	\mathcal{P} = & \left\{ \sum_{\omega = 1}^{n} q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho, \right. \label{eq:plp_primal_divergence} \\
+	& \ \sum_{\omega=1}^{n} p_\omega = 1, \label{eq:plp_primal_probability} \\
 	& \ \left. p_\omega \geq 0,\ \forall \omega \right\}. \label{eq:nonneg}
 \end{align}
 We refer to (\ref{eq:plp_primal_divergence}) as the ($\phi$-)divergence constraint and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
 
 Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual extensive form.
 \begin{align*}
-	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \rho \lambda + \sum_\omega q_\omega \phi^*\left(\frac{\k^\omega y^\omega - \mu}{\lambda}\right) \\
+	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \rho \lambda + \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{\k^\omega y^\omega - \mu}{\lambda}\right) \\
 	\st \ & \x \in X, \y^\omega \in Y_\omega(x) \nonumber \\
 	& \frac{\k^\omega y^\omega - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \\
 	& \lambda \geq 0.
@@ -377,7 +377,7 @@ Note in particular that the dual formulation is accurate even for $q_\omega = 0$
 
 Finally, we wish to return the \plp\ to two-stage formulation:
 \begin{align}
-	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \label{eq:plp_two_stage} \\
+	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \label{eq:plp_two_stage} \\
 	\st \ & \x \in X \nonumber \\
 	& \frac{h_\omega(\x) - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \label{eq:plp_feas_constraint}\\
 	& \lambda \geq 0, \nonumber
@@ -530,10 +530,10 @@ Examples of divergences in each category are given in Table \ref{tb:phi_categori
 		 & Can Suppress Scenarios & Cannot Suppress Scenarios \\
 		 \hline
 		 Can Pop Scenarios %
-			& \parbox{.33\textwidth}{Hellinger,\\Variation Distance} %
-			& \parbox{.33\textwidth}{Burg Entropy,\\$\chi^2$-distance} \smallskip \\
+			& \parbox{.33\textwidth}{Hellinger Distance,\\Variation Distance} %
+			& \parbox{.33\textwidth}{Burg Entropy,\\$\chi^2$-Distance} \smallskip \\
 		 Cannot Pop Scenarios %
-			& \parbox{.33\textwidth}{Kullback-Leibler divergence,\\Modified $\chi^2$-distance} %
+			& \parbox{.33\textwidth}{Kullback-Leibler Divergence,\\Modified $\chi^2$-Distance} %
 			& \parbox{.33\textwidth}{J-Divergence}
 	\end{tabular}}
 	{}
