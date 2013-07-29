@@ -584,7 +584,7 @@ The next proposition makes this statement rigorous.
 	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if $s_\omega = \frac{h_\omega(x) - \mu}{\lambda} = \bar{s}$.
 \end{proposition}
 
-\begin{proof}
+\begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
 	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust}.
 	For this proof, we assume for simplicity that the first stage cost vector $\c = 0$.
 	
@@ -712,6 +712,7 @@ To get such a condition, we must consider how $\rho$ changes as additional sampl
 To be consistent with the known $\phi$-divergence results stated in Section \ref{ssec:robust_level}, we assume $\rho_N = \frac{\rho_0}{N}$.
 
 \begin{proposition}
+	\label{prop:value}
 	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied
 	\begin{equation} \label{eq:cost_decrease_cond}
 		\sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right),
@@ -719,7 +720,7 @@ To be consistent with the known $\phi$-divergence results stated in Section \ref
 	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solves the $N$-sample problem.
 \end{proposition}
 
-\begin{proof}
+\begin{proof}{\sc Proof of Proposition \ref{prop:value}.}
 	We begin this proof with the change of variables $\kappa = \frac{\lambda}{N}$, and note that $N\rho_N = \rho_0$ is constant.
 	
 	With this change of variables, the objective function is given by
@@ -818,6 +819,7 @@ Let $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\
 That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in \plp.
 
 \begin{proposition}
+	\label{prop:prob_cost_decrease}
 	An approximate lower bound on the probability of selecting a scenario in the set $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$ can be found by solving 
 	\begin{equation} \label{eq:prob_cost_decrease}
 		-\min_{\mu,\lambda \geq 0} \left\{ \mu + \rho_N \lambda + q_L \lambda \phi^*\left(\frac{\mu-1}{\lambda}\right) + (1-q_L) \lambda \phi^*\left(\frac{\mu}{\lambda}\right) \right\},
@@ -825,7 +827,7 @@ That is, $L$ gives the set of scenarios that, if sampled one more observation, w
 	where $q_L = \sum_{\omega \in L} q_\omega$ is the probability of $L$ in the nominal distribution.
 \end{proposition}
 
-\begin{proof}
+\begin{proof}{\sc Proof of Proposition \ref{prop:prob_cost_decrease}.}
 	We can estimate a lower bound on the probability of sampling a scenario in $L$ by using the same likelihood ambiguity set that was used to formulate \plp\ given in (\ref{eq:plp_primal_divergence}) to solve the minimization problem
 	\begin{align}
 		\min_{\omega \in L} \ & \sum_{\omega \in L} r_\omega \nonumber \\
@@ -857,7 +859,7 @@ Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert \hat{p}^N(\xi) - \ptr
 	For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $I_{\phi}(p,\hat{p}^N) \leq \frac{\rho_0}{N} \Rightarrow \max_\omega |p_\omega - \ptrue_\omega| \leq \epsilon$.
 \end{proposition}
 
-\begin{proof}
+\begin{proof}{\sc Proof of Proposition \ref{prop:weak_conv}.}
 	Let $Z = \{\omega : \ptrue_\omega = 0\}$ be the set of impossible scenarios.
 	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \ptrue_\omega > \frac{\epsilon}{2}$.
 	
@@ -883,10 +885,11 @@ Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert \hat{p}^N(\xi) - \ptr
 Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\ptrue$.
 In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\ptrue$ by establishing the epiconvergence of \plp\ to SLP-2.
 \begin{theorem}
+	\label{thm:epiconvergence}
 	\plp\ (\ref{eq:plp_two_stage}) epiconverges to SLP-2 (\ref{eq:slp_first_stage}) with distribution $p = \ptrue$.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}{\sc Proof of Proposition \ref{thm:epiconvergence}.}
 	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp is convex).
 \end{proof}
 
