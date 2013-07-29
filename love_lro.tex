@@ -611,6 +611,7 @@ The next proposition makes this statement rigorous.
 		\item[Case 2: $\frac{h_\omega(s) - \mu}{\lambda} < \bar{s}$] selects $p_\omega = 0$.
 		\item[Case 3: $\frac{h_\omega(s) - \mu}{\lambda} = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero. %\qedhere
 	\end{description}
+	\Halmos
 \end{proof}
 
 \begin{remark}
@@ -782,6 +783,7 @@ To be consistent with the known $\phi$-divergence results stated in Section \ref
 		\sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega > \phi^*(s^{N+1}_\omega).
 	\end{equation}
 	Finally, return to the original variables with the substitution $s^\omega_{N+1} = \frac{N}{N+1} \frac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$
+	\Halmos
 \end{proof}
 
 
@@ -841,6 +843,7 @@ That is, $L$ gives the set of scenarios that, if sampled one more observation, w
 % 	We will use $\frac{N_L}{N}$ as a benchmark in Figures~\ref{fig:prob_cost_decrease_nd_n}, \ref{fig:prob_cost_decrease_gp} and \ref{fig:water_prob_decrease}. 
 
 	We solve (\ref{eq:lb_probability}) by taking its dual, which results in the two dimensional nonlinear program (\ref{eq:prob_cost_decrease}).
+	\Halmos
 \end{proof}
 
 \subsection{Asymptotic Analysis of \plp}
@@ -880,6 +883,7 @@ Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert \hat{p}^N(\xi) - \ptr
 	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{\hat{p}^N_\omega+\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right), \phi\left( \frac{\hat{p}^N_\omega-\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
 	
 	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
+	\Halmos
 \end{proof}
 
 Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\ptrue$.
@@ -891,6 +895,7 @@ In the next theorem, we establish the proof that the optimal value and solution 
 
 \begin{proof}{\sc Proof of Proposition \ref{thm:epiconvergence}.}
 	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp is convex).
+	\Halmos
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
