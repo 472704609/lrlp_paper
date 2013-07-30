@@ -999,12 +999,33 @@ This must be satisfied in addition to the original condition $z_u - z_l < \textt
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Numerical Illustration} \label{sec:comp_results}
 
+\begin{table}
+	\TABLE
+	{
+		Sample results from the 6-sample version of APL1P for the divergences shown in Figures \ref{fig:suppress} and \ref{fig:pop}.
+		For each, $\rho$ is chosen for a $95\%$ confidence region as in (\ref{eq:asymptotic_rho}).
+		The first three assume a single observation of each scenario, while the last Burg Entropy example assumes that the most expensive scenario is unobserved to demonstrate popping behavior.
+		\label{tb:numerical_results}
+	}
+	{\begin{tabular}{cccc|cccccc}
+		$\phi$ & $\alpha$ & $\rho$ & Cost & \multicolumn{6}{c}{Worst-Case Distribution} \\
+		\hline
+		$\phi_{m\chi^2}$ & 0.05 & 1.845 & 30735 & 0.1353 & 0.6354 & 0.2293 & 0 & 0 & 0 \\
+		$\phi_{kl}$ & 0.05 & 0.9225 & 30921 & 0.1050 & 0.7208 & 0.1507 & 0.0052 & 0.0108 & 0.0075 \\
+		$\phi_b$ & 0.05 & 0.9225 & 30714 & 0.0636 & 0.7751 & 0.0768 & 0.0253 & 0.0308 & 0.0285 \\
+		\hline
+		$\phi_b$ & 0.05 & 1.107 & 29775 & 0.1065 & 0.6273 & 0.1311 & 0.0402 & 0.0494 & 0.0455
+	\end{tabular}}
+	{}
+\end{table}
+
 Section \ref{sec:classification} discussed a method of classifying $\phi$-divergences into four types based on two criteria: whether a $\phi$-divergences allows distributions that suppress certain scenarios (i.e., allows $p_\omega = 0$ while $q_\omega > 0$); and whether a $\phi$-divergence allows distributions that pop a scenario that is impossible in the nominal distribution (i.e., allows $p_\omega > 0$ while $q_\omega = 0$).
 In this section we present computational results demonstrating the suppressing and popping behavior of different divergences.
 The categorization of several $\phi$-divergences can be found in Table \ref{tb:phi_categories}.
 
 All plots in this section were computed with the test problem APL1P, a power expansion problem with 5 independent random variables and 1280 realizations, and can be found in \cite{infanger1992monte}.
 To clearly demonstrate how the worst-case distribution changes with $\rho$, and especially to demonstrate suppressing and popping behavior in Figures \ref{fig:suppress} and \ref{fig:pop}, we took 6 unique samples from APL1P to form the \plp.
+A few select results are printed in Table \ref{tb:numerical_results}.
 In this problem, the second scenario (displayed in green in Figures \ref{fig:suppress} and \ref{fig:pop}) is the most costly, and thus the only candidate for popping if its nominal probability vanishes.
 Furthermore, the second scenario will eventually have unit probability in suppressing divergences.
 All scenarios are assumed to have a single observation, unless popping behavior is being demonstrated.
