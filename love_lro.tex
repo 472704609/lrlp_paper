@@ -337,25 +337,20 @@ where
 	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \k^\omega \y^\omega : \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0 \right\}. \label{eq:slp_second_stage}
 \end{align}
 We assume relatively complete recourse; i.e., the second-stage problems $h_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem; and that the second-stage problems $h_\omega(\x)$ are dual feasible for every feasible solution $\x$ of the first-stage problem.
-For convenience, we denote $X = \{x : \A\x = \b, \x \geq 0\}$ and $Y_\omega(\x) = \{\y^\omega : \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0\}$.
+For convenience, we denote $X = \{x : \A\x = \b, \x \geq 0\}$.
 
 The SLP-2 formulation assumes that the distribution $\{q_\omega\}_{\omega=1}^n$ is known.
 However, in many applications the distribution is itself unknown.
 One technique to deal with this is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions that is believed to contain the true distribution.
 In this paper, we construct the ambiguity set with $\phi$-divergences considering all distributions whose $\phi$-divergence from the nominal distribution $q$ is sufficiently small.
-Throughout portions of this paper, we focus on a data-driven setting and thus assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, and $N = \sum_{\omega=1}^n N_\omega$ total observations, although $q$ can be obtained in other ways.
+Throughout portions of this paper, we focus on a data-driven setting and assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, although $q$ can be obtained in other ways.
 In SLP-2, this data-driven setting would correspond to setting the probability of scenario $\omega$ to be $\hat{q}_\omega = \frac{N_\omega}{N}$.
 
 By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution with respect to $\phi$-divergence, we create a model that we refer to as two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse (\plp).
-To derive the \plp, we begin by writing SLP-2 given in \eqref{eq:slp_first_stage}--\eqref{eq:slp_second_stage} in extensive form
-\[
-	\min_{\x,\y^\omega} \left\{ \c\x + \sum_{\omega=1}^{n} p_\omega \k^\omega y^\omega : \x \in X, \y^\omega \in Y_\omega(\x) \right\}.
-\]
-The SLP-2 formulation is then augmented by the set of distributions with sufficiently low $\phi$-divergence from $q$.
-Then, the objective function is minimized with respect to this worst-case distribution selected from the ambiguity set of distributions.
+In the \plp, the objective function is minimized with respect to the worst-case distribution selected from the ambiguity set of distributions.
 The resulting minimax formulation of \plp\ is
 \begin{equation}
-	\min_{\x \in X, \y^\omega \in Y_\omega(\x)} \max_{p \in \mathcal{P}} \left\{ \c\x + \sum_{\omega=1}^{n} p_\omega \k^\omega y^\omega \right\}, \label{eq:plp_primal}
+	\min_{\x \in X} \max_{p \in \mathcal{P}} \left\{ \c\x + \sum_{\omega=1}^{n} p_\omega h_\omega(\x) \right\}, \label{eq:plp_primal}
 \end{equation}
 where the ambiguity set is
 \begin{align}
@@ -364,16 +359,9 @@ where the ambiguity set is
 	& \ \left. p_\omega \geq 0,\ \forall \omega \right\}. \label{eq:nonneg}
 \end{align}
 We refer to (\ref{eq:plp_primal_divergence}) as the $\phi$-divergence constraint and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
+We discus how to determine $\rho$ in (\ref{eq:plp_primal_divergence}) in Section \ref{ssec:robust_level}.
 
-Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual extensive form.
-\begin{align*}
-	\min_{\x,\lambda,\mu,y^\omega} \ & \c\x + \mu + \rho \lambda + \lambda \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{\k^\omega y^\omega - \mu}{\lambda}\right) \\
-	\st \ & \x \in X, \y^\omega \in Y_\omega(x) \nonumber \\
-	& \frac{\k^\omega y^\omega - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \\
-	& \lambda \geq 0.
-\end{align*}
-See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, and also the proof of Proposition \ref{prop:pop}.
-Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
+Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual form, again in the two-stage setting:
 
 Finally, we wish to return the \plp\ to two-stage formulation:
 \begin{align}
@@ -382,10 +370,12 @@ Finally, we wish to return the \plp\ to two-stage formulation:
 	& \frac{h_\omega(\x) - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \label{eq:plp_feas_constraint}\\
 	& \lambda \geq 0, \nonumber
 \end{align}
-where $h_\omega(\x)$ and the second-stage problems given in (\ref{eq:slp_second_stage}).
+where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}).
 Note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
 For some $\phi$-divergences, like the Kullback-Leibler divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
 However, other $\phi$-divergences, like the Hellinger distance, have a finite limit, inducing this constraint.
+See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
+Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Basic Properties}
