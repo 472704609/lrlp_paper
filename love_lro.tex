@@ -287,7 +287,7 @@ Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' 
 The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy the normalizing condition $\phi_l(t) \geq 0$.
 This divergence is included because \cite{wang2010likelihood} use it to formulate a distributionally robust newsvendor problem so that the ambiguity set of distributions have a sufficiently high empirical likelihood. 
 They refer to this as the Likelihood Robust Optimization. 
-We also note that \cite{calafiore2007ambiguous}, \cite{hukullback}, and \cite{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler divergence''---reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
+We also note that \cite{calafiore2007ambiguous}, \cite{hukullback}, and \cite{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler (K-L) divergence''---reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
 In this paper, $q$ denotes the nominal distribution. 
 
 \begin{table}
@@ -300,7 +300,7 @@ In this paper, $q$ denotes the nominal distribution.
 		\hline \\
 		Divergence                        & $\phi(t)$          & $\tilde{\phi}(t)$               & $\phi(t), t \geq 0$   & $I_\phi(p,q)$     & $\phi^*(s)$ \\
 		\hline
-		Kullback-Leibler                  & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ & $e^s - 1$ \\
+		Kullback-Leibler (K-L)            & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ & $e^s - 1$ \\
 		Burg Entropy                      & $\phi_b$           & $\phi_{kl}$                     & $-\log t + t - 1$     & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(1-s),\ s < 1$  \\
 		J-Divergence                      & $\phi_j$           & $\phi_j$                        & $(t-1)\log t$         & $\sum (p_\omega - q_\omega) \log\left(\frac{p_\omega}{q_\omega}\right)$ & No closed form \\
 		Likelihood                        & $\phi_l$           & $t\log t $                      & $-\log t$             & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(-s) - 1,\ s < 0$ \\
@@ -376,7 +376,7 @@ See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, w
 Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 
 Note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
-For some $\phi$-divergences, like the Kullback-Leibler divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
+For some $\phi$-divergences, like the K-L divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
 However, other $\phi$-divergences, like the Hellinger distance, have a finite limit, inducing this constraint.
 
 
@@ -548,7 +548,7 @@ All scenarios $\omega \in \argmax h_\omega(\x)$ must have a positive probability
 \end{itemize}
 
 
-Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories. We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and Kullback-Leibler Divergence, respectively, in Section \ref{sec:comp_results}.
+Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories. We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and K-L Divergence, respectively, in Section \ref{sec:comp_results}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Additional Details about Divergences that can Pop}
