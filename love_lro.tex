@@ -144,7 +144,7 @@
 % Title or shortened title suitable for running heads. Sample:
 % \RUNTITLE{Bundling Information Goods of Decreasing Value}
 % Enter the (shortened) title:
-\RUNTITLE{Properties of Phi-Divergence Constrained Ambiguous Stochastic Programs}
+\RUNTITLE{Phi-Divergence Constrained Ambiguous Stochastic Programs}
 
 % Full title. Sample:
 % \TITLE{Bundling Information Goods of Decreasing Value}
@@ -368,12 +368,15 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 	& \frac{h_\omega(\x) - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \label{eq:plp_feas_constraint}\\
 	& \lambda \geq 0, \nonumber
 \end{align}
-where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}).
+where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}), $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
+Throughout the paper, we use $s_\omega$ to denote $\frac{h_\omega(\x) - \mu}{\lambda}$.  
+See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
+Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
+
 Note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
 For some $\phi$-divergences, like the Kullback-Leibler divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
 However, other $\phi$-divergences, like the Hellinger distance, have a finite limit, inducing this constraint.
-See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
-Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Basic Properties}
@@ -550,19 +553,26 @@ This allows for including interesting but unobserved scenarios, and allowing the
 \subsection{Additional Details about Divergences that can Suppress}
 \label{ssec:suppress}
 
-Suppressing a scenario is made possible by having $\lim_{t \searrow 0} \phi(t) < \infty$, but there are two further possibilities for such divergences: (1) $\phi'(0) > -\infty$ and (2) $\lim_{t \searrow 0} \phi'(t) = -\infty$.
-Recall that $\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}$ so $s = \phi'(t)$ could be used to find the conjugate.
-This subclassification leads to two different behaviors in $\phi^*(s)$: either (1) $\phi^*(s) = c$ for some constant $c \leq 0$ and  $s <\ \underline{s}$ for $\underline{s} \leq 0$; or (2) $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
-Note that in the first case, for $s < \underline{s}$, $\phi^{*\prime}(s) = 0$.
-By the primal-dual variable relation $p_\omega = q_\omega \phi^{*\prime}\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$, we see two different possibilities for suppressing scenarios:
-\begin{enumerate}
-	\item {\sc Subcategory 1.} If $\phi'(0) > -\infty$, then all scenarios that satisfy the relation $h_\omega(\x) < \mu + \underline{s}\lambda$ are suppressed.
+Recall the primal-dual variable relation, which specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}$. 
+Assume $\phi^*$ is differentiable for convenience. 
+Note that when $q_\omega>0$, $p_\omega=0$ (suppress) can only occur when $\phi^{*\prime}(s_\omega)=0$.
+To examine when this happens in more detail, we look at the differentiation of $\phi$ at $0$, which then yields clues on the behavior of $\phi^*$ and its derivative. 
+This analysis yields two subcategories within the $\phi$-divergences that can suppress scenarios---one tends to suppress scenarios one at a time and the other simultaneously. 
+
+\begin{itemize}
+	\item {\sc Subcategory 1\ ($-\infty < \phi'(0) < \infty$).}  In this case, $\phi^*(s) = c$ for some constant $c \leq 0$ and  $s <\ \underline{s}$ for $\underline{s} \leq 0$. 
+		Note that when $s < \underline{s}$, $\phi^{*\prime}(s) = 0$ and suppressing occurs; i.e., all scenarios that satisfy the relation $h_\omega(\x) < \mu + \underline{s}\lambda$ are suppressed.
 		As $\rho$ increases, scenarios tend to be suppressed one at a time.
-	\item {\sc Subcategory 2.} Otherwise, scenarios can only be suppressed if $\frac{h_\omega(\x) - \mu}{\lambda} = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
-		Consequently, this solution must also have $\mu = \max_\omega h_\omega(\x)$, so that $\frac{\max_\omega h_\omega(\x) - \mu}{\lambda} = \frac{0}{0}$ can be interpreted so that $p_\omega = q_\omega \phi^{*\prime}\left(\tfrac{0}{0}\right) = 1$.
-		This also means that all but the most expensive scenario(s) will vanish simultaneously.
+
+	\item {\sc Subcategory 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$).} In this case, $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
+		As a result, scenarios can only be suppressed if $s_\omega = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
+		Consequently, all solutions with $h_\omega(\x) < \mu$ have $p_\omega=0$, and we must have $\mu = \max_\omega h_\omega(\x)$. 
+All scenarios $\omega \in \argmax h_\omega(\x)$ must have a positive probability to maintain a probability distribution. 
+		%, so that $\frac{\max_\omega h_\omega(\x) - \mu}{\lambda} = \frac{0}{0}$ can be interpreted so that $p_\omega = q_\omega \phi^{*\prime}\left(\tfrac{0}{0}\right) = 1$.
+		This means that all but the most expensive scenario(s) will vanish simultaneously.
 		Divergences of this type can be difficult to deal with numerically when suppression occurs given the denominator of $\lambda = 0$.
-\end{enumerate}
+\end{itemize}
+
 
 Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories. We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and Kullback-Leibler Divergence, respectively, in Section \ref{sec:comp_results}.
 
@@ -570,8 +580,8 @@ Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subc
 \subsection{Additional Details about Divergences that can Pop}
 \label{ssec:pop}
 
-Divergence that can pop a scenario have $\phi(t)$ that grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ on the domain of $\phi^*(s)$.
-The primal-dual variable relation specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}$, but the left-hand side is undefined when $q_\omega = 0$.
+Divergences that can pop a scenario have $\phi(t)$ that grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ on the domain of $\phi^*(s)$.
+The primal-dual variable relation specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
 Intuitively, we can think of $\frac{p_\omega}{0} = \infty$ if $p_\omega > 0$, and thus popping a scenario can only occur when the right-hand side subdifferential also includes $\infty$.
 This, in turn, occurs only when $s_\omega = \bar{s}$.
 The next proposition makes this statement rigorous.
