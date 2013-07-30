@@ -529,15 +529,14 @@ This allows for including interesting but unobserved scenarios, and allowing the
 \subsection{Additional Details about Divergences that can Suppress}
 \label{ssec:suppress}
 
-Recall the primal-dual variable relation, which specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega$ is defined in (\ref{eq:s_omega_definition}).
-Assume $\phi^*$ is differentiable for convenience. 
-Note that when $q_\omega>0$, $p_\omega=0$ (suppress) can only occur when $\phi^{*\prime}(s_\omega)=0$.
-To examine when this happens in more detail, we look at the differentiation of $\phi$ at $0$, which then yields clues on the behavior of $\phi^*$ and its derivative. 
+Recall the primal-dual variable relation, which specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega$ is defined in (\ref{eq:s_omega_definition}), and note that suppression ($p_\omega = 0$, $q_\omega > 0$) can occur only when $0 \in \partial \phi^*(s_\omega)$.
+For convenience, assume $\phi^*$ is differentiable.
+We can examine suppressing in more detail by looking at the behavior of $\phi(t)$ as $t \searrow 0$.
 This analysis yields two subcategories within the $\phi$-divergences that can suppress scenarios---one tends to suppress scenarios one at a time and the other simultaneously. 
 
 \begin{itemize}
-	\item {\sc Subcategory 1\ ($-\infty < \phi'(0) < \infty$).}  In this case, $\phi^*(s) = c$ for some constant $c \leq 0$ and  $s <\ \underline{s}$ for $\underline{s} \leq 0$. 
-		Note that when $s < \underline{s}$, $\phi^{*\prime}(s) = 0$ and suppressing occurs; i.e., all scenarios that satisfy the relation $h_\omega(\x) < \mu + \underline{s}\lambda$ are suppressed.
+	\item {\sc Subcategory 1\ ($\lim_{t \searrow 0} \phi'(t) > -\infty$).}  There are nonpositive constants $c,\underline{s}$ such that $\phi^*(s) = c$ for all $s < \underline{s}$. 
+		Then $\phi^{*\prime}(s_\omega) = 0$ when $s_\omega < \underline{s}$, and suppressing occurs; i.e., all scenarios that satisfy the relation $h_\omega(\x) < \mu + \underline{s}\lambda$ are suppressed.
 		As $\rho$ increases, scenarios tend to be suppressed one at a time.
 
 	\item {\sc Subcategory 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$).} In this case, $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
@@ -574,8 +573,8 @@ The next proposition makes this statement rigorous.
 	\begin{align}
 		 & \min_{\lambda \geq 0, \mu} \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda \nonumber \\
 		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \sum_{\omega=1}^n \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} \label{eq:pop_proof_detail_1} \\
-		& =  \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t_\omega \geq 0} \left\{ \frac{h_\omega(\x) - \mu}{\lambda} t_\omega - \phi(t_\omega) \right\} \label{eq:pop_proof_detail_2} \\
-		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right), \nonumber
+		& =  \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t_\omega \geq 0} \left\{ s_\omega t_\omega - \phi(t_\omega) \right\} \label{eq:pop_proof_detail_2} \\
+		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(s_\omega\right), \nonumber
 	\end{align}
 	where $t_\omega = \frac{p_\omega}{q_\omega}$.
 	
@@ -585,17 +584,17 @@ The next proposition makes this statement rigorous.
 		\max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega  \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} & = \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda 0  \phi\left(\frac{p_\omega}{0}\right) \right\} \nonumber \\
 		& = \max_{p_\omega \geq 0} \left\{ p_\omega \left( h_\omega(\x) - \mu - \lambda \bar{s} \right) \right\}. \label{eq:pop_proof_condition}
 	\end{align}
-	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(\x) - \mu - \lambda \bar{s}  \right)$, or equivalently, relation between $\frac{h_\omega(\x) - \mu}{\lambda}$ and $\bar{s}$.
+	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(\x) - \mu - \lambda \bar{s}  \right)$, or equivalently, relation between $s_\omega$ and $\bar{s}$.
 	There are three cases:
 	\begin{description}
-		\item[Case 1: $\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
-		\item[Case 2: $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$] selects $p_\omega = 0$.
-		\item[Case 3: $\frac{h_\omega(\x) - \mu}{\lambda} = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero, and hence allows for $p_\omega > 0$ (popping). \Halmos %\qedhere
+		\item[Case 1: $s_\omega > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
+		\item[Case 2: $s_\omega < \bar{s}$] selects $p_\omega = 0$.
+		\item[Case 3: $s_\omega = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero, and hence allows for $p_\omega > 0$ (popping). \Halmos %\qedhere
 	\end{description}
 \end{proof}
 
 \begin{remark}
-	Because $s_\omega = \frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for all $\omega$ and $s_\omega = \bar{s}$ for any popped scenarios, only the most expensive scenario could be popped.
+	Because $s_\omega \leq \bar{s}$ for all $\omega$ and $s_\omega = \bar{s}$ for any popped scenarios, only the most expensive scenario could be popped.
 \end{remark}
 
 \begin{remark}
