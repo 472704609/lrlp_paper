@@ -1,10 +1,13 @@
-function fig2pdf( fs )
+function fig2pdf( files, fs )
 
-if nargin < 1
+if nargin < 2
     fs = 16;
+    if nargin < 1
+        files = '*.fig';
+    end
 end
 
-s = dir('*.fig');
+s = dir(files);
 for j = 1:length(s)
     hf = open(s(j).name);
     htext = findall(hf,'type','text','-or','type','axes');
