@@ -196,51 +196,49 @@
 
 \section{Introduction and Motivation}
 
-In practice, many optimization problems can be modeled by stochastic programs minimizing an expected value of an uncertain objective function.
+In practice, many optimization problems can be modeled by stochastic programs minimizing the expected value of an uncertain objective function.
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
 Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions, and optimizes the expected cost relative to the worst distribution in the uncertainty set.
-One approach to this has been recently proposed by \cite{bental2011robust} is to use a set of distributions that are sufficiently small $\phi$-divergence from a given ``nominal'' distribution.
-Of particular interest is the case when the nominal distribution is determined by observation by making it an empirical distribution.
+One approach that has been recently proposed by \cite{bental2011robust} uses a set of distributions that have sufficiently small $\phi$-divergence from a given ``nominal'' distribution.
+Of particular interest is the case when the nominal distribution is determined by observation, i.e., making it an empirical distribution.
 In this paper, we adapt the $\phi$-divergence method to the setting of a two-stage stochastic linear program with recourse and call this the two-stage $\phi$-divergence linear program (\plp). 
-We examine the properties of the resulting model and develop a simple condition for assessing the value of collecting extra data.
+We examine the properties of the resulting model, provide a classification of $\phi$-divergences and insight about the use of each class, and develop a simple condition for assessing the value of collecting extra data.
 Finally, we present a modified Bender's Decomposition to solve the \plp\ and illustrate some properties of \plp\ numerically.
 
-\plp is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
+\plp\ is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
 Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{zackova1966minimax,dupacova_87}.
 \cite{shapiro2002minimax} and \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
 
 In recent years, there has been a growing interest in distributionally robust methods.
 \cite{erdogan2006ambiguous} study chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
 \cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later \cite{calafiore2006distributionally} develop a method for converting distributionally robust chance constraints into second-order cone constraints.
-\cite{pflug2007ambiguity} develop a data-driven method for solving a portfolio selection problem using the Kantorovich distance to define the set of distributions to consider.
+\cite{pflug2007ambiguity} develop a data-driven method for solving a portfolio selection problem using the Kantorovich distance to define the set of distributions.
 \cite{jiang2012data} develop an exact approach to solving data-driven chance constrained programs.
 \cite{delage2010distributionally} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
 
-Three recent papers by \cite{wang2010likelihood}, \cite{calafiore2007ambiguous}, and \cite{hukullback} provide similar studies using a specific $\phi$-divergence that is described in Section \ref{sec:phi_divergences}.
-All three make use of the Kullback-Leibler divergence to define the set of distributions.
-Both \cite{wang2010likelihood} and \cite{hukullback} produce similar dual problems similar to that presented in \cite{bental2011robust} and used here.
+Three recent papers by \cite{wang2010likelihood}, \cite{calafiore2007ambiguous}, and \cite{hukullback} provide similar studies using a specific $\phi$-divergence, described in Section \ref{sec:phi_divergences}, that is defined by the Kullback-Leibler divergence.
+Both \cite{wang2010likelihood} and \cite{hukullback} produce dual problems similar to that presented in \cite{bental2011robust} and used here.
 \cite{hukullback} differs from this work and the others by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
 Additionally, \cite{klabjan2013robust} uses the $\chi^2$ distance, another $\phi$-divergence, to define an uncertain demand distribution for a stochastic lot-sizing problem using historical data.
-Our results also provide one quantification of the value of additional data.
 
 The $\phi$-divergence method is an attractive data-driven approach because it uses the data directly; and only those data points or scenarios of interest are used in the calculations.
 These scenarios can come from direct observation, results of simulation, from expert opinion regarding scenarios that the decision maker would especially like to be robust against.
-Because the \plp depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
+Because the \plp\ depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
 
 The contributions of our work are that it provides
 \begin{inparaenum}[\itshape (i\upshape)]
 	\item a classification of $\phi$-divergences and insight on which class is useful for certain model types,
-	\item a simple condition to determine if an additional observation will change the worst-case distribution used in the optimal solution,
-	\item asymptotic analysis to discuss conditions under which the optimal value and solution set \plp will converge to the two-stage stochastic program with recourse under the true distribution, and
+	\item a simple condition to determine if an additional observation will rule out the worst-case distribution used in the optimal solution,
+	\item asymptotic analysis to discuss conditions under which the optimal value and solution set \plp\ will converge to the two-stage stochastic program with recourse under the true distribution, and
 	\item a specialized decomposition-based algorithm to solve the resulting model.
 \end{inparaenum}
 
 This paper is organized as follows.
 Section \ref{sec:phi_divergences} introduces the $\phi$-divergence and presents some useful properties.
 Section \ref{sec:plp2} presents the derivation of $\phi$-divergence model for a two-stage stochastic program with recourse.
-Sections \ref{sec:properties} describes properties of \plp, including its asymptotic properties, how to select the level of robustness, and an analysis of the value of collecting additional data;
-Sections \ref{sec:classification} present a classification of $\phi$-divergences and \ref{ssec:special_phi} demonstrates the classification on some special cases of $\phi$; 
-In Section \ref{sec:soln_algorithm} we present a decomposition method for solving the \plp\ model; and in Section \ref{sec:comp_results} we present a numerical illustrations of some of the properties of the \plp\ model.
+Section \ref{sec:classification} presents a classification of $\phi$-divergences with some examples;
+Sections \ref{sec:properties} describes properties of \plp, including its asymptotic properties, how to select the level of robustness, and an analysis of the value of collecting additional data; 
+Section \ref{sec:soln_algorithm} presents a decomposition method for solving the \plp\ model; and in Section \ref{sec:comp_results} we present a numerical illustrations of some of the properties of the \plp\ model.
 Finally, we end in Section \ref{sec:concl} with conclusions and future work.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
