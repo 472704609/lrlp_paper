@@ -836,40 +836,44 @@ where $T_j (\x,\mu,\lambda)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are 
 The proposed algorithm is shown in Figure \ref{fig:algorithm}.
 
 \begin{figure}
-\TABLE
+\FIGURE
+{\begin{minipage}{.5\textwidth}
+	\TableSpaced
+	\hrule
+	\vspace{1pt}
+	\begin{algorithmic}
+		\State Initialize $z_l = -\infty, z_u = \infty$
+		\State Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$
+		\State Solve all second stage scenarios $h_\omega(\x)$ (\ref{eq:slp_second_stage})
+		\State Initialize $\lambda \gets 1$, $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
+		\State Generate initial objective cut
+		\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
+			\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
+			\State Solve sub-problems $h_\omega(\x)$ (\ref{eq:slp_second_stage})
+			\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h_\omega(\x,\lambda,\mu)$
+			\If{$\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$}
+				\State Generate feasibility cut
+				\State Find $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
+			\Else
+				\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
+			\EndIf
+			\State Generate objective cut
+			\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
+				\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
+				\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
+				\State $p_\omega \gets \phi^{*\prime}(\tfrac{h_\omega(\x) - \mu}{\lambda})$ for $\omega = 1, \dots, n$
+			\EndIf
+		\EndWhile
+	\end{algorithmic}
+	\hrule
+\end{minipage}}
 	{
 		Decomposition algorithm for solving \plp
 		\label{fig:algorithm}
 	}
-{\begin{tabular}{l}
-	\hline
-	Initialize $z_l = -\infty, z_u = \infty$ \\
-	Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$ \\
-	Solve all second stage scenarios $h_\omega(\x)$ (\ref{eq:slp_second_stage}) \\
-	Initialize $\lambda \gets 1$, $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$ \\
-	Generate initial objective cut \\
-	\textbf{While} $z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$ \textbf{do} \\
-	\hspace{24pt} Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$ \\
-	\hspace{24pt} Solve sub-problems $h_\omega(\x)$ (\ref{eq:slp_second_stage}) \\
-	\hspace{24pt} $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h_\omega(\x,\lambda,\mu)$ \\
-	\hspace{24pt} \textbf{If} $\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$ \textbf{then} \\
-		\hspace{48pt} Generate feasibility cut \\
-		\hspace{48pt} Find $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$ \\
-	\hspace{24pt} \textbf{else} \\
-		\hspace{48pt} $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$ \\
-	\hspace{24pt} \textbf{end if} \\
-	\hspace{24pt} Generate objective cut \\
-	\hspace{24pt} \textbf{If} $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$ \textbf{then} \\
-		\hspace{48pt} $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$ \\
-		\hspace{48pt} $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$ \\
-		\hspace{48pt} $p_\omega \gets \phi^{*\prime}(\tfrac{h_\omega(\x) - \mu}{\lambda})$ for $\omega = 1, \dots, n$ \\
-	\hspace{24pt} \textbf{end if} \\
-	\textbf{end while} \\
-	\hline
- \end{tabular}
-}
 {}
 \end{figure}
+
 
 \subsection{Objective Cuts}
 
