@@ -788,6 +788,7 @@ This is equivalent to saying that an additional observation of $\hat{\omega}$ wi
 It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences and we detail this in the remark below. 
 
 \begin{remark}
+	\label{rmk:cost_decrease_trick}
 	We can use a small trick to transform condition (\ref{eq:cost_decrease_cond}) into a form that is easier to work with.
 	Recall that for any real number $c$, we can define $\phi_c(t) = \phi(t) + c(t-1)$ and $I_{\phi_c}(p,q) = I_\phi(p,q)$ for probability vectors $p$ and $q$.
 	This changes the conjugate as $\phi_c^*(s) = \phi^*(s-c) + c$.
@@ -1088,6 +1089,30 @@ Other divergences that can pop but not suppress look qualitatively similar.
 		The left figure shows the worst-case distribution assuming that all scenarios have a single observation.
 		The right figure demonstrates the most costly scenario entering the worst-case distribution despite it having no observations.
 		\label{fig:pop}
+	}
+	{}
+\end{figure}
+
+\subsection{Illustration of Value of Data}
+\label{ssec:numerical_value_of_data}
+
+A comparison of the worst-case expected cost decrease condition (\ref{eq:cost_decrease_cond}) with the actual decrease in expected cost resulting from an additional observation is shown in Figure \ref{fig:value} for the Modified $\chi^2$-Distance (left) and the Burg Entropy (right).
+The solid lines indicate regions where (\ref{eq:cost_decrease_cond}) is satisfied, and dotted regions indicate that (\ref{eq:cost_decrease_cond}) is not satisfied.
+Both plots were generated using the reformulations to (\ref{eq:cost_decrease_cond}) provided in Remark \ref{rmk:cost_decrease_trick}.
+
+The most costly scenario, shown in green in all plots, is not visible in Figure \ref{fig:value} because an additional observation will increase the worst-case expected cost.
+Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.*
+
+\begin{figure}
+	\FIGURE
+	{%
+		\includegraphics*[width=.5\textwidth]{images/mchi2_decrease_condition}%
+		\includegraphics*[width=.5\textwidth]{images/burg_decrease_condition}%
+	}
+	{
+		Decrease in the worst-case expected cost from an additional observation of scenarios for Modified $\chi^2$-Distance (left) and Burg Entropy (right).
+		Solid lines indicate when the cost decrease condition (\ref{eq:cost_decrease_cond}) is satisfied, while dotted lines show when an additional observation would decrease the worst-case expected cost although (\ref{eq:cost_decrease_cond}) is not satisfied.
+		\label{fig:value}
 	}
 	{}
 \end{figure}
