@@ -1024,6 +1024,10 @@ In this section we present computational results demonstrating the suppressing a
 The categorization of several $\phi$-divergences can be found in Table \ref{tb:phi_categories}.
 
 All plots in this section were computed with the test problem APL1P, a power expansion problem with 5 independent random variables and 1280 realizations, and can be found in \cite{infanger1992monte}.
+The first-stage has two decision variables representing the capacity to be built for two generators.
+Nine second-stage variables represent operating level of each generator for each of the three demand load levels, and unmet demand for each load level that must be purchased from an outside source.
+The availability of each generator during the second stage, and the unknown demand in each load level.
+
 To clearly demonstrate how the worst-case distribution changes with $\rho$, and especially to demonstrate suppressing and popping behavior in Figures \ref{fig:suppress} and \ref{fig:pop}, we took 6 unique samples from APL1P to form the \plp.
 A few select results are printed in Table \ref{tb:numerical_results}.
 In this problem, the second scenario (displayed in green in Figures \ref{fig:suppress} and \ref{fig:pop}) is the most costly, and thus the only candidate for popping if its nominal probability vanishes.
