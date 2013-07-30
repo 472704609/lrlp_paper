@@ -362,8 +362,6 @@ We refer to (\ref{eq:plp_primal_divergence}) as the $\phi$-divergence constraint
 We discus how to determine $\rho$ in (\ref{eq:plp_primal_divergence}) in Section \ref{ssec:robust_level}.
 
 Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual form, again in the two-stage setting:
-
-Finally, we wish to return the \plp\ to two-stage formulation:
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \lambda \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \label{eq:plp_two_stage} \\
 	\st \ & \x \in X \nonumber \\
@@ -511,8 +509,8 @@ Consider each of these limiting cases:
 
 \noindent These two categories describing suppressing and popping behavior in $\phi$-divergences create four distinct categories.
 Examples of divergences in each category are given in Table \ref{tb:phi_categories}.
-Note that $\phi$ can suppress scenarios if and only if $\tilde{\phi}$ can pop scenarios, and vice versa.
-This means that self-adjoint $\phi$-divergences are either capable of both popping and suppressing scenarios, or capable of neither.
+Note that $\phi$ can suppress scenarios if and only if its adjoint $\tilde{\phi}$ can pop scenarios, and vice versa.
+This means that self-adjoint $\phi$-divergences are either capable of both popping and suppressing scenarios or capable of neither.
 
 \begin{table}
 	\TABLE
@@ -523,12 +521,12 @@ This means that self-adjoint $\phi$-divergences are either capable of both poppi
 	}
 	{\begin{tabular}{l|p{.33\textwidth}p{.33\textwidth}}
 		 & Can Suppress Scenarios & Cannot Suppress Scenarios \\
-		 \hline
+		 \hline 
 		 Can Pop Scenarios %
-			& \parbox{.33\textwidth}{Hellinger Distance(2),\\Variation Distance(1)} %
+			& \parbox{.33\textwidth}{Hellinger Distance (2),\\Variation Distance (1)} %
 			& \parbox{.33\textwidth}{Burg Entropy,\\$\chi^2$-Distance} \smallskip \\
 		 Cannot Pop Scenarios %
-			& \parbox{.33\textwidth}{Kullback-Leibler Divergence(2),\\Modified $\chi^2$-Distance(1)} %
+			& \parbox{.33\textwidth}{Kullback-Leibler Divergence (2),\\Modified $\chi^2$-Distance (1)} %
 			& \parbox{.33\textwidth}{J-Divergence}
 	\end{tabular}}
 	{}
@@ -558,15 +556,15 @@ This subclassification leads to two different behaviors in $\phi^*(s)$: either (
 Note that in the first case, for $s < \underline{s}$, $\phi^{*\prime}(s) = 0$.
 By the primal-dual variable relation $p_\omega = q_\omega \phi^{*\prime}\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$, we see two different possibilities for suppressing scenarios:
 \begin{enumerate}
-	\item {\sc Subcategory 1} If $\phi'(0) > -\infty$, then all scenarios that satisfy the relation $h_\omega(\x) < \mu + \underline{s}\lambda$ are suppressed.
+	\item {\sc Subcategory 1.} If $\phi'(0) > -\infty$, then all scenarios that satisfy the relation $h_\omega(\x) < \mu + \underline{s}\lambda$ are suppressed.
 		As $\rho$ increases, scenarios tend to be suppressed one at a time.
-	\item {\sc Subcategory 2} Otherwise, scenarios can only be suppressed if $\frac{h_\omega(\x) - \mu}{\lambda} = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
+	\item {\sc Subcategory 2.} Otherwise, scenarios can only be suppressed if $\frac{h_\omega(\x) - \mu}{\lambda} = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
 		Consequently, this solution must also have $\mu = \max_\omega h_\omega(\x)$, so that $\frac{\max_\omega h_\omega(\x) - \mu}{\lambda} = \frac{0}{0}$ can be interpreted so that $p_\omega = q_\omega \phi^{*\prime}\left(\tfrac{0}{0}\right) = 1$.
 		This also means that all but the most expensive scenario(s) will vanish simultaneously.
 		Divergences of this type can be difficult to deal with numerically when suppression occurs given the denominator of $\lambda = 0$.
 \end{enumerate}
 
-Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories, and we present one-by-one and simultaneous suppressing behavior in Section \ref{sec:comp_results} numerically for Modified $\chi^2$-Distance and K-L Divergence, respectively.
+Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories. We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and Kullback-Leibler Divergence, respectively, in Section \ref{sec:comp_results}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Additional Details about Divergences that can Pop}
@@ -584,13 +582,13 @@ The next proposition makes this statement rigorous.
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
-	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust}.
+	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust}, and additionally consider the case where $q_\omega = 0$.
 	For this proof, we assume for simplicity that the first-stage cost vector $\c = 0$.	
 	We begin with the Lagrangian of (\ref{eq:plp_primal}), $\mathcal{L}(p,\mu,\lambda) = \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda$, for which we generate the dual problem as
 	\begin{align}
-		\min_{\lambda \geq 0, \mu} \mathcal{L}(p,\mu,\lambda) & = \min_{\lambda \geq 0, \mu} \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda \nonumber \\
+		 & \min_{\lambda \geq 0, \mu} \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda \nonumber \\
 		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \sum_{\omega=1}^n \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} \label{eq:pop_proof_detail_1} \\
-		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t_\omega \geq 0} \left\{ \frac{h_\omega(\x) - \mu}{\lambda} t_\omega - \phi(t_\omega) \right\} \label{eq:pop_proof_detail_2} \\
+		& =  \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t_\omega \geq 0} \left\{ \frac{h_\omega(\x) - \mu}{\lambda} t_\omega - \phi(t_\omega) \right\} \label{eq:pop_proof_detail_2} \\
 		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right), \nonumber
 	\end{align}
 	where $t_\omega = \frac{p_\omega}{q_\omega}$.
@@ -598,17 +596,16 @@ The next proposition makes this statement rigorous.
 	To account for the possibility that $q_\omega = 0$ and demonstrate popping behavior, equality (\ref{eq:pop_proof_detail_2}) must be modified slightly.
 	Consider a term in the summation in (\ref{eq:pop_proof_detail_1}) for which $q_\omega = 0$:
 	\begin{align}
-		\max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - q_\omega \lambda \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} & = \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - 0 \lambda \phi\left(\frac{p_\omega}{0}\right) \right\} \nonumber \\
-		& = \max_{p_\omega \geq 0} \left\{ p_\omega \left( h_\omega(\x) - \mu - \bar{s} \lambda \right) \right\}. \label{eq:pop_proof_condition}
+		\max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega  \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} & = \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda 0  \phi\left(\frac{p_\omega}{0}\right) \right\} \nonumber \\
+		& = \max_{p_\omega \geq 0} \left\{ p_\omega \left( h_\omega(\x) - \mu - \lambda \bar{s} \right) \right\}. \label{eq:pop_proof_condition}
 	\end{align}
-	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(\x) - \mu - \bar{s} \lambda \right)$, or equivalently, relation between $\frac{h_\omega(\x) - \mu}{\lambda}$ and $\bar{s}$.
+	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(\x) - \mu - \lambda \bar{s}  \right)$, or equivalently, relation between $\frac{h_\omega(\x) - \mu}{\lambda}$ and $\bar{s}$.
 	There are three cases:
 	\begin{description}
 		\item[Case 1: $\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
 		\item[Case 2: $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$] selects $p_\omega = 0$.
-		\item[Case 3: $\frac{h_\omega(\x) - \mu}{\lambda} = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero, and hense allows for $p_\omega > 0$ (popping). %\qedhere
+		\item[Case 3: $\frac{h_\omega(\x) - \mu}{\lambda} = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero, and hence allows for $p_\omega > 0$ (popping). \Halmos %\qedhere
 	\end{description}
-	\Halmos
 \end{proof}
 
 \begin{remark}
