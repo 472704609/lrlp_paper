@@ -371,13 +371,15 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 \end{align}
 where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}), $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
 Note that for some $\phi$, such as the J-Divergence, have no closed form representation of $\phi^*$, but can be expressed as the sum of other divergences---Burg Entropy and K-L divergence---which allows the dual to be formed, see \citep{bental2011robust} for details.
-Throughout the paper, we use $s_\omega$ to denote $\frac{h_\omega(\x) - \mu}{\lambda}$.  
 See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
 Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
-
-Note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
+Also note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
 For some $\phi$-divergences, like the K-L divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
 However, other $\phi$-divergences, like the Hellinger distance, have a finite limit, inducing this constraint.
+Throughout the paper, we use $s_\omega$ to denote
+\begin{equation}
+	s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}. \label{eq:s_omega_definition}
+\end{equation}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -407,7 +409,7 @@ Some of these properties help with our specialized solution method and we refer 
 	\label{property:primal_dual_relation}
 	The worst-case distribution can be calculated with the equations
 	\begin{align} 
-		& \frac{p_\omega}{q_\omega} \in \partial \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right) \label{eq:p_worst} \\
+		& \frac{p_\omega}{q_\omega} \in \partial \phi^*\left(s_\omega\right) \label{eq:p_worst} \\
 		& \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho \nonumber \\
 		& \sum_{\omega=1}^n p_\omega = 1. \nonumber
 	\end{align}
@@ -419,9 +421,9 @@ We now discuss these properties. A coherent risk measure is defined in \citep{ro
 The convexity of \plp\ was also noted in \citep{bental2011robust}.
 In Section \ref{ssec:special_phi}, we present special $\phi$-divergences that result in CVaR, or a convex combination of expectation with CVaR or the worst-case scenario. 
 Properties \ref{property:time_structure} and \ref{property:primal_dual_relation} help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
-The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$, aiding in our decomposition-based solution method. 
+The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(s_\omega\right)$, aiding in our decomposition-based solution method. 
 The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method for retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property:primal_dual_relation}.  
-Usually $\phi^*$ is differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(\frac{h_\omega(\x)-\mu}{\lambda})$. 
+Usually $\phi^*$ is differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(s_\omega)$.
 
 
 
@@ -527,7 +529,7 @@ This allows for including interesting but unobserved scenarios, and allowing the
 \subsection{Additional Details about Divergences that can Suppress}
 \label{ssec:suppress}
 
-Recall the primal-dual variable relation, which specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}$. 
+Recall the primal-dual variable relation, which specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega$ is defined in (\ref{eq:s_omega_definition}).
 Assume $\phi^*$ is differentiable for convenience. 
 Note that when $q_\omega>0$, $p_\omega=0$ (suppress) can only occur when $\phi^{*\prime}(s_\omega)=0$.
 To examine when this happens in more detail, we look at the differentiation of $\phi$ at $0$, which then yields clues on the behavior of $\phi^*$ and its derivative. 
@@ -562,7 +564,7 @@ The next proposition makes this statement rigorous.
 
 \begin{proposition} \label{prop:pop}
 	Suppose there is a finite $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if $s_\omega = \frac{h_\omega(\x) - \mu}{\lambda} = \bar{s}$.
+	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if $s_\omega = \bar{s}$.
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
