@@ -837,7 +837,7 @@ The proposed algorithm is shown in Figure \ref{fig:algorithm}.
 \begin{figure}
 \TABLE
 	{
-		Proposed Bender's Decomposition algorithm for solving \plp
+		Decomposition algorithm for solving \plp
 		\label{fig:algorithm}
 	}
 {\begin{tabular}{l}
@@ -847,7 +847,7 @@ The proposed algorithm is shown in Figure \ref{fig:algorithm}.
 	Solve all second stage scenarios $h_\omega(\x)$ (\ref{eq:slp_second_stage}) \\
 	Initialize $\lambda \gets 1$, $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$ \\
 	Generate initial objective cut \\
-	\textbf{hile} $z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$ \textbf{do} \\
+	\textbf{While} $z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$ \textbf{do} \\
 	\hspace{24pt} Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$ \\
 	\hspace{24pt} Solve sub-problems $h_\omega(\x)$ (\ref{eq:slp_second_stage}) \\
 	\hspace{24pt} $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h_\omega(\x,\lambda,\mu)$ \\
