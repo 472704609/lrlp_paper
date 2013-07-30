@@ -501,39 +501,44 @@ Recall the definition of the ambiguity set, in particular, the $\phi$-divergence
 In the \plp, $\phi$ has arguments given by ratios of probabilities, $\tfrac{p_\omega}{q_\omega}$, and the limits $t \rightarrow 0$ and $t \rightarrow \infty$ correspond to the cases when $p_\omega = 0$ and $q_\omega = 0$, respectively.
 Consider each of these limiting cases:
 \begin{itemize}
-	\item {\sc Case 1:} $q_\omega > 0$ but $p_\omega = 0$. 
-If this happens, we call this the ``{\bf Suppress}'' behavior because a scenario with a positive probability in the nominal distribution can take zero probability in the ambiguous problem. In this case we need to examine $\lim_{t \searrow 0} \phi(t)$:
+	\item {\sc Case 1:} $q_\omega > 0$ but $p_\omega = 0$.
+		We call this the ``{\bf Suppress}'' behavior because a scenario with a positive probability in the nominal distribution can take zero probability in the ambiguous problem. In this case we need to examine $\lim_{t \searrow 0} \phi(t)$:
 	\begin{itemize}
 		\item If $\lim_{t \searrow 0} \phi(t) = \infty$, the ambiguity region will never contain distributions with $p_\omega = 0$ but $q_\omega > 0$.
 		\item On the other hand, if $\lim_{t \searrow 0} \phi(t) < \infty$, the ambiguity region could contain such a distribution, provided $q_\omega$ is sufficiently small or $\rho$ is sufficiently large.
 			Such a $\phi$-divergence can \emph{suppress} scenario $\omega$.
 	\end{itemize}
-	\item {\sc Case 2:} $q_\omega = 0$ but $p_\omega > 0$. We call this the ``{\bf Pop}'' behavior because a scenario with zero probability in the nominal distribution can have a positive probability (or, pop) in the ambiguous problem. In this case, we need to examine $\lim_{t \nearrow 0} \frac{\phi(t)}{t}$:
+	\item {\sc Case 2:} $q_\omega = 0$ but $p_\omega > 0$.
+		We call this the ``{\bf Pop}'' behavior because a scenario with zero probability in the nominal distribution can have a positive probability (or, pop) in the ambiguous problem. In this case, we need to examine $\lim_{t \nearrow 0} \frac{\phi(t)}{t}$:
 	\begin{itemize}
 		\item If $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$, the ambiguity region can never contain distributions with $p_\omega > 0$ but $q_\omega = 0$.
 		\item On the other hand, if $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$, the ambiguity region will admit sufficiently small $p_\omega$.
 			We say that these $\phi$-divergences can \emph{pop} scenario $\omega$.
 	\end{itemize}
-	\item {\sc Case 3:} $p_\omega = 0$ but $q_\omega = 0$. Such a situation has no contribution to the divergence, since $0 \phi\left(\tfrac{0}{0}\right) = 0$.
+	\item {\sc Case 3:} $p_\omega = 0$ but $q_\omega = 0$.
+		Such a situation has no contribution to the divergence, since $0 \phi\left(\tfrac{0}{0}\right) = 0$.
 \end{itemize}
 
 \noindent These two categories describing suppressing and popping behavior in $\phi$-divergences create four distinct categories.
 Examples of divergences in each category are given in Table \ref{tb:phi_categories}.
+Note that $\phi$ can suppress scenarios if and only if $\tilde{\phi}$ can pop scenarios, and vice versa.
+This means that self-adjoint $\phi$-divergences are either capable of both popping and suppressing scenarios, or capable of neither.
 
 \begin{table}
 	\TABLE
 	{
-		Examples of $\phi$-divergences fitting into each category
+		Examples of $\phi$-divergences fitting into each category.
+		The number in parentheses under the ``Can Suppress Scenarios'' column denotes the subcategory detailed in Section \ref{ssec:suppress}.
 		\label{tb:phi_categories}
 	}
 	{\begin{tabular}{l|p{.33\textwidth}p{.33\textwidth}}
 		 & Can Suppress Scenarios & Cannot Suppress Scenarios \\
 		 \hline
 		 Can Pop Scenarios %
-			& \parbox{.33\textwidth}{Hellinger Distance,\\Variation Distance} %
+			& \parbox{.33\textwidth}{Hellinger Distance(2),\\Variation Distance(1)} %
 			& \parbox{.33\textwidth}{Burg Entropy,\\$\chi^2$-Distance} \smallskip \\
 		 Cannot Pop Scenarios %
-			& \parbox{.33\textwidth}{Kullback-Leibler Divergence,\\Modified $\chi^2$-Distance} %
+			& \parbox{.33\textwidth}{Kullback-Leibler Divergence(2),\\Modified $\chi^2$-Distance(1)} %
 			& \parbox{.33\textwidth}{J-Divergence}
 	\end{tabular}}
 	{}
@@ -557,65 +562,67 @@ This allows for including interesting but unobserved scenarios, and allowing the
 \subsection{Additional Details about Divergences that can Suppress}
 \label{ssec:suppress}
 
-Suppressing a scenario is made possible by having $\lim_{t \searrow 0} \phi(t) < \infty$, but there are two further possibilities for such divergences: (1) $\phi'(0) < \infty$ and (2) $\lim_{t \searrow 0} \phi'(t) = \infty$.
+Suppressing a scenario is made possible by having $\lim_{t \searrow 0} \phi(t) < \infty$, but there are two further possibilities for such divergences: (1) $\phi'(0) > -\infty$ and (2) $\lim_{t \searrow 0} \phi'(t) = -\infty$.
+Recall that $\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}$ so $s = \phi'(t)$ could be used to find the conjugate.
 This subclassification leads to two different behaviors in $\phi^*(s)$: either (1) $\phi^*(s) = c$ for some constant $c \leq 0$ and  $s <\ \underline{s}$ for $\underline{s} \leq 0$; or (2) $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
-By the primal-dual variable relation $p_\omega = q_\omega \phi^{*\prime}(s_\omega) = q_\omega \phi^{*\prime}\left(\frac{h_\omega(x) - \mu}{\lambda}\right)$, we see two different possibilities for suppressing scenarios:
+Note that in the first case, for $s < \underline{s}$, $\phi^{*\prime}(s) = 0$.
+By the primal-dual variable relation $p_\omega = q_\omega \phi^{*\prime}\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$, we see two different possibilities for suppressing scenarios:
 \begin{enumerate}
-	\item If $\phi'(0) < \infty$, then all scenarios that satisfy the relation $h_\omega(x) < \mu + \underline{s}\lambda$ are suppressed.
+	\item {\sc Subcategory 1} If $\phi'(0) > -\infty$, then all scenarios that satisfy the relation $h_\omega(\x) < \mu + \underline{s}\lambda$ are suppressed.
 		As $\rho$ increases, scenarios tend to be suppressed one at a time.
-	\item Otherwise, scenarios can only be suppressed if $s_\omega = -\infty$, which can only occur if $\lambda = 0$.
-		Consequently, this solution must also have $\mu = \max_\omega h_\omega(x)$ in order to maintain a probability distribution.
+	\item {\sc Subcategory 2} Otherwise, scenarios can only be suppressed if $\frac{h_\omega(\x) - \mu}{\lambda} = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
+		Consequently, this solution must also have $\mu = \max_\omega h_\omega(\x)$, so that $\frac{\max_\omega h_\omega(\x) - \mu}{\lambda} = \frac{0}{0}$ can be interpreted so that $p_\omega = q_\omega \phi^{*\prime}\left(\tfrac{0}{0}\right) = 1$.
 		This also means that all but the most expensive scenario(s) will vanish simultaneously.
-		Divergences of this type can be difficult to deal with numerically when suppression occurs.
+		Divergences of this type can be difficult to deal with numerically when suppression occurs given the denominator of $\lambda = 0$.
 \end{enumerate}
+
+Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories, and we present one-by-one and simultaneous suppressing behavior in Section \ref{sec:comp_results} numerically for Modified $\chi^2$-Distance and K-L Divergence, respectively.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Additional Details about Divergences that can Pop}
 \label{ssec:pop}
 
 Divergence that can pop a scenario have $\phi(t)$ that grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ on the domain of $\phi^*(s)$.
-The primal-dual variable relation specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
-Intuitively, we can think of $\frac{p_\omega}{0} = \infty$ if $p_\omega > 0$, and thus popping a scenario can only occur when the right-hand side subderivative also includes $\infty$.
-This, in tern, occurs only when $s_\omega = \bar{s}$.
-
+The primal-dual variable relation specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}$, but the left-hand side is undefined when $q_\omega = 0$.
+Intuitively, we can think of $\frac{p_\omega}{0} = \infty$ if $p_\omega > 0$, and thus popping a scenario can only occur when the right-hand side subdifferential also includes $\infty$.
+This, in turn, occurs only when $s_\omega = \bar{s}$.
 The next proposition makes this statement rigorous.
 
 \begin{proposition} \label{prop:pop}
+	Suppose there is a finite $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
 	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if $s_\omega = \frac{h_\omega(x) - \mu}{\lambda} = \bar{s}$.
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
 	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust}.
-	For this proof, we assume for simplicity that the first stage cost vector $\c = 0$.
-	
-	We begin with the Legangrian of of (\ref{eq:plp_primal}), $\mathcal{L}(p,\mu,\lambda) = \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(x) + (1-\sum_{\omega=1}^n)\mu + (\rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right)$, for which we generate the dual problem as
+	For this proof, we assume for simplicity that the first-stage cost vector $\c = 0$.	
+	We begin with the Lagrangian of (\ref{eq:plp_primal}), $\mathcal{L}(p,\mu,\lambda) = \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda$, for which we generate the dual problem as
 	\begin{align}
-		\min_{\lambda \geq 0, \mu} \mathcal{L}(p,\mu,\lambda) & = \min_{\lambda \geq 0, \mu} \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(x) + (1-\sum_{\omega=1}^n)\mu + (\rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \nonumber \\
-		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \sum_{\omega=1}^n \max_{p_\omega \geq 0} p_\omega (h_\omega(x) - \mu) - q_\omega \lambda \phi\left(\frac{p_\omega}{q_\omega}\right) \label{eq:pop_proof_detail_1} \\
-		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t \geq 0} \left\{ \frac{h_\omega(x) - \mu}{\lambda} t - \phi(t) \right\} \label{eq:pop_proof_detail_2} \\
-		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(\frac{h_\omega(x) - \mu}{\lambda}\right), \nonumber
+		\min_{\lambda \geq 0, \mu} \mathcal{L}(p,\mu,\lambda) & = \min_{\lambda \geq 0, \mu} \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda \nonumber \\
+		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \sum_{\omega=1}^n \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} \label{eq:pop_proof_detail_1} \\
+		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t_\omega \geq 0} \left\{ \frac{h_\omega(\x) - \mu}{\lambda} t_\omega - \phi(t_\omega) \right\} \label{eq:pop_proof_detail_2} \\
+		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right), \nonumber
 	\end{align}
-	where $t = \frac{p_\omega}{q_\omega}$.
+	where $t_\omega = \frac{p_\omega}{q_\omega}$.
 	
 	To account for the possibility that $q_\omega = 0$ and demonstrate popping behavior, equality (\ref{eq:pop_proof_detail_2}) must be modified slightly.
-	Consider a term in the summation in (\ref{eq:pop_proof_detail_1}) for which $q_\omega = 0$,
+	Consider a term in the summation in (\ref{eq:pop_proof_detail_1}) for which $q_\omega = 0$:
 	\begin{align}
-		\max_{p_\omega \geq 0} p_\omega (h_\omega(x) - \mu) - q_\omega \lambda \phi\left(\frac{p_\omega}{q_\omega}\right) & = \max_{p_\omega \geq 0} p_\omega (h_\omega(x) - \mu) - 0 \lambda \phi\left(\frac{p_\omega}{0}\right) \nonumber \\
-		& = \max_{p_\omega \geq 0} p_\omega (h_\omega(x) - \mu) - \lambda p_\omega \bar{s} \nonumber \\
-		& = \max_{p_\omega \geq 0} p_\omega \left( h_\omega(x) - \mu - \bar{s} \lambda \right). \label{eq:pop_proof_condition}
+		\max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(x) - \mu) - q_\omega \lambda \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} & = \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(x) - \mu) - 0 \lambda \phi\left(\frac{p_\omega}{0}\right) \right\} \nonumber \\
+		& = \max_{p_\omega \geq 0} \left\{ p_\omega \left( h_\omega(x) - \mu - \bar{s} \lambda \right) \right\}. \label{eq:pop_proof_condition}
 	\end{align}
-	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(x) - \mu - \bar{s} \lambda \right)$, or equivalently, relation between $\frac{h_\omega(s) - \mu}{\lambda}$ and $\bar{s}$.
+	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(\x) - \mu - \bar{s} \lambda \right)$, or equivalently, relation between $\frac{h_\omega(\x) - \mu}{\lambda}$ and $\bar{s}$.
 	There are three cases:
 	\begin{description}
-		\item[Case 1: $\frac{h_\omega(s) - \mu}{\lambda} > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(s) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
-		\item[Case 2: $\frac{h_\omega(s) - \mu}{\lambda} < \bar{s}$] selects $p_\omega = 0$.
-		\item[Case 3: $\frac{h_\omega(s) - \mu}{\lambda} = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero. %\qedhere
+		\item[Case 1: $\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
+		\item[Case 2: $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$] selects $p_\omega = 0$.
+		\item[Case 3: $\frac{h_\omega(\x) - \mu}{\lambda} = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero, and hense allows for $p_\omega > 0$ (popping). %\qedhere
 	\end{description}
 	\Halmos
 \end{proof}
 
 \begin{remark}
-	Because $s_\omega = \frac{h_\omega(x) - \mu}{\lambda}$, $s_\omega \leq \bar{s}$ for all $\omega$ and $s_\omega = \bar{s}$ for any popped scenarios, only the most expensive scenario could be popped.
+	Because $s_\omega = \frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for all $\omega$ and $s_\omega = \bar{s}$ for any popped scenarios, only the most expensive scenario could be popped.
 \end{remark}
 
 \begin{remark}
@@ -626,15 +633,15 @@ The next proposition makes this statement rigorous.
 \subsection{Some Special $\phi$-Divergences}
 \label{ssec:special_phi}
 
-The class of $\phi$-divergence constrained problems includes some interesting special cases, which we document here.
+The class of $\phi$-divergence constrained problems includes some interesting special cases, which we document here, followed by a discussion of their suppressing and popping behavior.
 
-\begin{example}{CVaR}
+\begin{example}{(CVaR).}
 	The coherent risk measure Conditional Value-at-Risk (CVaR) is well studied in financial applications.
 	Minimizing
 	\[
 		\c\x + \text{CVaR}_\beta(h(\x)) = \c\x + \min_{\mu \in \R} \left\{ \mu + \frac{1}{1-\beta}\e{\left[h(\x)-\mu\right]^+} \right\}
 	\]
-	is equivalent to the $\phi$-divergence constrained problem with
+	over $\x \in X$ is equivalent to the $\phi$-divergence constrained problem with
 	\[
 		\phi(t) = \
 		\begin{cases}
@@ -643,13 +650,10 @@ The class of $\phi$-divergence constrained problems includes some interesting sp
 		\end{cases}
 	\]
 	for $0 < \beta < 1$.
-\end{example}
-
-\begin{remark}
 	We see that $\phi(0) = 0$, indicating that CVaR will suppress some scenarios.
 	This appears in the definition of CVaR as the positive part in the expected value, $\e{[h(\x)-\mu]^+}$.
 	Scenarios cannot be popped because the expectation is taken with respect to the nominal distribution.
-\end{remark}
+\end{example}
 
 The CVaR $\phi$-divergence is bounded above, which leads to the question of what happens when a divergence is bounded below.
 \begin{example}[``Reverse'' CVaR]
@@ -661,21 +665,18 @@ The CVaR $\phi$-divergence is bounded above, which leads to the question of what
 			\infty & t < 1-\beta,
 		\end{cases}
 	\]
-	for $0 < \beta < 1$ is equivalent to minimizing
+	for $0 < \beta < 1$ is equivalent to minimizing the convex combination of expectation and worst-case
 	\[
 		\c\x + \beta \sup_\omega h_\omega(\x) + (1-\beta)\e{h(\x)},
 	\]
-	where the expectation is taken with respect to the nominal distribution $q$.
-\end{example}
-
-\begin{remark}
-	$\lim_{t \rightarrow \infty} \frac{\phi(t)}{t} = 0$, indicating that this divergence will pop scenarios.
+	over $\x \in X$, where the expectation is taken with respect to the nominal distribution $q$.
+	Note that $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t} = 0$, indicating that this divergence will pop scenarios.
 	This behavior appears due to the $\sup_\omega h_\omega(\x)$.
 	However, $\phi(0) = \infty$ indicates that scenarios will not be suppressed, which is demonstrated by the expectation term $\e{h(x)}$, which takes into account every scenario with positive nominal probability.
-\end{remark}
+\end{example}
 
 An objective function taking a weighted sum of expected value and CVaR often comes up in practice.
-The next theorem shows how to generate a convex combination of expectation and CVaR.
+The next example shows how to generate a convex combination of expectation and CVaR.
 
 \begin{example}[Conbination CVaR and Expectation]
 	The $\phi$-divergence constrained problem with
@@ -686,28 +687,26 @@ The next theorem shows how to generate a convex combination of expectation and C
 			\infty & \text{otherwise},
 		\end{cases}
 	\]
-	for $\alpha,\beta \in (0,1)$ is equivalent to minimizing
+	for $\alpha,\beta \in (0,1)$ is equivalent to minimizing, over $\x \in X$,
 	\[
 		\c\x + (1-\alpha)\e{h(\x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(\x)].
 	\]
-\end{example}
-
-\begin{remark}
 	This divergence will neither pop (because both the expectation and CVaR term are taken with respect to the nominal distribution) nor suppress (because the expectation term includes every scenario).
-\end{remark}
+\end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data-Driven Considerations of \plp}
 \label{sec:properties}
 
-In this section we provide some insight into how the \plp\ changes as data is added: first how it might change with a single additional observation in Section \ref{ssec:value}, then the asymptotic results in Section \ref{ssec:epiconvergence}.
+In this section we provide insight into how the \plp\ changes as data is added: first how it might change with a single additional observation in Section \ref{ssec:value}, then as more and more data is gathered with asymptotic results in Section \ref{ssec:epiconvergence}.
 
 \subsection{The Value of Data} \label{ssec:value}
 
-With a data driven formulation such as \plp, it is natural to ask how the behavior changes as more data is gathered.
+With a data-driven formulation such as \plp, it is natural to ask how the optimal value and solution changes as more data is gathered.
 In particular, for robust formulations like \plp\ one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
-For \plp, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst case distribution from the ambiguity set.  
-In this section, we present a simple method of estimating the probability that taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
+For \plp, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst-case distribution from the ambiguity set.  
+In this section, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
+We also provide a way of estimating the probability of sampling such an observation.
 
 To get such a condition, we must consider how $\rho$ changes as additional samples are taken, and use $\rho_N$ in this section to emphasize the dependence on sample size.
 To be consistent with the known $\phi$-divergence results stated in Section \ref{ssec:robust_level}, we assume $\rho_N = \frac{\rho_0}{N}$.
