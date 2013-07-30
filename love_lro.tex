@@ -929,42 +929,46 @@ This must be satisfied in addition to the original condition $z_u - z_l < \textt
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Numerical Illustration} \label{sec:comp_results}
 
-To demonstrate the techniques discussed in this paper, we applied the decomposition method from Section \ref{sec:soln_algorithm} to a small test problem.
-We demonstrate the popping and suppressing behavior described in Section \ref{sec:classification} for several $\phi$-divergences, and show how the worst-case cost decrease condition (\ref{eq:cost_decrease_cond}) compares to the actual cost decrease when an additional sample of each scenario is taken.
+To illustrate the techniques discussed in this paper, we applied the decomposition method from Section \ref{sec:soln_algorithm} to a small electricity generation problem.
+We demonstrate the popping and suppressing behavior described in Section \ref{sec:classification} for several $\phi$-divergences and show how the worst-case cost decrease condition (\ref{eq:cost_decrease_cond}) compares to the actual cost decrease when an additional sample of each scenario is taken.
 
-All results in this section were computed with the test problem APL1P, a power expansion problem with 5 independent random variables and 1280 realizations, and can be found in \cite{infanger1992monte}.
-The first-stage has two decision variables representing the capacity to be built for two generators.
-Nine second-stage variables represent operating level of each generator for each of the three demand load levels, and unmet demand for each load level that must be purchased from an outside source.
-The availability of each generator during the second stage, and the unknown demand in each load level.
+We modified an SLP-2 test problem, denoted APL1P, which is a power expansion problem with 5 independent random variables and 1280 realizations \citep{infanger1992monte}.
+To clearly demonstrate how the worst-case distribution changes with $\rho$ and especially to demonstrate suppressing and popping behavior, we took 6 unique samples from APL1P to form the \plp. 
+We denote the resulting problem as $\phi$APL1P. 
+The first-stage determines the capacity to be built for two generators and the generators are operated under uncertain demands and availability of the generators in the second stage.
 
-To clearly demonstrate how the worst-case distribution changes with $\rho$, and especially to demonstrate suppressing and popping behavior in Figures \ref{fig:suppress} and \ref{fig:pop}, we took 6 unique samples from APL1P to form the \plp.
-In this problem, the second scenario (displayed in green in Figures \ref{fig:suppress} and \ref{fig:pop}) is the most costly, and thus the only candidate for popping if its nominal probability vanishes.
+In this problem, the second scenario (displayed in green in Figures \ref{fig:suppress} and \ref{fig:pop}) is the most costly, thus the only candidate for popping. %if its nominal probability vanishes.
 Furthermore, the second scenario will eventually have unit probability in suppressing divergences.
-All scenarios are assumed to have a single observation, unless popping behavior is being demonstrated.
+%All scenarios are assumed to have a single observation, unless popping behavior is being demonstrated.
 
 \subsection{Numerical Results}
 \label{ssec:numerical_results}
 
-Table \ref{tb:numerical_results} shows a few select results for the 6-sample APL1P, choosing $\rho$ in accordance with an asymptotic $95\%$ confidence region.
-Behavior is shown assuming one observation per scenario for divergences above the line, and with the most costly scenario unobserved below the line.
+Table \ref{tb:numerical_results} shows a few select results for the $\phi$APL1P using different $\phi$-divergences.  
+Behavior is shown assuming one observation per scenario for divergences above the line, and with the most costly scenario unobserved below the line to demonstrate popping.
+The value of $\rho$ is chosen in accordance with an asymptotic $95\%$ confidence region in (\ref{eq:asymptotic_rho}).
+For the popping example, while $n=6$ is the same, $N$ is one less, resulting in a different $\rho$. 
+
+All divergences has put the highest probability in the most costly scenario. 
 Notice that, at this level of robustness, the Modified $\chi^2$-Distance has suppressed three scenarios, while the K-L divergence has not yet suppressed any.
+In the next section, as $\rho$ increases, the K-L divergence will suppress all but the most costly scenario simultaneously. 
+The total costs are similar except for the Burg entropy with popping, which is slightly lower.
+
 
 \begin{table}
 	\TABLE
 	{
-		Sample results from the 6-sample version of APL1P for the divergences shown in Figures \ref{fig:suppress} and \ref{fig:pop}.
-		For each, $\rho$ is chosen for a $95\%$ confidence region as in (\ref{eq:asymptotic_rho}).
-		Divergences above the line use a single observation of each scenario, while the the most costly scenario was unobserved below the line to demonstrate popping behavior.
+		Numerical results of $\phi$APL1P for various divergences.
 		\label{tb:numerical_results}
 	}
-	{\begin{tabular}{cccc|cccccc}
-		$\phi$ & $\alpha$ & $\rho$ & Cost & \multicolumn{6}{c}{Worst-Case Distribution} \\
+	{\begin{tabular}{cc|c|cccccc}
+		$\phi$ & $\rho$ & Cost & \multicolumn{6}{c}{Worst-Case Distribution} \\
 		\hline
-		$\phi_{m\chi^2}$ & 0.05 & 1.845  & 30735 & 0.1353 & 0.6354 & 0.2293 & 0      & 0      & 0 \\
-		$\phi_{kl}$      & 0.05 & 0.9225 & 30921 & 0.1050 & 0.7208 & 0.1507 & 0.0052 & 0.0108 & 0.0075 \\
-		$\phi_b$         & 0.05 & 0.9225 & 30714 & 0.0636 & 0.7751 & 0.0768 & 0.0253 & 0.0308 & 0.0285 \\
+		$\phi_{m\chi^2}$ &  1.845  & 30735 & 0.1353 & 0.6354 & 0.2293 & 0      & 0      & 0 \\
+		$\phi_{kl}$      &  0.9225 & 30921 & 0.1050 & 0.7208 & 0.1507 & 0.0052 & 0.0108 & 0.0075 \\
+		$\phi_b$         &  0.9225 & 30714 & 0.0636 & 0.7751 & 0.0768 & 0.0253 & 0.0308 & 0.0285 \\
 		\hline
-		$\phi_b$         & 0.05 & 1.107  & 29775 & 0.1065 & 0.6273 & 0.1311 & 0.0402 & 0.0494 & 0.0455
+		$\phi_b$         &  1.107  & 29775 & 0.1065 & 0.6273 & 0.1311 & 0.0402 & 0.0494 & 0.0455
 	\end{tabular}}
 	{}
 \end{table}
@@ -972,27 +976,15 @@ Notice that, at this level of robustness, the Modified $\chi^2$-Distance has sup
 \subsection{Illustrations of Popping and Suppressing}
 \label{ssec:numerical_pop_suppress}
 
-Section \ref{sec:classification} discussed a method of classifying $\phi$-divergences into four types based on two criteria: whether a $\phi$-divergences allows distributions that suppress certain scenarios (i.e., allows $p_\omega = 0$ while $q_\omega > 0$); and whether a $\phi$-divergence allows distributions that pop a scenario that is impossible in the nominal distribution (i.e., allows $p_\omega > 0$ while $q_\omega = 0$).
-In this section we present computational results demonstrating the suppressing and popping behavior of different divergences.
-The categorization of several $\phi$-divergences can be found in Table \ref{tb:phi_categories}.
+%DAVID: I'm removing this first paragraph as it is repeating stuff.
+
+%Section \ref{sec:classification} discussed a method of classifying $\phi$-divergences into four types based on two criteria: whether a $\phi$-divergences allows distributions that suppress certain scenarios (i.e., allows $p_\omega = 0$ while $q_\omega > 0$); and whether a $\phi$-divergence allows distributions that pop a scenario that is impossible in the nominal distribution (i.e., allows $p_\omega > 0$ while $q_\omega = 0$).
+%In this section we present computational results demonstrating the suppressing and popping behavior of different divergences.
+%The categorization of several $\phi$-divergences can be found in Table \ref{tb:phi_categories}.
 
 We begin with an examination of two divergences that can suppress scenarios.
-Figure \ref{fig:suppress} shows how the worst-case distribution changes with $\rho$ for both the Modified $\chi^2$-Distance (left) and the Kullback-Leibler divergence (right).
-As shown in Section \ref{ssec:suppress}, the Modified $\chi^2$-Distance suppresses scenarios one-at-a-time, starting with the least expensive; while the Kullback-Leibler divergence will suppress all but the most costly scenario simultaneously.
-
-\begin{figure}
-	\FIGURE
-	{%
-		\includegraphics*[width=.5\textwidth]{images/mchi2}%
-		\includegraphics*[width=.5\textwidth]{images/kl}%
-	}
-	{
-		Examples of distributions that can suppress: Modified $\chi^2$ distance (left) and Kullback-Leibler Divergence (right).
-		Notice that the Modified $\chi^2$ distance suppresses scenarios one at a time, while the Kullback-Leibler Divergence suppresses all lower-cost scenarios simultaneously.
-		\label{fig:suppress}
-	}
-	{}
-\end{figure}
+Figure \ref{fig:suppress} shows how the worst-case distribution changes with $\rho$ for both the Modified $\chi^2$-Distance (left) and the K-L divergence (right).
+As shown in Section \ref{ssec:suppress}, the Modified $\chi^2$-Distance suppresses scenarios one at a time, starting with the least expensive; while the K-L divergence will suppress all (simultaneously) but the most costly scenario.
 
 An example of a $\phi$-divergence that can pop, the Burg entropy, is given in Figure \ref{fig:pop}.
 The left plot in Figure \ref{fig:pop} demonstrates the worst-case distribution assuming that all scenarios have a single observation.
@@ -1003,8 +995,23 @@ Other divergences that can pop but not suppress look qualitatively similar.
 \begin{figure}
 	\FIGURE
 	{%
-		\includegraphics*[width=.5\textwidth]{images/burg}%
-		\includegraphics*[width=.5\textwidth]{images/burg_zero}%
+		\includegraphics*[width=.45\textwidth]{images/mchi2}%
+		\includegraphics*[width=.45\textwidth]{images/kl}%
+	}
+	{
+		Examples of distributions that can suppress: Modified $\chi^2$ distance (left; one-at-a-time suppression) and K-L Divergence (right; simultaneous suppression).
+		%Notice that the Modified $\chi^2$ distance suppresses scenarios one at a time, while the Kullback-Leibler Divergence suppresses all lower-cost scenarios simultaneously.
+		\label{fig:suppress}
+	}
+	{}
+\end{figure}
+
+
+\begin{figure}
+	\FIGURE
+	{%
+		\includegraphics*[width=.42\textwidth]{images/burg}%
+		\includegraphics*[width=.42\textwidth]{images/burg_zero}%
 	}
 	{
 		Example of a distribution that can pop: the Burg entropy.
@@ -1019,17 +1026,18 @@ Other divergences that can pop but not suppress look qualitatively similar.
 \label{ssec:numerical_value_of_data}
 
 A comparison of the worst-case expected cost decrease condition (\ref{eq:cost_decrease_cond}) with the actual decrease in expected cost resulting from an additional observation is shown in Figure \ref{fig:value} for the Modified $\chi^2$-Distance (left) and the Burg Entropy (right).
-The solid lines indicate regions where (\ref{eq:cost_decrease_cond}) is satisfied, and dotted regions indicate that (\ref{eq:cost_decrease_cond}) is not satisfied.
+The solid lines indicate regions where (\ref{eq:cost_decrease_cond}) is satisfied and dotted regions indicate that (\ref{eq:cost_decrease_cond}) is not satisfied.
+Note that (\ref{eq:cost_decrease_cond}) is a sufficient but not necessary condition.
 Both plots were generated using the reformulations to (\ref{eq:cost_decrease_cond}) provided in Remark \ref{rmk:cost_decrease_trick}.
 
 The most costly scenario, shown in green in all plots, is not visible in Figure \ref{fig:value} because an additional observation will increase the worst-case expected cost.
-Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.*
+Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.
 
 \begin{figure}
 	\FIGURE
 	{%
-		\includegraphics*[width=.5\textwidth]{images/mchi2_decrease_condition}%
-		\includegraphics*[width=.5\textwidth]{images/burg_decrease_condition}%
+		\includegraphics*[width=.45\textwidth]{images/mchi2_decrease_condition}%
+		\includegraphics*[width=.45\textwidth]{images/burg_decrease_condition}%
 	}
 	{
 		Decrease in the worst-case expected cost from an additional observation of scenarios for Modified $\chi^2$-Distance (left) and Burg Entropy (right).
@@ -1040,14 +1048,20 @@ Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.*
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusion}
+\section{Summary and Future Work}
 \label{sec:concl}
 
-In this paper, we proposed an implementation of the $\phi$-divergence constrained distributionally robust optimization method of \cite{bental2011robust} for two-stage stochastic linear programs with recourse, creating a two-stage $\phi$-divergence linear program with recourse, denoted \plp.
-The \plp uses a $\phi$-divergence to define an ambiguity set of probability distributions, possibly using observed data, and optimizes the worst-case expected cost with respect to this ambiguity set.
-We provided a classification of $\phi$-divergences that may be useful in determining which is most appropriate in practice for several model types.
-We provided a computationally simple method to estimate the probability that an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution. 
-We have also provided a Bender's decomposition-based solution algorithm for the \plp\ and used it to illustrate some of the properties of the \plp.
+We proposed to use the $\phi$-divergence constrained distributionally robust optimization method of \cite{bental2011robust} for two-stage stochastic linear programs with recourse, creating a two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse, denoted \plp.
+The \plp\ uses a $\phi$-divergence to define an ambiguity set of probability distributions, possibly using observed data, and optimizes the worst-case expected cost with respect to this ambiguity set.
+We provided a new classification of $\phi$-divergences that may be useful in determining which $\phi$-divergence is most appropriate in practice for different model types and decision makers.
+We provided a computationally simple method to determine if an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution.
+We have shown that as more data is gathered, optimum solution and value of \plp\ converge to those of SLP-2. 
+We have also provided a Bender's decomposition-based solution algorithm for the \plp\ and used it to illustrate some of the properties of the \plp\ on a small electricity generation problem.
+
+There are many interesting avenues for future work. 
+One is the multi-stage extensions of the work provided here. 
+Ways to handle continuous distributions in the \plp\ also merits further research. 
+Finally, it would be useful to study applications to real-world problems.
 
 % Acknowledgments here
 % \ACKNOWLEDGMENT{%
