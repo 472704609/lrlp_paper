@@ -765,7 +765,7 @@ Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\
 As the model gets larger, a direct solution of \plp\ becomes computationally expensive. 
 Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. We propose a Bender's decomposition-based method for solving \plp.
 The algorithm removes feasibility constraint (\ref{eq:plp_feas_constraint})  and exchanges it with a series of feasibility cuts in the first-stage problem.
-The master problem is given by
+The master problem is
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \theta \label{eq:master_problem}\\
 	\st \ & \x \in X,\ \ \lambda \geq 0 \nonumber  \\
