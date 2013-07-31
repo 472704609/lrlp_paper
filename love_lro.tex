@@ -763,34 +763,37 @@ Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\
 \label{sec:soln_algorithm}
 
 As the model gets larger, a direct solution of \plp\ becomes computationally expensive. 
-Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. In this section, we propose a Bender's decomposition-based method for solving \plp.
+Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. We propose a Bender's decomposition-based method for solving \plp.
 The algorithm removes feasibility constraint (\ref{eq:plp_feas_constraint})  and exchanges it with a series of feasibility cuts in the first-stage problem.
 The master problem is given by
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \theta \label{eq:master_problem}\\
-	\st \ & \A\x = \b \nonumber \\
-	& \theta \geq T_j (\x,\mu,\lambda)^T + t_j, \ j \in J \nonumber \\
-	& \mu + \bar{s}\lambda \geq M_k \x + m_k, \ k \in K \nonumber \\
-	& \x,\lambda \geq 0, \nonumber
+	\st \ & \x \in X,\ \ \lambda \geq 0 \nonumber  \\
+	& \theta \geq T_j (\x,\mu,\lambda)^T + t_j, \ \  j \in J  \label{eq:objcut} \\
+	& \mu + \bar{s}\lambda \geq M_k \x + m_k, \ \ k \in K \label{eq:feascut} 
 \end{align}
-where $T_j (\x,\mu,\lambda)^T + t_j$ are the objective cuts, $M_k \x + m_k$ are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}) if $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} < \infty$, and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
-The proposed algorithm is shown in Figure \ref{fig:algorithm}.
+where \eqref{eq:objcut} are the objective cuts, (\ref{eq:feascut}) are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}) if $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} < \infty$, and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
+The proposed algorithm is shown in Algorithm 1. 
 
-\begin{figure}
-\FIGURE
-{\begin{minipage}{.5\textwidth}
+%\begin{figure}		
+%\label{fig:algorithm}
+%\FIGURE
+{\begin{center}
+\begin{minipage}{.61\textwidth}
 	\TableSpaced
+	\hrule
+    {\bf \small Algorithm 1.\ \ Decomposition algorithm for solving \plp}
 	\hrule
 	\vspace{1pt}
 	\begin{algorithmic}
 		\State Initialize $z_l = -\infty, z_u = \infty$
-		\State Solve first stage (\ref{eq:master_problem}) with $\theta = 0$  to generate $\x$
-		\State Solve all second stage scenarios $h_\omega(\x)$ (\ref{eq:slp_second_stage})
-		\State Initialize $\lambda \gets 1$, $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
+		\State Solve master problem (\ref{eq:master_problem}) with $\theta = 0$ to generate $\x$
+		\State Solve all second-stage scenario subproblems (\ref{eq:slp_second_stage}) to obtain $h_\omega(\x)$
+		\State Initialize $\lambda \gets 1$ and $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
 		\State Generate initial objective cut
 		\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
 			\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
-			\State Solve sub-problems $h_\omega(\x)$ (\ref{eq:slp_second_stage})
+			\State Solve subproblems (\ref{eq:slp_second_stage}) to obtain  $h_\omega(\x)$
 			\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h_\omega(\x,\lambda,\mu)$
 			\If{$\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$}
 				\State Generate feasibility cut
@@ -807,13 +810,11 @@ The proposed algorithm is shown in Figure \ref{fig:algorithm}.
 		\EndWhile
 	\end{algorithmic}
 	\hrule
-\end{minipage}}
-	{
-		Decomposition algorithm for solving \plp
-		\label{fig:algorithm}
-	}
-{}
-\end{figure}
+\end{minipage}
+\end{center}
+%{}
+%{}
+%\end{figure}
 
 
 \subsection{Objective Cuts}
@@ -868,7 +869,6 @@ and setting $U_\omega(\x,\mu,\lambda) = 0$ to find a feasible solution gives the
 In order to enhance the performance of the above decomposition-based algorithm, we made some adjustments.
 First, we included an $L_\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
 The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
-
 Because we are also interested in the worst-case probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_\omega \right| < \texttt{TOL2}$ when the algorithm is completed.
 This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
 
@@ -1007,6 +1007,8 @@ We have also provided a Bender's decomposition-based solution algorithm for the 
 There are many interesting avenues for future work. 
 One is the multi-stage extensions of the work provided here. 
 Ways to handle continuous distributions in the \plp\ also merits further research. 
+There are other divergences, probability metrics, and statistical ways to measure the distance between two distributions. 
+Generalizations of the results presented in this paper to other distance measures is another area of future research. 
 Finally, it would be useful to study applications to real-world problems.
 
 % Acknowledgments here
