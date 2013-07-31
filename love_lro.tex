@@ -494,7 +494,7 @@ Consider each of these limiting cases:
 	\begin{itemize}
 		\item If $\lim_{t \searrow 0} \phi(t) = \infty$, the ambiguity region will never contain distributions with $p_\omega = 0$ but $q_\omega > 0$.
 		\item On the other hand, if $\lim_{t \searrow 0} \phi(t) < \infty$, the ambiguity region could contain such a distribution, provided $q_\omega$ is sufficiently small or $\rho$ is sufficiently large.
-			Such a $\phi$-divergence can \emph{suppress} scenario $\omega$.
+			We say that such a $\phi$-divergence can \emph{suppress} scenario $\omega$.
 	\end{itemize}
 	\item {\sc Case 2:} $q_\omega = 0$ but $p_\omega > 0$.
 		We call this the ``{\bf Pop}'' behavior because a scenario with zero probability in the nominal distribution can have a positive probability (or, pop) in the ambiguous problem. In this case, we need to examine $\lim_{t \nearrow 0} \frac{\phi(t)}{t}$:
@@ -551,19 +551,18 @@ This allows for including interesting but unobserved scenarios, and allowing the
 \label{ssec:suppress}
 
 Recall the primal-dual variable relation, which specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega$ is defined in (\ref{eq:s_omega_definition}), and note that suppression ($p_\omega = 0$, $q_\omega > 0$) can occur only when $0 \in \partial \phi^*(s_\omega)$.
-For convenience, assume $\phi^*$ is differentiable.
+For convenience, we assume $\phi^*$ is differentiable.
 We can examine suppressing in more detail by looking at the behavior of $\phi(t)$ as $t \searrow 0$.
 This analysis yields two subcategories within the $\phi$-divergences that can suppress scenarios---one tends to suppress scenarios one at a time and the other simultaneously. 
 
 \begin{itemize}
 	\item {\sc Subcategory 1\ ($\lim_{t \searrow 0} \phi'(t) > -\infty$).}  There are nonpositive constants $c,\underline{s}$ such that $\phi^*(s) = c$ for all $s < \underline{s}$. 
-		Then $\phi^{*\prime}(s_\omega) = 0$ when $s_\omega < \underline{s}$, and suppressing occurs; i.e., all scenarios that satisfy the relation $h_\omega(\x) < \mu + \underline{s}\lambda$ are suppressed.
+		Then $\phi^{*\prime}(s_\omega) = 0$ when $s_\omega < \underline{s}$, which suppresses all such scenarios; i.e., all scenarios that satisfy the relation $\frac{h_\omega(\x)-\mu}{\lambda} < \underline{s}$ are suppressed.
 		As $\rho$ increases, scenarios tend to be suppressed one at a time.
 
 	\item {\sc Subcategory 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$).} In this case, $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
 		As a result, scenarios can only be suppressed if $s_\omega = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
-		Consequently, all solutions with $h_\omega(\x) < \mu$ have $p_\omega=0$, and we must have $\mu = \max_\omega h_\omega(\x)$. 
-All scenarios $\omega \in \argmax h_\omega(\x)$ must have a positive probability to maintain a probability distribution. 
+		Consequently, all solutions with $h_\omega(\x) < \mu$ have $p_\omega=0$; and we must have $\mu = \max_\omega h_\omega(\x)$, so that scenarios $\omega \in \argmax h_\omega(\x)$ are given positive probability in order to maintain a probability distribution.
 		%, so that $\frac{\max_\omega h_\omega(\x) - \mu}{\lambda} = \frac{0}{0}$ can be interpreted so that $p_\omega = q_\omega \phi^{*\prime}\left(\tfrac{0}{0}\right) = 1$.
 		This means that all but the most expensive scenario(s) will vanish simultaneously.
 		Divergences of this type can be difficult to deal with numerically when suppression occurs given the denominator of $\lambda = 0$.
@@ -637,7 +636,7 @@ The CVaR $\phi$-divergence is bounded above, which leads to the question of what
 	\]
 	over $\x \in X$, where the expectation is taken with respect to the nominal distribution $q$.
 	Note that $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t} = 0$, indicating that this divergence will pop scenarios.
-	This behavior appears due to the $\sup_\omega h_\omega(\x)$.
+	This behavior appears in the term $\sup_\omega h_\omega(\x)$.
 	However, $\phi(0) = \infty$ indicates that scenarios will not be suppressed, which is demonstrated by the expectation term $\e{h(\x)}$, which takes into account every scenario with positive nominal probability.
 \end{example}
 
