@@ -773,6 +773,13 @@ The master problem is given by
 	& \mu + \bar{s}\lambda \geq M_k \x + m_k, \ \ k \in K \label{eq:feascut} 
 \end{align}
 where \eqref{eq:objcut} are the objective cuts, (\ref{eq:feascut}) are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}) if $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} < \infty$, and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
+
+The modification of Bender's decomposition presented here has the following features:
+\begin{inparaenum}[\itshape (i\upshape)]
+	\item it solves the original linear second stage problems, and uses them to quickly generate subgradients of the nonlinear term $\lambda \phi^*\left(\tfrac{h_\omega(\x) - \mu}{\lambda}\right)$, 
+	\item exchanges the polyhedral $\phi$-divergence constraints $\tfrac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for a (potentially much) smaller set of easily generated feasibility cuts, 
+	\item thus maintaining linear master and subproblems.
+\end{inparaenum}
 The proposed algorithm is shown in Algorithm 1. 
 
 %\begin{figure}		
@@ -782,6 +789,7 @@ The proposed algorithm is shown in Algorithm 1.
 \begin{minipage}{.61\textwidth}
 	\TableSpaced
 	\hrule
+	\vspace{1pt}
     {\bf \small Algorithm 1.\ \ Decomposition algorithm for solving \plp}
 	\hrule
 	\vspace{1pt}
@@ -819,11 +827,7 @@ The proposed algorithm is shown in Algorithm 1.
 
 \subsection{Objective Cuts}
 
-Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}), and let 
-\[
-	h^\dagger_\omega(\x,\mu,\lambda) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)
-\]
-be the nonlinear portion of the objective function which will be used to generate the objective cuts.
+Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}), and let $h^\dagger_\omega(\x,\mu,\lambda) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$ be the nonlinear portion of the objective function which will be used to generate the objective cuts.
 An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the \plp\ subproblems as
 \begin{align*}
 	\dfrac{\partial h^\dagger_\omega}{\partial \x}(\xh,\mh,\lh) & = \phi^{*\prime}(s_\omega(\xh,\mh,\lh)) \pi^{*,\omega}B^\omega \\
@@ -864,13 +868,24 @@ and setting $U_\omega(\x,\mu,\lambda) = 0$ to find a feasible solution gives the
 	\mu + \bar{s} \lambda \geq \pi^{*,\omega}B^\omega \x + (h_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
 \]
 
-\subsection{Computational Enhancements}
+\subsection{Computational Enhancements \& Notes on Different $\phi$}
 
 In order to enhance the performance of the above decomposition-based algorithm, we made some adjustments.
 First, we included an $L_\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
 The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
-Because we are also interested in the worst-case probabilities given in the primal variables and not computed directly, we include a second tolerance as a stopping condition, ensuring that $\left| 1 - \sum_{i=1}^n p_\omega \right| < \texttt{TOL2}$ when the algorithm is completed.
-This must be satisfied in addition to the original condition $z_u - z_l < \texttt{TOL}\min\{|z_u|,|z_l|\}$.
+
+Divergences that can suppress in Subcategory 2 (see Section \ref{ssec:suppress}) can be computationally difficult to work with because $\lambda = 0$ could occur.
+Floating point finite tolerance can alleviate this somewhat for the KL divergence, for which $\phi^*(s) = e^s$, because $e^{-800} = 0$ to machine precision.
+We recommend forcing $\lambda$ to be nonzero, and checking optimality condition at $\lambda = 0$ separately.
+
+For divergences that cannot pop, it can be useful to add a computational upper bound on $s$, $\bar{s}_\text{comp}$.
+Such an upper bound can be computed easily by recognizing the ration $\frac{p_\omega}{q_\omega} \leq \frac{1}{\min_\omega q_\omega}$.
+The computation upper bound can then be selected so that $\phi^{*\prime}(\bar{s}_\text{comp}) \geq \frac{1}{\min_\omega q_\omega}$.
+Note, however, that an artificial upper bound will induce artificial popping behavior if the nominal distribution contains vanishing probability.
+This technique is especially useful for the KL divergence because $e^s$ overflows on double-precision machines for $s \geq 710$.
+
+Divergences that can pop require a check for any $s_\omega = \bar{s}$.
+The probability of a popped scenario can be determined by enforcing $\sum_\omega p_\omega = 1$ after determining the probability of the other scenarios.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Numerical Illustration} \label{sec:comp_results}
