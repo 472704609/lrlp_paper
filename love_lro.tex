@@ -309,7 +309,7 @@ Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' 
 The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy the normalizing condition $\phi_l(t) \geq 0$.
 This divergence is included because \cite{wang2010likelihood} use it to formulate a distributionally robust newsvendor problem so that the ambiguity set of distributions have a sufficiently high empirical likelihood. 
 They refer to this as the Likelihood Robust Optimization. 
-We also note that \cite{calafiore2007ambiguous}, \cite{hukullback}, and \cite{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler (K-L) divergence''---reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
+We also note that \cite{calafiore2007ambiguous}, \cite{hukullback}, and \cite{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler (KL) divergence''---reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
 In this paper, $q$ denotes the nominal distribution. 
 
 \begin{table}
@@ -322,7 +322,7 @@ In this paper, $q$ denotes the nominal distribution.
 		\hline \\
 		Divergence                        & $\phi(t)$          & $\tilde{\phi}(t)$               & $\phi(t), t \geq 0$   & $I_\phi(p,q)$     & $\phi^*(s)$ \\
 		\hline
-		Kullback-Leibler (K-L)            & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ & $e^s - 1$ \\
+		Kullback-Leibler                 & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ & $e^s - 1$ \\
 		Burg Entropy                      & $\phi_b$           & $\phi_{kl}$                     & $-\log t + t - 1$     & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(1-s),\ s < 1$  \\
 		J-Divergence                      & $\phi_j$           & $\phi_j$                        & $(t-1)\log t$         & $\sum (p_\omega - q_\omega) \log\left(\frac{p_\omega}{q_\omega}\right)$ & No closed form \\
 		Likelihood                        & $\phi_l$           & $t\log t $                      & $-\log t$             & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(-s) - 1,\ s < 0$ \\
@@ -392,11 +392,11 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 	& \lambda \geq 0, \nonumber
 \end{align}
 where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}), $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
-Note that for some $\phi$, such as the J-Divergence, have no closed form representation of $\phi^*$, but can be expressed as the sum of other divergences---Burg Entropy and K-L divergence---which allows the dual to be formed, see \citep{bental2011robust} for details.
+Note that for some $\phi$, such as the J-Divergence, have no closed form representation of $\phi^*$, but can be expressed as the sum of other divergences---Burg Entropy and KL divergence---which allows the dual to be formed, see \citep{bental2011robust} for details.
 See Theorem 1 of \cite{bental2011robust} for a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
 Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 Also note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
-For some $\phi$-divergences, like the K-L divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
+For some $\phi$-divergences, like the KL divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
 However, other $\phi$-divergences, like the Hellinger distance, have a finite limit, inducing this constraint.
 Throughout the paper, we use $s_\omega$ to denote
 \begin{equation}
@@ -571,7 +571,7 @@ All scenarios $\omega \in \argmax h_\omega(\x)$ must have a positive probability
 \end{itemize}
 
 
-Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories. We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and K-L Divergence, respectively, in Section \ref{sec:comp_results}.
+Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories. We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and KL Divergence, respectively, in Section \ref{sec:comp_results}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Additional Details about Divergences that can Pop}
@@ -693,6 +693,7 @@ Below, we present a simple method of determining if taking an additional sample 
 %All proofs are provided in the appendix.
 We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
 This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}_{\omega=1}^{n}$ in \eqref{eq:p_worst}.
+
 It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences and we detail this in the corollary below. 
 
 %\begin{remark}
@@ -896,8 +897,8 @@ The value of $\rho$ is chosen in accordance with an asymptotic $95\%$ confidence
 For the popping example, while $n=6$ is the same, $N$ is one less, resulting in a different $\rho$. 
 
 All divergences has put the highest probability in the most costly scenario. 
-Notice that, at this level of robustness, the Modified $\chi^2$-Distance has suppressed three scenarios, while the K-L divergence has not yet suppressed any.
-In the next section, as $\rho$ increases, the K-L divergence will suppress all but the most costly scenario simultaneously. 
+Notice that, at this level of robustness, the Modified $\chi^2$-Distance has suppressed three scenarios, while the KL divergence has not yet suppressed any.
+In the next section, as $\rho$ increases, the KL divergence will suppress all but the most costly scenario simultaneously. 
 The total costs are similar except for the Burg entropy with popping, which is slightly lower.
 
 
@@ -929,8 +930,8 @@ The total costs are similar except for the Burg entropy with popping, which is s
 %The categorization of several $\phi$-divergences can be found in Table \ref{tb:phi_categories}.
 
 We begin with an examination of two divergences that can suppress scenarios.
-Figure \ref{fig:suppress} shows how the worst-case distribution changes with $\rho$ for both the Modified $\chi^2$-Distance (left) and the K-L divergence (right).
-As shown in Section \ref{ssec:suppress}, the Modified $\chi^2$-Distance suppresses scenarios one at a time, starting with the least expensive; while the K-L divergence will suppress all (simultaneously) but the most costly scenario.
+Figure \ref{fig:suppress} shows how the worst-case distribution changes with $\rho$ for both the Modified $\chi^2$-Distance (left) and the KL divergence (right).
+As shown in Section \ref{ssec:suppress}, the Modified $\chi^2$-Distance suppresses scenarios one at a time, starting with the least expensive; while the KL divergence will suppress all (simultaneously) but the most costly scenario.
 
 An example of a $\phi$-divergence that can pop, the Burg entropy, is given in Figure \ref{fig:pop}.
 The left plot in Figure \ref{fig:pop} demonstrates the worst-case distribution assuming that all scenarios have a single observation.
@@ -945,7 +946,7 @@ Other divergences that can pop but not suppress look qualitatively similar.
 		\includegraphics*[width=.45\textwidth]{images/kl}%
 	}
 	{
-		Examples of distributions that can suppress: Modified $\chi^2$ distance (left; one-at-a-time suppression) and K-L Divergence (right; simultaneous suppression).
+		Examples of distributions that can suppress: Modified $\chi^2$ distance (left; one-at-a-time suppression) and KL Divergence (right; simultaneous suppression).
 		%Notice that the Modified $\chi^2$ distance suppresses scenarios one at a time, while the Kullback-Leibler Divergence suppresses all lower-cost scenarios simultaneously.
 		\label{fig:suppress}
 	}
@@ -974,7 +975,7 @@ Other divergences that can pop but not suppress look qualitatively similar.
 A comparison of the worst-case expected cost decrease condition (\ref{eq:cost_decrease_cond}) with the actual decrease in expected cost resulting from an additional observation is shown in Figure \ref{fig:value} for the Modified $\chi^2$-Distance (left) and the Burg Entropy (right).
 The solid lines indicate regions where (\ref{eq:cost_decrease_cond}) is satisfied and dotted regions indicate that (\ref{eq:cost_decrease_cond}) is not satisfied.
 Note that (\ref{eq:cost_decrease_cond}) is a sufficient but not necessary condition.
-Both plots were generated using the reformulations to (\ref{eq:cost_decrease_cond}) provided in Remark \ref{rmk:cost_decrease_trick}.
+Both plots were generated using the reformulations to (\ref{eq:cost_decrease_cond}) provided in Corollary \ref{cor:cost_decrease_trick}.
 
 The most costly scenario, shown in green in all plots, is not visible in Figure \ref{fig:value} because an additional observation will increase the worst-case expected cost.
 Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.
@@ -1089,7 +1090,7 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 \begin{proof}{\sc Proof of Corollary \ref{cor:cost_decrease_trick}.}
 %	We use a small trick to transform condition (\ref{eq:cost_decrease_cond}) into a form that is easier to work with.
 	%Recall that 
-	For any real number $c$, we can define $\phi_c(t) = \phi(t) + c(t-1)$ and $I_{\phi_c}(p,q) = I_\phi(p,q)$ for probability vectors $p$ and $q$.
+	For any real number $c$, we can define $\phi_c(t) = \phi(t) + c(t-1)$, which satisfies $I_{\phi_c}(p,q) = I_\phi(p,q)$ for probability vectors $p$ and $q$.
 	This changes the conjugate as $\phi_c^*(s) = \phi^*(s-c) + c$.
 	For some $\phi$, we can choose $c$ such that $\phi^{*\prime}(s)$ is separable, i.e., $\phi^{*\prime}(as) = f(a) \phi^{*\prime}(s)$ for some function $f$.
 	Using this separability, we can simplify (\ref{eq:cost_decrease_cond}) for some $\phi$, after some algebra, by choosing:\vspace*{-0.15in}
