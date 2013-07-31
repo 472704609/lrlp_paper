@@ -178,7 +178,6 @@
 \KEYWORDS{Ambiguous stochastic programming, distributionally robust optimization, phi-divergences, data-driven optimization}
 %Optimization under uncertainty, water resources management,  ambiguous stochastic programming, robust optimization, environmental sustainability}
 %\HISTORY{}
-
 \maketitle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -256,7 +255,7 @@ Our work unites these previous papers, and provides insight into conditions wher
 
 \subsection{Organization}
 
-This paper is organized as follows.
+The rest of the paper is organized as follows.
 Section \ref{sec:phi_divergences} introduces the $\phi$-divergence and presents some useful properties.
 Section \ref{sec:plp2} presents the derivation of $\phi$-divergence model for a two-stage stochastic program with recourse.
 Section \ref{sec:classification} presents a classification of $\phi$-divergences with some examples;
@@ -360,7 +359,7 @@ where
 	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \k^\omega \y^\omega : \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0 \right\}. \label{eq:slp_second_stage}
 \end{align}
 We assume relatively complete recourse; i.e., the second-stage problems $h_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem; and that the second-stage problems $h_\omega(\x)$ are dual feasible for every feasible solution $\x$ of the first-stage problem.
-For convenience, we denote $X = \{x : \A\x = \b, \x \geq 0\}$.
+For convenience, we denote $X = \{\x : \A\x = \b, \x \geq 0\}$.
 
 The SLP-2 formulation assumes that the distribution $\{q_\omega\}_{\omega=1}^n$ is known.
 However, in many applications the distribution is itself unknown.
@@ -730,37 +729,37 @@ We solve (\ref{eq:lb_probability}) by taking its dual.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Asymptotic Analysis of \plp}
+\subsection{Asymptotic Analysis}
 \label{ssec:epiconvergence}
 
-We now wish to show that the optimal value and solution of \plp\ converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\qtrue$.
-This convergence requires that the sequence of nominal distributions $q^N$ converge to the true distribution $\qtrue$ in $L^\infty$, a situation that is satisfied if $q^N$ is the empirical distribution.
-In the proof, we assume $q^N = \hat{q}^N$.
-We begin by showing that the worst-case distribution converges weakly to the true distribution as $N \rightarrow \infty$.
+We now wish to show that \plp\ behaves essentially the same as the corresponding SLP-2 with the (unknown) true distribution $\qtrue$ as $N\rightarrow \infty$. 
+%We now wish to show that the optimal value and solution of \plp\ converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\qtrue$.
+This requires that the sequence of nominal distributions converge to the true distribution $\qtrue$ in $L^\infty$, a situation that is satisfied by the assumed empirical distribution.
+%In the proof, we assume $q^N = \hat{q}^N$.
+To emphasize the dependence of $N$ in the nominal distribution used, we prefer to use $q^N$ in this section. 
 
-Let the probability space $(\Xi,{\cal F},\P^\infty)$ be the space associated with taking infinitely many samples from the distribution $\qtrue$.
-Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert \hat{q}^N(\xi) - \qtrue \Vert_\infty \rightarrow 0$.
+We begin by showing that the worst-case distribution obtained by solving the \plp\ converges weakly to the true distribution as $N \rightarrow \infty$.
+Let $(\Xi,{\cal F},\P^\infty)$ be the probability space associated with taking infinitely many random samples from the distribution $\qtrue$.
+Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert q^N(\xi) - \qtrue \Vert_\infty \rightarrow 0$.
 
 \begin{proposition} \label{prop:weak_conv}
-	Let $\phi(t)$ be nonnegative and have a unique root at $t = 1$.
-	Let $p \neq \qtrue$.
-	For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $I_{\phi}(p,\hat{q}^N) \leq \frac{\rho_0}{N} \Rightarrow \max_\omega |p_\omega - \qtrue_\omega| \leq \epsilon$.
+	Suppose $\phi(t) \geq 0$ has a unique root at $t = 1$.
+	%Let $p \neq \qtrue$.
+	For all $\epsilon > 0$ and $\xi \in \Xi'$, there exists $N'$ such that $\forall N \geq N'$, $I_{\phi}(p,q^N(\xi)) \leq \frac{\rho_0}{N}$ implies $\max_\omega |p_\omega - \qtrue_\omega| \leq \epsilon$.
 \end{proposition}
 
 The requirements on $\phi$ in Proposition \ref{prop:weak_conv} are satisfied by every divergence in Table \ref{tb:phi_definitions} except Likelihood (which, however, can be rewritten as Burg Entropy).
-The unique root requirement, however, is violated for the special case $\phi$ introduced in Section \ref{ssec:special_phi}.
-
-Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\qtrue$.
-In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\qtrue$ by establishing the epiconvergence of \plp\ to SLP-2.
+The unique root requirement, however, is violated for the special cases introduced in Section \ref{ssec:special_phi}.
+Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\qtrue$, which is used to show the desired result below. 
+%In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\qtrue$ by establishing the epiconvergence of \plp\ to SLP-2.
 \begin{theorem}
 	\label{thm:epiconvergence}
-	Assume that $X$ is compact, and that the second stage problems $h_\omega(\x)$ are primal and dual feasible for every $\x \in X$.
-	Then the optimal value of \plp\ (\ref{eq:plp_two_stage}) converges to to that of SLP-2 (\ref{eq:slp_first_stage}) with distribution $p = \qtrue$.
-	Furthermore, the limit points of the solutions of \plp\ solve SLP-2 with distribution $p = \qtrue$.
+	Assume $X$ is compact and $h_\omega(\x)$ are primal and dual feasible for every $\x \in X$.
+	Then, the optimal value of \plp\ (\ref{eq:plp_two_stage}) converges to that of SLP-2 (\ref{eq:slp_first_stage}) with distribution $\qtrue$ and all limit points of the solutions of \plp\ solve SLP-2 with distribution $\qtrue$.
 \end{theorem}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Decomposition-Based Solution Method}
+\section{A Decomposition-Based Solution Method}
 \label{sec:soln_algorithm}
 
 As the model gets larger, a direct solution of \plp\ becomes computationally expensive. 
@@ -1021,7 +1020,10 @@ Finally, it would be useful to study applications to real-world problems.
 %             (2) APPENDICES (if it has more than one unrelated sections)
 % Outcomment the appropriate case if necessary
 %
-\begin{APPENDIX}{Proofs of Propositions and Theorems}
+\begin{APPENDIX}{Proofs}
+
+\noindent In this appendix, we provide proofs of all propositions, theorems, and the corollary in the order they appear in the paper. 
+
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
 	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust}, and additionally consider the case where $q_\omega = 0$.
@@ -1113,11 +1115,9 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:weak_conv}.}
 	Let $Z = \{\omega : \qtrue_\omega = 0\}$ be the set of impossible scenarios.
-	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \qtrue_\omega > \frac{\epsilon}{2}$.
-	
-	First, we note that $\max_\omega |p_\omega - \qtrue_\omega| \leq \max_\omega |p_\omega - \hat{q}^N_\omega| + \max_\omega |\hat{q}^N_\omega - \qtrue_\omega|$.
+	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \qtrue_\omega > \frac{\epsilon}{2}$ and drop the dependence on $\xi \in \Xi'$.	
+	First, note that $\max_\omega |p_\omega - \qtrue_\omega| \leq \max_\omega |p_\omega - \hat{q}^N_\omega| + \max_\omega |\hat{q}^N_\omega - \qtrue_\omega|$.
 	Let $N''$ be such that $\max_\omega |\hat{q}^N_\omega - \qtrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
-	
 	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - \hat{q}^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,\hat{q}) > \frac{\rho_0}{N}$.
 	First, bound the divergence by
 	\begin{align}
@@ -1127,8 +1127,7 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{\hat{q}^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
 		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
 	\end{align}
-	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios), and zero otherwise.
-	
+	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios---please see Section~\ref{ssec:suppressandpop} for details), and zero otherwise.	
 	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{\hat{q}^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{\hat{q}^N_\omega+\tfrac{\epsilon}{2}}{\hat{q}^N_\omega} \right), \phi\left( \frac{\hat{q}^N_\omega-\tfrac{\epsilon}{2}}{\hat{q}^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
 	
 	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
@@ -1137,7 +1136,7 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 
 \begin{proof}{\sc Proof of Theorem \ref{thm:epiconvergence}.}
 	The theorem can be proven by showing the epiconvergence of \plp\ to SLP-2.
-	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
+	To establish the epiconvergence, we need to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
 	\Halmos
 \end{proof}
 
