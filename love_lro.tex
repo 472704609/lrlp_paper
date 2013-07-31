@@ -87,7 +87,6 @@
 \renewcommand{\d}{\mathbf{d}}
 
 % Epiconvergence for \plp
-\newcommand{\ptrue}{p^{\text{true}}}
 \newcommand{\qtrue}{q^{\text{true}}}
 
 % Useful mathematics functions
@@ -105,7 +104,7 @@
 % 
 % \theoremstyle{remark}
 % \newtheorem{remark}[theorem]{Remark}
-\newtheorem{property}[theorem]{Property}
+\newtheorem{property}{Property}
 
 \newcommand{\st}{\mbox{s.t.}}
 
@@ -792,52 +791,59 @@ We solve (\ref{eq:lb_probability}) by taking its dual.
 \subsection{Asymptotic Analysis of \plp}
 \label{ssec:epiconvergence}
 
-We now wish to show that the optimal value and solution of \plp\ converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\ptrue$.
-This convergence requires that the sequence of nominal distributions $q^N$ converge to the true distribution $\ptrue$ in $L^\infty$, a situation that is satisfied if $q^N$ is the empirical distribution.
-In the proof, we assume $q^N = \hat{p}^N$.
+We now wish to show that the optimal value and solution of \plp\ converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\qtrue$.
+This convergence requires that the sequence of nominal distributions $q^N$ converge to the true distribution $\qtrue$ in $L^\infty$, a situation that is satisfied if $q^N$ is the empirical distribution.
+In the proof, we assume $q^N = \hat{q}^N$.
 We begin by showing that the worst-case distribution converges weakly to the true distribution as $N \rightarrow \infty$.
 
-Let the probability space $(\Xi,{\cal F},\P^\infty)$ be the space associated with taking infinitely many samples from the distribution $\ptrue$.
-Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert \hat{p}^N(\xi) - \ptrue \Vert_\infty \rightarrow 0$.
+Let the probability space $(\Xi,{\cal F},\P^\infty)$ be the space associated with taking infinitely many samples from the distribution $\qtrue$.
+Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert \hat{q}^N(\xi) - \qtrue \Vert_\infty \rightarrow 0$.
 
 \begin{proposition} \label{prop:weak_conv}
-	Let $p \neq \ptrue$.
-	For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $I_{\phi}(p,\hat{p}^N) \leq \frac{\rho_0}{N} \Rightarrow \max_\omega |p_\omega - \ptrue_\omega| \leq \epsilon$.
+	Let $\phi(t)$ be nonnegative and have a unique root at $t = 1$.
+	Let $p \neq \qtrue$.
+	For all $\epsilon > 0$ and $\xi \in \Xi'$ there exists $N'$ such that $\forall N \geq N'$ $I_{\phi}(p,\hat{q}^N) \leq \frac{\rho_0}{N} \Rightarrow \max_\omega |p_\omega - \qtrue_\omega| \leq \epsilon$.
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:weak_conv}.}
-	Let $Z = \{\omega : \ptrue_\omega = 0\}$ be the set of impossible scenarios.
-	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \ptrue_\omega > \frac{\epsilon}{2}$.
+	Let $Z = \{\omega : \qtrue_\omega = 0\}$ be the set of impossible scenarios.
+	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \qtrue_\omega > \frac{\epsilon}{2}$.
 	
-	First, we note that $\max_\omega |p_\omega - \ptrue_\omega| \leq \max_\omega |p_\omega - \hat{p}^N_\omega| + \max_\omega |\hat{p}^N_\omega - \ptrue_\omega|$.
-	Let $N''$ be such that $\max_\omega |\hat{p}^N_\omega - \ptrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
+	First, we note that $\max_\omega |p_\omega - \qtrue_\omega| \leq \max_\omega |p_\omega - \hat{q}^N_\omega| + \max_\omega |\hat{q}^N_\omega - \qtrue_\omega|$.
+	Let $N''$ be such that $\max_\omega |\hat{q}^N_\omega - \qtrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
 	
-	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - \hat{p}^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,\hat{p}) > \frac{\rho_0}{N}$.
+	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - \hat{q}^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,\hat{q}) > \frac{\rho_0}{N}$.
 	First, bound the divergence by
 	\begin{align}
-		I_{\phi}(p,\hat{p}^N) & = \sum_{\omega=1}^n \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \nonumber \\
-		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} \hat{p}^N_\omega \phi\left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \nonumber \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \right\} \nonumber \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{\hat{p}^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
+		I_{\phi}(p,\hat{q}^N) & = \sum_{\omega=1}^n \hat{q}^N_\omega \phi\left( \frac{p_\omega}{\hat{q}^N_\omega} \right) \nonumber \\
+		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} \hat{q}^N_\omega \phi\left( \frac{p_\omega}{\hat{q}^N_\omega} \right) \nonumber \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \{\hat{q}^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{\hat{q}^N_\omega} \right) \right\} \nonumber \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{\hat{q}^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
 	\end{align}
 	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios), and zero otherwise.
 	
-	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{\hat{p}^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{\hat{p}^N_\omega+\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right), \phi\left( \frac{\hat{p}^N_\omega-\tfrac{\epsilon}{2}}{\hat{p}^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
+	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{\hat{q}^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{\hat{q}^N_\omega+\tfrac{\epsilon}{2}}{\hat{q}^N_\omega} \right), \phi\left( \frac{\hat{q}^N_\omega-\tfrac{\epsilon}{2}}{\hat{q}^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
 	
-	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \ptrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
+	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
 	\Halmos
 \end{proof}
 
-Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\ptrue$.
-In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\ptrue$ by establishing the epiconvergence of \plp\ to SLP-2.
+The requirements on $\phi$ in Proposition \ref{prop:weak_conv} are satisfied by every divergence in Table \ref{tb:phi_definitions} except Likelihood (which, however, can be rewritten as Burg Entropy).
+The unique root requirement, however, is violated for the special case $\phi$ introduced in Section \ref{ssec:special_phi}.
+
+Proposition \ref{prop:weak_conv} shows that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\qtrue$.
+In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\qtrue$ by establishing the epiconvergence of \plp\ to SLP-2.
 \begin{theorem}
 	\label{thm:epiconvergence}
-	\plp\ (\ref{eq:plp_two_stage}) epiconverges to SLP-2 (\ref{eq:slp_first_stage}) with distribution $p = \ptrue$.
+	Assume that $X$ is compact, and that the second stage problems $h_\omega(\x)$ are primal and dual feasible for every $\x \in X$.
+	Then the optimal value of \plp\ (\ref{eq:plp_two_stage}) converges to to that of SLP-2 (\ref{eq:slp_first_stage}) with distribution $p = \qtrue$.
+	Furthermore, the limit points of the solutions of \plp\ solve SLP-2 with distribution $p = \qtrue$.
 \end{theorem}
 
-\begin{proof}{\sc Proof of Proposition \ref{thm:epiconvergence}.}
-	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp is convex).
+\begin{proof}{\sc Proof of Theorem \ref{thm:epiconvergence}.}
+	The theorem can be proven by showing the epiconvergence of \plp\ to SLP-2.
+	To establish the epiconvergence, we need only to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
 	\Halmos
 \end{proof}
 
