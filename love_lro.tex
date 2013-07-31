@@ -49,6 +49,7 @@
 \usepackage{url}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{multicol}
 
 % Frequently used general mathematics
 \newcommand{\R}{{\mathbb{R}}}
@@ -661,69 +662,73 @@ The next example shows how to generate a convex combination of expectation and C
 \end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Data-Driven Considerations of \plp}
+\section{Data-Driven Considerations}
 \label{sec:properties}
 
 In this section we assume the nominal distribution $q$ is the empirical distribution ($q_\omega = \tfrac{N_\omega}{N}$) and provide insight into how the \plp\ changes as data is added: first how it might change with a single additional observation in Section \ref{ssec:value}, then as more and more data is gathered with asymptotic results in Section \ref{ssec:epiconvergence}.
+This analysis must consider how $\rho$ changes as additional samples are taken; therefore, we use $\rho_N$ to emphasize the dependence on sample size in this section.
+To be consistent with the known $\phi$-divergence results stated in Section \ref{ssec:robust_level}, we assume $\rho_N = \frac{\rho_0}{N}$.
 
 \subsection{The Value of Data} \label{ssec:value}
 
 With a data-driven formulation such as \plp, it is natural to ask how the optimal value and solution changes as more data is gathered.
-In particular, for robust formulations like \plp\ one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
+In particular, %for robust formulations like \plp\ 
+one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
 For \plp, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst-case distribution from the ambiguity set.  
-In this section, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
-We also provide a way of estimating the probability of sampling such an observation.
+Below, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
+%We also provide a way of estimating the probability of sampling such an observation.
 
-To get such a condition, we must consider how $\rho$ changes as additional samples are taken, and use the notation $\rho_N$ in this section to emphasize the dependence on sample size.
-To be consistent with the known $\phi$-divergence results stated in Section \ref{ssec:robust_level}, we assume $\rho_N = \frac{\rho_0}{N}$.
-
-\begin{proposition}
-	\label{prop:value}
+%\begin{proposition}
+%	\label{prop:value}
+\begin{theorem}
+	\label{thm:value}
 	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied
 	\begin{equation} \label{eq:cost_decrease_cond}
 		\sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right),
 	\end{equation}
-	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solves the $N$-sample problem with $q_\omega = \tfrac{N_\omega}{N}$.
-\end{proposition}
+	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solve the $N$-sample problem with $q_\omega = \tfrac{N_\omega}{N}$.
+\end{theorem}
+%\end{proposition}
 
+%All proofs are provided in the appendix.
 We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
-This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}$ given in \eqref{eq:p_worst}.
-It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences and we detail this in the remark below. 
+This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}_{\omega=1}^{n}$ in \eqref{eq:p_worst}.
+It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences and we detail this in the corollary below. 
 
-\begin{remark}
-	\label{rmk:cost_decrease_trick}
-	We can use a small trick to transform condition (\ref{eq:cost_decrease_cond}) into a form that is easier to work with.
-	Recall that for any real number $c$, we can define $\phi_c(t) = \phi(t) + c(t-1)$ and $I_{\phi_c}(p,q) = I_\phi(p,q)$ for probability vectors $p$ and $q$.
-	This changes the conjugate as $\phi_c^*(s) = \phi^*(s-c) + c$.
-	For some $\phi$, we can choose $c$ such that $\phi^{*\prime}(s)$ is separable, i.e., $\phi^{*\prime}(as) = f(a) \phi^{*\prime}(s)$ for some function $f$.
-	Using this separability, we can simplify (\ref{eq:cost_decrease_cond}) for some $\phi$ as follows:
-	\begin{description}
-		\item[Burg entropy:] Choose $c = -1$, so $\phi^{*\prime}(s) = -\frac{1}{s}$, changing (\ref{eq:cost_decrease_cond}) to $\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}} < \frac{N}{N+1}$.
-		\item[$\chi^2$-distance:] Choose $c = -1$, so $\phi^{*\prime}(s) = \frac{1}{\sqrt{-s}}$, changing (\ref{eq:cost_decrease_cond}) to $\sum_\omega q_\omega \frac{q_\omega}{p_\omega} + \sqrt{\frac{N+1}{N}} < 2 \frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}$.
-		\item[Hellinger:] Choose $c = -1$ so $\phi^{*\prime}(s) = \frac{1}{s^2}$, changing (\ref{eq:cost_decrease_cond}) to $\sum_\omega q_\omega \sqrt{\frac{p_\omega}{q_\omega}} + \sqrt{\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}} < 2 \frac{N}{N+1}$.
-		\item[Modified $\chi^2$-distance:] Choose $c = 2$, so
-		\[
-			\phi^{*\prime}(s) = \
-			\begin{cases}
-				\frac{1}{2} s & s \geq 0 \\
-				0 & s < 0,
-			\end{cases}
-		\]
-		changing (\ref{eq:cost_decrease_cond}) to $2 \sum_\omega p_\omega \frac{p_\omega}{q_\omega} > \left(\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}\right)^2 + \left(\frac{N+1}{N}\right)^2$.
-	\end{description}
-\end{remark}
+%\begin{remark}
+%	\label{rmk:cost_decrease_trick}
+\begin{corollary}
+	\label{cor:cost_decrease_trick}
+	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied for:\vspace*{-0.1in}
+	\begin{multicols}{2}
+		\begin{description}
+			\item[Burg entropy:] $\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}} < \frac{N}{N+1}$, %(or, $p_{\hat{\omega}}<\frac{N_{\hat{\omega}}}{N}$)
+			\item[$\chi^2$-distance:]  $\sum_\omega q_\omega \frac{q_\omega}{p_\omega} + \sqrt{\frac{N+1}{N}} < 2 \frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}$,
+			\item[Hellinger:] $\sum_\omega q_\omega \sqrt{\frac{p_\omega}{q_\omega}} + \sqrt{\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}} < 2 \frac{N}{N+1}$,
+			\item[Modified $\chi^2$:] $2 \sum_\omega p_\omega \frac{p_\omega}{q_\omega} > \left(\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}\right)^2 + \left(\frac{N+1}{N}\right)^2$.
+		\end{description}
+	\end{multicols}
+\end{corollary}
 
-Next, we would like a lower bound on the probability that the next sample will decrease the optimal cost.
+
+The simple conditions in Theorem~\ref{thm:value} and Corollary~\ref{cor:cost_decrease_trick} provide insight into different scenarios for a decision maker. 
 Let $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$.
-That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in \plp.
+%That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in \plp.  
+Set $L$ divides the scenarios into two---the ones in $L$ guarantee a drop in the overall cost if sampled one more and therefore can be considered ``good'' scenarios. 
+Note that scenarios not in $L$ can also result in the cost decrease. 
+The numerical experiments in Section \ref{sec:comp_results} suggest that $L$ is an adequate indicator of ``good'' scenarios for our test problem. 
+ 
 
+Finally, one might be interested in obtaining a lower bound on the probability that the next sample will decrease the optimal cost. 
 An approximate lower bound on the probability of selecting a sample in $L$ can be found by solving
 \begin{equation}
 	\min_{r} \left\{ \sum_{\omega \in L} r_\omega \colon\ r \in \mathcal{P} \right\}. \label{eq:lb_probability}
 \end{equation}
-That is, we find the minimum probability of $L$ within the ambiguity region defining \plp.
+That is, we find the minimum probability of $L$ within the ambiguity set defining \plp\ (since we do not know the true distribution).
 We solve (\ref{eq:lb_probability}) by taking its dual.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Asymptotic Analysis of \plp}
 \label{ssec:epiconvergence}
 
@@ -1015,7 +1020,7 @@ Finally, it would be useful to study applications to real-world problems.
 %             (2) APPENDICES (if it has more than one unrelated sections)
 % Outcomment the appropriate case if necessary
 %
-\begin{APPENDIX}{Proofs of Propositions and Theorem}
+\begin{APPENDIX}{Proofs of Propositions and Theorems}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
 	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust}, and additionally consider the case where $q_\omega = 0$.
@@ -1044,9 +1049,8 @@ Finally, it would be useful to study applications to real-world problems.
 	\end{description}
 \end{proof}
 
-\begin{proof}{\sc Proof of Proposition \ref{prop:value}.}
-	For ease of exposition, we assume $\phi^*$ is differentiable, although the proof works without this assumption with little modification.
-	
+\begin{proof}{\sc Proof of Theorem \ref{thm:value}.}
+	For ease of exposition, we assume $\phi^*$ is differentiable, although the proof works without this assumption with little modification.	
 	We begin this proof with the change of variables $\kappa = \frac{\lambda}{N}$, and note that $N\rho_N = \rho_0$ is constant.	
 	With this change of variables, the objective function is given by
 	\[
@@ -1058,27 +1062,52 @@ Finally, it would be useful to study applications to real-world problems.
 	Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
 	We will find scenarios $\hat{\omega}$ such that $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N) > 0$.
 
-	The objective of the $N+1$ sample problem for a given $\x$, $\mu$ and $\kappa$ is $\c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$,	where $N'_\omega$ is the number of observations of $\omega$ after $N+1$ total observations.
-	Then the difference between the two optimal costs is $\kappa \sum_{\omega=1}^n \left[ N_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) - N'_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$,	which must be positive to guarantee a drop in optimal cost.
+	The objective of the $N+1$ sample problem for a given $(\x,\mu,\kappa)$ is $\c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$,	where $N'_\omega$ is the number of observations of $\omega$ after $N+1$ total observations.
+	Then the difference between the two optimal costs is $\kappa \sum_{\omega=1}^n \left[ N_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) - N'_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$, which must be positive to guarantee a drop in optimal cost.
 	Let $\hat{\omega}$ be the scenario observed on the next observation, then we can rewrite the condition as
 	\begin{equation} \label{eq:raw_cond}
 		\kappa \sum_{\omega=1}^n N_\omega \left[ \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) - \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right] - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0.
 	\end{equation}
 
 	Let $s^N_\omega = \frac{h_\omega(x) - \mu}{N\kappa}$ and $s^{N+1}_\omega = \frac{h_\omega(x) - \mu}{(N+1)\kappa}$, and note that $s^{N+1}_\omega = \tfrac{N}{N+1} s^N_\omega$.
-	Let $|\Delta s| = | s^{N+1}_\omega - s^N_\omega | = \frac{|s^{N+1}_\omega|}{N}$.
+%	Let $|\Delta s| = | s^{N+1}_\omega - s^N_\omega | = \frac{|s^{N+1}_\omega|}{N}$.
 	The difference $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega)$ will be approximated by the derivative.
-	Note that $\phi^*(s)$ is nondecreasing because $0 \leq t = \phi^{*\prime}(s)$ for some $t$.
-	First, for $s^N_\omega > 0$, $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
-	Then for $s^N_\omega < 0$, $\phi^*(s^{N+1}_\omega) - \phi^*(s^N_\omega) \leq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$, and thus $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq -\phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
-	Then both cases reduce to $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega$.
-
-	Now we can guarantee (\ref{eq:raw_cond}) is satisfied with the condition $\kappa \sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0$, or, rearranging and dividing by $\kappa > 0$,
+%	Note that $\phi^*(s)$ is nondecreasing because $0 \leq t = \phi^{*\prime}(s)$ for some $t$.
+%	First, for $s^N_\omega > 0$, $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
+%	Then for $s^N_\omega < 0$, $\phi^*(s^{N+1}_\omega) - \phi^*(s^N_\omega) \leq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$, and thus $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq -\phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
+%	Then both cases reduce to $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega$.
+Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega$. 
+	Using this, we can guarantee (\ref{eq:raw_cond}) is satisfied with the condition $\kappa \sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0$, or, rearranging and dividing by $\kappa > 0$,
 	\begin{equation} \label{eq:main_value_derivation}
 		\sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega > \phi^*(s^{N+1}_\omega).
 	\end{equation}
 	Finally, return to the original variables with the substitution $s^{N+1}_\omega = \frac{N}{N+1} s^*_\omega$
 	\Halmos
+\end{proof}
+
+
+\begin{proof}{\sc Proof of Corollary \ref{cor:cost_decrease_trick}.}
+%	We use a small trick to transform condition (\ref{eq:cost_decrease_cond}) into a form that is easier to work with.
+	%Recall that 
+	For any real number $c$, we can define $\phi_c(t) = \phi(t) + c(t-1)$ and $I_{\phi_c}(p,q) = I_\phi(p,q)$ for probability vectors $p$ and $q$.
+	This changes the conjugate as $\phi_c^*(s) = \phi^*(s-c) + c$.
+	For some $\phi$, we can choose $c$ such that $\phi^{*\prime}(s)$ is separable, i.e., $\phi^{*\prime}(as) = f(a) \phi^{*\prime}(s)$ for some function $f$.
+	Using this separability, we can simplify (\ref{eq:cost_decrease_cond}) for some $\phi$, after some algebra, by choosing:\vspace*{-0.15in}
+	\begin{multicols}{2}
+	\begin{description} 
+		\item[Burg entropy:]  $c = -1$, so $\phi^{*\prime}(s) = -\frac{1}{s}$,
+		\item[$\chi^2$-distance:] $c = -1$, so $\phi^{*\prime}(s) = \frac{1}{\sqrt{-s}}$,
+		\item[Hellinger:]  $c = -1$ so $\phi^{*\prime}(s) = \frac{1}{s^2}$, 
+		\item[Modified $\chi^2$:] $c = 2$, so
+		\[
+			\phi^{*\prime}(s) = \
+			\begin{cases}
+				\frac{1}{2} s & s \geq 0 \\
+				0 & s < 0.   \Halmos
+			\end{cases}
+		\]
+	\end{description}
+	\end{multicols}
 \end{proof}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:weak_conv}.}
