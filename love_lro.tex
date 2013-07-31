@@ -691,7 +691,7 @@ The next example shows how to generate a convex combination of expectation and C
 \section{Data-Driven Considerations of \plp}
 \label{sec:properties}
 
-In this section we provide insight into how the \plp\ changes as data is added: first how it might change with a single additional observation in Section \ref{ssec:value}, then as more and more data is gathered with asymptotic results in Section \ref{ssec:epiconvergence}.
+In this section we assume the nominal distribution $q$ is the empirical distribution ($q_\omega = \tfrac{N_\omega}{N}$) and provide insight into how the \plp\ changes as data is added: first how it might change with a single additional observation in Section \ref{ssec:value}, then as more and more data is gathered with asymptotic results in Section \ref{ssec:epiconvergence}.
 
 \subsection{The Value of Data} \label{ssec:value}
 
@@ -701,7 +701,7 @@ For \plp, this means that the initial model is likely to be more conservative in
 In this section, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
 We also provide a way of estimating the probability of sampling such an observation.
 
-To get such a condition, we must consider how $\rho$ changes as additional samples are taken, and use $\rho_N$ in this section to emphasize the dependence on sample size.
+To get such a condition, we must consider how $\rho$ changes as additional samples are taken, and use the notation $\rho_N$ in this section to emphasize the dependence on sample size.
 To be consistent with the known $\phi$-divergence results stated in Section \ref{ssec:robust_level}, we assume $\rho_N = \frac{\rho_0}{N}$.
 
 \begin{proposition}
@@ -710,42 +710,43 @@ To be consistent with the known $\phi$-divergence results stated in Section \ref
 	\begin{equation} \label{eq:cost_decrease_cond}
 		\sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right),
 	\end{equation}
-	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solves the $N$-sample problem.
+	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solves the $N$-sample problem with $q_\omega = \tfrac{N_\omega}{N}$.
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:value}.}
-	We begin this proof with the change of variables $\kappa = \frac{\lambda}{N}$, and note that $N\rho_N = \rho_0$ is constant.
+	For ease of exposition, we assume $\phi^*$ is differentiable, although the proof works without this assumption with little modification.
 	
+	We begin this proof with the change of variables $\kappa = \frac{\lambda}{N}$, and note that $N\rho_N = \rho_0$ is constant.	
 	With this change of variables, the objective function is given by
 	\[
 		f_N(\x,\mu,\kappa) = c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) \right].
 	\]
 	Let $z_N = \min_{\x,\mu,\kappa} f_N(\x,\mu,\kappa)$.
-	We wish to find a simple estimate of the decrease in the optimal cost, $z_N - z_{N+1}$, associated with taking an additional sample of, say, $\hat{\omega}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.
-	
+	We wish to find a simple estimate of the decrease in the optimal cost, $z_N - z_{N+1}$, associated with taking an additional sample of, say, $\hat{\omega}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.	
 	Let $(\x^*_N,\mu^*_N,\kappa^*_N)$ minimize $f_N$.
 	Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
 	We will find scenarios $\hat{\omega}$ such that $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N) > 0$.
 
-	The $N+1$ sample problem is $\c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$,	where $N'_\omega$ is the number of observations of $\omega$ after $N+1$ total observations.
+	The objective of the $N+1$ sample problem for a given $\x$, $\mu$ and $\kappa$ is $\c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$,	where $N'_\omega$ is the number of observations of $\omega$ after $N+1$ total observations.
 	Then the difference between the two optimal costs is $\kappa \sum_{\omega=1}^n \left[ N_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) - N'_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$,	which must be positive to guarantee a drop in optimal cost.
 	Let $\hat{\omega}$ be the scenario observed on the next observation, then we can rewrite the condition as
 	\begin{equation} \label{eq:raw_cond}
 		\kappa \sum_{\omega=1}^n N_\omega \left[ \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) - \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right] - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0.
 	\end{equation}
 
-	Let $s^N_\omega = \frac{h^\dagger_\omega(x) - \mu}{N\kappa}$ and $s^{N+1}_\omega = \frac{h^\dagger_\omega(x) - \mu}{(N+1)\kappa}$.
+	Let $s^N_\omega = \frac{h_\omega(x) - \mu}{N\kappa}$ and $s^{N+1}_\omega = \frac{h_\omega(x) - \mu}{(N+1)\kappa}$, and note that $s^{N+1}_\omega = \tfrac{N}{N+1} s^N_\omega$.
+	Let $|\Delta s| = | s^{N+1}_\omega - s^N_\omega | = \frac{|s^{N+1}_\omega|}{N}$.
 	The difference $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega)$ will be approximated by the derivative.
-	Note that $\phi^*(s)$ is nondecreasing because $\phi(t)$ is confined to the first quadrant.
-	First, for $s^N_\omega > 0$ $\phi^{*\prime}(s^N_\omega) - \phi^{*\prime}(s^{N+1}_\omega) \geq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
-	Then for $s^N_\omega < 0$ $\phi^{*\prime}(s^{N+1}_\omega) - \phi^{*\prime}(s^N_\omega) \leq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$, and thus $\phi^{*\prime}(s^N_\omega) - \phi^{*\prime}(s^{N+1}_\omega) \geq -\phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
-	Furthermore, $|\Delta s| = | s^{N+1}_\omega - s^N_\omega | = \frac{|s^{N+1}_\omega|}{N}$, and so both cases reduce to $\phi^{*\prime}(s^N_\omega) - \phi^{*\prime}(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega$.
+	Note that $\phi^*(s)$ is nondecreasing because $0 \leq t = \phi^{*\prime}(s)$ for some $t$.
+	First, for $s^N_\omega > 0$, $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
+	Then for $s^N_\omega < 0$, $\phi^*(s^{N+1}_\omega) - \phi^*(s^N_\omega) \leq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$, and thus $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq -\phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
+	Then both cases reduce to $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega$.
 
-	Now we can guarantee (\ref{eq:raw_cond}) is satisfied with the condition $\kappa \sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega - \kappa \phi^*\left(\frac{h^\dagger_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0$, or, rearranging and dividing by $\kappa > 0$,
+	Now we can guarantee (\ref{eq:raw_cond}) is satisfied with the condition $\kappa \sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0$, or, rearranging and dividing by $\kappa > 0$,
 	\begin{equation} \label{eq:main_value_derivation}
 		\sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega > \phi^*(s^{N+1}_\omega).
 	\end{equation}
-	Finally, return to the original variables with the substitution $s^\omega_{N+1} = \frac{N}{N+1} \frac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$
+	Finally, return to the original variables with the substitution $s^{N+1}_\omega = \frac{N}{N+1} s^*_\omega$
 	\Halmos
 \end{proof}
 
