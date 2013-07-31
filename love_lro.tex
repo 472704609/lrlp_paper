@@ -835,7 +835,7 @@ An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)
 	\dfrac{\partial h^\dagger_\omega}{\partial \lambda}(\xh,\mh,\lh) & = \phi^*(s_\omega(\xh,\mh,\lh)) - \phi^{*\prime}(s_\omega(\xh,\mh,\lh))s_\omega(\xh,\mh,\lh),
 \end{align*}
 where $s_\omega(\xh,\mh,\lh) = \frac{h_\omega(\xh) - \mh}{\lh}$.
-Recall that $h_\omega(\x) = \min_{y^\omega \geq 0} \{\k^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
+%Recall that $h_\omega(\x) = \min_{y^\omega \geq 0} \{\k^\omega y^\omega | D^\omega y^\omega = \d^\omega + B^\omega \x\}$.
 The cuts are then given by
 \begin{align*}
 	T_j^\omega & = 
@@ -1152,7 +1152,7 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 \end{proof}
 
 \begin{proof}{\sc Proof of Theorem \ref{thm:epiconvergence}.}
-	The theorem can be proven by showing the epiconvergence of \plp\ to SLP-2.
+	The theorem can be proven by showing the epiconvergence of objective funtion of \plp\ to that of SLP-2.
 	To establish the epiconvergence, we need to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
 	\Halmos
 \end{proof}
