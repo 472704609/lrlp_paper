@@ -827,13 +827,13 @@ The proposed algorithm is shown in Algorithm 1.
 \subsection{Objective Cuts}
 
 Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}) and $\hat{s}_\omega = \frac{h(\xh)-\mu}{\lh}$, and let $h^\dagger_\omega(s_\omega) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$ be the nonlinear portion of the objective function which will be used to generate the objective cuts.
-An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ along with optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, and using these to compute the partial (sub)derivatives of the \plp\ subproblems as
-\begin{align*}
-	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \x} & = \phi^{*\prime}(\hat{s}_\omega) \pi^{*,\omega}B^\omega \\
-	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \mu} & = -\phi^{*\prime}(\hat{s}_\omega) \\
-	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \lambda} & = \phi^*(\hat{s}_\omega) - \phi^{*\prime}(\hat{s}_\omega)\hat{s}_\omega.
-\end{align*}
-The cuts are then given by
+An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ to obtain the optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, using these to compute the partial (sub)derivatives of the \plp\ subproblems, and generating the cuts 
+% \begin{align*}
+% 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \x} & = \phi^{*\prime}(\hat{s}_\omega) \pi^{*,\omega}B^\omega, &
+% 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \mu} & = -\phi^{*\prime}(\hat{s}_\omega), &
+% 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \lambda} & = \phi^*(\hat{s}_\omega) - \phi^{*\prime}(\hat{s}_\omega)\hat{s}_\omega.
+% \end{align*}
+% The cuts are then given by
 \begin{align*}
 	T_j^\omega & = 
 	\left( \begin{array}{ccc}
