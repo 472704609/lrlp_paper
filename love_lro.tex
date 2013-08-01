@@ -164,9 +164,10 @@
 } % end of the block
 
 \ABSTRACT{%
-	This paper investigates the properties of the recently proposed $\phi$-divergence based ambiguous stochastic programs.
+	This paper investigates the properties of $\phi$-divergence constrained ambiguous stochastic programs.
+	$\phi$-divergences (e.g., Kullback-Leibler, $\chi^2$ distance, etc.) provide a natural way to create an ambiguity set of distributions that are centered around a nominal distribution, which is often determined by collected observations. 
 	We present a classification of $\phi$-divergences to elucidate their use for models with different properties and different sources of data.
-	A condition of assessing the value of collecting additional data is derived and we demonstrate convergence of the $\phi$-divergence based ambiguous program to the associated non-ambiguous stochastic program.
+	A condition of assessing the value of collecting additional data is derived and we demonstrate convergence of the $\phi$-divergence-based ambiguous program to the associated non-ambiguous stochastic program.
 	A decomposition-based solution algorithm to solve the resulting model is given.
 }%
 
@@ -198,19 +199,19 @@
 In practice, many optimization problems can be modeled by stochastic programs minimizing the expected value of an uncertain objective function.
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
 Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions, and optimizes the expected cost relative to the worst distribution in the uncertainty set.
-One approach that has been recently proposed by \cite{bental2011robust} uses a set of distributions that have sufficiently small $\phi$-divergence from a given ``nominal'' distribution.
+One approach that has been recently proposed by \cite{bental2011robust} uses a set of distributions that have sufficiently small $\phi$-divergence from a given ``nominal'' distribution ($\phi$-divergences provide a measure of distance between two distributions). 
 Of particular interest is the case when the nominal distribution is determined by observation by making it an empirical distribution.
 In this paper, we adapt the $\phi$-divergence method to the setting of a two-stage stochastic linear program with recourse and call this the two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse (\plp).
 
-The $\phi$-divergence method is an attractive data-driven approach because it uses the data directly---only those data points or scenarios of interest are used in the calculations.
-These scenarios can come from direct observation, results of simulation, or from expert opinion regarding scenarios that the decision maker would especially like to be robust against.
-Because the \plp\ depends only on these scenarios, the size of the problem is polynomial in the sample size, making it computationally tractable.
+Using $\phi$-divergences to model ambiguous probability distributions is an attractive data-driven approach because it uses the data directly---only those data points or scenarios of interest are used in the calculations.
+These scenarios can come from direct observation, results of simulation, or from expert opinion that the decision maker would especially like to be robust against.
+Because the \plp\ depends only on these scenarios, the size of the problem is polynomial in the sample size, making the \plp\ computationally tractable.
+Furthermore, many $\phi$-divergences are commonly used in statistics (e.g, the $\chi^2$ distance) and provide a natural way of modeling problems under uncertainty. 
 
 \subsection{Related Literature}
 
-\plp\ is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
-Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{zackova1966minimax,dupacova_87}.
-\cite{shapiro2002minimax} and \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
+%\plp\ is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
+Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \citep{zackova1966minimax,dupacova_87}. \cite{shapiro2002minimax} and \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
 
 In recent years, there has been a growing interest in distributionally robust methods.
 \cite{erdogan2006ambiguous} study chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
@@ -223,15 +224,17 @@ Three recent papers by \cite{wang2010likelihood}, \cite{calafiore2007ambiguous},
 Both \cite{wang2010likelihood} and \cite{hukullback} produce dual problems similar to that presented in \cite{bental2011robust} and used here.
 \cite{hukullback} differs from this work and the others by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
 Additionally, \cite{klabjan2013robust} uses the $\chi^2$ distance, another $\phi$-divergence, to define an uncertain demand distribution for a stochastic lot-sizing problem using historical data.
-Our work unites these previous papers, and provides insight into conditions where each $\phi$-divergence should be used.
+Our work unites these previous papers and provides insight into conditions where each $\phi$-divergence should be used and the behavior of the optimization problem as more data is gathered.
 
 \subsection{Contributions}
 
+The contributions of this paper are as follows. 
 \begin{itemize}
 	\item One of the open problems identified by \cite{bental2011robust} was to study the performance of different $\phi$-divergences.
 		Given that there are many $\phi$-divergences, a decision maker is left with the question of how each divergence behaves for his/her problem and which one to choose.
-		We provide a novel classification of $\phi$-divergences defined by the types of distributions that can be admitted to the set of distributions, and insight into which class of $\phi$-divergence is most useful to different types of models.
-		This result is a general feature of $\phi$-divergences and does not apply only to the two-stage setting.
+		We provide a novel classification of $\phi$-divergences dictated by the types of distributions that can be admitted to the set of distributions. 
+		This allows us to provide insight into which class of $\phi$-divergence is most useful to which type of model.
+		We note that this classification is a general feature of $\phi$-divergences and applies to a broader class of $\phi$-divergence constrained problems than the ones presented in this paper. 
 		
 	\item In a data-driven setting, several important questions arise.
 		What happens as we add one more data?
@@ -243,7 +246,9 @@ Our work unites these previous papers, and provides insight into conditions wher
 		Second, we show that \plp\ converges to the stochastic program with the (unknown) true distribution.
 		
 	\item Stochastic programs often become quite large, which raises questions of computational tractability.
-		We help to answer this problem by providing a modified Bender's decomposition that can be used to solve the \plp.
+		We help to answer this problem by providing a modified Bender's decomposition that can be used to solve the \plp\ efficiently by solving only linear programs. 
+
+	\item Finally, we provide some interesting examples of $\phi$-divergences that result in commonly used risk models and illustrate our results numerically. 
 \end{itemize}
 
 % The contributions of our work are that it provides
@@ -261,9 +266,10 @@ Section \ref{sec:phi_divergences} introduces the $\phi$-divergence and presents 
 Section \ref{sec:plp2} presents the derivation of $\phi$-divergence model for a two-stage stochastic program with recourse.
 Section \ref{sec:classification} presents a classification of $\phi$-divergences with some examples;
 Sections \ref{sec:properties} describes the data-driven properties of \plp; 
-Section \ref{sec:soln_algorithm} presents a decomposition method for solving the \plp\ model; and in Section \ref{sec:comp_results} we present a numerical illustrations of some of the properties of the \plp\ model.
+Section \ref{sec:soln_algorithm} presents a decomposition method for solving the \plp\ model; and in Section \ref{sec:comp_results} we present numerical illustrations of our results. 
+%some of the properties of the \plp\ model.
 We end in Section \ref{sec:concl} with conclusions and future work.
-All proofs are given in the Appendix.
+All proofs are provided in the Appendix.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction to $\phi$-Divergences}
@@ -282,7 +288,8 @@ The $\phi$-divergence is defined by
 where $\phi(t)$, called the $\phi$-divergence function, is a convex function on $t \geq 0$ such that $\phi(1) = 0$, and with the additional interpretations that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and $0 \phi(0/0) = 0$.
 If both $p$ and $q$ are probability vectors, as we assume throughout this paper, we can additionally assume without loss of generality that $\phi(t) \geq 0$.
 The function $\phi(t)$ can be modified as $\psi(t) = \phi(t) + c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t$, and $I_\psi(p,q) = I_\phi(p,q)$ for all probability vectors $p,q$.
-If $\phi(t)$ is differentiable at $t = 1$ this can be done by selecting $c = -\phi'(1)$; see, e.g., the Likelihood divergence and Burg entropy in Table~\ref{tb:phi_definitions}.
+If $\phi(t)$ is differentiable at $t = 1$ this can be done by selecting $c = -\phi'(1)$.
+%; see, e.g., the Likelihood divergence and Burg entropy in Table~\ref{tb:phi_definitions}.
 
 $\phi$-divergences are not, in general, metrics.
 For example, most $\phi$-divergences do not satisfy the triangle inequality and many are not symmetric in the sense that $I_\phi(p,q) \neq I_\phi(q,p)$.
@@ -295,7 +302,8 @@ A $\phi$-divergence has an adjoint, defined by
 which satisfies all criteria for a $\phi$-divergence \citep{bental1991certainty}, and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
 Divergences that are symmetric with respect to the input vectors are known as self-adjoint.
 
-As is shown in \citep{bental2011robust}, the problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
+%As is shown in \citep{bental2011robust}, 
+The problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
 \begin{equation} \label{eq:conjugate}
 	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}.
 \end{equation}
@@ -304,7 +312,7 @@ The conjugate $\phi^*$ is a nondecreasing convex function and may be undefined a
 Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
 For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain; i.e., $\{s : \phi^*(s) < \infty\}$.
 Most of these common divergences are widely used in statistics and information theory.
-In Section \ref{ssec:special_phi}, we present other $\phi$-divergences that assign a distance of either $0$ or $\infty$ that result in commonly used risk models.
+In Section \ref{ssec:special_phi}, we present other $\phi$-divergences that assign a distance of either $0$ or $\infty$, which result in commonly used risk models.
 Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' that is somewhat different from the others.
 The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy the normalizing condition $\phi(t) \geq 0$.
 This divergence is included because \cite{wang2010likelihood} use it to formulate a distributionally robust newsvendor problem so that the ambiguity set of distributions have a sufficiently high empirical likelihood. 
@@ -367,9 +375,9 @@ However, in many applications the distribution is itself unknown.
 One technique to deal with this is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions that is believed to contain the true distribution.
 In this paper, we construct the ambiguity set by considering all distributions whose $\phi$-divergence from the nominal distribution $q$ is sufficiently small.
 Throughout portions of this paper, we focus on a data-driven setting and assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, although $q$ can be obtained in other ways.
-In SLP-2, this data-driven setting would correspond to setting the probability of scenario $\omega$ to be $q_\omega = \frac{N_\omega}{N}$.
+In SLP-2, this data-driven setting would correspond to the probability of scenario $\omega$ to be $q_\omega = \frac{N_\omega}{N}$.
 
-By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution with respect to $\phi$-divergence, we the \plp\ model.
+By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution with respect to $\phi$-divergence, we create the \plp\ model.
 In the \plp, the objective function is minimized with respect to the worst-case distribution selected from the ambiguity set of distributions.
 The resulting minimax formulation of \plp\ is
 \begin{equation}
@@ -384,7 +392,7 @@ where the ambiguity set is
 We refer to (\ref{eq:plp_primal_divergence}) as the $\phi$-divergence constraint and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
 We discus how to determine $\rho$ in (\ref{eq:plp_primal_divergence}) in Section \ref{ssec:robust_level}.
 
-Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual form, again in the two-stage setting:
+Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual form
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \lambda \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \label{eq:plp_two_stage} \\
 	\st \ & \x \in X \nonumber \\
@@ -392,7 +400,7 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 	& \lambda \geq 0, \nonumber
 \end{align}
 where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}), $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
-Note that for some $\phi$, such as the J-Divergence, have no closed form representation of $\phi^*$, but can be expressed as the sum of other divergences---Burg Entropy and KL divergence---which allows the dual to be formed, see \citep{bental2011robust} for details.
+Note that some $\phi$, such as the J-Divergence, have no closed form representation of $\phi^*$, but can be expressed as the sum of other divergences---Burg Entropy and KL divergence---which allows the dual to be formed; see \citep{bental2011robust} for details.
 Theorem 1 of \cite{bental2011robust} contains a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
 Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 Also note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
@@ -408,7 +416,7 @@ Throughout the paper, we use $s_\omega$ to denote
 \subsection{Basic Properties}
 \label{ssec:basicprop}
 
-In this section, we list some basic properties of \plp.
+In this section we list some basic properties of \plp.
 Most of these have already been noted earlier (e.g., by \cite{bental2011robust} and others for specific $\phi$-divergences) but we list them for completeness.
 Some of these properties help with our specialized solution method and we refer to them in later sections.
 
@@ -430,11 +438,15 @@ Some of these properties help with our specialized solution method and we refer 
 \begin{property}
 	\label{property:primal_dual_relation}
 	The worst-case distribution can be calculated with the equations
-	\begin{align} 
-		& \frac{p_\omega}{q_\omega} \in \partial \phi^*\left(s_\omega\right) \label{eq:p_worst} \\
-		& \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho \nonumber \\
-		& \sum_{\omega=1}^n p_\omega = 1. \nonumber
-	\end{align}
+%	\begin{align} 
+	\begin{equation}\label{eq:p_worst}
+		\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(s_\omega\right), \ \ \ \ \ \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho, \ \ \ \ \ \sum_{\omega=1}^n p_\omega = 1.
+	\end{equation}		
+%		\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(s_\omega\right)
+% \label{eq:p_worst}
+%		& \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho \nonumber \\
+%		& \sum_{\omega=1}^n p_\omega = 1. \nonumber
+%	\end{align}
 \end{property}
 
 We now discuss these properties. A coherent risk measure is defined in \citep{rockafellar2007coherent}, which shows that minimizing a coherent risk measure over a polyhedron implies that \plp\ is a convex problem.
@@ -443,7 +455,7 @@ In Section \ref{ssec:special_phi}, we present special $\phi$-divergences that re
 Properties \ref{property:time_structure} and \ref{property:primal_dual_relation} help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
 The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(s_\omega\right)$, aiding in our decomposition-based solution method. 
 The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method for retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property:primal_dual_relation}.
-In many cases, (\ref{eq:p_worst}) is sufficient to calculate $\{p_\omega\}_{\omega=1}^n$.
+In many cases, the first equation in (\ref{eq:p_worst}) is sufficient to calculate $\{p_\omega\}_{\omega=1}^n$.
 In addition, $\phi^*$ is often differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(s_\omega)$.
 Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detailed in Section \ref{sec:classification}.
 
@@ -456,7 +468,7 @@ Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detaile
 The literature on $\phi$-divergences provides some insight on choosing a reasonable asymptotic value of $\rho$ in the data-driven setting. 
 When $\phi$ is twice continuously differentiable around $1$ with $\phi^{\prime \prime}(1)>0$, Theorem 3.1 of \cite{pardo2005statistical} shows that the statistic $T^\phi_N(q^N,\qtrue) = \frac{2N}{\phi''(1)} \sum_{\omega=1}^n \qtrue_\omega \phi\left(\frac{q^N_\omega}{\qtrue_\omega}\right)$ converges in distribution to a $\chi^2$-distribution with $n-1$ degrees of freedom, where $q^N$ denotes the empirical distribution ($q^N_\omega = N_\omega/N$), and $\qtrue$ denotes the underlying true distribution.
 Most $\phi$-divergences in Table~\ref{tb:phi_definitions} satisfy this differentiability condition.
-\cite{bental2011robust} then uses this result to suggest the asymptotic value
+\cite{bental2011robust} then use this result to suggest the asymptotic value
 \begin{equation} \label{eq:asymptotic_rho}
 	\rho = \frac{\phi''(1)}{2N} \chi^2_{n-1,1-\alpha},
 \end{equation}
@@ -478,7 +490,7 @@ We also provide some special $\phi$-divergences that result in common risk model
 \subsection{Suppressing and Popping of Scenarios}
 \label{ssec:suppressandpop}
 
-As motivation, consider a self-adjoint $\phi$-divergence, which satisfies the relation
+As motivation for our classification, consider a self-adjoint $\phi$-divergence, which satisfies the relation
 \begin{equation} \label{eq:self_adjoint_classification}
 	\frac{\phi(t)}{t} = \phi\left(\frac{1}{t}\right),
 \end{equation}
@@ -487,7 +499,7 @@ If both sides of (\ref{eq:self_adjoint_classification}) are finite in the limit,
 On the other hand, infinite limits of (\ref{eq:self_adjoint_classification}) indicate a correspondence between superlinear growth of $\phi(t)$ for $t > 1$ and unboundedness of $\phi(t)$ for $t < 1$.
 
 Recall the definition of the ambiguity set, in particular, the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}). 
-In the \plp, $\phi$ has arguments given by ratios of probabilities, $\tfrac{p_\omega}{q_\omega}$, and the limits $t \rightarrow 0$ and $t \rightarrow \infty$ correspond to the cases when $p_\omega = 0$ and $q_\omega = 0$, respectively.
+In the \plp, $\phi$ has arguments given by ratios of probabilities, $\tfrac{p_\omega}{q_\omega}$ and the limits $t \rightarrow 0$ and $t \rightarrow \infty$ correspond to the cases when $p_\omega = 0$ and $q_\omega = 0$, respectively.
 Consider each of these limiting cases:
 \begin{itemize}
 	\item {\sc Case 1:} $q_\omega > 0$ but $p_\omega = 0$.
@@ -545,13 +557,14 @@ However, if the data is poorly sampled or comes from opinion rather than observa
 Next, consider whether to choose a distribution that allows for popping scenarios.
 If the problem scenarios come strictly from observation, with little theoretical understanding of the problem, we suggest choosing a divergence that cannot pop scenarios.
 However, if the problem scenarios come from a mix of observed/simulated data and expert opinion about scenarios of interest, then divergences that can pop present an interesting modeling choice.
-This allows for including interesting but unobserved scenarios, and allowing the mathematical program to assign an appropriate probability to them.
+This allows for including interesting but unobserved scenarios, allowing the mathematical program to assign an appropriate probability to them.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Additional Details about Divergences that can Suppress}
 \label{ssec:suppress}
 
-Recall the primal-dual variable relation, which specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega$ is defined in (\ref{eq:s_omega_definition}), and note that suppression ($p_\omega = 0$, $q_\omega > 0$) can occur only when $0 \in \partial \phi^*(s_\omega)$.
+Recall the primal-dual variable relation, which specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega=\frac{h_{\omega}(\x)-\mu}{\lambda}$. 
+Note that suppression ($p_\omega = 0$, $q_\omega > 0$) can occur only when $0 \in \partial \phi^*(s_\omega)$.
 For convenience, we assume $\phi^*$ is differentiable.
 We can examine suppressing in more detail by looking at the behavior of $\phi(t)$ as $t \searrow 0$.
 This analysis yields two subcategories within the $\phi$-divergences that can suppress scenarios---one tends to suppress scenarios one at a time and the other simultaneously. 
@@ -559,14 +572,14 @@ This analysis yields two subcategories within the $\phi$-divergences that can su
 \begin{itemize}
 	\item {\sc Subcategory 1\ ($\lim_{t \searrow 0} \phi'(t) > -\infty$).}  There are nonpositive constants $c,\underline{s}$ such that $\phi^*(s) = c$ for all $s < \underline{s}$. 
 		Thus $\phi^{*\prime}(s_\omega) = 0$ when $s_\omega < \underline{s}$, suppressing all such scenarios.
-		I.e., all scenarios that satisfy the relation $\frac{h_\omega(\x)-\mu}{\lambda} < \underline{s}$ are suppressed.
+		In other words, all scenarios that satisfy the relation $\frac{h_\omega(\x)-\mu}{\lambda} < \underline{s}$ are suppressed.
 		As $\rho$ increases, scenarios tend to be suppressed one at a time.
 
 	\item {\sc Subcategory 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$).} In this case, $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
 		As a result, scenarios can only be suppressed if $s_\omega = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
 		Consequently, all solutions with $h_\omega(\x) < \mu$ have $p_\omega=0$, and we must have $\mu = \max_\omega h_\omega(\x)$ to ensure that scenarios $\omega \in \argmax h_\omega(\x)$ are given positive probability so that $p$ is a probability distribution.
 		This means that all but the most expensive scenario(s) will vanish simultaneously.
-		Divergences of this type can be difficult to deal with numerically when suppression occurs given the denominator of $\lambda = 0$.
+		Divergences of this type can be difficult to deal with numerically when suppression occurs given the denominator of $\lambda = 0$ (see Section \ref{ssec:implement} for details).
 \end{itemize}
 
 
@@ -576,7 +589,7 @@ Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subc
 \subsection{Additional Details about Divergences that can Pop}
 \label{ssec:pop}
 
-Divergences that can pop a scenario have $\phi(t)$ that grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ on the domain of $\phi^*(s)$.
+Divergences that can pop a scenario have $\phi(t)$ grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ on the domain of $\phi^*(s)$.
 The primal-dual variable relation specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
 Intuitively, we can think of $\frac{p_\omega}{0} = \infty$ if $p_\omega > 0$, and thus popping a scenario can only occur when the right-hand side subdifferential also includes $\infty$.
 This, in turn, occurs only when $s_\omega = \bar{s}$.
@@ -763,9 +776,9 @@ Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\
 \label{sec:soln_algorithm}
 
 As the model gets larger, a direct solution of \plp\ becomes computationally expensive. 
-Decomposition-based methods could significantly reduce the solution time and allow for larger problems to be solved efficiently. We propose a Bender's decomposition-based method for solving \plp.
+Decomposition-based methods could significantly reduce the solution time and allow larger problems to be solved efficiently. We propose a Bender's decomposition-based method for solving \plp.
 The algorithm removes feasibility constraint (\ref{eq:plp_feas_constraint})  and exchanges it with a series of feasibility cuts in the first-stage problem.
-The master problem is
+The master problem is given by
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \theta \label{eq:master_problem}\\
 	\st \ & \x \in X,\ \ \lambda \geq 0 \nonumber  \\
@@ -774,13 +787,14 @@ The master problem is
 \end{align}
 where \eqref{eq:objcut} are the objective cuts, (\ref{eq:feascut}) are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}) if $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} < \infty$, and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
 
-The modification of Bender's decomposition presented here has the following features:
-\begin{inparaenum}[\itshape (i\upshape)]
-	\item it solves the original linear second stage problems, and uses them to quickly generate subgradients of the nonlinear term $\lambda \phi^*\left(\tfrac{h_\omega(\x) - \mu}{\lambda}\right)$, 
-	\item exchanges the polyhedral $\phi$-divergence constraints $\tfrac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for a (potentially much) smaller set of easily generated feasibility cuts, and
-	\item thus maintains linear master and subproblems.
-\end{inparaenum}
 The proposed algorithm is shown in Algorithm 1. 
+The modified Bender's decomposition presented here has the following features:
+\begin{inparaenum}[\itshape (i\upshape)]
+	\item it solves the original linear second stage problems, rather than nonlinear subproblems, and uses them to quickly generate subgradients of the nonlinear term $\lambda \phi^*\left(\tfrac{h_\omega(\x) - \mu}{\lambda}\right)$, 
+	\item exchanges the polyhedral $\phi$-divergence constraints $\tfrac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for a (potentially much) smaller set of easily generated feasibility cuts, and thus
+	\item  maintains linear master and subproblems.\medskip
+\end{inparaenum}
+
 
 %\begin{figure}		
 %\label{fig:algorithm}
@@ -827,8 +841,8 @@ The proposed algorithm is shown in Algorithm 1.
 
 \subsection{Objective Cuts}
 
-Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}) and $\hat{s}_\omega = \frac{h(\xh)-\mu}{\lh}$, and let $h^\dagger_\omega(s_\omega) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$ be the nonlinear portion of the objective function which will be used to generate the objective cuts.
-An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ to obtain the optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem, using these to compute the partial (sub)derivatives of the \plp\ subproblems, and generating the cuts 
+Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}), $\hat{s}_\omega = \frac{h(\xh)-\mu}{\lh}$, and $h^\dagger_\omega(s_\omega) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$ be the nonlinear portion of the objective function, which will be used to generate the objective cuts.
+An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ to obtain the optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem. Using these to compute the partial (sub)derivatives of the \plp\ subproblems
 % \begin{align*}
 % 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \x} & = \phi^{*\prime}(\hat{s}_\omega) \pi^{*,\omega}B^\omega, &
 % 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \mu} & = -\phi^{*\prime}(\hat{s}_\omega), &
@@ -841,32 +855,43 @@ An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)
 		\phi^{*\prime}(\hat{s}_\omega) \pi^{*,\omega}B^\omega, 
 			 & -\phi^{*\prime}(\hat{s}_\omega), 
 			 & \phi^*(\hat{s}_\omega) - \phi^{*\prime}(\hat{s}_\omega) \hat{s}_\omega
-	\end{array} \right) \\
+	\end{array} \right), \\
 	t_j^\omega & = \lh \phi^{*\prime}(\hat{s}_\omega)\left[\hat{s}_\omega - \frac{\pi^{*,\omega}B^\omega\xh - \mh}{\lh}\right].
 \end{align*}
-
-For the single-cut master problem proposed, $T_j = \sum_\omega q_\omega T_j^\omega$ and $t_j = \sum_\omega q_\omega t_j^\omega$.
+For the single-cut master problem proposed, $T_j = \sum_\omega q_\omega T_j^\omega$ and $t_j = \sum_\omega q_\omega t_j^\omega$ and multi-cut versions are also possible. 
 
 \subsection{Feasibility Cuts}
 After the subproblems $h_\omega(\xh)$ are solved, it may be the case that $\hat{s}_\omega < \bar{s}$ for some $\omega$, rendering $\mh$ and $\lh$ infeasible.
 This is corrected using the feasibility problem
-\begin{align*}
-	U_\omega(\x,\mu,\lambda) = \min_{y^\omega \geq 0, z \geq 0} \ & z \\
-	\st \ & z + \bar{s}\lambda + \mu - q^\omega y^\omega \geq 0 \\
-	& D^\omega y^\omega = d^\omega + B^\omega x,
-\end{align*}
+\[
+U_\omega(\x,\mu,\lambda) = \min_{y^\omega \geq 0, z \geq 0} \left\{ z\ \colon\ 
+	z + \bar{s}\lambda + \mu - k^\omega y^\omega \geq 0,\  D^\omega y^\omega = d^\omega + B^\omega x \right\},
+\]
+%\begin{align*}
+%	U_\omega(\x,\mu,\lambda) = \min_{y^\omega \geq 0, z \geq 0} \ & z \\
+%	\st \ & z + \bar{s}\lambda + \mu - q^\omega y^\omega \geq 0 \\
+%	& D^\omega y^\omega = d^\omega + B^\omega x,
+%\end{align*}
 which is solved by $z = h_\omega(\x) - \bar{s}\lambda - \mu$.
 The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$, $\frac{\partial z^*}{\partial \mu} = -1$, and $\frac{\partial z^*}{\partial \lambda} = -\bar{s}$.
 Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality $U_\omega(\x,\mu,\lambda) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) - \bar{s}(\lambda - \lh) + (h_\omega(\xh) - \mh - \bar{s}\lh)$, and setting $U_\omega(\x,\mu,\lambda) = 0$ to find a feasible solution gives the feasibility cut $\mu + \bar{s} \lambda \geq \pi^{*,\omega}B^\omega \x + (h_\omega(\xh) - \pi^{*,\omega}B^\omega\xh)$.
 
-\subsection{Computational Enhancements \& Notes on Different $\phi$}
+\subsection{Computational Enhancements}
 
-In order to enhance the performance of the above decomposition-based algorithm, we included an $L^\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
+In order to enhance the performance of the above decomposition algorithm, we included an $L^\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
 The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
 
-Divergences that can suppress in Subcategory 2 (see Section \ref{ssec:suppress}) can be computationally difficult to work with because $\lambda = 0$ could occur.
+\subsection{Implementation Notes on Different $\phi$}
+\label{ssec:implement}
+
+First, note that when (\ref{eq:plp_feas_constraint}) is not present, there is no need to use feasibility cuts. Let's now look at implementation issues with respect to suppression and popping. 
+
+Divergences that can suppress in Subcategory 2 (see \S \ref{ssec:suppress}) can be computationally difficult to work with because $\lambda = 0$ could occur.
 Floating point finite tolerance can alleviate this somewhat for the KL divergence, for which $\phi^*(s) = e^s$, because $e^{-800} = 0$ to machine precision.
-We recommend forcing $\lambda$ to be nonzero, and checking optimality condition at $\lambda = 0$ separately.
+We recommend forcing $\lambda$ to be nonzero and checking optimality condition at $\lambda = 0$ separately.
+
+Divergences that can pop require a check for any $s_\omega = \bar{s}$.
+The probability of a popped scenario can be determined by enforcing $\sum_\omega p_\omega = 1$ after determining the probability of the other scenarios.
 
 For divergences that cannot pop, it can be useful to add a computational upper bound on $s$, $\bar{s}_\text{comp}$.
 Such an upper bound can be computed easily by bounding the ratio $\frac{p_\omega}{q_\omega} \leq \frac{1}{\min_\omega q_\omega}$.
@@ -874,14 +899,13 @@ The computational upper bound can then be selected so that $\phi^{*\prime}(\bar{
 Note, however, that an artificial upper bound will induce artificial popping behavior if the nominal distribution contains impossible scenarios.
 This technique is especially useful for the KL divergence because $e^s$ overflows on double-precision machines for $s \geq 710$.
 
-Divergences that can pop require a check for any $s_\omega = \bar{s}$.
-The probability of a popped scenario can be determined by enforcing $\sum_\omega p_\omega = 1$ after determining the probability of the other scenarios.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Numerical Illustration} \label{sec:comp_results}
 
 To illustrate the techniques discussed in this paper, we applied the decomposition method from Section \ref{sec:soln_algorithm} to a small electricity generation problem.
-We demonstrate the popping and suppressing behavior described in Section \ref{sec:classification} for several $\phi$-divergences and show how the worst-case cost decrease condition (\ref{eq:cost_decrease_cond}) compares to the actual cost decrease when an additional sample of each scenario is taken.
+On this problem, we demonstrate the popping and suppressing behavior described in Section \ref{sec:classification} for several $\phi$-divergences and show how the worst-case cost decrease condition (\ref{eq:cost_decrease_cond}) compares to the actual cost decrease when an additional sample of each scenario is taken.
 
 We modified an SLP-2 test problem, denoted APL1P, which is a power expansion problem with 5 independent random variables and 1280 realizations \citep{infanger1992monte}.
 To clearly demonstrate how the worst-case distribution changes with $\rho$ and especially to demonstrate suppressing and popping behavior, we took 6 unique samples from APL1P to form the \plp. 
@@ -958,16 +982,16 @@ Other divergences that can pop but not suppress look qualitatively similar.
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[h]
 	\FIGURE
 	{%
 		\includegraphics*[width=.42\textwidth]{images/burg}%
 		\includegraphics*[width=.42\textwidth]{images/burg_zero}%
 	}
 	{
-		Example of a distribution that can pop: the Burg entropy.
-		The left figure shows the worst-case distribution assuming that all scenarios have a single observation.
-		The right figure demonstrates the most costly scenario entering the worst-case distribution despite it having no observations.
+		Example of a distribution that can pop---the Burg entropy: 
+		all scenarios have a single observation (left); 
+		 the most costly scenario having no observation (right).
 		\label{fig:pop}
 	}
 	{}
@@ -980,7 +1004,6 @@ A comparison of the worst-case expected cost decrease condition (\ref{eq:cost_de
 The solid lines indicate regions where (\ref{eq:cost_decrease_cond}) is satisfied and dotted regions indicate that (\ref{eq:cost_decrease_cond}) is not satisfied.
 Note that (\ref{eq:cost_decrease_cond}) is a sufficient but not necessary condition.
 Both plots were generated using the reformulations to (\ref{eq:cost_decrease_cond}) provided in Corollary \ref{cor:cost_decrease_trick}.
-
 The most costly scenario, shown in green in all plots, is not visible in Figure \ref{fig:value} because an additional observation will increase the worst-case expected cost.
 Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.
 
@@ -991,8 +1014,8 @@ Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.
 		\includegraphics*[width=.45\textwidth]{images/burg_decrease_condition}%
 	}
 	{
-		Decrease in the worst-case expected cost from an additional observation of scenarios for Modified $\chi^2$-Distance (left) and Burg Entropy (right).
-		Solid lines indicate when the cost decrease condition (\ref{eq:cost_decrease_cond}) is satisfied, while dotted lines show when an additional observation would decrease the worst-case expected cost although (\ref{eq:cost_decrease_cond}) is not satisfied.
+		Decrease in the worst-case expected cost from an additional observation  for Modified $\chi^2$-Distance (left) and Burg Entropy (right).
+		Solid lines indicate when (\ref{eq:cost_decrease_cond}) is satisfied, while dotted lines show when an additional observation decrease the worst-case expected cost although (\ref{eq:cost_decrease_cond}) is not satisfied.
 		\label{fig:value}
 	}
 	{}
@@ -1002,12 +1025,16 @@ Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.
 \section{Summary and Future Work}
 \label{sec:concl}
 
-We proposed to use the $\phi$-divergence constrained distributionally robust optimization method of \cite{bental2011robust} for two-stage stochastic linear programs with recourse, creating a two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse, denoted \plp.
-The \plp\ uses a $\phi$-divergence to define an ambiguity set of probability distributions, possibly using observed data, and optimizes the worst-case expected cost with respect to this ambiguity set.
-We provided a new classification of $\phi$-divergences that may be useful in determining which $\phi$-divergence is most appropriate in practice for different model types and decision makers.
-We provided a computationally simple method to determine if an additional sample will produce a likelihood ambiguity set that does not contain the current worst-case distribution and will result in a lower-cost solution.
-We have shown that as more data is gathered, the optimal solution and value of \plp\ converge to those of SLP-2. 
-We have also provided a Bender's decomposition-based solution algorithm for the \plp\ and used it to illustrate some of the properties of the \plp\ on a small electricity generation problem.
+We proposed to use $\phi$-divergences
+% constrained distributionally robust optimization method of \cite{bental2011robust} for two-stage stochastic linear programs with recourse, creating a two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse, denoted \plp.
+%The \plp\ uses a $\phi$-divergence 
+to define an ambiguity set of probability distributions, possibly using observed data, and optimize the worst-case expected cost with respect to this ambiguity set in a two-stage setting.
+We provided a new classification of $\phi$-divergences that can be used in determining which $\phi$-divergence is most appropriate in practice for different model types and decision makers.
+A computationally simple method is established to determine if an additional sample %will produce a likelihood ambiguity set that does not contain the current worst-case distribution and
+will result in a lower-cost solution.
+We have shown that as more data is gathered, the optimal value and solution of \plp\ converge to those of SLP-2. 
+We have also provided a Bender's decomposition-based solution algorithm to solve \plp\ efficiently and used it to illustrate some of the properties of the \plp.
+% on a small electricity generation problem.
 
 There are many interesting avenues for future work. 
 One is the multi-stage extensions of the work provided here. 
@@ -1142,8 +1169,8 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 \end{proof}
 
 \begin{proof}{\sc Proof of Theorem \ref{thm:epiconvergence}.}
-	The theorem can be proven by showing the epiconvergence of objective funtion of \plp\ to that of SLP-2.
-	To establish the epiconvergence, we need to apply the result of Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
+	The theorem can be proven by showing the epiconvergence of the objective function of \plp\ to that of SLP-2.
+	To this end, we apply Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
 	\Halmos
 \end{proof}
 
