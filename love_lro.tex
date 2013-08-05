@@ -1123,67 +1123,6 @@ Finally, it would be useful to study applications to real-world problems.
 	\end{description}
 \end{proof}
 
-\begin{proof}{\sc Proof of Example \ref{ex:cvar}}
-	First, note that for a random cost $h_\omega(x)$, $\mbox{CVaR}_\beta(h(x)) = \sup_{P \in \mathcal{P}} \{\e{PH(x)}\}$, where the risk envelope is given by
-	\[
-		\mathcal{P} = \left\{ P \left| P \leq \frac{1}{1-\beta}, \e{P} = 1, P \geq 0 \right.\right\}.
-	\]
-	This risk envelope motivates the choice of $\phi(t)$.
-	
-	Note that this $\phi$ only admits two distance values: $0$ or $\infty$.
-	Thus any choice of $\rho < \infty$ is equivalent to $\rho = 0$.
-	
-	The conjugate is
-	\[
-	\phi^*(s) = \
-		\begin{cases}
-			0 & s < 0 \\
-			\frac{1}{1-\beta} s & s \geq 0,
-		\end{cases}
-	\]
-	which results in the objective function given by
-	\begin{align*}
-		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left( \frac{h_\omega(x)-\mu}{\lambda} \right) & = \min_{\lambda \geq 0, \mu} \mu + 0\lambda + \lambda \sum_\omega q_\omega \max\left\{ 0, \frac{1}{1-\beta} \frac{h_\omega(x)-\mu}{\lambda} \right\} \\
-		& = \min_{\mu} \mu + \frac{1}{1-\beta} \sum_\omega q_\omega \max\left\{ 0, h_\omega(x)-\mu \right\} \\
-		& = \min_{\mu} \mu + \frac{1}{1-\beta} \e{[h(x)-\mu]^+},
-	\end{align*}
-	which is one definition of CVaR.
-\end{proof}
-
-\begin{proof}{\sc Proof of Example \ref{ex:cvar_expectation}}
-	Without loss of generality, let $\rho = 0$.
-	The conjugate is
-	\[
-		\phi^*(s) = 
-		\begin{cases}
-			(1-\alpha) s & s < 0 \\
-			\frac{1}{1-\beta} s & s \geq 0.
-		\end{cases}
-	\]
-	
-	This gives the problem
-	\begin{align*}
-		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) & = \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\}.
-	\end{align*}
-	Now, CVaR includes a $\e{[\cdot]^+}$ term, which can be found in the maximum formula.
-	Noting that $1-\alpha < 1 < \frac{1}{1-\beta}$, rewrite the maximum as
-	\[
-		\max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\} = (1-\alpha)(h_\omega(x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(x)-\mu \right]^+.
-	\]
-	Then working with the linear term and writing in terms of expectations we get
-	\[
-		(1-\alpha)\e{h(x)} + \min_\mu \alpha\mu + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \e{h(x)-\mu}^+
-	\]
-	which simplifies to
-	\[
-		(1-\alpha)\e{h(x)} + \alpha \min_\mu \left\{ \mu + \left(1 - \frac{\beta}{\alpha(1-\beta)+\beta}\right)^{-1} \e{h(x)-\mu}^+ \right\}
-	\]
-	and thus
-	\[
-		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)]. \qedhere
-	\]
-\end{proof}
-
 \begin{proof}{\sc Proof of Theorem \ref{thm:value}.}
 	For ease of exposition, we assume $\phi^*$ is differentiable, although the proof works without this assumption with little modification.	
 	We begin this proof with the change of variables $\kappa = \frac{\lambda}{N}$, and note that $N\rho_N = \rho_0$ is constant.	
@@ -1269,6 +1208,68 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 	To this end, we apply Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
 \end{proof}
 
+\section{Derivation of Some Special $\phi$-Divergences}
+
+\begin{proof}{\sc Proof of Example \ref{ex:cvar}}
+	First, note that for a random cost $h_\omega(x)$, $\mbox{CVaR}_\beta(h(x)) = \sup_{P \in \mathcal{P}} \{\e{PH(x)}\}$, where the risk envelope is given by
+	\[
+		\mathcal{P} = \left\{ P \left| P \leq \frac{1}{1-\beta}, \e{P} = 1, P \geq 0 \right.\right\}.
+	\]
+	This risk envelope motivates the choice of $\phi(t)$.
+	
+	Note that this $\phi$ only admits two distance values: $0$ or $\infty$.
+	Thus any choice of $\rho < \infty$ is equivalent to $\rho = 0$.
+	
+	The conjugate is
+	\[
+	\phi^*(s) = \
+		\begin{cases}
+			0 & s < 0 \\
+			\frac{1}{1-\beta} s & s \geq 0,
+		\end{cases}
+	\]
+	which results in the objective function given by
+	\begin{align*}
+		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left( \frac{h_\omega(x)-\mu}{\lambda} \right) & = \min_{\lambda \geq 0, \mu} \mu + 0\lambda + \lambda \sum_\omega q_\omega \max\left\{ 0, \frac{1}{1-\beta} \frac{h_\omega(x)-\mu}{\lambda} \right\} \\
+		& = \min_{\mu} \mu + \frac{1}{1-\beta} \sum_\omega q_\omega \max\left\{ 0, h_\omega(x)-\mu \right\} \\
+		& = \min_{\mu} \mu + \frac{1}{1-\beta} \e{[h(x)-\mu]^+},
+	\end{align*}
+	which is one definition of CVaR.
+\end{proof}
+
+\begin{proof}{\sc Proof of Example \ref{ex:cvar_expectation}}
+	Without loss of generality, let $\rho = 0$.
+	The conjugate is
+	\[
+		\phi^*(s) =
+		\begin{cases}
+			(1-\alpha) s & s < 0 \\
+			\frac{1}{1-\beta} s & s \geq 0.
+		\end{cases}
+	\]
+	
+	This gives the problem
+	\begin{align*}
+		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) & = \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\}.
+	\end{align*}
+	Now, CVaR includes a $\e{[\cdot]^+}$ term, which can be found in the maximum formula.
+	Noting that $1-\alpha < 1 < \frac{1}{1-\beta}$, rewrite the maximum as
+	\[
+		\max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\} = (1-\alpha)(h_\omega(x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(x)-\mu \right]^+.
+	\]
+	Then working with the linear term and writing in terms of expectations we get
+	\[
+		(1-\alpha)\e{h(x)} + \min_\mu \alpha\mu + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \e{h(x)-\mu}^+
+	\]
+	which simplifies to
+	\[
+		(1-\alpha)\e{h(x)} + \alpha \min_\mu \left\{ \mu + \left(1 - \frac{\beta}{\alpha(1-\beta)+\beta}\right)^{-1} \e{h(x)-\mu}^+ \right\}
+	\]
+	and thus
+	\[
+		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)]. \qedhere
+	\]
+\end{proof}
 
 \section*{Acknowledgements}
 Support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
