@@ -321,6 +321,8 @@ Some of these properties help with our specialized solution method and we refer 
 	\plp\ is equivalent to minimizing a coherent risk measure.
 \end{property}
 
+The proof of Property \ref{property:coherent_risk_measure} is given in the appendix.
+
 Note that being a coherent risk measure implies that \plp\ is a convex problem.
 The convexity of LRO was also noted in \cite{wang2010likelihood}.
 
@@ -358,8 +360,8 @@ Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detaile
 The literature on $\phi$-divergences provides some insight on choosing a reasonable asymptotic value of $\rho$ in the data-driven setting. 
 When $\phi$ is twice continuously differentiable around $1$ with $\phi^{\prime \prime}(1)>0$, Theorem 3.1 of \cite{pardo2005statistical} shows that the statistic $T^\phi_N(q^N,\qtrue) = \frac{2N}{\phi''(1)} \sum_{\omega=1}^n \qtrue_\omega \phi\left(\frac{q^N_\omega}{\qtrue_\omega}\right)$ converges in distribution to a $\chi^2$-distribution with $n-1$ degrees of freedom, where $q^N$ denotes the empirical distribution ($q^N_\omega = N_\omega/N$), and $\qtrue$ denotes the underlying true distribution.
 Most $\phi$-divergences in Table~\ref{tb:phi_definitions} satisfy this differentiability condition.
-\cite{bental2011robust} then use this result to suggest the asymptotic value
-Ben-Tal \begin{equation} \label{eq:asymptotic_rho}
+Ben-Tal \cite{bental2011robust} then use this result to suggest the asymptotic value
+\begin{equation} \label{eq:asymptotic_rho}
 	\rho = \frac{\phi''(1)}{2N} \chi^2_{n-1,1-\alpha},
 \end{equation}
 where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
@@ -502,6 +504,7 @@ The next proposition makes this statement rigorous.
 \label{ssec:special_phi}
 
 The class of $\phi$-divergence constrained problems includes some interesting special cases, which we document here, followed by a discussion of their suppressing and popping behavior.
+Derivations of these special cases are given in the appendix.
 
 \begin{example}{(CVaR).}
 	\label{ex:cvar}
