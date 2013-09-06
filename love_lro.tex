@@ -1,22 +1,66 @@
-\documentclass[11pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Author template for Operations Reseacrh (opre) for articles with no e-companion (EC)
+%% Mirko Janc, Ph.D., INFORMS, mirko.janc@informs.org
+%% ver. 0.95, December 2010
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[opre,blindrev]{informs3}
+\documentclass[opre,nonblindrev]{informs3} % current default for manuscript submission
 
-\usepackage[margin=1in]{geometry}
+\OneAndAHalfSpacedXI % current default line spacing
+%%\OneAndAHalfSpacedXII
+%%\DoubleSpacedXII
+%%\DoubleSpacedXI
+
+% If hyperref is used, dvi-to-ps driver of choice must be declared as
+%   an additional option to the \documentclass. For example
+%\documentclass[dvips,opre]{informs3}      % if dvips is used
+%\documentclass[dvipsone,opre]{informs3}   % if dvipsone is used, etc.
+
+%%% OPRE uses endnotes. If you do not use them, put a percent sign before
+%%% the \theendnotes command. This template does show how to use them.
+\usepackage{endnotes}
+\let\footnote=\endnote
+\let\enotesize=\normalsize
+\def\notesname{Endnotes}%
+\def\makeenmark{$^{\theenmark}$}
+\def\enoteformat{\rightskip0pt\leftskip0pt\parindent=1.75em
+  \leavevmode\llap{\theenmark.\enskip}}
+
+% Private macros here (check that there is no clash with the style)
+
+% Natbib setup for author-year style
+\usepackage{natbib}
+ \bibpunct[, ]{(}{)}{,}{a}{}{,}%
+ \def\bibfont{\small}%
+ \def\bibsep{\smallskipamount}%
+ \def\bibhang{24pt}%
+ \def\newblock{\ }%
+ \def\BIBand{and}%
+
+%% Setup of theorem styles. Outcomment only one.
+%% Preferred default is the first option.
+\TheoremsNumberedThrough     % Preferred (Theorem 1, Lemma 1, Theorem 2)
+%\TheoremsNumberedByChapter  % (Theorem 1.1, Lema 1.1, Theorem 1.2)
+\ECRepeatTheorems
+
+%% Setup of the equation numbering system. Outcomment only one.
+%% Preferred default is the first option.
+\EquationsNumberedThrough    % Default: (1), (2), ...
+%\EquationsNumberedBySection % (1.1), (1.2), ...
+
+% In the reviewing and copyediting stage enter the manuscript number.
+%\MANUSCRIPTNO{} % When the article is logged in and DOI assigned to it,
+                 %   this manuscript number is no longer necessary
+
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{amsthm}
 \usepackage{setspace}
 \usepackage{paralist}
 \usepackage{graphicx}
-\usepackage{subfig}
 \usepackage{url}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{multicol}
-
-\author{David~Love and G\"{u}zin~Bayraksan}
-
-\title{Phi-Divergence Constrained Ambiguous Stochastic Programs}
-\date{}
 
 % Frequently used general mathematics
 \newcommand{\R}{{\mathbb{R}}}
@@ -31,7 +75,7 @@
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\p}[1]{\P \left[ #1 \right]}
 \newcommand{\e}[1]{\E \left[ #1 \right]}
-\newcommand{\ee}[2]{\E_{#1} \left[ #2 \right]}
+% \newcommand{\ee}[2]{\E_{#1} \left[ #2 \right]}
 
 % Definitions of variables
 \newcommand{\X}{X}
@@ -59,41 +103,107 @@
 
 % Useful mathematics functions
 \newcommand{\keywords}[1]{\par\noindent\enspace\ignorespaces\textbf{Keywords:} #1}
-\DeclareMathOperator*{\argmin}{argmin}
-\DeclareMathOperator*{\argmax}{argmax}
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-
-\theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{property}[theorem]{Property}
-\newtheorem{example}[theorem]{Example}
+% \newcommand{\keywords}[1]{\par\addvspace\baselineskip\noindent\keywordname\enspace\ignorespaces #1}
+% \DeclareMathOperator*{\argmin}{argmin}
+% \theoremstyle{plain}
+% \newtheorem{theorem}{Theorem}
+% \newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{proposition}[theorem]{Proposition}
+% \newtheorem{corollary}[theorem]{Corollary}
+% 
+% \theoremstyle{definition}
+% \newtheorem{definition}[theorem]{Definition}
+% 
+% \theoremstyle{remark}
+% \newtheorem{remark}[theorem]{Remark}
+\newtheorem{property}{Property}
 
 \newcommand{\st}{\mbox{s.t.}}
 
 % Naming shortcuts
 \newcommand{\plp}{$\phi$LP-2}
 
+\bibliographystyle{ijocv081}
+
+%%%%%%%%%%%%%%%%
 \begin{document}
+%%%%%%%%%%%%%%%%
 
-\maketitle
+% Outcomment only when entries are known. Otherwise leave as is and 
+%   default values will be used.
+%\setcounter{page}{1}
+%\VOLUME{00}%
+%\NO{0}%
+%\MONTH{Xxxxx}% (month or a similar seasonal id)
+%\YEAR{0000}% e.g., 2005
+%\FIRSTPAGE{000}%
+%\LASTPAGE{000}%
+%\SHORTYEAR{00}% shortened year (two-digit)
+%\ISSUE{0000} %
+%\LONGFIRSTPAGE{0001} %
+%\DOI{10.1287/xxxx.0000.0000}%
 
-\begin{abstract}
+% Author's names for the running heads
+% Sample depending on the number of authors;
+% \RUNAUTHOR{Jones}
+% \RUNAUTHOR{Jones and Wilson}
+% \RUNAUTHOR{Jones, Miller, and Wilson}
+% \RUNAUTHOR{Jones et al.} % for four or more authors
+% Enter authors following the given pattern:
+\RUNAUTHOR{Love and Bayraksan}
+
+% Title or shortened title suitable for running heads. Sample:
+% \RUNTITLE{Bundling Information Goods of Decreasing Value}
+% Enter the (shortened) title:
+\RUNTITLE{Phi-Divergence Constrained Ambiguous Stochastic Programs}
+
+% Full title. Sample:
+% \TITLE{Bundling Information Goods of Decreasing Value}
+% Enter the full title:
+\TITLE{Phi-Divergence Constrained Ambiguous Stochastic Programs}
+
+% Block of authors and their affiliations starts here:
+% NOTE: Authors with same affiliation, if the order of authors allows, 
+%   should be entered in ONE field, separated by a comma. 
+%   \EMAIL field can be repeated if more than one author
+\ARTICLEAUTHORS{%
+\AUTHOR{David Love}
+\AFF{University of Arizona, \EMAIL{dlove@email.arizona.edu}, \url{http://math.arizona.edu/~dlove/}}
+\AUTHOR{G\"{u}zin~Bayraksan}
+\AFF{The Ohio State University, \EMAIL{bayraksan.1@osu.edu}, \url{http://www-iwse.eng.ohio-state.edu/biosketch\_GBayraksan.cfm}}
+% Enter all authors
+} % end of the block
+
+\ABSTRACT{%
 	This paper investigates the properties of $\phi$-divergence constrained ambiguous stochastic programs.
 	$\phi$-divergences (e.g., Kullback-Leibler, $\chi^2$ distance, etc.) provide a natural way to create an ambiguity set of distributions that are centered around a nominal distribution, which is often determined by collected observations. 
 	We present a classification of $\phi$-divergences to elucidate their use for models with different properties and different sources of data.
 	A condition of assessing the value of collecting additional data is derived and we demonstrate convergence of the $\phi$-divergence-based ambiguous program to the associated non-ambiguous stochastic program.
 	A decomposition-based solution algorithm to solve the resulting model is given.
-\end{abstract}
+}%
 
-\keywords{Ambiguous stochastic programming, phi-divergences, distributionally robust optimization, data driven methods}
+% Sample 
+%\KEYWORDS{deterministic inventory theory; infinite linear programming duality; 
+%  existence of optimal policies; semi-Markov decision process; cyclic schedule}
+
+% Fill in data. If unknown, outcomment the field
+\KEYWORDS{Ambiguous stochastic programming, distributionally robust optimization, phi-divergences, data-driven optimization}
 %Optimization under uncertainty, water resources management,  ambiguous stochastic programming, robust optimization, environmental sustainability}
+%\HISTORY{}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Samples of sectioning (and labeling) in IJOC
+% NOTE: (1) \section and \subsection do NOT end with a period
+%       (2) \subsubsection and lower need end punctuation
+%       (3) capitalization is as shown (title style).
+%
+%\section{Introduction.}\label{intro} %%1.
+%\subsection{Duality and the Classical EOQ Problem.}\label{class-EOQ} %% 1.1.
+%\subsection{Outline.}\label{outline1} %% 1.2.
+%\subsubsection{Cyclic Schedules for the General Deterministic SMDP.}
+%  \label{cyclic-schedules} %% 1.2.1
+%\section{Problem Description.}\label{problemdescription} %% 2.
 
 \section{Introduction and Motivation}
 
@@ -112,18 +222,18 @@ Furthermore, many $\phi$-divergences are commonly used in statistics (e.g, the $
 \subsection{Related Literature}
 
 %\plp\ is an ambiguous stochastic program that is modeled on a two-stage minimax problem.
-Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{zackova1966minimax,dupacova_87}. \cite{shapiro2002minimax} and \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
+Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \citep{zackova1966minimax,dupacova_87}. \cite{shapiro2002minimax} and \cite{shapiro2004class} developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution.
 
 In recent years, there has been a growing interest in distributionally robust methods.
-Erdo{\u{g}}an and Iyengar \cite{erdogan2006ambiguous} study chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
-Calafiore and Campi \cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later Calafiore and El Ghaoui \cite{calafiore2006distributionally} develop a method for converting distributionally robust chance constraints into second-order cone constraints.
-Jiang and Guan \\cite{jiang2012data} develop an exact approach to solving data-driven chance constrained programs.
-Pflug and Wozabal \cite{pflug2007ambiguity} develop a data-driven method for solving a portfolio selection problem using the Kantorovich distance to define the set of distributions.
-Delage and Ye \cite{delage2010distributionally} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
+\cite{erdogan2006ambiguous} study chance-constrained stochastic programs where the set of distributions considered is determined by the Prohorov metric.
+\cite{calafiore2005uncertain} develop a data-driven method for generating feasible solutions to chance constrained problems, and later \cite{calafiore2006distributionally} develop a method for converting distributionally robust chance constraints into second-order cone constraints.
+\cite{jiang2012data} develop an exact approach to solving data-driven chance constrained programs.
+\cite{pflug2007ambiguity} develop a data-driven method for solving a portfolio selection problem using the Kantorovich distance to define the set of distributions.
+\cite{delage2010distributionally} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
 
-Three recent papers by Wang, Glynn and Ye \cite{wang2010likelihood}, Calafiori \cite{calafiore2007ambiguous}, and Hu and Hong \cite{hukullback} provide similar studies using a specific $\phi$-divergence, described in Section \ref{sec:phi_divergences}, that is defined by the Kullback-Leibler divergence.
+Three recent papers by \cite{wang2010likelihood}, \cite{calafiore2007ambiguous}, and \cite{hukullback} provide similar studies using a specific $\phi$-divergence, described in Section \ref{sec:phi_divergences}, that is defined by the Kullback-Leibler divergence.
 Both \cite{wang2010likelihood} and \cite{hukullback} produce dual problems similar to that presented in \cite{bental2011robust} and used here.
-Hu and Hong \cite{hukullback} differs from this work and the others by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
+\cite{hukullback} differs from this work and the others by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
 Additionally, \cite{klabjan2013robust} uses the $\chi^2$ distance, another $\phi$-divergence, to define an uncertain demand distribution for a stochastic lot-sizing problem using historical data.
 Our work unites these previous papers and provides insight into conditions where each $\phi$-divergence should be used and the behavior of the optimization problem as more data is gathered.
 
@@ -169,8 +279,8 @@ All proofs are provided in the Appendix.
 \label{sec:phi_divergences}
 
 In this section we define the concept of a $\phi$-divergence, and describe some of the properties that will be used through the remainder of the paper.
-Pardo \cite{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
-Many results in this section can be also found in Ben-Tal et.\ al.\ \cite{bental2011robust}.
+\cite{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
+Many results in this section can be also found in \citep{bental2011robust}.
 
 $\phi$-divergences are used in statistics to measure the ``distance'' between two distributions. 
 In the discrete case, $\phi$-divergences can be used generally to measure the distance between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$, and specifically when $p$ and $q$ are probability vectors; i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
@@ -192,7 +302,7 @@ A $\phi$-divergence has an adjoint, defined by
 \begin{equation} \label{eq:adjoint}
 	\tilde{\phi}(t) = t \phi\left(\frac{1}{t}\right),
 \end{equation}
-which satisfies all criteria for a $\phi$-divergence \cite{bental1991certainty}, and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
+which satisfies all criteria for a $\phi$-divergence \citep{bental1991certainty}, and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
 Divergences that are symmetric with respect to the input vectors are known as self-adjoint.
 
 The problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
@@ -207,14 +317,18 @@ Most of these common divergences are widely used in statistics and information t
 In Section \ref{ssec:special_phi}, we present other $\phi$-divergences that assign a distance of either $0$ or $\infty$, which result in commonly used risk models.
 Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' that is somewhat different from the others.
 The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy the normalizing condition $\phi(t) \geq 0$.
-This divergence is included because Wang et al.\ \cite{wang2010likelihood} use it to formulate a distributionally robust newsvendor problem so that the ambiguity set of distributions have a sufficiently high empirical likelihood. 
+This divergence is included because \cite{wang2010likelihood} use it to formulate a distributionally robust newsvendor problem so that the ambiguity set of distributions have a sufficiently high empirical likelihood. 
 They refer to this as the Likelihood Robust Optimization. 
 We also note that \cite{calafiore2007ambiguous}, \cite{hukullback}, and \cite{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler (KL) divergence''---reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
 In this paper, $q$ denotes the nominal distribution. 
 
 \begin{table}
-	\centering
-	\begin{tabular}{lccccc}
+	\TABLE
+	{
+		Definitions of some common $\phi$-divergences, along with their adjoints $\tilde{\phi}(t)$ and conjugates $\phi^*(s)$
+		\label{tb:phi_definitions}
+	}
+	{\begin{tabular}{lccccc}
 		\hline \\
 		Divergence                        & $\phi(t)$          & $\tilde{\phi}(t)$               & $\phi(t), t \geq 0$   & $I_\phi(p,q)$     & $\phi^*(s)$ \\
 		\hline
@@ -228,11 +342,8 @@ In this paper, $q$ denotes the nominal distribution.
 		Variation Distance                & $\phi_v$           & $\phi_v$                        & $|t-1|$               & $\sum |p_\omega - q_\omega|$                               & $\begin{cases} -1 & s \leq -1 \\ s & -1 \leq s \leq 1 \end{cases}$ \\
 		Hellinger Distance                & $\phi_h$           & $\phi_h$                        & $(\sqrt{t} - 1)^2$    & $\sum (\sqrt{p_\omega} - \sqrt{q_\omega})^2$               & $\frac{s}{1-s},\ s < 1$ \\
 	\hline
-	\end{tabular}
-	\caption{
-		Definitions of some common $\phi$-divergences, along with their adjoints $\tilde{\phi}(t)$ and conjugates $\phi^*(s)$
-	}
-	\label{tb:phi_definitions}
+	\end{tabular}}
+	{}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -291,7 +402,7 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 	& \lambda \geq 0, \nonumber
 \end{align}
 where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}), $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
-Note that some $\phi$, such as the J-Divergence, have no closed form representation of $\phi^*$, but can be expressed as the sum of other divergences---Burg Entropy and KL divergence---which allows the dual to be formed; see \cite{bental2011robust} for details.
+Note that some $\phi$, such as the J-Divergence, have no closed form representation of $\phi^*$, but can be expressed as the sum of other divergences---Burg Entropy and KL divergence---which allows the dual to be formed; see \citep{bental2011robust} for details.
 Theorem 1 of \cite{bental2011robust} contains a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
 Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 Also note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
@@ -334,15 +445,19 @@ The convexity of LRO was also noted in \cite{wang2010likelihood}.
 \begin{property}
 	\label{property:primal_dual_relation}
 	The worst-case distribution can be calculated with the equations
-	\begin{align} 
-		& \frac{p_\omega}{q_\omega} \in \partial \phi^*\left(s_\omega\right) \label{eq:p_worst} \\
-		& \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho \nonumber \\
-		& \sum_{\omega=1}^n p_\omega = 1. \nonumber
-	\end{align}
+%	\begin{align} 
+	\begin{equation}\label{eq:p_worst}
+		\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(s_\omega\right), \ \ \ \ \ \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho, \ \ \ \ \ \sum_{\omega=1}^n p_\omega = 1.
+	\end{equation}		
+%		\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(s_\omega\right)
+% \label{eq:p_worst}
+%		& \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho \nonumber \\
+%		& \sum_{\omega=1}^n p_\omega = 1. \nonumber
+%	\end{align}
 \end{property}
 
-We now discuss these properties. A coherent risk measure is defined in \cite{rockafellar2007coherent}, which shows that minimizing a coherent risk measure over a polyhedron implies that \plp\ is a convex problem.
-The convexity of \plp\ was also noted in \cite{bental2011robust}.
+We now discuss these properties. A coherent risk measure is defined in \citep{rockafellar2007coherent}, which shows that minimizing a coherent risk measure over a polyhedron implies that \plp\ is a convex problem.
+The convexity of \plp\ was also noted in \citep{bental2011robust}.
 In Section \ref{ssec:special_phi}, we present special $\phi$-divergences that result in CVaR, or a convex combination of expectation with CVaR or the worst-case scenario. 
 Properties \ref{property:time_structure} and \ref{property:primal_dual_relation} help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
 The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(s_\omega\right)$, aiding in our decomposition-based solution method. 
@@ -360,12 +475,12 @@ Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detaile
 The literature on $\phi$-divergences provides some insight on choosing a reasonable asymptotic value of $\rho$ in the data-driven setting. 
 When $\phi$ is twice continuously differentiable around $1$ with $\phi^{\prime \prime}(1)>0$, Theorem 3.1 of \cite{pardo2005statistical} shows that the statistic $T^\phi_N(q^N,\qtrue) = \frac{2N}{\phi''(1)} \sum_{\omega=1}^n \qtrue_\omega \phi\left(\frac{q^N_\omega}{\qtrue_\omega}\right)$ converges in distribution to a $\chi^2$-distribution with $n-1$ degrees of freedom, where $q^N$ denotes the empirical distribution ($q^N_\omega = N_\omega/N$), and $\qtrue$ denotes the underlying true distribution.
 Most $\phi$-divergences in Table~\ref{tb:phi_definitions} satisfy this differentiability condition.
-Ben-Tal \cite{bental2011robust} then use this result to suggest the asymptotic value
+\cite{bental2011robust} then use this result to suggest the asymptotic value
 \begin{equation} \label{eq:asymptotic_rho}
 	\rho = \frac{\phi''(1)}{2N} \chi^2_{n-1,1-\alpha},
 \end{equation}
 where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
-For corrections for small sample sizes and more details, we refer the readers to \cite{pardo2005statistical} and \cite{bental2011robust}. 
+For corrections for small sample sizes and more details, we refer the readers to \citep{pardo2005statistical} and \citep{bental2011robust}. 
 
 We are now ready to present the main contributions of this paper. 
 
@@ -418,22 +533,23 @@ Note that $\phi$ can suppress scenarios if and only if its adjoint $\tilde{\phi}
 This means that self-adjoint $\phi$-divergences are either capable of both popping and suppressing scenarios or capable of neither.
 
 \begin{table}
-	\centering
-	\begin{tabular}{l|p{.33\textwidth}p{.33\textwidth}}
+	\TABLE
+	{
+		Examples of $\phi$-divergences fitting into each category.
+		The number in parentheses under the ``Can Suppress Scenarios'' column denotes the subcategory detailed in Section \ref{ssec:suppress}.
+		\label{tb:phi_categories}
+	}
+	{\begin{tabular}{l|p{.33\textwidth}p{.33\textwidth}}
 		 & Can Suppress Scenarios & Cannot Suppress Scenarios \\
-		 \hline
+		 \hline 
 		 Can Pop Scenarios %
 			& \parbox{.33\textwidth}{Hellinger Distance (2),\\Variation Distance (1)} %
 			& \parbox{.33\textwidth}{Burg Entropy,\\$\chi^2$-Distance} \smallskip \\
 		 Cannot Pop Scenarios %
 			& \parbox{.33\textwidth}{Kullback-Leibler Divergence (2),\\Modified $\chi^2$-Distance (1)} %
 			& \parbox{.33\textwidth}{J-Divergence}
-	\end{tabular}
-	\caption{
-		Examples of $\phi$-divergences fitting into each category.
-		The number in parentheses under the ``Can Suppress Scenarios'' column denotes the subcategory detailed in Section \ref{ssec:suppress}.
-	}
-	\label{tb:phi_categories}
+	\end{tabular}}
+	{}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -736,44 +852,57 @@ The master problem is given by
 \end{align}
 where \eqref{eq:objcut} are the objective cuts, (\ref{eq:feascut}) are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}) if $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} < \infty$, and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
 
-The proposed algorithm is shown in Figure \ref{fig:algorithm}. 
+The proposed algorithm is shown in Algorithm 1. 
 The modified Bender's decomposition presented here has the following features:
 \begin{inparaenum}[\itshape (i\upshape)]
 	\item it solves the original linear second stage problems, rather than nonlinear subproblems, and uses them to quickly generate subgradients of the nonlinear term $\lambda \phi^*\left(\tfrac{h_\omega(\x) - \mu}{\lambda}\right)$, 
 	\item exchanges the polyhedral $\phi$-divergence constraints $\tfrac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for a (potentially much) smaller set of easily generated feasibility cuts, and thus
-	\item  maintains linear master and subproblems.
+	\item  maintains linear master and subproblems.\medskip
 \end{inparaenum}
 
-\begin{figure}
-	\centering
+
+%\begin{figure}		
+%\label{fig:algorithm}
+%\FIGURE
+\begin{center}
+\begin{minipage}{.61\textwidth}
+	\TableSpaced
+	\hrule
 	\vspace{1pt}
-		\begin{algorithmic}
-			\State Initialize $z_l = -\infty, z_u = \infty$
-			\State Solve master problem (\ref{eq:master_problem}) with $\theta = 0$ to generate $\x$
-			\State Solve all second-stage scenario subproblems (\ref{eq:slp_second_stage}) to obtain $h_\omega(\x)$
-			\State Initialize $\lambda \gets 1$ and $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
-			\State Generate initial objective cut
-			\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
-				\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
-				\State Solve subproblems (\ref{eq:slp_second_stage}) to obtain  $h_\omega(\x)$
-				\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h_\omega(\x,\lambda,\mu)$
-				\If{$\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$}
-					\State Generate feasibility cut
-					\State Find $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
-				\Else
-					\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
-				\EndIf
-				\State Generate objective cut
-				\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
-					\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
-					\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
-					\State $p_\omega \gets \phi^{*\prime}(\tfrac{h_\omega(\x) - \mu}{\lambda})$ for $\omega = 1, \dots, n$
-				\EndIf
-			\EndWhile
-		\end{algorithmic}
-	\caption{Decomposition algorithm for solving \plp}
-	\label{fig:algorithm}
-\end{figure}
+    {\bf \small Algorithm 1.\ \ Decomposition algorithm for solving \plp}
+	\hrule
+	\vspace{1pt}
+	\begin{algorithmic}
+		\State Initialize $z_l = -\infty, z_u = \infty$
+		\State Solve master problem (\ref{eq:master_problem}) with $\theta = 0$ to generate $\x$
+		\State Solve all second-stage scenario subproblems (\ref{eq:slp_second_stage}) to obtain $h_\omega(\x)$
+		\State Initialize $\lambda \gets 1$ and $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
+		\State Generate initial objective cut
+		\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
+			\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
+			\State Solve subproblems (\ref{eq:slp_second_stage}) to obtain  $h_\omega(\x)$
+			\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h_\omega(\x,\lambda,\mu)$
+			\If{$\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$}
+				\State Generate feasibility cut
+				\State Find $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
+			\Else
+				\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
+			\EndIf
+			\State Generate objective cut
+			\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
+				\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
+				\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
+				\State $p_\omega \gets \phi^{*\prime}(\tfrac{h_\omega(\x) - \mu}{\lambda})$ for $\omega = 1, \dots, n$
+			\EndIf
+		\EndWhile
+	\end{algorithmic}
+	\hrule
+\end{minipage}
+\end{center}
+%{}
+%{}
+%\end{figure}
+
 
 \subsection{Objective Cuts}
 
@@ -850,7 +979,7 @@ This technique is especially useful for the KL divergence because $e^s$ overflow
 To illustrate the techniques discussed in this paper, we applied the decomposition method from Section \ref{sec:soln_algorithm} to a small electricity generation problem.
 On this problem, we demonstrate the popping and suppressing behavior described in Section \ref{sec:classification} for several $\phi$-divergences and show how the worst-case cost decrease condition (\ref{eq:cost_decrease_cond}) compares to the actual cost decrease when an additional sample of each scenario is taken.
 
-We modified an SLP-2 test problem, denoted APL1P, which is a power expansion problem with 5 independent random variables and 1280 realizations \cite{infanger1992monte}.
+We modified an SLP-2 test problem, denoted APL1P, which is a power expansion problem with 5 independent random variables and 1280 realizations \citep{infanger1992monte}.
 To clearly demonstrate how the worst-case distribution changes with $\rho$ and especially to demonstrate suppressing and popping behavior, we took 6 unique samples from APL1P to form the \plp. 
 We denote the resulting problem as $\phi$APL1P. 
 The first-stage determines the capacity to be built for two generators and the generators are operated under uncertain demands and availability of the generators in the second stage.
@@ -874,8 +1003,12 @@ The total costs are similar except for the Burg entropy with popping, which is s
 
 
 \begin{table}
-	\centering
-	\begin{tabular}{cc|c|cccccc}
+	\TABLE
+	{
+		Numerical results of $\phi$APL1P for various divergences.
+		\label{tb:numerical_results}
+	}
+	{\begin{tabular}{cc|c|cccccc}
 		$\phi$ & $\rho$ & Cost & \multicolumn{6}{c}{Worst-Case Distribution} \\
 		\hline
 		$\phi_{m\chi^2}$ &  1.845  & 30735 & 0.1353 & 0.6354 & 0.2293 & 0      & 0      & 0 \\
@@ -883,11 +1016,8 @@ The total costs are similar except for the Burg entropy with popping, which is s
 		$\phi_b$         &  0.9225 & 30714 & 0.0636 & 0.7751 & 0.0768 & 0.0253 & 0.0308 & 0.0285 \\
 		\hline
 		$\phi_b$         &  1.107  & 29775 & 0.1065 & 0.6273 & 0.1311 & 0.0402 & 0.0494 & 0.0455
-	\end{tabular}
-	\caption{
-		Numerical results of $\phi$APL1P for various divergences.
-	}
-	\label{tb:numerical_results}
+	\end{tabular}}
+	{}
 \end{table}
 
 \subsection{Illustrations of Popping and Suppressing}
@@ -910,24 +1040,33 @@ Notice, in particular, that the probability of the most costly scenario becomes 
 Other divergences that can pop but not suppress look qualitatively similar.
 
 \begin{figure}
-	\includegraphics*[width=.45\textwidth]{images/mchi2}%
-	\includegraphics*[width=.45\textwidth]{images/kl}%
-	\caption{
-		Examples of distributions that can suppress: Modified $\chi^2$ distance (left; one-at-a-time suppression) and KL Divergence (right; simultaneous suppression).
+	\FIGURE
+	{%
+		\includegraphics*[width=.45\textwidth]{images/mchi2}%
+		\includegraphics*[width=.45\textwidth]{images/kl}%
 	}
-	\label{fig:suppress}
+	{
+		Examples of distributions that can suppress: Modified $\chi^2$ distance (left; one-at-a-time suppression) and KL Divergence (right; simultaneous suppression).
+		%Notice that the Modified $\chi^2$ distance suppresses scenarios one at a time, while the Kullback-Leibler Divergence suppresses all lower-cost scenarios simultaneously.
+		\label{fig:suppress}
+	}
+	{}
 \end{figure}
 
 
-\begin{figure}
-	\includegraphics*[width=.42\textwidth]{images/burg}%
-	\includegraphics*[width=.42\textwidth]{images/burg_zero}%
-	\caption{
+\begin{figure}[h]
+	\FIGURE
+	{%
+		\includegraphics*[width=.42\textwidth]{images/burg}%
+		\includegraphics*[width=.42\textwidth]{images/burg_zero}%
+	}
+	{
 		Example of a distribution that can pop---the Burg entropy: 
 		all scenarios have a single observation (left); 
 		 the most costly scenario having no observation (right).
+		\label{fig:pop}
 	}
-	\label{fig:pop}
+	{}
 \end{figure}
 
 \subsection{Illustration of Value of Data}
@@ -941,13 +1080,17 @@ The most costly scenario, shown in green in all plots, is not visible in Figure 
 Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.
 
 \begin{figure}
-	\includegraphics*[width=.45\textwidth]{images/mchi2_decrease_condition}%
-	\includegraphics*[width=.45\textwidth]{images/burg_decrease_condition}%
-	\caption{
+	\FIGURE
+	{%
+		\includegraphics*[width=.45\textwidth]{images/mchi2_decrease_condition}%
+		\includegraphics*[width=.45\textwidth]{images/burg_decrease_condition}%
+	}
+	{
 		Decrease in the worst-case expected cost from an additional observation  for Modified $\chi^2$-Distance (left) and Burg Entropy (right).
 		Solid lines indicate when (\ref{eq:cost_decrease_cond}) is satisfied, while dotted lines show when an additional observation decrease the worst-case expected cost although (\ref{eq:cost_decrease_cond}) is not satisfied.
+		\label{fig:value}
 	}
-	\label{fig:value}
+	{}
 \end{figure}
 
 \subsection{Generalized Network Water Model} 
@@ -1012,7 +1155,7 @@ We applied the decomposition-based solution algorithm presented in Section \ref{
 
 \subsection{Computational Results}
 
-Figure \ref{fig:worst_case} shows how the worst-case distribution changes with $\gamma'$.
+Figure \ref{fig:water_worst_case} shows how the worst-case distribution changes with $\gamma'$.
 When $\gamma'$ is close to $1$, we use the maximum likelihood distribution, which has equal $\tfrac{1}{4}$ probabilities on each of the four scenarios.
 As $\gamma'$ is decreased, the ambiguity set increases, and the worst-case distribution used by \plp\ changes.
 It gives higher than $\tfrac{1}{4}$ probability to the two high-population scenarios and lower than $\tfrac{1}{4}$ probability to the two low-population scenarios, making the solution more robust to costly scenarios.
@@ -1020,27 +1163,25 @@ Note that the scenarios fall into two similar pairs because the cost of each sce
 A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation) in an effort to meet demands in a least-costly way.
 
 \begin{figure}
-	\centering
-	\subfloat[][Worst-case distribution]{
-		\includegraphics[width=.45\textwidth]{images/worst_case_probability}
-		\label{fig:worst_case}
-	}%
-	\subfloat[][Probability of cost decrease]{
-		\includegraphics[width=.45\textwidth]{images/water_prob_decrease}
-		\label{fig:water_prob_decrease}
+	\FIGURE
+	{%
+		\includegraphics*[width=.45\textwidth]{images/worst_case_probability}%
+		\includegraphics*[width=.45\textwidth]{images/water_prob_decrease}%
 	}
-	\caption{%
-		(a) Worst-case distribution for the likelihood robust water allocation problem.
-		(b) Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.
+	{
+		Left: Worst-case distribution for the likelihood robust water allocation problem.
+		Right: Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.
 		The red line shows the upper bound probability $\tfrac{N_L}{N}$.
+		\label{fig:water_worst_case}
 	}
+	{}
 \end{figure}
 
 %\subsection{Value of Data}
 
 The results of the water model were then analyzed with the value of data techniques from Section \ref{ssec:value}.
-Figure \ref{fig:water_prob_decrease} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
-The dashed line in Figure \ref{fig:water_prob_decrease} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
+Figure \ref{fig:water_worst_case} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
+The dashed line in Figure \ref{fig:water_worst_case} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
 Because the low-population scenarios have lower costs, an additional sample of either low-population scenario will result in a lower expected cost.
 This is what we see through most of the computed values of $\gamma'$, with $\frac{N_L}{N} = 0.5$, indicating that the sufficient condition (\ref{eq:cost_decrease_cond}) was satisfied for both low-population scenarios.
 For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero.
@@ -1076,8 +1217,19 @@ There are other divergences, probability metrics, and statistical ways to measur
 Generalizations of the results presented in this paper to other distance measures is another area of future research. 
 Finally, it would be useful to study applications to real-world problems.
 
+% Acknowledgments here
+% \ACKNOWLEDGMENT{%
+% This work has been partially supported by the National Science Foundation through grant CMMI-1345626. We also gratefully acknowledge support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
+% }% Leave this (end of acknowledgment)
 
-\appendix
+
+% Appendix here
+% Options are (1) APPENDIX (with or without general title) or 
+%             (2) APPENDICES (if it has more than one unrelated sections)
+% Outcomment the appropriate case if necessary
+%
+\begin{APPENDICES}
+
 \section{Proofs}
 
 \noindent In this appendix, we provide proofs of all propositions, theorems, and the corollary in the order they appear in the paper. 
@@ -1122,7 +1274,7 @@ Finally, it would be useful to study applications to real-world problems.
 	\begin{description}
 		\item[Case 1: $s_\omega > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
 		\item[Case 2: $s_\omega < \bar{s}$] selects $p_\omega = 0$.
-		\item[Case 3: $s_\omega = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero, and hence allows for $p_\omega > 0$ (popping).\qedhere
+		\item[Case 3: $s_\omega = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero, and hence allows for $p_\omega > 0$ (popping). \Halmos %\qedhere
 	\end{description}
 \end{proof}
 
@@ -1159,6 +1311,7 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 		\sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega > \phi^*(s^{N+1}_\omega).
 	\end{equation}
 	Finally, return to the original variables with the substitution $s^{N+1}_\omega = \frac{N}{N+1} s^*_\omega$
+	\Halmos
 \end{proof}
 
 
@@ -1179,8 +1332,8 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 			\phi^{*\prime}(s) = \
 			\begin{cases}
 				\frac{1}{2} s & s \geq 0 \\
-				0 & s < 0.
-			\end{cases} \qedhere
+				0 & s < 0.   \Halmos
+			\end{cases}
 		\]
 	\end{description}
 	\end{multicols}
@@ -1204,11 +1357,13 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{q^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{q^N_\omega+\tfrac{\epsilon}{2}}{q^N_\omega} \right), \phi\left( \frac{q^N_\omega-\tfrac{\epsilon}{2}}{q^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
 	
 	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
+	\Halmos
 \end{proof}
 
 \begin{proof}{\sc Proof of Theorem \ref{thm:epiconvergence}.}
 	The theorem can be proven by showing the epiconvergence of the objective function of \plp\ to that of SLP-2.
 	To this end, we apply Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
+	\Halmos
 \end{proof}
 
 \section{Derivation of Some Special $\phi$-Divergences}
@@ -1270,17 +1425,25 @@ Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi
 	\]
 	and thus
 	\[
-		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)]. \qedhere
+		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)]. \Halmos
 	\]
 \end{proof}
+
+\end{APPENDICES}
 
 \section*{Acknowledgements}
 Support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
 This work has also been partially supported by the National Science Foundation through grant CMMI-1151226.
 
-\bibliographystyle{plain}
-\bibliography{love_lro}
+% References here (outcomment the appropriate case) 
 
+% CASE 1: BiBTeX used to constantly update the references 
+%   (while the paper is being written).
+%\bibliographystyle{ijocv081} % outcomment this and next line in Case 1
+\bibliography{love_lro} % if more than one, comma separated
+
+% CASE 2: BiBTeX used to generate mypaper.bbl (to be further fine tuned)
+%\input{mypaper.bbl} % outcomment this line in Case 2
 
 %\section*{Author Biographies}
 
@@ -1295,3 +1458,4 @@ This work has also been partially supported by the National Science Foundation t
 %Her email address is \url{bayraksan.1@osu.edu} and her web page is \url{http://www-iwse.eng.ohio-state.edu/biosketch_GBayraksan.cfm}
 
 \end{document}
+
