@@ -996,6 +996,25 @@ In this problem, the second scenario (displayed in green in Figures \ref{fig:sup
 Furthermore, the second scenario will eventually have unit probability in suppressing divergences.
 %All scenarios are assumed to have a single observation, unless popping behavior is being demonstrated.
 
+\subsection{Running Time}
+\label{ssec:run_time}
+
+\begin{figure}
+	\FIGURE
+	{%
+		\includegraphics*[width=.45\textwidth]{images/runtime}
+	}
+	{
+		Solution time for $\phi$APL1P with the proposed decomposition algorithm against the number of scenarios, implemented in MATLAB using the CPLEX linear program solver.
+		This example uses the Modified $\chi^2$-divergence.
+		\label{fig:runtime}
+	}
+	{}
+\end{figure}
+
+To illustrate the linear dependence of the problem complexity on the number of scenarios, we tracked the time to solve $\phi$APL1P for an increasing number of scenarios, with the results shown in Figure \ref{fig:runtime}.
+
+
 \subsection{Numerical Results}
 \label{ssec:numerical_results}
 
