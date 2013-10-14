@@ -440,7 +440,22 @@ Some of these properties help with our specialized solution method and we refer 
 	\plp\ is equivalent to minimizing a coherent risk measure.
 \end{property}
 
-The proof of Property \ref{property:coherent_risk_measure} is given in the appendix.
+\begin{proof}{\sc Proof of Property \ref{property:coherent_risk_measure}}
+	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \cite{rockafellar2007coherent}.
+	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$.
+	Throughout the proof, all expectations are taken with respect to the uniform distribution.
+	
+	First, probability constraint (\ref{eq:plp_primal_probability}) can be written as $\e{\tilde{p}} = 1$, where $\tilde{p}$ is the random variable taking values $\tilde{p}_\omega$ with equal probability.
+	Then the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}) becomes $\sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho$, where $\tilde{q}_\omega = \frac{q_\omega}{1/n}$ and $\frac{\phi(a/0)}{a/0} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
+	Combining these yields the set ${\cal Q} = \{\tilde{p} | \e{\tilde{p}} = 1, \sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho \}$, a closed and convex risk envelope.
+	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{\tilde{p} \in {\cal Q}} \e{\tilde{p} h(x)}$, where $h(x)$ is the random variables defined by $\{h_\omega(x)\}$.
+	Thus we see that \plp\ is the minimum of a coherent risk measure.
+\end{proof}
+
+\begin{remark}
+	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$ for all $\omega$.
+	However, the case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}.
+\end{remark}
 
 Note that being a coherent risk measure implies that \plp\ is a convex problem.
 The convexity of LRO was also noted in \cite{wang2010likelihood}.
@@ -615,6 +630,33 @@ The next proposition makes this statement rigorous.
 	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if $s_\omega = \bar{s}$.
 \end{proposition}
 
+\begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
+	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust}, and additionally consider the case where $q_\omega = 0$.
+	For this proof, we assume for simplicity that the first-stage cost vector $\c = 0$.	
+	We begin with the Lagrangian of (\ref{eq:plp_primal}), $\mathcal{L}(p,\mu,\lambda) = \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda$, for which we generate the dual problem as
+	\begin{align}
+		 & \min_{\lambda \geq 0, \mu} \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda \nonumber \\
+		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \sum_{\omega=1}^n \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} \label{eq:pop_proof_detail_1} \\
+		& =  \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t_\omega \geq 0} \left\{ s_\omega t_\omega - \phi(t_\omega) \right\} \label{eq:pop_proof_detail_2} \\
+		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(s_\omega\right), \nonumber
+	\end{align}
+	where $t_\omega = \frac{p_\omega}{q_\omega}$.
+	
+	To account for the possibility that $q_\omega = 0$ and demonstrate popping behavior, equality (\ref{eq:pop_proof_detail_2}) must be modified slightly.
+	Consider a term in the summation in (\ref{eq:pop_proof_detail_1}) for which $q_\omega = 0$:
+	\begin{align}
+		\max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega  \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} & = \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda 0  \phi\left(\frac{p_\omega}{0}\right) \right\} \nonumber \\
+		& = \max_{p_\omega \geq 0} \left\{ p_\omega \left( h_\omega(\x) - \mu - \lambda \bar{s} \right) \right\}. \label{eq:pop_proof_condition}
+	\end{align}
+	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(\x) - \mu - \lambda \bar{s}  \right)$, or equivalently, relation between $s_\omega$ and $\bar{s}$.
+	There are three cases:
+	\begin{description}
+		\item[Case 1: $s_\omega > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
+		\item[Case 2: $s_\omega < \bar{s}$] selects $p_\omega = 0$.
+		\item[Case 3: $s_\omega = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero, and hence allows for $p_\omega > 0$ (popping). \Halmos %\qedhere
+	\end{description}
+\end{proof}
+
 \begin{remark}
 	Because $s_\omega \leq \bar{s}$ for all $\omega$ and $s_\omega = \bar{s}$ for any popped scenarios, only the most expensive scenario could be popped.
 \end{remark}
@@ -763,8 +805,6 @@ For \plp, this means that the initial model is likely to be more conservative in
 Below, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
 %We also provide a way of estimating the probability of sampling such an observation.
 
-%\begin{proposition}
-%	\label{prop:value}
 \begin{theorem}
 	\label{thm:value}
 	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied
@@ -773,6 +813,42 @@ Below, we present a simple method of determining if taking an additional sample 
 	\end{equation}
 	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solve the $N$-sample problem with $q_\omega = \tfrac{N_\omega}{N}$.
 \end{theorem}
+
+\begin{proof}{\sc Proof of Theorem \ref{thm:value}.}
+	For ease of exposition, we assume $\phi^*$ is differentiable, although the proof works without this assumption with little modification.	
+	We begin this proof with the change of variables $\kappa = \frac{\lambda}{N}$, and note that $N\rho_N = \rho_0$ is constant.	
+	With this change of variables, the objective function is given by
+	\[
+		f_N(\x,\mu,\kappa) = c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) \right].
+	\]
+	Let $z_N = \min_{\x,\mu,\kappa} f_N(\x,\mu,\kappa)$.
+	We wish to find a simple estimate of the decrease in the optimal cost, $z_N - z_{N+1}$, associated with taking an additional sample of, say, $\hat{\omega}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.	
+	Let $(\x^*_N,\mu^*_N,\kappa^*_N)$ minimize $f_N$.
+	Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
+	We will find scenarios $\hat{\omega}$ such that $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N) > 0$.
+
+	The objective of the $N+1$ sample problem for a given $(\x,\mu,\kappa)$ is $\c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$,	where $N'_\omega$ is the number of observations of $\omega$ after $N+1$ total observations.
+	Then the difference between the two optimal costs is $\kappa \sum_{\omega=1}^n \left[ N_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) - N'_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$, which must be positive to guarantee a drop in optimal cost.
+	Let $\hat{\omega}$ be the scenario observed on the next observation, then we can rewrite the condition as
+	\begin{equation} \label{eq:raw_cond}
+		\kappa \sum_{\omega=1}^n N_\omega \left[ \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) - \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right] - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0.
+	\end{equation}
+
+	Let $s^N_\omega = \frac{h_\omega(x) - \mu}{N\kappa}$ and $s^{N+1}_\omega = \frac{h_\omega(x) - \mu}{(N+1)\kappa}$, and note that $s^{N+1}_\omega = \tfrac{N}{N+1} s^N_\omega$.
+%	Let $|\Delta s| = | s^{N+1}_\omega - s^N_\omega | = \frac{|s^{N+1}_\omega|}{N}$.
+	The difference $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega)$ will be approximated by the derivative.
+%	Note that $\phi^*(s)$ is nondecreasing because $0 \leq t = \phi^{*\prime}(s)$ for some $t$.
+%	First, for $s^N_\omega > 0$, $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
+%	Then for $s^N_\omega < 0$, $\phi^*(s^{N+1}_\omega) - \phi^*(s^N_\omega) \leq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$, and thus $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq -\phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
+%	Then both cases reduce to $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega$.
+Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega$. 
+	Using this, we can guarantee (\ref{eq:raw_cond}) is satisfied with the condition $\kappa \sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0$, or, rearranging and dividing by $\kappa > 0$,
+	\begin{equation} \label{eq:main_value_derivation}
+		\sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega > \phi^*(s^{N+1}_\omega).
+	\end{equation}
+	Finally, return to the original variables with the substitution $s^{N+1}_\omega = \frac{N}{N+1} s^*_\omega$
+	\Halmos
+\end{proof}
 %\end{proposition}
 
 %All proofs are provided in the appendix.
@@ -796,6 +872,29 @@ It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for so
 	\end{multicols}
 \end{corollary}
 
+\begin{proof}{\sc Proof of Corollary \ref{cor:cost_decrease_trick}.}
+%	We use a small trick to transform condition (\ref{eq:cost_decrease_cond}) into a form that is easier to work with.
+	%Recall that 
+	For any real number $c$, we can define $\phi_c(t) = \phi(t) + c(t-1)$, which satisfies $I_{\phi_c}(p,q) = I_\phi(p,q)$ for probability vectors $p$ and $q$.
+	This changes the conjugate as $\phi_c^*(s) = \phi^*(s-c) + c$.
+	For some $\phi$, we can choose $c$ such that $\phi^{*\prime}(s)$ is separable, i.e., $\phi^{*\prime}(as) = f(a) \phi^{*\prime}(s)$ for some function $f$.
+	Using this separability, we can simplify (\ref{eq:cost_decrease_cond}) for some $\phi$, after some algebra, by choosing:\vspace*{-0.15in}
+	\begin{multicols}{2}
+	\begin{description} 
+		\item[Burg entropy:]  $c = -1$, so $\phi^{*\prime}(s) = -\frac{1}{s}$,
+		\item[$\chi^2$-distance:] $c = -1$, so $\phi^{*\prime}(s) = \frac{1}{\sqrt{-s}}$,
+		\item[Hellinger:]  $c = -1$ so $\phi^{*\prime}(s) = \frac{1}{s^2}$, 
+		\item[Modified $\chi^2$:] $c = 2$, so
+		\[
+			\phi^{*\prime}(s) = \
+			\begin{cases}
+				\frac{1}{2} s & s \geq 0 \\
+				0 & s < 0.   \Halmos
+			\end{cases}
+		\]
+	\end{description}
+	\end{multicols}
+\end{proof}
 
 The simple conditions in Theorem~\ref{thm:value} and Corollary~\ref{cor:cost_decrease_trick} provide insight into different scenarios for a decision maker. 
 Let $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$.
@@ -834,6 +933,27 @@ Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert q^N(\xi) - \qtrue \Ve
 	For all $\epsilon > 0$ and $\xi \in \Xi'$, there exists $N'$ such that $\forall N \geq N'$, $I_{\phi}(p,q^N(\xi)) \leq \frac{\rho_0}{N}$ implies $\max_\omega |p_\omega - \qtrue_\omega| \leq \epsilon$.
 \end{proposition}
 
+\begin{proof}{\sc Proof of Proposition \ref{prop:weak_conv}.}
+	Let $Z = \{\omega : \qtrue_\omega = 0\}$ be the set of impossible scenarios.
+	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \qtrue_\omega > \frac{\epsilon}{2}$ and drop the dependence on $\xi \in \Xi'$.	
+	First, note that $\max_\omega |p_\omega - \qtrue_\omega| \leq \max_\omega |p_\omega - q^N_\omega| + \max_\omega |q^N_\omega - \qtrue_\omega|$.
+	Let $N''$ be such that $\max_\omega |q^N_\omega - \qtrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
+	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - q^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,q) > \frac{\rho_0}{N}$.
+	First, bound the divergence by
+	\begin{align}
+		I_{\phi}(p,q^N) & = \sum_{\omega=1}^n q^N_\omega \phi\left( \frac{p_\omega}{q^N_\omega} \right) \nonumber \\
+		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} q^N_\omega \phi\left( \frac{p_\omega}{q^N_\omega} \right) \nonumber \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \{q^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{q^N_\omega} \right) \right\} \nonumber \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{q^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
+		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
+	\end{align}
+	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios---please see Section~\ref{ssec:suppressandpop} for details), and zero otherwise.	
+	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{q^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{q^N_\omega+\tfrac{\epsilon}{2}}{q^N_\omega} \right), \phi\left( \frac{q^N_\omega-\tfrac{\epsilon}{2}}{q^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
+	
+	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
+	\Halmos
+\end{proof}
+
 The requirements on $\phi$ in Proposition \ref{prop:weak_conv} are satisfied by every divergence in Table \ref{tb:phi_definitions} except Likelihood (which, however, can be rewritten as Burg Entropy).
 The unique root requirement, however, is violated for the special cases introduced in Section \ref{ssec:special_phi}.
 Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\qtrue$, which is used to show the desired result below. 
@@ -843,6 +963,12 @@ Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\
 	Assume $X$ is compact and $h_\omega(\x)$ are primal and dual feasible for every $\x \in X$.
 	Then, the optimal value of \plp\ (\ref{eq:plp_two_stage}) converges to that of SLP-2 (\ref{eq:slp_first_stage}) with distribution $\qtrue$ and all limit points of the solutions of \plp\ solve SLP-2 with distribution $\qtrue$.
 \end{theorem}
+
+\begin{proof}{\sc Proof of Theorem \ref{thm:epiconvergence}.}
+	The theorem can be proven by showing the epiconvergence of the objective function of \plp\ to that of SLP-2.
+	To this end, we apply Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
+	\Halmos
+\end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{A Decomposition-Based Solution Method}
@@ -1256,142 +1382,6 @@ Finally, it would be useful to study applications to real-world problems.
 % Outcomment the appropriate case if necessary
 %
 \begin{APPENDICES}
-
-\section{Proofs}
-
-\noindent In this appendix, we provide proofs of all propositions, theorems, and the corollary in the order they appear in the paper. 
-
-\begin{proof}{\sc Proof of Property \ref{property:coherent_risk_measure}}
-	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \cite{rockafellar2007coherent}.
-	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$.
-	Throughout the proof, all expectations are taken with respect to the uniform distribution.
-	
-	First, probability constraint (\ref{eq:plp_primal_probability}) can be written as $\e{\tilde{p}} = 1$, where $\tilde{p}$ is the random variable taking values $\tilde{p}_\omega$ with equal probability.
-	Then the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}) becomes $\sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho$, where $\tilde{q}_\omega = \frac{q_\omega}{1/n}$ and $\frac{\phi(a/0)}{a/0} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-	Combining these yields the set ${\cal Q} = \{\tilde{p} | \e{\tilde{p}} = 1, \sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho \}$, a closed and convex risk envelope.
-	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{\tilde{p} \in {\cal Q}} \e{\tilde{p} h(x)}$, where $h(x)$ is the random variables defined by $\{h_\omega(x)\}$.
-	Thus we see that \plp\ is the minimum of a coherent risk measure.
-\end{proof}
-
-\begin{remark}
-	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$ for all $\omega$.
-	However, the case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}.
-\end{remark}
-
-\begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
-	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust}, and additionally consider the case where $q_\omega = 0$.
-	For this proof, we assume for simplicity that the first-stage cost vector $\c = 0$.	
-	We begin with the Lagrangian of (\ref{eq:plp_primal}), $\mathcal{L}(p,\mu,\lambda) = \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda$, for which we generate the dual problem as
-	\begin{align}
-		 & \min_{\lambda \geq 0, \mu} \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda \nonumber \\
-		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \sum_{\omega=1}^n \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} \label{eq:pop_proof_detail_1} \\
-		& =  \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t_\omega \geq 0} \left\{ s_\omega t_\omega - \phi(t_\omega) \right\} \label{eq:pop_proof_detail_2} \\
-		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(s_\omega\right), \nonumber
-	\end{align}
-	where $t_\omega = \frac{p_\omega}{q_\omega}$.
-	
-	To account for the possibility that $q_\omega = 0$ and demonstrate popping behavior, equality (\ref{eq:pop_proof_detail_2}) must be modified slightly.
-	Consider a term in the summation in (\ref{eq:pop_proof_detail_1}) for which $q_\omega = 0$:
-	\begin{align}
-		\max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega  \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} & = \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda 0  \phi\left(\frac{p_\omega}{0}\right) \right\} \nonumber \\
-		& = \max_{p_\omega \geq 0} \left\{ p_\omega \left( h_\omega(\x) - \mu - \lambda \bar{s} \right) \right\}. \label{eq:pop_proof_condition}
-	\end{align}
-	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(\x) - \mu - \lambda \bar{s}  \right)$, or equivalently, relation between $s_\omega$ and $\bar{s}$.
-	There are three cases:
-	\begin{description}
-		\item[Case 1: $s_\omega > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
-		\item[Case 2: $s_\omega < \bar{s}$] selects $p_\omega = 0$.
-		\item[Case 3: $s_\omega = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero, and hence allows for $p_\omega > 0$ (popping). \Halmos %\qedhere
-	\end{description}
-\end{proof}
-
-\begin{proof}{\sc Proof of Theorem \ref{thm:value}.}
-	For ease of exposition, we assume $\phi^*$ is differentiable, although the proof works without this assumption with little modification.	
-	We begin this proof with the change of variables $\kappa = \frac{\lambda}{N}$, and note that $N\rho_N = \rho_0$ is constant.	
-	With this change of variables, the objective function is given by
-	\[
-		f_N(\x,\mu,\kappa) = c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) \right].
-	\]
-	Let $z_N = \min_{\x,\mu,\kappa} f_N(\x,\mu,\kappa)$.
-	We wish to find a simple estimate of the decrease in the optimal cost, $z_N - z_{N+1}$, associated with taking an additional sample of, say, $\hat{\omega}$, looking in particular for a condition under which $z_N - z_{N+1} > 0$.	
-	Let $(\x^*_N,\mu^*_N,\kappa^*_N)$ minimize $f_N$.
-	Then $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N)$ is a lower bound on the decrease in optimal cost $z_N - z_{N+1}$.
-	We will find scenarios $\hat{\omega}$ such that $z_N - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N) > 0$.
-
-	The objective of the $N+1$ sample problem for a given $(\x,\mu,\kappa)$ is $\c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$,	where $N'_\omega$ is the number of observations of $\omega$ after $N+1$ total observations.
-	Then the difference between the two optimal costs is $\kappa \sum_{\omega=1}^n \left[ N_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) - N'_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right]$, which must be positive to guarantee a drop in optimal cost.
-	Let $\hat{\omega}$ be the scenario observed on the next observation, then we can rewrite the condition as
-	\begin{equation} \label{eq:raw_cond}
-		\kappa \sum_{\omega=1}^n N_\omega \left[ \phi^*\left(\frac{h_\omega(\x) - \mu}{N\kappa} \right) - \phi^*\left(\frac{h_\omega(\x) - \mu}{(N+1)\kappa} \right) \right] - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0.
-	\end{equation}
-
-	Let $s^N_\omega = \frac{h_\omega(x) - \mu}{N\kappa}$ and $s^{N+1}_\omega = \frac{h_\omega(x) - \mu}{(N+1)\kappa}$, and note that $s^{N+1}_\omega = \tfrac{N}{N+1} s^N_\omega$.
-%	Let $|\Delta s| = | s^{N+1}_\omega - s^N_\omega | = \frac{|s^{N+1}_\omega|}{N}$.
-	The difference $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega)$ will be approximated by the derivative.
-%	Note that $\phi^*(s)$ is nondecreasing because $0 \leq t = \phi^{*\prime}(s)$ for some $t$.
-%	First, for $s^N_\omega > 0$, $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
-%	Then for $s^N_\omega < 0$, $\phi^*(s^{N+1}_\omega) - \phi^*(s^N_\omega) \leq \phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$, and thus $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq -\phi^{*\prime}(s^{N+1}_\omega) |\Delta s|$.
-%	Then both cases reduce to $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega$.
-Note that $\phi^*(s)$ is convex, so, using the gradient inequality we have $\phi^*(s^N_\omega) - \phi^*(s^{N+1}_\omega) \geq \frac{1}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega$. 
-	Using this, we can guarantee (\ref{eq:raw_cond}) is satisfied with the condition $\kappa \sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega - \kappa \phi^*\left(\frac{h_{\hat{\omega}}(x) - \mu}{(N+1)\kappa}\right) > 0$, or, rearranging and dividing by $\kappa > 0$,
-	\begin{equation} \label{eq:main_value_derivation}
-		\sum_{\omega=1}^n \frac{N_\omega}{N} \phi^{*\prime}(s^{N+1}_\omega) s^{N+1}_\omega > \phi^*(s^{N+1}_\omega).
-	\end{equation}
-	Finally, return to the original variables with the substitution $s^{N+1}_\omega = \frac{N}{N+1} s^*_\omega$
-	\Halmos
-\end{proof}
-
-
-\begin{proof}{\sc Proof of Corollary \ref{cor:cost_decrease_trick}.}
-%	We use a small trick to transform condition (\ref{eq:cost_decrease_cond}) into a form that is easier to work with.
-	%Recall that 
-	For any real number $c$, we can define $\phi_c(t) = \phi(t) + c(t-1)$, which satisfies $I_{\phi_c}(p,q) = I_\phi(p,q)$ for probability vectors $p$ and $q$.
-	This changes the conjugate as $\phi_c^*(s) = \phi^*(s-c) + c$.
-	For some $\phi$, we can choose $c$ such that $\phi^{*\prime}(s)$ is separable, i.e., $\phi^{*\prime}(as) = f(a) \phi^{*\prime}(s)$ for some function $f$.
-	Using this separability, we can simplify (\ref{eq:cost_decrease_cond}) for some $\phi$, after some algebra, by choosing:\vspace*{-0.15in}
-	\begin{multicols}{2}
-	\begin{description} 
-		\item[Burg entropy:]  $c = -1$, so $\phi^{*\prime}(s) = -\frac{1}{s}$,
-		\item[$\chi^2$-distance:] $c = -1$, so $\phi^{*\prime}(s) = \frac{1}{\sqrt{-s}}$,
-		\item[Hellinger:]  $c = -1$ so $\phi^{*\prime}(s) = \frac{1}{s^2}$, 
-		\item[Modified $\chi^2$:] $c = 2$, so
-		\[
-			\phi^{*\prime}(s) = \
-			\begin{cases}
-				\frac{1}{2} s & s \geq 0 \\
-				0 & s < 0.   \Halmos
-			\end{cases}
-		\]
-	\end{description}
-	\end{multicols}
-\end{proof}
-
-\begin{proof}{\sc Proof of Proposition \ref{prop:weak_conv}.}
-	Let $Z = \{\omega : \qtrue_\omega = 0\}$ be the set of impossible scenarios.
-	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \qtrue_\omega > \frac{\epsilon}{2}$ and drop the dependence on $\xi \in \Xi'$.	
-	First, note that $\max_\omega |p_\omega - \qtrue_\omega| \leq \max_\omega |p_\omega - q^N_\omega| + \max_\omega |q^N_\omega - \qtrue_\omega|$.
-	Let $N''$ be such that $\max_\omega |q^N_\omega - \qtrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
-	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - q^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,q) > \frac{\rho_0}{N}$.
-	First, bound the divergence by
-	\begin{align}
-		I_{\phi}(p,q^N) & = \sum_{\omega=1}^n q^N_\omega \phi\left( \frac{p_\omega}{q^N_\omega} \right) \nonumber \\
-		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} q^N_\omega \phi\left( \frac{p_\omega}{q^N_\omega} \right) \nonumber \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \{q^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{q^N_\omega} \right) \right\} \nonumber \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{q^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
-	\end{align}
-	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios---please see Section~\ref{ssec:suppressandpop} for details), and zero otherwise.	
-	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{q^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{q^N_\omega+\tfrac{\epsilon}{2}}{q^N_\omega} \right), \phi\left( \frac{q^N_\omega-\tfrac{\epsilon}{2}}{q^N_\omega} \right) \right\}$ for at least one $\omega$, and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
-	
-	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
-	\Halmos
-\end{proof}
-
-\begin{proof}{\sc Proof of Theorem \ref{thm:epiconvergence}.}
-	The theorem can be proven by showing the epiconvergence of the objective function of \plp\ to that of SLP-2.
-	To this end, we apply Proposition \ref{prop:weak_conv} to Theorem 3.7 of \cite{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
-	\Halmos
-\end{proof}
 
 \section{Derivation of Some Special $\phi$-Divergences}
 
