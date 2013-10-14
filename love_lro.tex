@@ -696,6 +696,7 @@ Derivations of these special cases are given in the appendix.
 
 The CVaR $\phi$-divergence is bounded above, which leads to the question of what happens when a divergence is bounded below.
 \begin{example}[``Reverse'' CVaR]
+	\label{ex:rcvar}
 	The $\phi$-divergence constrained problem with
 	\[
 		\phi(t) = \
@@ -1410,6 +1411,25 @@ Finally, it would be useful to study applications to real-world problems.
 		& = \min_{\mu} \mu + \frac{1}{1-\beta} \e{[h(x)-\mu]^+},
 	\end{align*}
 	which is one definition of CVaR.
+\end{proof}
+
+\begin{proof}{\sc Proof of Example \ref{ex:rcvar}}
+	Without loss of generality, let $\rho = 0$.
+	The conjugate is
+	\[
+		\phi^*(s) =
+		\begin{cases}
+			(1-\beta) s & s \leq 0 \\
+			\infty & s > 0.
+		\end{cases}
+	\]
+	
+	This gives the problem
+	\begin{align*}
+		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) & = \min_{\mu \geq \sup\{h_\omega(x)\}} \mu + \sum_\omega q_\omega (1-\beta) (h_\omega(x) - \mu) \\
+		& = \min_{\mu \geq \sup\{h_\omega(x)\}} \beta \mu + (1-\beta) \sum_\omega q_\omega h_\omega(x) \\
+		& = \beta \sup_\omega\{h_\omega(x)\} + (1-\beta) \sum_\omega q_\omega h_\omega(x). \Halmos
+	\end{align*}
 \end{proof}
 
 \begin{proof}{\sc Proof of Example \ref{ex:cvar_expectation}}
