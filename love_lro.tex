@@ -61,6 +61,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{multicol}
+\usepackage{csvsimple}
 
 % Frequently used general mathematics
 \newcommand{\R}{{\mathbb{R}}}
@@ -1247,6 +1248,94 @@ Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.
 	{}
 \end{figure}
 
+\section{Application to Water Distribution Problem}
+\label{sec:water}
+
+%% BETTER INTRODUCTION NEEDED!!!!
+We applied the \plp method developed here to a problem of water distribution in a currently developing area of Tucson, AZ, shown in Figure \ref{fig:tucson_elevation}.
+Tucson is undergoing a period of large population and infrastructure growth, and with that comes an increased demand for water resources.
+
+The majority of Tucson's water comes from the Colorado river, brought in by the Central Arizona Project (CAP), which is indicated by the canal shown in blue in Figure \ref{fig:tucson_elevation}.
+This water may then be treated and sent to customers, or pumped underground to one of five aquifers to be saved for future use.
+One aquifer recharge facility, the Central Avra Valley Storage And Recovery Project (CAVSARP) is shown in Figure \ref{fig:tucson_elevation}, along with two water treatment plants: the Tucson Water Reclamation Facility and the Haden-Udal Water Treatment Plant.
+
+One southeastern portion of Tucson, outlined in purple in Figure \ref{fig:tucson_elevation}, is being increasingly developed.
+This area is split into different elevation zones, shown by the green lines, the demands in each of which will be served by a dedicated pump.
+Thus, the green lines also split the region into several pressure zones.
+Given the capacity of the existing treatment plants, and the energy cost of pumping the water through a series of pressure zones, Tucson Water is interested in the possibility of building additional treatment facilities  in this area, herein known as the RESIN (Resilient and Sustainable Infrastructures) area.
+
+\begin{figure}
+	\FIGURE
+	{%
+		\includegraphics*[width=.6\textwidth]{tucson_water_images/tucson_elevation.png}%
+	}
+	{
+		A map of Tucson, AZ, showing the RESIN area outlined in purple in the southeastern part.
+		The green lines indicate elevation changes, denoting the difference between the pressure zones considered in this study.
+		\label{fig:tucson_elevation}
+	}
+	{}
+\end{figure}
+
+A more detailed view of Tucson's water treatment system is shown in Figure \ref{fig:tucson_treatment}.
+The blue nodes and arcs indicate the potable water treatment and storage system, which takes CAP water as an input and distributes it to the pressure zones shown in Figure \ref{fig:tucson_zones}.
+The purple nodes and arcs indicate non-potable water which can be used to satisfy some (especially agricultural and industrial) demands.
+The black nodes indicate waste water that is returned from potable water use.
+
+\begin{figure}
+	\FIGURE
+	{%
+		\includegraphics*[width=.8\textwidth]{tucson_water_images/nodes_central.png}%
+	}
+	{
+		A schematic of the existing water treatment and recharge facilities in Tucson.
+		Blue indicated potable water, purple indicates non-potable (reclaimed) water, and black represents waste water.
+		\label{fig:tucson_treatment}
+	}
+	{}
+\end{figure}
+
+The pressure zones in the RESIN area, shown in \ref{fig:tucson_zones}, have a largely period structure.
+Each pressure zone contains a potable and non-potable demand node.
+Note that potable water, being of higher quality, can be used to meet either type of demand.
+Each zone also contains a potable-water reservoir and pump, which is used to supply potable to the next pressure zone, and a booster station that provides the conveyance for the non-potable water.
+Finally, each zone has a wastewater return, which is transported back to the centralized processing facilities via a gravity flow.
+
+\begin{figure}
+	\FIGURE
+	{%
+		\begin{tabular}{c}
+			\includegraphics*[width=.5\textwidth]{tucson_water_images/zones_c_e.png}%
+			\includegraphics*[width=.5\textwidth]{tucson_water_images/zones_split.png} \\
+			\includegraphics*[width=.6\textwidth]{tucson_water_images/zones_legend.png}
+		\end{tabular}
+	}
+	{
+		A schematic illustration of the pressure zones in the RESIN area.
+		Each zones contains potable and non-potable demand nodes, a reservoir and booster station for transporting the potable and non-potable water, respectively, and waste water return pipes.
+		\label{fig:tucson_zones}
+	}
+	{}
+\end{figure}
+
+Finally, additional infrastructure may be constructed in the form of a satellite wastewater treatment plant (WWTP) may be constructed somewhere in the RESIN area.
+Figure \ref{fig:tucson_zones_wwtp} gives an illustration of this using the zone GS.
+This satellite WWTP treats wastewater from it's own zone, and higher zones, and supplies additional non-potable water while bypassing the journey all the way back to the centralized treatment facilities shown in Figure \ref{fig:tucson_treatment}.
+
+\begin{figure}
+	\FIGURE
+	{%
+		\begin{tabular}{c}
+			\includegraphics*[width=.8\textwidth]{tucson_water_images/zones_south.png}%
+		\end{tabular}
+	}
+	{
+		A satellite wastewater treatment plant is shown here, build in pressure zone GS.
+		\label{fig:tucson_zones_wwtp}
+	}
+	{}
+\end{figure}
+
 \subsection{Generalized Network Water Model} 
 \label{ssec:network_model}
 
@@ -1306,6 +1395,111 @@ The high population scenarios are more costly as the system needs to meet demand
 The low population scenarios, on the other hand, are not as costly. 
 % The supply variability seems to have a nominal effect.
 We applied the decomposition-based solution algorithm presented in Section \ref{sec:soln_algorithm} to solve this model.% and selected tolerances $\texttt{TOL} = 10^{-5}$ and $\texttt{TOL2} = 10^{-3}$ for our computational experiments.
+
+\subsection{Water Demand Regression}
+
+We desire to estimate the weather-dependent demand of water resources in Tucson, and use the results of the climate models to project the future demand for water in the developing area.
+To estimate demand separately in each elevation zone, we need a statistical model of the per-capita water demand to be used in conjunction with the zonal population estimates.
+For this task, data on monthly demand for water in Tucson from 1991-2011 was obtained from Tucson, along with the recorded amount of rain and the average daily high temperature in each month.
+
+A direct measure of population was only available on a yearly basis, but service counts were available for each month, from which population estimates were inferred in order to estimate the per-capita demand for water.
+We performed a linear regression on the total population against the monthly service count data to estimate the population for each month.
+The linear regression found that only the number of single family residences was a statistically significant predictor of population size.
+The results are shown in Table \ref{tb:population_linear_reg}.
+The regression had an adjusted $R^2 = 0.9946$.
+
+\begin{table}
+	\TABLE
+	{
+		Results of the linear regression of population on number of single family units in Tucson Water's service counts.
+		\label{tb:population_linear_reg}
+	}
+	{\begin{tabular}{rrrrr}
+		\hline
+						   & Estimate  & Std. Error & $t$ value & $p$ \\
+		\hline
+		(Intercept)    & 2.026e+05 & 7.145e+03  & 28.3 6    & $<2e-16$ \\
+		Single Family  & 2.543e+00 & 4.171e-02  & 60.98     & $<2e-16$ \\
+		\hline
+	\end{tabular}}
+	{}
+\end{table}
+
+Given the monthly estimates on population, the water demand per capita in gallons per capita per day (GPCD) were calculated for every month in the 1991-2011 data.
+A linear regression of these GPCD values on the mean daily high temperature and average precipitation rate for each month, and the year of the observation, was then calculated.
+The year of the observation is included because the average GPCD water demand began dropping near the beginning of the 21st century, from over 170 GPCD in 1996 to under 140 GPCD in 2011.
+The linear fit, shown in Table \ref{tb:gpcd_linear_reg} has adjusted $R^2 = 0.7266$.
+
+\begin{table}
+	\TABLE
+	{
+		Results of the linear regression of water demand in GPCD on average daily high temperature, precipitation rate, and year.
+		\label{tb:gpcd_linear_reg}
+	}
+	{\begin{tabular}{rrrrr}
+		\hline
+						   & Estimate  & Std. Error & $t$ value & $p$ \\
+		\hline
+		(Intercept)    & 2721.2539 & 355.5267   & 7.654     & $4.33e-13$ \\
+		Temperature    &   3.5830  & 0.1446     & 24.774    & $< 2e-16$\\
+		Precipitation  &  -2.6329  & 1.1337     & -2.322    & $0.021$ \\
+		Year           &  -1.3296  & 0.1776     & -7.486    & $1.24e-12$ \\
+		\hline
+	\end{tabular}}
+	{}
+\end{table}
+
+This fit, with the year included, projects water demand to be around 145-155 GPCD in 2010, which decreases over time to 100-110 GPCD by 2050.
+Tucson Water uses a typical estimate of 120-145 GPCD in their projections.
+The range specified by this fit is similar to this for many of the years considered.
+
+\subsection{Climate Models Used}
+
+A list of the climate models used in this paper is shown in Table \ref{tb:climate_models}.
+Bias-Corrected and Spatially Downscaled (BCSD) data from Coupled Model Intercomparison Project: Phase 5 (CMIP5) was obtained from \cite{cmip5}.
+Additional information on the downscaled data can be found in \cite{bcsdreclamation}.
+Each model included predictions of the variables \texttt{tasmax} and \texttt{pr}, the average daily high temperature ($^\circ C$) and the average precipitation rate (mm/day) in each month.
+
+\begin{table}
+	\TABLE
+	{
+		A list of climate models used in this analysis
+		\label{tb:climate_models}
+	}
+	{\begin{tabular}{p{.7\textwidth}|r}
+		\hline
+		Institution & Model \\
+		\hline
+		\hline
+		Commonwealth Scientific and Industrial Research Organization (CSIRO) and Bureau of Meteorology (BOM), Australia & CSIRO-mk-3-6-0 \\
+		\hline
+		Geophysical Fluid Dynamics Laboratory & GFDL-CM3 \\
+% 		\hline
+		\hline
+		Met Office Hadley Centre & HadGEM2-ES \\
+		\hline
+		Atmosphere and Ocean Research Institute (The University of Tokyo), National Institute for Environmental Studies, and Japan Agency for Marine-Earth Science and Technology & MIROC5 \\
+		\hline
+	\end{tabular}}
+	{}
+\end{table}
+
+Each model had output associated with a given path for future emissions.
+Our analysis includes two paths: RCP8.5 and RCP4.5.
+The former is the high emissions scenario which ultimately results in increased warming in the long term.
+The latter scenario is a lower emissions scenario, in which emissions stabilize before 2100.
+A comparison of the model output of the average daily high temperature for 2040-2050 for emissions path RCP8.5 is shown in Table \ref{tb:model_comparison_temperature}.
+
+\begin{table}
+	\TABLE
+	{
+		A comparison of projected ($\geq 2040$) average daily high temperatures ($^\circ C$) with the historical record (1991-2011) in Tucson, AZ.
+		All values come from models using emissions path RCP8.5.
+		\label{tb:model_comparison_temperature}
+	}
+	{\csvautotabular{tables/temperature.csv}}
+	{}
+\end{table}
 
 \subsection{Computational Results}
 
@@ -1471,6 +1665,9 @@ Finally, it would be useful to study applications to real-world problems.
 \section*{Acknowledgements}
 Support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
 This work has also been partially supported by the National Science Foundation through grant CMMI-1151226.
+
+We acknowledge the World Climate Research Programme's Working Group on Coupled Modelling, which is responsible for CMIP, and we thank the climate modeling groups (listed in Table \ref{tb:climate_models} of this paper) for producing and making available their model output.
+For CMIP the U.S. Department of Energy's Program for Climate Model Diagnosis and Intercomparison provides coordinating support and led development of software infrastructure in partnership with the Global Organization for Earth System Science Portals.
 
 % References here (outcomment the appropriate case) 
 
