@@ -1453,6 +1453,33 @@ This fit, with the year included, projects water demand to be around 145-155 GPC
 Tucson Water uses a typical estimate of 120-145 GPCD in their projections.
 The range specified by this fit is similar to this for many of the years considered.
 
+A second option for modeling the decrease in water demand as occurring only in a finite span of time.
+For this, we choose to regress on a bounded on the value of the year, i.e., choose the value in a set $\{Y_l, Y_l+1, \dots, Y_u\}$ closest to the actual year.
+First, the upper bound $Y_u = 2011$ was chosen so that no decrease in water demand would be projected beyond the scope of the data.
+The value $Y_l = 2004$ was then selected to generate the best fit to the data.
+This piecewise fit is shown in Table \ref{tb:gpcd_piecewise_reg}, and has $R^2 = 0.7634$.
+
+\begin{table}
+	\TABLE
+	{
+		Results of the linear regression of water demand in GPCD on average daily high temperature, precipitation rate, and and the bounded year.
+		\label{tb:gpcd_piecewise_reg}
+	}
+	{\begin{tabular}{rrrrr}
+		\hline
+						   & Estimate  & Std. Error & $t$ value & $p$ \\
+		\hline
+		(Intercept)    & 9254.0201 & 904.3062   & 10.233    & $<2e-16$ \\
+		Temperature    & 3.5913    & 0.1345     & 26.694    & $<2e-16$ \\
+		Precipitation  & -2.2570   & 1.0510     & -2.148    & $0.0327$ \\
+		Bounded Year   & -4.5847   & 0.4509     & -10.167   & $<2e-16$ \\
+		\hline
+	\end{tabular}}
+	{}
+\end{table}
+
+The piecewise fit typically predicts demands of 135-145 GPCD throughout the 2010-2050 time period, in line with Tucson Water's predictions.
+
 \subsection{Climate Models Used}
 
 A list of the climate models used in this paper is shown in Table \ref{tb:climate_models}.
