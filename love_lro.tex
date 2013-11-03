@@ -208,43 +208,40 @@
 
 \section{Introduction and Motivation}
 
-In practice, many optimization problems can be modeled by stochastic programs minimizing the expected value of an uncertain objective function.
-However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
-Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions, and optimizes the expected cost relative to the worst distribution in the uncertainty set.
-One approach that has been recently proposed by \cite{bental2011robust} uses a set of distributions that are sufficiently close in the $\phi$-divergence sense from a given ``nominal'' distribution. 
-Of particular interest is the case when the nominal distribution takes the form of the empirical distribution determined by direct observation of data.
-In this paper, we adapt the $\phi$-divergence method to the setting of a two-stage stochastic linear program with recourse and call this the two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse (\plp).
+The continued availability of water resources is in question in many parts of the world, as an effect of an uncertain climate future and population increase.
+To combat these influences, methods of allocating water resources must adapt.
+The Lower Colorado River Basin supplies water to 25 million people in California, Nevada and Arizona, making the management of this resource very important.
+In Tucson, Arizona the Colorado River supplies more than 60\% of the water usage by the Central Arizona Project, the largest and most expensive aqueduct system in the United States.
+This paper studies allocation of CAP water in a developing portion of Tucson under future climate and population uncertainty, creating a single integrated model using projections for each of these sources of uncertainty.
 
+Climate change is one of the most important sources of uncertainty in evaluating the sustainability of water resources.
+A wide variety of general circulation models (GCMs) have been developed for evaluating the effects of climate change.
+The coarse results from these models are then used as drivers for Regional Climate Models (RCMs) to generate temperature and precipitation predictions on finer scales.
+Results have been computed on even finer scales using Bias Correction and Spatial Downscaling (BCSD) techniques \cite{bcsdreclamation}.
+Methods of comparing and integrating the results of these differing models are important parts of water allocation planning.
+
+In this paper, we adapt the $\phi$-divergence method of formulating two-stage stochastic linear programs from \cite{love2013phi} to a water allocation model.
+We call this method the two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse (\plp).
 Using $\phi$-divergences to model ambiguous probability distributions is an attractive approach because it uses the data directly---only those data points or scenarios of interest are used in the calculations.
 These scenarios can come from direct observation, results of simulation, or from expert opinion that the decision maker would especially like to be robust against.
-Because the \plp\ depends only on these scenarios, the size of the problem is polynomial in the sample size, making the \plp\ computationally tractable.
-Furthermore, many $\phi$-divergences are commonly used in statistics (e.g, the $\chi^2$ distance) and provide a natural way of modeling problems under uncertainty. 
+
+In this paper, we combine projections of population growth, per-capita water use, CAP water availability and future climate in a \plp\ setting to study water allocation in Tucson.
 
 \subsection{Related Literature}
 
-In recent years, there has been a growing interest in distributionally robust methods.
-Several such studies have focused on solving chance constrained problems in a data-driven setting.
-\cite{calafiore2005uncertain} develop a method for generating feasible solutions to data-driven chance constrained problems with high probability, and later \cite{calafiore2006distributionally} develop a method for converting distributionally robust chance constraints into second-order cone constraints.
-\cite{erdogan2006ambiguous} study the case where the set of distributions considered is determined by the samples through the Prohorov metric.
-\cite{jiang2012data} develop an exact approach to solving several classes of data-driven chance constrained programs, including one defined by the Kullback-Leibler divergence---a type of $\phi$-divergence considered in many further s.
+Another optimization model for water distribution developed by \cite{wang2008basin} considers the entire South Saskatchewan River Basin.
+This study applies two multi-objective optimization models to generate water management solutions that are both equitable and economically efficient using the Cooperative Water Allocation Model.
 
-Stochastic programs with uncertain objective functions have long been studied by applying the minimax approach to an expected cost; see, e.g., \cite{zackova1966minimax,dupacova_87}.
-Two seminal papers, \cite{shapiro2002minimax} and \cite{shapiro2004class}, developed methods for converting stochastic minimax problems into equivalent stochastic programs with a certain distribution, laying the foundation for a commonly used reformulation technique.
+Most similar to the model considered here is the CALVIN (CALifornia Value Integrated Network) model that has been used to study water distribution in California \cite{jenkins2004optimization}.
+Like the model presented here, CALVIN is a multi-period generalized network flow model developed to minimize the total economic cost of water distribution.
+\cite{harou2010economic} integrated sustained drought scenarios into the CALVIN model based on historical records of long-term droughts in California.
+Later, \cite{connell2011adapting} integrates the GFDL-CM3 climate model, one of the climate models used in this work, into CALVIN as a method of evaluating the impact of a warmer and dryer climate on water availability in the future.
 
-One common method for forming the ambiguity set is moment-based, where all distributions have the same moments (mean, variance, covariance, etc.) are considered.
-One early example comes from \cite{scarf1958min}, who provided a distributionally robust model for the newsvendor problem.
-More recently, \cite{delage2010distributionally} provide methods for modeling uncertain distributions of a specific form (e.g., Gaussian, exponential, etc.) or using moment-based constraints.
-
-Closer to our case, \cite{pflug2007ambiguity} develop a data-driven method for solving a portfolio selection problem using the Kantorovich distance to define the set of distributions.
-
-\cite{bental2010soft} presents a ``soft'' robust model that allows for changing the level of robustness across the uncertainty set.
-Although it is not a distributionally robust stochastic program, this soft robust model, like the distributionally robust models, takes the form of a convex risk measure.
-
-Three recent papers by \cite{wang2010likelihood}, \cite{calafiore2007ambiguous}, and \cite{hukullback} provide similar studies using a specific $\phi$-divergence, described in Section \ref{sec:phi_divergences}, that is defined by the Kullback-Leibler divergence.
-Both \cite{wang2010likelihood} and \cite{hukullback} produce dual problems similar to that presented in \cite{bental2011robust} and used here.
-\cite{hukullback} differs from this work and the others by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
-Additionally, \cite{klabjan2013robust} uses the $\chi^2$ distance, another $\phi$-divergence, to define an uncertain demand distribution for a stochastic lot-sizing problem using historical data.
-Our work unites these previous papers and provides insight into conditions where each $\phi$-divergence should be used and the behavior of the optimization problem as more data is gathered.
+Several studies have been directed towards evaluating the relative benefits of the GCMs and associated RCMs.
+NARCCAP, the North American Regional Climate Change Assessment Program, compares several models by showing how they perform using historical observations, and computing climate scenarios in the 21st century.
+\cite{mearns2012north} compare the results of six RCMs using observational data over much of the United States and Canada from 1980-2004.
+\cite{brekke2008significance} study 17 climate models from the World Climate Research Programme's (WCRP's) Coupled Model Intercomparison Project
+phase 3 (CMIP3), and determine model credibility criteria for Northern California.
 
 \subsection{Contributions}
 
