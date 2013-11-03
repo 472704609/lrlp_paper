@@ -249,28 +249,10 @@ Our work unites these previous papers and provides insight into conditions where
 
 \subsection{Contributions}
 
-The contributions of this paper are as follows. 
-\begin{itemize}
-	\item One of the open problems identified by \cite{bental2011robust} was to study the performance of different $\phi$-divergences.
-		Given that there are many $\phi$-divergences, a decision maker is left with the question of how each divergence behaves for his/her problem and which one to choose.
-		We provide a novel classification of $\phi$-divergences dictated by the types of distributions that can be admitted to the set of distributions. 
-		This allows us to provide insight into which class of $\phi$-divergence is most useful to which type of model.
-		We note that this classification is a general feature of $\phi$-divergences and applies to a broader class of $\phi$-divergence constrained problems than the ones presented in this paper. 
-		
-	\item In a data-driven setting, several important questions arise.
-		What happens as we add one more data?
-		Will our solution change, and if so, will the overall cost decrease?
-		Can we determine sampling from which scenarios result in a better (lower-cost) solution?
-		Can we characterize the behavior of the problem as we add more data?
-		In this paper, we provide answers to these questions.
-		First, we provide a simple condition to determine if sampling from a particular scenario will rule out the current worst-case distribution, which can be generalized beyond the two-stage setting.
-		Second, we show that \plp\ converges to the stochastic program with the (unknown) true distribution.
-		
-	\item Stochastic programs often become quite large, which raises questions of computational tractability.
-		We help to answer this problem by providing a modified Bender's decomposition that can be used to solve the \plp\ efficiently by solving only linear programs. 
-
-	\item Finally, we provide some interesting examples of $\phi$-divergences that result in commonly used risk models and illustrate our results numerically. 
-\end{itemize}
+This paper applies the \plp\ method described in \cite{love2013phi} to a model for water treatment and distribution in a developing region of Tucson, AZ described in \cite{???}.
+This work integrates multiple sources of uncertainty into a single optimization model to estimate the relative risk posed by each unknown quantity.
+These sources of uncertainty include: (1) population growth in the region considered, (2) Tucson's water allocation from the Colorado River, and (3) the climate of the region and its effect on per-capita demand for water in the region.
+We generate scenarios for each of these variables, and integrate them into a single \plp\ stochastic programming model, and estimate the long-run value of constructing additional water treatment facilities to decrease the severity of future water shortages.
 
 \subsection{Organization}
 
