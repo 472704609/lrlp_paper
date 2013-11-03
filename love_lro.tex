@@ -61,6 +61,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{multicol}
+\usepackage{multirow}
 \usepackage{csvsimple}
 
 % Frequently used general mathematics
@@ -1480,7 +1481,7 @@ This piecewise fit is shown in Table \ref{tb:gpcd_piecewise_reg}, and has $R^2 =
 
 The piecewise fit typically predicts demands of 135-145 GPCD throughout the 2010-2050 time period, in line with Tucson Water's predictions.
 
-\subsection{Population Estimate}
+\subsection{Population \& Water Supply Estimates}
 
 \begin{table}
 	\TABLE
@@ -1488,13 +1489,14 @@ The piecewise fit typically predicts demands of 135-145 GPCD throughout the 2010
 		Population estimates for the RESIN area.
 		\label{tb:population}
 	}
-	{\begin{tabular}{lp{.15\textwidth}p{.15\textwidth}}
+	{\begin{tabular}{lcc}
 		\hline
 		         & \multicolumn{2}{c}{population} \\
 		Estimate & 2010 & 2050 \\
 		\hline
-		\cite{taz}  & 53,028 & 460,000 \\
-		\cite{wisp} & 53,028 & 740,000 \\
+		\cite{taz}    &  53,028 &   460,000 \\
+		\cite{wisp}   &  53,028 &   740,000 \\
+		\cite{tucson} & 750,000 & 1,300,000 \\
 		\hline
 	\end{tabular}}
 	{}
@@ -1502,7 +1504,13 @@ The piecewise fit typically predicts demands of 135-145 GPCD throughout the 2010
 
 Estimates of the population in each pressure zone were compiled from two population studies in Pima County in Arizona: the Water \& Wastewater Infrastructure, Supply \& Planning Study \citep{wisp} and the Traffic Analysis Zone (TAZ) \citep{taz}.
 \cite{taz} provides a lower estimate of growth in the RESIN area, while \cite{wisp} provides the higher estimate.
+The RESIN area represents a subset of the population served by Tucson Water, the population of which is estimated from \cite{tucson}.
 Sample values can be seen in Table \ref{tb:population}.
+
+Tucson Water has a yearly CAP water allocation of 144,000 acre-feet, which may be reduced in the event of an extended drought reducing the flows of the Colorado river.
+The Arizona Department of Water Resources believes that a 10\% reduction to 130,000 acre-feet is the maximum realistic reduction by 2050 \cite{scott2012scenario}, which is used in this study.
+The water allocation to the RESIN area is determined by the proportion of the Tucson Water service population in the RESIN area.
+I.e., under the \cite{wisp} growth scenario with the full CAP allocation, the RESIN area is allocated about 81,970 acre-feet in 2050.
 
 \subsection{Climate Models Used}
 
@@ -1524,12 +1532,14 @@ Each model included predictions of the variables \texttt{tasmax} and \texttt{pr}
 		\hline
 		Commonwealth Scientific and Industrial Research Organization (CSIRO) and Bureau of Meteorology (BOM), Australia & CSIRO-mk-3-6-0 \\
 		\hline
-		Geophysical Fluid Dynamics Laboratory & GFDL-CM3 \\
-% 		\hline
+		\multirow{2}{*}{Geophysical Fluid Dynamics Laboratory} & GFDL-CM3 \\
+		 & GFDL-ESM2M \\
 		\hline
 		Met Office Hadley Centre & HadGEM2-ES \\
 		\hline
-		Atmosphere and Ocean Research Institute (The University of Tokyo), National Institute for Environmental Studies, and Japan Agency for Marine-Earth Science and Technology & MIROC5 \\
+		\multirow{3}{*}{\vbox{Atmosphere and Ocean Research Institute (The University of Tokyo), National Institute for Environmental Studies, and Japan Agency for Marine-Earth Science and Technology}}  & MIROC5 \\
+		 & MIROC-ESM \\
+		 & \\
 		\hline
 	\end{tabular}}
 	{}
