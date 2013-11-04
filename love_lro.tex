@@ -264,7 +264,6 @@ The rest of the paper is organized as follows.
 Section \ref{sec:model} presents the water distribution model and the planning scenarios used.
 Section \ref{sec:phi_divergences} introduces the $\phi$-divergence, and Section \ref{sec:plp2} presents the $\phi$-divergence model for a two-stage stochastic program with recourse.
 Sections \ref{sec:classification} \ref{sec:properties} review our classification of $\phi$-divergences from \cite{love2013phi} and a value-of-data property of the $\phi$-divergence program.
-Section \ref{sec:soln_algorithm} presents a decomposition method for solving the \plp\ model.
 Section \ref{sec:comp} presents the results of solving the water model with the \plp\ method.
 %some of the properties of the \plp\ model.
 We end in Section \ref{sec:concl} with our conclusions.
@@ -417,7 +416,6 @@ There are a total of 4 scenarios considered in this test instance: (i) high popu
 Each scenario is assumed to have five observations.
 The high population scenarios are more costly as the system needs to meet demand or pay for unmet demand.
 The low population scenarios, on the other hand, are not as costly.
-We applied the decomposition-based solution algorithm presented in Section \ref{sec:soln_algorithm} to solve this model.
 
 \subsection{Water Demand Regression}
 \label{sec:model}
@@ -761,7 +759,7 @@ The convexity of LRO was also noted in \cite{wang2010likelihood}.
 
 We now discuss these properties. A coherent risk measure is defined in \citep{rockafellar2007coherent}, which shows that minimizing a coherent risk measure over a polyhedron implies that \plp\ is a convex problem.
 The convexity of \plp\ was also noted in \citep{bental2011robust}.
-Properties \ref{property:time_structure} and \ref{property:primal_dual_relation} help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
+Properties \ref{property:time_structure} and \ref{property:primal_dual_relation} help with our decomposition-based solution method described in \cite{love2013phi}.
 The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(s_\omega\right)$, aiding in our decomposition-based solution method. 
 The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method for retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property:primal_dual_relation}.
 In many cases, the first equation in (\ref{eq:p_worst}) is sufficient to calculate $\{p_\omega\}_{\omega=1}^n$.
@@ -925,142 +923,6 @@ An approximate lower bound on the probability of selecting a sample in $L$ can b
 That is, we find the minimum probability of $L$ within the ambiguity set defining \plp\ (since we do not know the true distribution).
 We solve (\ref{eq:lb_probability}) by taking its dual.
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{A Decomposition-Based Solution Method}
-\label{sec:soln_algorithm}
-
-As the model gets larger, a direct solution of \plp\ becomes computationally expensive.
-Decomposition-based methods could significantly reduce the solution time and allow larger problems to be solved efficiently. We propose a Bender's decomposition-based method for solving \plp.
-The algorithm removes feasibility constraint (\ref{eq:plp_feas_constraint})  and exchanges it with a series of feasibility cuts in the first-stage problem.
-The master problem is given by
-\begin{align}
-	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \theta \label{eq:master_problem}\\
-	\st \ & \x \in X,\ \ \lambda \geq 0 \nonumber  \\
-	& \theta \geq T_j (\x,\mu,\lambda)^T + t_j, \ \  j \in J  \label{eq:objcut} \\
-	& \mu + \bar{s}\lambda \geq M_k \x + m_k, \ \ k \in K \label{eq:feascut}
-\end{align}
-where \eqref{eq:objcut} are the objective cuts, (\ref{eq:feascut}) are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}) if $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} < \infty$, and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
-
-The proposed algorithm is shown in Algorithm 1.
-The modified Bender's decomposition presented here has the following features:
-\begin{inparaenum}[\itshape (i\upshape)]
-	\item it solves the original linear second stage problems, rather than nonlinear subproblems, and uses them to quickly generate subgradients of the nonlinear term $\lambda \phi^*\left(\tfrac{h_\omega(\x) - \mu}{\lambda}\right)$, 
-	\item exchanges the polyhedral $\phi$-divergence constraints $\tfrac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for a (potentially much) smaller set of easily generated feasibility cuts, and thus
-	\item  maintains linear master and subproblems.\medskip
-\end{inparaenum}
-
-
-%\begin{figure}
-%\label{fig:algorithm}
-%\FIGURE
-\begin{center}
-\begin{minipage}{.61\textwidth}
-	\TableSpaced
-	\hrule
-	\vspace{1pt}
-    {\bf \small Algorithm 1.\ \ Decomposition algorithm for solving \plp}
-	\hrule
-	\vspace{1pt}
-	\begin{algorithmic}
-		\State Initialize $z_l = -\infty, z_u = \infty$
-		\State Solve master problem (\ref{eq:master_problem}) with $\theta = 0$ to generate $\x$
-		\State Solve all second-stage scenario subproblems (\ref{eq:slp_second_stage}) to obtain $h_\omega(\x)$
-		\State Initialize $\lambda \gets 1$ and $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
-		\State Generate initial objective cut
-		\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
-			\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
-			\State Solve subproblems (\ref{eq:slp_second_stage}) to obtain  $h_\omega(\x)$
-			\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h_\omega(\x,\lambda,\mu)$
-			\If{$\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$}
-				\State Generate feasibility cut
-				\State Find $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
-			\Else
-				\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
-			\EndIf
-			\State Generate objective cut
-			\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
-				\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
-				\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
-				\State $p_\omega \gets \phi^{*\prime}(\tfrac{h_\omega(\x) - \mu}{\lambda})$ for $\omega = 1, \dots, n$
-			\EndIf
-		\EndWhile
-	\end{algorithmic}
-	\hrule
-\end{minipage}
-\end{center}
-%{}
-%{}
-%\end{figure}
-
-
-\subsection{Objective Cuts}
-
-Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}), $\hat{s}_\omega = \frac{h(\xh)-\mu}{\lh}$, and $h^\dagger_\omega(s_\omega) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$ be the nonlinear portion of the objective function, which will be used to generate the objective cuts.
-An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ to obtain the optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem. Using these to compute the partial (sub)derivatives of the \plp\ subproblems
-% \begin{align*}
-% 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \x} & = \phi^{*\prime}(\hat{s}_\omega) \pi^{*,\omega}B^\omega, &
-% 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \mu} & = -\phi^{*\prime}(\hat{s}_\omega), &
-% 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \lambda} & = \phi^*(\hat{s}_\omega) - \phi^{*\prime}(\hat{s}_\omega)\hat{s}_\omega.
-% \end{align*}
-% The cuts are then given by
-\begin{align*}
-	T_j^\omega & =
-	\left( \begin{array}{ccc}
-		\phi^{*\prime}(\hat{s}_\omega) \pi^{*,\omega}B^\omega,
-			 & -\phi^{*\prime}(\hat{s}_\omega),
-			 & \phi^*(\hat{s}_\omega) - \phi^{*\prime}(\hat{s}_\omega) \hat{s}_\omega
-	\end{array} \right), \\
-	t_j^\omega & = \lh \phi^{*\prime}(\hat{s}_\omega)\left[\hat{s}_\omega - \frac{\pi^{*,\omega}B^\omega\xh - \mh}{\lh}\right].
-\end{align*}
-For the single-cut master problem proposed, $T_j = \sum_\omega q_\omega T_j^\omega$ and $t_j = \sum_\omega q_\omega t_j^\omega$ and multi-cut versions are also possible. 
-
-\subsection{Feasibility Cuts}
-After the subproblems $h_\omega(\xh)$ are solved, it may be the case that $\hat{s}_\omega < \bar{s}$ for some $\omega$, rendering $\mh$ and $\lh$ infeasible.
-This is corrected using the feasibility problem
-\begin{align*}
-	U_\omega(\x,\mu,\lambda) = \min_{y^\omega \geq 0, z \geq 0} \ & z \\
-	\st \ & z + \bar{s}\lambda + \mu - q^\omega y^\omega \geq 0 \\
-	& D^\omega y^\omega = d^\omega + B^\omega x,
-\end{align*}
-which is solved by $z = h_\omega(x) - \bar{s}\lambda - \mu$.
-The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$, $\frac{\partial z^*}{\partial \mu} = -1$, and $\frac{\partial z^*}{\partial \lambda} = -\bar{s}$.
-Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
-\begin{align*}
-	U_\omega(\x,\mu,\lambda) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) - \bar{s}(\lambda - \lh) + (h_\omega(\xh) - \mh - \bar{s}\lh),
-\end{align*}
-and setting $U_\omega(\x,\mu,\lambda) = 0$ to find a feasible solution gives the feasibility cut
-\[
-	\mu + \bar{s} \lambda \geq \pi^{*,\omega}B^\omega \x + (h_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
-\]
-
-% Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
-% This can be done quickly by minimizing the objective function of (\ref{eq:plp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h_\omega(\xh))$.
-% We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h_\omega(\xh)} = 1$ with Newton's method.
-
-\subsection{Computational Enhancements}
-
-In order to enhance the performance of the above decomposition algorithm, we included an $L^\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
-The trust region is an implementation of Algorithm 4.1 in \cite{nocedal1999numerical}.
-
-\subsection{Implementation Notes on Different $\phi$}
-\label{ssec:implement}
-
-First, note that when (\ref{eq:plp_feas_constraint}) is not present, there is no need to use feasibility cuts. Let's now look at implementation issues with respect to suppression and popping. 
-
-Divergences that can suppress in Subcategory 2 (see \cite{love2013phi}) can be computationally difficult to work with because $\lambda = 0$ could occur.
-Floating point finite tolerance can alleviate this somewhat for the KL divergence, for which $\phi^*(s) = e^s$, because $e^{-800} = 0$ to machine precision.
-We recommend forcing $\lambda$ to be nonzero and checking optimality condition at $\lambda = 0$ separately.
-
-Divergences that can pop require a check for any $s_\omega = \bar{s}$.
-The probability of a popped scenario can be determined by enforcing $\sum_\omega p_\omega = 1$ after determining the probability of the other scenarios.
-
-For divergences that cannot pop, it can be useful to add a computational upper bound on $s$, $\bar{s}_\text{comp}$.
-Such an upper bound can be computed easily by bounding the ratio $\frac{p_\omega}{q_\omega} \leq \frac{1}{\min_\omega q_\omega}$.
-The computational upper bound can then be selected so that $\phi^{*\prime}(\bar{s}_\text{comp}) \geq \frac{1}{\min_\omega q_\omega}$.
-Note, however, that an artificial upper bound will induce artificial popping behavior if the nominal distribution contains impossible scenarios.
-This technique is especially useful for the KL divergence because $e^s$ overflows on double-precision machines for $s \geq 710$.
 
 
 
