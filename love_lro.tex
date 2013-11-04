@@ -568,10 +568,11 @@ Each model included predictions of the variables \texttt{tasmax} and \texttt{pr}
 	{}
 \end{table}
 
-Each model had output associated with a given path for future emissions.
-Our analysis includes two paths: RCP8.5 and RCP4.5.
-The former is the high emissions scenario which ultimately results in increased warming in the long term.
-The latter scenario is a lower emissions scenario, in which emissions stabilize before 2100.
+Each model had output associated with a given path for future greenhouse gas emissions.
+Our analysis includes four paths: RCP2.6, RCP4.5, RCP6.0 and RCP8.5.
+RCP2.6 is an optimistic scenario where emissions are drastically reduced by mid-century.
+RCP4.5 and RCP6.0 show stabilization of emissions before and after 2100, respectively.
+Finally, RCP8.5 is the scenario where emissions continue to grow quickly throughout the remainder of the century.
 A comparison of the model output of the average daily high temperature for 2040-2050 for emissions path RCP8.5 is shown in Table \ref{tb:model_comparison_temperature}.
 
 \begin{table}
@@ -1067,45 +1068,26 @@ This technique is especially useful for the KL divergence because $e^s$ overflow
 \section{Computational Results}
 \label{sec:comp}
 
-Figure \ref{fig:water_worst_case} shows how the worst-case distribution changes with $\gamma'$.
-When $\gamma'$ is close to $1$, we use the maximum likelihood distribution, which has equal $\tfrac{1}{4}$ probabilities on each of the four scenarios.
-As $\gamma'$ is decreased, the ambiguity set increases, and the worst-case distribution used by \plp\ changes.
-It gives higher than $\tfrac{1}{4}$ probability to the two high-population scenarios and lower than $\tfrac{1}{4}$ probability to the two low-population scenarios, making the solution more robust to costly scenarios.
-Note that the scenarios fall into two similar pairs because the cost of each scenario depends strongly on the projected demand but only weakly on the projected supply of Colorado River water.
-A closer look at the optimal solutions reveals that as $\gamma'$ is decreased, or as robustness is increased, the solution uses more and more reclaimed water (treated wastewater that is reused for nonpotable purposes such as irrigation) in an effort to meet demands in a least-costly way.
+The water allocation model was solved using the decomposition algorithm described in \cite{love2013phi}.
+We solved the model for different $\phi$-divergences, using values of $\rho$ equivalent to asymptotic confidence regions of $90\%$, $95\%$ and $99\%$.
+
+Figure \ref{fig:shortage_frequency_piecewise} shows the total shortage amount over the 41-year study period for each infrastructure configuration when using the piecewise water use fit described in Table \ref{tb:gpcd_piecewise_reg}.
+We can see that a satellite wastewater treatment plant provides the most substantial reduction in shortage severity, but that the indirect potable recharge facility decreases the worst-case shortages.
+These shortage amounts are computed with the Burg $\phi$-divergence, but are dictated largely by the physical constraints of the system, and do not change substantially with different $\phi$ or $\rho$.
 
 \begin{figure}
 	\FIGURE
 	{%
-		\includegraphics*[width=.45\textwidth]{images/worst_case_probability}%
-		\includegraphics*[width=.45\textwidth]{images/water_prob_decrease}%
+		\begin{tabular}{c}
+			\includegraphics*[width=.9\textwidth]{images/shortage_frequency}%
+		\end{tabular}
 	}
 	{
-		Left: Worst-case distribution for the likelihood robust water allocation problem.
-		Right: Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.
-		The red line shows the upper bound probability $\tfrac{N_L}{N}$.
-		\label{fig:water_worst_case}
+		A histogram of total shortage amount over the 41-year study period for each infrastructure configuration.
+		\label{fig:shortage_frequency_piecewise}
 	}
 	{}
 \end{figure}
-
-%\subsection{Value of Data}
-
-The results of the water model were then analyzed with the value of data techniques from Section \ref{ssec:value}.
-Figure \ref{fig:water_worst_case} shows the estimated probability that an additional sample will remove the worst-case distribution from the likelihood region, resulting in a lower-cost solution. %, analogous the results of Figure \ref{fig:prob_cost_decrease_gp}.
-The dashed line in Figure \ref{fig:water_worst_case} depicts the computed values of $\frac{N_L}{N}$, which provide an upper bound on the estimated probabilities. 
-Because the low-population scenarios have lower costs, an additional sample of either low-population scenario will result in a lower expected cost.
-This is what we see through most of the computed values of $\gamma'$, with $\frac{N_L}{N} = 0.5$, indicating that the sufficient condition (\ref{eq:cost_decrease_cond}) was satisfied for both low-population scenarios.
-For extremely large values of $\gamma'$---above $0.97$---we see the ratio $\frac{N_L}{N}$ quickly drops to zero.
-This occurs because (\ref{eq:cost_decrease_cond}) only compares scenario probabilities in the empirical ($N_\omega / N$) and worst-case ($p_\omega$) distributions and does not use the computed cost of the scenarios.
-As $\gamma'$ increases and the ambiguity set shrinks, the worst-case probabilities become so close the empirical probabilities that (\ref{eq:cost_decrease_cond}) can no longer be satisfied, resulting in $\frac{N_L}{N}$ decreasing to zero.
-% 
-% \begin{figure}
-% 	\centering
-% 	\includegraphics[width=.5\textwidth]{images/water_prob_decrease}
-% 	\caption{Probability that an additional sample causes a decrease in worst-case expected cost for the likelihood robust water allocation problem.  The red line shows the upper bound probability $\tfrac{N_L}{N}$.}
-% 	\label{fig:water_prob_decrease}
-% \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary and Future Work}
