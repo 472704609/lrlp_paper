@@ -935,18 +935,34 @@ We solved the model for different $\phi$-divergences, using values of $\rho$ equ
 
 Figure \ref{fig:shortage_frequency_piecewise} shows the total shortage amount over the 41-year study period for each infrastructure configuration when using the piecewise water use fit described in Table \ref{tb:gpcd_piecewise_reg}.
 We can see that a satellite wastewater treatment plant provides the most substantial reduction in shortage severity, but that the indirect potable recharge facility decreases the worst-case shortages.
+The addition of a reverse osmosis (RO) facility offers little benefit.
+Figure \ref{fig:shortage_frequency_linear} shows a similar pattern, although with smaller shortages due to the lower water demand per capita through most of the study period.
 These shortage amounts are computed with the Burg $\phi$-divergence, but are dictated largely by the physical constraints of the system, and do not change substantially with different $\phi$ or $\rho$.
 
 \begin{figure}
 	\FIGURE
 	{%
 		\begin{tabular}{c}
-			\includegraphics*[width=.9\textwidth]{images/shortage_frequency}%
+			\includegraphics*[width=.9\textwidth]{images/piecewise_shortage_frequency}%
 		\end{tabular}
 	}
 	{
-		A histogram of total shortage amount over the 41-year study period for each infrastructure configuration.
+		A histogram of total shortage amount over the 41-year study period for each infrastructure configuration with the piecewise water demand fit described in Table \ref{tb:gpcd_piecewise_reg}.
 		\label{fig:shortage_frequency_piecewise}
+	}
+	{}
+\end{figure}
+
+\begin{figure}
+	\FIGURE
+	{%
+		\begin{tabular}{c}
+			\includegraphics*[width=.9\textwidth]{images/linear_shortage_frequency}%
+		\end{tabular}
+	}
+	{
+		A histogram of total shortage amount over the 41-year study period for each infrastructure configuration with the linear water demand fit described in Table \ref{tb:gpcd_linear_reg}.
+		\label{fig:shortage_frequency_linear}
 	}
 	{}
 \end{figure}
