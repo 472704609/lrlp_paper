@@ -967,6 +967,63 @@ These shortage amounts are computed with the Burg $\phi$-divergence, but are dic
 	{}
 \end{figure}
 
+To compare the models and emissions scenarios, we computed the total probability assigned to each.
+Results for the Kullback-Leibler divergence can be seen in Table \ref{tb:pworst_model_emission_kl}.
+We note that the highest probability is assigned to the highest emissions scenario, RCP8.5, but that the second highest probability is given to RCP4.5, a somewhat lower emissions scenario than RCP6.0.
+RCP6.0 in fact has the lowest anticipated costs over the 2010-2050 time period.
+We can also see that GFDL-CM3 results in the highest running cost overall for the water distribution system, followed by MIROC-ESM-CHEM.
+MIROC5 is tends to generate lower-cost simulations, and thus is given the lowest probability, followed by CSIRO.
+We find that GFDL-CM3 with the RCP4.5 results in the highest operating cost, while MIROC5 with RCP6.0 has the lowest cost.
+
+\begin{table}
+	\TABLE
+	{
+		Marginal worst-case probabilities of each climate model and emissions scenario as computed by the Kullback-Leibler Divergence.
+		\label{tb:pworst_model_emission_kl}
+	}
+	{\begin{tabular}{l|cccc|c}
+		\input{tables/pworst_model_kl.tex}
+	 \end{tabular}}
+	{}
+\end{table}
+
+Table \ref{tb:shortage_model_emission_kl} lists the maximum total shortage over the 2010-2050 projection for each climate projection.
+
+\begin{table}
+	\TABLE
+	{
+		Worst-case shortage for each climate model and emissions scenario, with the IPR.
+		\label{tb:shortage_model_emission_kl}
+	}
+	{\begin{tabular}{l|cccc|c}
+		\input{tables/shortage_model_kl.tex}
+	 \end{tabular}}
+	{}
+\end{table}
+
+Finally, Table \ref{tb:total_cost} calculates the worst-case expected operating cost of the water system from 2010-2050.
+This cost includes \$800 loss per acre-foot of shortage.
+We can see that, while the satellite wastewater treatment plant decreases the cost only by \$10-\$15 million, the IPR facility reduces the cost by an addition \$25 million over the 41-year time span.
+
+\begin{table}
+	\TABLE
+	{
+		Total worst-case expected operating cost of the water system over the 2010-2050 time span.
+		Columns represent worst-case costs at the 90\%, 95\% and 99\% confidence levels.
+		\label{tb:total_cost}
+	}
+	{\begin{tabular}{l|cccc}
+		Infrastructure & \multicolumn{3}{c}{Total Operating Cost (\$M)} \\
+		     & 90\%   & 95\%   & 99\% \\
+		\hline
+		None & 319.34 & 320.06 & 321.41 \\
+		WWTP & 303.91 & 304.59 & 305.85 \\
+		IPR  & 279.86 & 280.55 & 281.82 \\
+		RO   & 290.89 & 291.60 & 292.90
+	 \end{tabular}}
+	{}
+\end{table}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary and Future Work}
 \label{sec:concl}
