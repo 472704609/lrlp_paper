@@ -208,64 +208,62 @@
 
 \section{Introduction and Motivation}
 
-The continued availability of water resources is in question in many parts of the world, as an effect of an uncertain climate future and population increase.
+The continued availability of water resources is in question in many parts of the world, especially in light of an uncertain climate future and population increase.
 To combat these influences, methods of allocating water resources must adapt.
 The Lower Colorado River Basin supplies water to 25 million people in California, Nevada and Arizona, making the management of this resource very important.
-In Tucson, Arizona the Colorado River supplies more than 60\% of the water usage by the Central Arizona Project, the largest and most expensive aqueduct system in the United States.
+In Tucson, Arizona the Colorado River supplies more than 60\% of the water through the Central Arizona Project (CAP), the largest and most expensive aqueduct system in the United States.
 This paper studies allocation of CAP water in a developing portion of Tucson under future climate and population uncertainty, creating a single integrated model using projections for each of these sources of uncertainty.
 
 Climate change is one of the most important sources of uncertainty in evaluating the sustainability of water resources.
 A wide variety of general circulation models (GCMs) have been developed for evaluating the effects of climate change.
-The coarse results from these models are then used as drivers for Regional Climate Models (RCMs) to generate temperature and precipitation predictions on finer scales.
-Results have been computed on even finer scales using Bias Correction and Spatial Downscaling (BCSD) techniques \cite{bcsdreclamation}.
+The coarse results from these models are used as drivers for Regional Climate Models (RCMs) to generate temperature and precipitation predictions on finer scales.
+To gain insight on still small regions, Bias Correction and Spatial Downscaling (BCSD) techniques have been applied to the results of the RCMs to generate these predictions on even finer scales \citep{bcsdreclamation}.
 Methods of comparing and integrating the results of these differing models are important parts of water allocation planning.
 
-In this paper, we adapt the $\phi$-divergence method of formulating two-stage stochastic linear programs from \cite{love2013phi} to a water allocation model.
-We call this method the two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse (\plp).
-Using $\phi$-divergences to model ambiguous probability distributions is an attractive approach because it uses the data directly---only those data points or scenarios of interest are used in the calculations.
+In this paper, we adapt the $\phi$-divergence method of formulating two-stage stochastic linear programs from \cite{love2013phi}, which we call the two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse (\plp), to a water allocation model.
+The \plp\ model is an attractive approach to modeling uncertainty because it allows for using the data directly, integrating those scenarios of interest into a single modeling formulation.
 These scenarios can come from direct observation, results of simulation, or from expert opinion that the decision maker would especially like to be robust against.
-
-In this paper, we combine projections of population growth, per-capita water use, CAP water availability and future climate in a \plp\ setting to study water allocation in Tucson.
+In this water allocation problem, scenarios are generated from projections of population growth, CAP water supply, and climate-driven per-capita demand for water resources.
 
 \subsection{Related Literature}
+
+Stochastic programming methods have a long history in water resources management.
+One early example is \cite{hall1970optimal}, which formulates a stochastic linear programming model for water rights allocation in arid and semiarid agriculture.
+\cite{bishop1975optimization} provides an early stochastic model of a water allocation system, including wastewater treatment and reuse.
+More recent work includes \cite{higgins2008stochastic}, which provides a multistage nonlinear stochastic formulation of water resource allocation and applies it to South East Queensland in Australia.
+Other studies have used interval-stochastic programming to formulate the model, e.g., \cite{li2009multistage}.
+\cite{shao2011conditional} combine inexact stochastic programming with uncertainty measured by the Conditional Value at Risk (CVaR).
+This is particularly similar to the work presented here, because CVaR can be represented as a $\phi$-divergence \citep{love2013phi}.
 
 Another optimization model for water distribution developed by \cite{wang2008basin} considers the entire South Saskatchewan River Basin.
 This study applies two multi-objective optimization models to generate water management solutions that are both equitable and economically efficient using the Cooperative Water Allocation Model.
 
-Most similar to the model considered here is the CALVIN (CALifornia Value Integrated Network) model that has been used to study water distribution in California \cite{jenkins2004optimization}.
-Like the model presented here, CALVIN is a multi-period generalized network flow model developed to minimize the total economic cost of water distribution.
+Most similar to the water allocation model considered here is the CALVIN (CALifornia Value Integrated Network) model that has been used to study water distribution in California \citep{jenkins2004optimization}.
+CALVIN is a multi-period generalized network flow model developed to minimize the total economic cost of water distribution in California.
+Much of the work using CALVIN has been aimed towards analyzing the impact of climate changes.
 \cite{harou2010economic} integrated sustained drought scenarios into the CALVIN model based on historical records of long-term droughts in California.
-Later, \cite{connell2011adapting} integrates the GFDL-CM3 climate model, one of the climate models used in this work, into CALVIN as a method of evaluating the impact of a warmer and dryer climate on water availability in the future.
+Later, \cite{connell2011adapting} integrate the GFDL-CM3 climate model, one of the climate models used in this work, into CALVIN as a method of evaluating the impact of a warmer and dryer climate on water availability in the future.
 
 Several studies have been directed towards evaluating the relative benefits of the GCMs and associated RCMs.
 NARCCAP, the North American Regional Climate Change Assessment Program, compares several models by showing how they perform using historical observations, and computing climate scenarios in the 21st century.
 \cite{mearns2012north} compare the results of six RCMs using observational data over much of the United States and Canada from 1980-2004.
 \cite{brekke2008significance} study 17 climate models from the World Climate Research Programme's (WCRP's) Coupled Model Intercomparison Project
 phase 3 (CMIP3), and determine model credibility criteria for Northern California.
-
-Stochastic programming methods have a long history in water resources management.
-One early example is \cite{hall1970optimal}, who formulates a linear stochastic programming model for arid and semiarid water rights allocation in agriculture.
-\cite{bishop1975optimization} provides an early study of a stochastic model of a water allocation system, including wastewater treatment and reuse.
-More recent work includes \cite{higgins2008stochastic}, which provides a multistage nonlinear stochastic formulation of water resource allocation and applies it to South East Queensland in Australia.
-Other studies have used interval-stochastic programming to formulate the model, e.g., \cite{li2009multistage}.
-\cite{shao2011conditional} combine inexact stochastic programming with uncertainty measured by the Conditional Value at Risk (CVaR).
-This is particularly similar to the work presented here, because CVaR can be represented as a $\phi$-divergence \citep{love2013phi}.
+This comparison helped to inform our choices of climate models included in the present work.
 
 \subsection{Contributions}
 
-This paper applies the \plp\ method described in \cite{love2013phi} to a model for water treatment and distribution in a developing region of Tucson, AZ described in \cite{???}.
+This paper applies the \plp\ method described in \cite{love2013phi} to a model for water treatment and distribution in a developing region of Tucson, AZ described in \cite{woods2012centralized}.
 This work integrates multiple sources of uncertainty into a single optimization model to estimate the relative risk posed by each unknown quantity.
-These sources of uncertainty include: (1) population growth in the region considered, (2) Tucson's water allocation from the Colorado River, and (3) the climate of the region and its effect on per-capita demand for water in the region.
+These sources of uncertainty include: (1) population growth in the region considered, (2) Tucson's water allocation from the Lower Colorado River Basin, and (3) the climate of the region and its effect on per-capita demand for water in the region.
 We generate scenarios for each of these variables, and integrate them into a single \plp\ stochastic programming model, and estimate the long-run value of constructing additional water treatment facilities to decrease the severity of future water shortages.
 
 \subsection{Organization}
 
 The rest of the paper is organized as follows.
-Section \ref{sec:model} presents the water distribution model and the planning scenarios used.
-Section \ref{sec:phi_divergences} introduces the $\phi$-divergence, and Section \ref{sec:plp2} presents the $\phi$-divergence model for a two-stage stochastic program with recourse.
-Sections \ref{sec:classification} \ref{sec:value} review our classification of $\phi$-divergences from \cite{love2013phi} and a value-of-data property of the $\phi$-divergence program.
-Section \ref{sec:comp} presents the results of solving the water model with the \plp\ method.
-%some of the properties of the \plp\ model.
+Section \ref{sec:network_model} presents the water distribution model and the planning scenarios used.
+Section \ref{sec:phi_divergences} briefly describes the \plp\ approach from \cite{love2013phi} and reviews some of the key features.
+Section \ref{sec:water} describes the application to Tucson, AZ, and Section \ref{sec:comp} presents the results of solving this application with the \plp\ method.
 We end in Section \ref{sec:concl} with our conclusions.
 
 
@@ -274,8 +272,8 @@ We end in Section \ref{sec:concl} with our conclusions.
 \section{Generalized Network Water Model}
 \label{sec:network_model}
 
-We applied \plp\ to a multi-period generalized network flow model of Colorado River water allocation in Tucson, defined by a set of nodes and directed arcs $(N,\: A)$.
-The nodes represent available water supply from the Colorado River, water treatment plants, reservoirs, and water demand sites.
+A generalized network model of water distribution is defined by a set of nodes and directed arcs $(N,\: A)$.
+The nodes represent available water supply inputs, water treatment plants, reservoirs, interconnection points, and water demand sites.
 The arcs represent the conveyance system (pipes, etc.) that carry water between the nodes.
 Water can be stored in between time periods in reservoirs to meet future demands.
 The model aims to find the minimal cost water flows considering energy, treatment, storage, and transportation costs over the planning period. 
@@ -285,327 +283,54 @@ Water flows on arc $(i,j) \in A$ during time period $t = 1, \dots, P$ are repres
 Each arc $(i,j) \in A$ and time period $t$ has a unit cost $c_{ijt}^x$, loss coefficient $0 \leq a_{ijt} \leq 1$ to account for evaporation, leakage from the pipes, etc., and bounds on the flow $l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x$.
 Each node $j \in N$ has a supply/demand for time period $t$, $b_{jt}$.
 Nodes representing reservoirs are able to store water between time periods.
-Stored water available at node $j$ at the beginning of time period $t$ is $s_{jt}$, with associated cost $c_{jt}^s$ and bounds $l_{jt}^s \leq s_{jt} \leq u_{jt}^s$.
+Nodes capable of storing water are denoted as members of the set $S$.
+Stored water available at node $j$ at the end of time period $t$ is $s_{jt}$, with associated cost $c_{jt}^s$ and bounds $l_{jt}^s \leq s_{jt} \leq u_{jt}^s$.
 Finally, water released into the environment from node $j$ in period $t$ is given by $r_{jt}$, with bounds $l_{jt}^r \leq r_{jt} \leq u_{jt}^r$.
 The deterministic model is a multi-period generalized network flow model of the form
 \begin{align*}
-	\min_{x,s,r} \ & \sum_{(i,j) \in A} \sum_{t=1}^P c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^P c_{jt}^s s_{jt}\\
-	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}, \ \ \forall j,t \\
+	\min_{x,s,r} \ & \sum_{(i,j) \in A} \sum_{t=1}^P c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^P c_{jt}^s s_{jt} \\
+	\st \ & \sum_{j : (j,i) \in A} a_{jit} x_{jit} = \sum_{j : (i,j) \in A} x_{ijt} + r_{jt} + b_{jt} \ \ \forall i \not\in S, t \\
+	& \sum_{j : (j,i) \in A} a_{ji,t-1} x_{ji,t-1} + s_{j,t-1} = \sum_{j : (i,j) \in A} x_{ijt} + s_{jt}, \ \ \forall i \in S,t \\
 	& l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x,\ \ \ \forall i,j,t \\
 	& l_{jt}^s \leq s_{jt} \leq u_{sjt}^s, \ \ \ \forall j,t \\
 	& l_{jt}^r \leq r_{jt} \leq u_{sjt}^r, \ \ \ \forall j,t.
 \end{align*}
+To compute the first-year constraints, we assume that $x_{ij0} \equiv 0$ and that $s_{j0}$ is given.
 
 The model is converted to a two-stage stochastic model with $P_1$ periods in the first stage and $P-P_1$ stages in the second stage.
 We assume that the supplies and demands are uncertain, as well as the bounds on the decision variables.
 \begin{align}
-	\min_{(x,s,r) \in L^1} \ & \sum_{(i,j) \in A} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n p_\omega h_\omega(s) \label{eq:gen_network_two_stage} \\
-	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt},\ \ \ \ \forall j, 1 \leq t \leq P_1, \notag
+	\min_{(x,s,r) \in L^1} \ & \sum_{(i,j) \in A} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n q_\omega h_\omega(s) \label{eq:gen_network_two_stage} \\
+	\st \ & \sum_{j : (j,i) \in A} a_{jit} x_{jit} = \sum_{j : (i,j) \in A} x_{ijt} + r_{jt} + b_{jt} \ \ \forall i \not\in S, 1 \leq t \leq P_1 \notag \\
+	& \sum_{j : (j,i) \in A} a_{ji,t-1} x_{ji,t-1} + s_{j,t-1} = \sum_{j : (i,j) \in A} x_{ijt} + s_{jt},\ \ \ \ \forall i \in S, 1 \leq t \leq P_1, \notag
 \end{align}
-where the second stage problems
+where $\{q_\omega\}_{\omega = 1}^n$ is the probability distribution of the uncertain second stage problem $h_\omega(s)$, given by
 \begin{align}
 	h_\omega(s) = \min_{(x,s,r) \in L^2_\omega} \ & \sum_{(i,j) \in A} \sum_{t=P_1+1}^{P} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=P_1+1}^{P} c_{jt}^s s_{jt} \label{eq:gen_network_second_stage} \\
-	\st \ & \sum_{i \in N} x_{jit} + s_{j,t+1} + r_{jt} = \sum_{i \in N} a_{ijt} x_{ijt} + s_{jt} + b_{jt}^\omega, \ \ \ \ \forall j, P_1+1 \leq t \leq P, \notag
+	\st \ & \sum_{j : (j,i) \in A} a_{jit} x_{jit}^\omega = \sum_{j : (i,j) \in A} x_{ijt}^\omega + r_{jt}^\omega + b_{jt}^\omega, \ \ \ \ \forall j, P_1+1 \leq t \leq P, \notag \\
+	& \sum_{j : (j,i) \in A} a_{ji,t-1} x_{ji,t-1} + s_{j,t-1} = \sum_{j : (i,j) \in A} x_{ijt}^\omega + s_{jt}^\omega,\ \ \ \ \forall i \in S, t = P+1, \notag \\
+	& \sum_{j : (j,i) \in A} a_{ji,t-1} x_{ji,t-1}^\omega + s_{j,t-1}^\omega = \sum_{j : (i,j) \in A} x_{ijt}^\omega + s_{jt}^\omega,\ \ \ \ \forall i \in S, P_1+1 \leq t \leq P, \notag
 \end{align}
 and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower and upper variable bounds.
 
-% In the rest of the paper, we simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows.
-% In the first stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply/demand parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
-% In the second stage, we denote the decisions as $\y^\omega$, the costs as $\k^\omega$, the supply/demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.
-
-% Using the generalized network model (\ref{eq:gen_network_two_stage}) of Colorado River water allocation in the southeastern portion of Tucson, we created a likelihood robust water allocation problem of the form \plp.
-% The southeastern portion of Tucson is a newly developing area and is expected to grow considerably.
-% The \plp\ water allocation model would help authorities with future water plans in this area while being robust to uncertainties in water supplies and demands.
-
-The model has a total of $P = 41$ time periods, representing years 2010--2050.
-%, with projections coming from studies WISP \cite{??} and TAZ \cite{??}.
-% We use $P_1 = 10$ time periods for the first stage, and four second-stage scenarios are constructed from high (WISP) and low (TAZ) population estimates along with high and low estimates for the amount of water available for use.
-For each time period, the network has 62 nodes representing demand for potable and nonpotable (reclaimed) water, pumps, water treatment plants, and the available water supply from the Colorado River.
-The network in each time period has 102 arcs, representing the pipe network carrying the water between the nodes physically and connecting the network to the five reservoirs that connect the time stages in the model.
-We use $P_1 = 10$ time periods for the first stage.
-Uncertainty in the second stage takes the form of uncertain population (thus, demand for water) and supply of water.
-There are a total of 4 scenarios considered in this test instance: (i) high population, high supply, (ii) high population, low supply, (iii) low population, high supply, and (iv) low population, low supply.
-Each scenario is assumed to have five observations.
-The high population scenarios are more costly as the system needs to meet demand or pay for unmet demand.
-The low population scenarios, on the other hand, are not as costly.
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Application to Tucson, AZ}
-\label{sec:water}
-
-%% BETTER INTRODUCTION NEEDED!!!!
-We applied the \plp method developed here to a problem of water distribution in a currently developing area of Tucson, AZ, shown in Figure \ref{fig:tucson_elevation}.
-Tucson is undergoing a period of large population and infrastructure growth, and with that comes an increased demand for water resources.
-
-The majority of Tucson's water comes from the Colorado river, brought in by the Central Arizona Project (CAP), which is indicated by the canal shown in blue in Figure \ref{fig:tucson_elevation}.
-This water may then be treated and sent to customers, or pumped underground to one of five aquifers to be saved for future use.
-One aquifer recharge facility, the Central Avra Valley Storage And Recovery Project (CAVSARP) is shown in Figure \ref{fig:tucson_elevation}, along with two water treatment plants: the Tucson Water Reclamation Facility and the Haden-Udal Water Treatment Plant.
-
-One southeastern portion of Tucson, outlined in purple in Figure \ref{fig:tucson_elevation}, is being increasingly developed.
-This area is split into different elevation zones, shown by the green lines, the demands in each of which will be served by a dedicated pump.
-Thus, the green lines also split the region into several pressure zones.
-Given the capacity of the existing treatment plants, and the energy cost of pumping the water through a series of pressure zones, Tucson Water is interested in the possibility of building additional treatment facilities  in this area, herein known as the RESIN (Resilient and Sustainable Infrastructures) area.
-
-\begin{figure}
-	\FIGURE
-	{%
-		\includegraphics*[width=.6\textwidth]{tucson_water_images/tucson_elevation.png}%
-	}
-	{
-		A map of Tucson, AZ, showing the RESIN area outlined in purple in the southeastern part.
-		The green lines indicate elevation changes, denoting the difference between the pressure zones considered in this study.
-		\label{fig:tucson_elevation}
-	}
-	{}
-\end{figure}
-
-A more detailed view of Tucson's water treatment system is shown in Figure \ref{fig:tucson_treatment}.
-The blue nodes and arcs indicate the potable water treatment and storage system, which takes CAP water as an input and distributes it to the pressure zones shown in Figure \ref{fig:tucson_zones}.
-The purple nodes and arcs indicate non-potable water which can be used to satisfy some (especially agricultural and industrial) demands.
-The black nodes indicate waste water that is returned from potable water use.
-
-\begin{figure}
-	\FIGURE
-	{%
-		\includegraphics*[width=.8\textwidth]{tucson_water_images/nodes_central.png}%
-	}
-	{
-		A schematic of the existing water treatment and recharge facilities in Tucson.
-		Blue indicated potable water, purple indicates non-potable (reclaimed) water, and black represents waste water.
-		\label{fig:tucson_treatment}
-	}
-	{}
-\end{figure}
-
-The pressure zones in the RESIN area, shown in \ref{fig:tucson_zones}, have a largely period structure.
-Each pressure zone contains a potable and non-potable demand node.
-Note that potable water, being of higher quality, can be used to meet either type of demand.
-Each zone also contains a potable-water reservoir and pump, which is used to supply potable to the next pressure zone, and a booster station that provides the conveyance for the non-potable water.
-Finally, each zone has a wastewater return, which is transported back to the centralized processing facilities via a gravity flow.
-
-\begin{figure}
-	\FIGURE
-	{%
-		\begin{tabular}{c}
-			\includegraphics*[width=.5\textwidth]{tucson_water_images/zones_c_e.png}%
-			\includegraphics*[width=.5\textwidth]{tucson_water_images/zones_split.png} \\
-			\includegraphics*[width=.6\textwidth]{tucson_water_images/zones_legend.png}
-		\end{tabular}
-	}
-	{
-		A schematic illustration of the pressure zones in the RESIN area.
-		Each zones contains potable and non-potable demand nodes, a reservoir and booster station for transporting the potable and non-potable water, respectively, and waste water return pipes.
-		\label{fig:tucson_zones}
-	}
-	{}
-\end{figure}
-
-Finally, additional infrastructure may be constructed in the form of a satellite wastewater treatment plant (WWTP) may be constructed somewhere in the RESIN area.
-Figure \ref{fig:tucson_zones_wwtp} gives an illustration of this using the zone GS.
-This satellite WWTP treats wastewater from it's own zone, and higher zones, and supplies additional non-potable water while bypassing the journey all the way back to the centralized treatment facilities shown in Figure \ref{fig:tucson_treatment}.
-
-\begin{figure}
-	\FIGURE
-	{%
-		\begin{tabular}{c}
-			\includegraphics*[width=.8\textwidth]{tucson_water_images/zones_south.png}%
-		\end{tabular}
-	}
-	{
-		A satellite wastewater treatment plant is shown here, build in pressure zone GS.
-		\label{fig:tucson_zones_wwtp}
-	}
-	{}
-\end{figure}
-
-\subsection{Water Demand Regression}
-\label{sec:model}
-
-We desire to estimate the weather-dependent demand of water resources in Tucson, and use the results of the climate models to project the future demand for water in the developing area.
-To estimate demand separately in each elevation zone, we need a statistical model of the per-capita water demand to be used in conjunction with the zonal population estimates.
-For this task, data on monthly demand for water in Tucson from 1991-2011 was obtained from Tucson, along with the recorded amount of rain and the average daily high temperature in each month.
-
-A direct measure of population was only available on a yearly basis, but service counts were available for each month, from which population estimates were inferred in order to estimate the per-capita demand for water.
-We performed a linear regression on the total population against the monthly service count data to estimate the population for each month.
-The linear regression found that only the number of single family residences was a statistically significant predictor of population size.
-The results are shown in Table \ref{tb:population_linear_reg}.
-The regression had an adjusted $R^2 = 0.9946$.
-
-\begin{table}
-	\TABLE
-	{
-		Results of the linear regression of population on number of single family units in Tucson Water's service counts.
-		\label{tb:population_linear_reg}
-	}
-	{\begin{tabular}{rrrrr}
-		\hline
-						   & Estimate  & Std. Error & $t$ value & $p$ \\
-		\hline
-		(Intercept)    & 2.026e+05 & 7.145e+03  & 28.3 6    & $<2 \cdot 10^{-16}$ \\
-		Single Family  & 2.543e+00 & 4.171e-02  & 60.98     & $<2 \cdot 10^{-16}$ \\
-		\hline
-	\end{tabular}}
-	{}
-\end{table}
-
-Given the monthly estimates on population, the water demand per capita in gallons per capita per day (GPCD) were calculated for every month in the 1991-2011 data.
-A linear regression of these GPCD values on the mean daily high temperature and average precipitation rate for each month, and the year of the observation, was then calculated.
-The year of the observation is included because the average GPCD water demand began dropping near the beginning of the 21st century, from over 170 GPCD in 1996 to under 140 GPCD in 2011.
-The linear fit, shown in Table \ref{tb:gpcd_linear_reg} has adjusted $R^2 = 0.7266$.
-
-\begin{table}
-	\TABLE
-	{
-		Results of the linear regression of water demand in GPCD on average daily high temperature, precipitation rate, and year.
-		\label{tb:gpcd_linear_reg}
-	}
-	{\begin{tabular}{rrrrr}
-		\hline
-						   & Estimate  & Std. Error & $t$ value & $p$ \\
-		\hline
-		(Intercept)    & 2721.2539 & 355.5267   & 7.654     & $4.33\cdot 10^{-13}$ \\
-		Temperature    &   3.5830  & 0.1446     & 24.774    & $< 2\cdot 10^{-16}$\\
-		Precipitation  &  -2.6329  & 1.1337     & -2.322    & $0.021$ \\
-		Year           &  -1.3296  & 0.1776     & -7.486    & $1.24\cdot 10^{-12}$ \\
-		\hline
-	\end{tabular}}
-	{}
-\end{table}
-
-This fit, with the year included, projects water demand to be around 145-155 GPCD in 2010, which decreases over time to 100-110 GPCD by 2050.
-Tucson Water uses a typical estimate of 120-145 GPCD in their projections.
-The range specified by this fit is similar to this for many of the years considered.
-
-A second option for modeling the decrease in water demand as occurring only in a finite span of time.
-For this, we choose to regress on a bounded on the value of the year, i.e., choose the value in a set $\{Y_l, Y_l+1, \dots, Y_u\}$ closest to the actual year.
-First, the upper bound $Y_u = 2011$ was chosen so that no decrease in water demand would be projected beyond the scope of the data.
-The value $Y_l = 2004$ was then selected to generate the best fit to the data.
-This piecewise fit is shown in Table \ref{tb:gpcd_piecewise_reg}, and has $R^2 = 0.7634$.
-
-\begin{table}
-	\TABLE
-	{
-		Results of the linear regression of water demand in GPCD on average daily high temperature, precipitation rate, and and the bounded year.
-		\label{tb:gpcd_piecewise_reg}
-	}
-	{\begin{tabular}{rrrrr}
-		\hline
-						   & Estimate  & Std. Error & $t$ value & $p$ \\
-		\hline
-		(Intercept)    & 9254.0201 & 904.3062   & 10.233    & $<2\cdot 10^{-16}$ \\
-		Temperature    & 3.5913    & 0.1345     & 26.694    & $<2\cdot 10^{-16}$ \\
-		Precipitation  & -2.2570   & 1.0510     & -2.148    & $0.0327$ \\
-		Bounded Year   & -4.5847   & 0.4509     & -10.167   & $<2\cdot 10^{-16}$ \\
-		\hline
-	\end{tabular}}
-	{}
-\end{table}
-
-The piecewise fit typically predicts demands of 135-145 GPCD throughout the 2010-2050 time period, in line with Tucson Water's predictions.
-
-\subsection{Population \& Water Supply Estimates}
-
-\begin{table}
-	\TABLE
-	{
-		Population estimates for the RESIN area.
-		\label{tb:population}
-	}
-	{\begin{tabular}{lcc}
-		\hline
-		         & \multicolumn{2}{c}{population} \\
-		Estimate & 2010 & 2050 \\
-		\hline
-		\cite{taz}    &  53,028 &   460,000 \\
-		\cite{wisp}   &  53,028 &   740,000 \\
-		\cite{tucson} & 750,000 & 1,300,000 \\
-		\hline
-	\end{tabular}}
-	{}
-\end{table}
-
-Estimates of the population in each pressure zone were compiled from two population studies in Pima County in Arizona: the Water \& Wastewater Infrastructure, Supply \& Planning Study \citep{wisp} and the Traffic Analysis Zone (TAZ) \citep{taz}.
-\cite{taz} provides a lower estimate of growth in the RESIN area, while \cite{wisp} provides the higher estimate.
-The RESIN area represents a subset of the population served by Tucson Water, the population of which is estimated from \cite{tucson}.
-Sample values can be seen in Table \ref{tb:population}.
-
-Tucson Water has a yearly CAP water allocation of 144,000 acre-feet, which may be reduced in the event of an extended drought reducing the flows of the Colorado river.
-The Arizona Department of Water Resources believes that a 10\% reduction to 130,000 acre-feet is the maximum realistic reduction by 2050 \cite{scott2012scenario}, which is used in this study.
-The water allocation to the RESIN area is determined by the proportion of the Tucson Water service population in the RESIN area.
-I.e., under the \cite{wisp} growth scenario with the full CAP allocation, the RESIN area is allocated about 81,970 acre-feet in 2050.
-
-\subsection{Climate Models Used}
-
-A list of the climate models used in this paper is shown in Table \ref{tb:climate_models}.
-Bias-Corrected and Spatially Downscaled (BCSD) data from Coupled Model Intercomparison Project: Phase 5 (CMIP5) was obtained from \cite{cmip5}.
-Additional information on the downscaled data can be found in \cite{bcsdreclamation}.
-Each model included predictions of the variables \texttt{tasmax} and \texttt{pr}, the average daily high temperature ($^\circ C$) and the average precipitation rate (mm/day) in each month.
-
-\begin{table}
-	\TABLE
-	{
-		A list of climate models used in this analysis
-		\label{tb:climate_models}
-	}
-	{\begin{tabular}{p{.7\textwidth}|r}
-		\hline
-		Institution & Model \\
-		\hline
-		\hline
-		Commonwealth Scientific and Industrial Research Organization (CSIRO) and Bureau of Meteorology (BOM), Australia & CSIRO-mk-3-6-0 \\
-		\hline
-		\multirow{2}{*}{Geophysical Fluid Dynamics Laboratory} & GFDL-CM3 \\
-		 & GFDL-ESM2M \\
-		\hline
-		Met Office Hadley Centre & HadGEM2-ES \\
-		\hline
-		\multirow{3}{*}{\vbox{Atmosphere and Ocean Research Institute (The University of Tokyo), National Institute for Environmental Studies, and Japan Agency for Marine-Earth Science and Technology}}  & MIROC5 \\
-		 & MIROC-ESM \\
-		 & \\
-		\hline
-	\end{tabular}}
-	{}
-\end{table}
-
-Each model had output associated with a given path for future greenhouse gas emissions.
-Our analysis includes four paths: RCP2.6, RCP4.5, RCP6.0 and RCP8.5.
-RCP2.6 is an optimistic scenario where emissions are drastically reduced by mid-century.
-RCP4.5 and RCP6.0 show stabilization of emissions before and after 2100, respectively.
-Finally, RCP8.5 is the scenario where emissions continue to grow quickly throughout the remainder of the century.
-A comparison of the model output of the average daily high temperature for 2040-2050 for emissions path RCP8.5 is shown in Table \ref{tb:model_comparison_temperature}.
-
-\begin{table}
-	\TABLE
-	{
-		A comparison of projected ($\geq 2040$) average daily high temperatures ($^\circ C$) with the historical record (1991-2011) in Tucson, AZ.
-		All values come from models using emissions path RCP8.5.
-		\label{tb:model_comparison_temperature}
-	}
-	{\csvautotabular{tables/temperature.csv}}
-	{}
-\end{table}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction to $\phi$-Divergences}
+\section{The \plp\ Problem}
 \label{sec:phi_divergences}
 
-In this section we define the concept of a $\phi$-divergence, and describe some of the properties that will be used through the remainder of the paper.
+We now turn our attention to formulating the \plp\ model.
+We first define the concept of a $\phi$-divergence and describe some of it's properties.
 \cite{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
-Many results in this section can be also found in \citep{bental2011robust}.
+After defining the \plp\ problem, we review some of the properties discussed in \cite{love2013phi}, and other properties that can be found in \cite{bental2011robust}.
 
 $\phi$-divergences are used in statistics to measure the ``distance'' between two distributions. 
-In the discrete case, $\phi$-divergences can be used generally to measure the distance between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$, and specifically when $p$ and $q$ are probability vectors; i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
+In the discrete case, $\phi$-divergences can be used generally to measure the distance between two probability vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$, i.e., vectors satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
 The $\phi$-divergence is defined by
 \[
 	I_\phi(p,q) = \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right),
 \]
-where $\phi(t)$, called the $\phi$-divergence function, is a convex function on $t \geq 0$ such that $\phi(1) = 0$, and with the additional interpretations that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and $0 \phi(0/0) = 0$.
-If both $p$ and $q$ are probability vectors, as we assume throughout this paper, we can additionally assume without loss of generality that $\phi(t) \geq 0$.
-The function $\phi(t)$ can be modified as $\psi(t) = \phi(t) + c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t$, and $I_\psi(p,q) = I_\phi(p,q)$ for all probability vectors $p,q$.
-If $\phi(t)$ is differentiable at $t = 1$ this can be done by selecting $c = -\phi'(1)$.
-%; see, e.g., the Likelihood divergence and Burg entropy in Table~\ref{tb:phi_definitions}.
+where $\phi(t)$, called the $\phi$-divergence function, is a convex function on $t \geq 0$ such that $\phi(t) \geq 0$ and $\phi(1) = 0$, and with the additional interpretations that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and $0 \phi(0/0) = 0$
 
 $\phi$-divergences are not, in general, metrics.
 For example, most $\phi$-divergences do not satisfy the triangle inequality and many are not symmetric in the sense that $I_\phi(p,q) \neq I_\phi(q,p)$.
@@ -626,13 +351,6 @@ The conjugate $\phi^*$ is a nondecreasing convex function and may be undefined a
 
 Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
 For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain; i.e., $\{s : \phi^*(s) < \infty\}$.
-Most of these common divergences are widely used in statistics and information theory.\
-Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' that is somewhat different from the others.
-The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy the normalizing condition $\phi(t) \geq 0$.
-This divergence is included because \cite{wang2010likelihood} use it to formulate a distributionally robust newsvendor problem so that the ambiguity set of distributions have a sufficiently high empirical likelihood. 
-They refer to this as the Likelihood Robust Optimization.
-We also note that \cite{calafiore2007ambiguous}, \cite{hukullback}, and \cite{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler (KL) divergence''---reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
-In this paper, $q$ denotes the nominal distribution.
 
 \begin{table}
 	\TABLE
@@ -647,7 +365,6 @@ In this paper, $q$ denotes the nominal distribution.
 		Kullback-Leibler                 & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ & $e^s - 1$ \\
 		Burg Entropy                      & $\phi_b$           & $\phi_{kl}$                     & $-\log t + t - 1$     & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(1-s),\ s < 1$  \\
 		J-Divergence                      & $\phi_j$           & $\phi_j$                        & $(t-1)\log t$         & $\sum (p_\omega - q_\omega) \log\left(\frac{p_\omega}{q_\omega}\right)$ & No closed form \\
-		Likelihood                        & $\phi_l$           & $t\log t $                      & $-\log t$             & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(-s) - 1,\ s < 0$ \\
 		$\chi^2$-Distance                 & $\phi_{\chi^2}$    & $\phi_{m\chi^2}$                & $\frac{1}{t} (t-1)^2$ & $\sum \frac{(p_\omega-q_\omega)^2}{p_\omega}$              & $2 - 2\sqrt{1-s},\ s < 1$  \\
 		Modified $\chi^2$-Dist.           & $\phi_{m\chi^2}$   & $\phi_{\chi^2}$                 & $(t-1)^2$             & $\sum \frac{(p_\omega - q_\omega)^2}{q_\omega}$            & $\begin{cases} -1 & s < -2 \\ s + \frac{s^2}{4} & s \geq -2 \end{cases}$ \\
 % 		$\chi$-div,  $\theta > 1$ & $\phi_\chi^\theta$ & $t^{1-\theta}\phi_\chi^\theta$ & $|t-1|^\theta$         & $\sum q_\omega |1-\frac{p_\omega}{q_\omega}|^\theta$       & $\begin{cases} -1 & s \leq -\theta \\ s + (\theta-1)\left(\frac{|s|}{\theta}\right)^\frac{\theta}{\theta-1}  & s \geq -\theta \end{cases}$ \\
@@ -658,28 +375,24 @@ In this paper, $q$ denotes the nominal distribution.
 	{}
 \end{table}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{$\phi$-Divergence Constrained Ambiguous Stochastic Program}
-\label{sec:plp2}
-
-In this section we provide primal and dual formulations and basic properties of two-stage ambiguous stochastic linear programs constructed via $\phi$-divergences.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Formulation}
+\subsection{Formulating \plp}
 \label{ssec:form}
+
+In this section, we simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows.
+In the first stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply/demand parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
+In the second stage, we denote the decisions as $\y^\omega$, the costs as $\k^\omega$, the supply/demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.
 
 We begin with a two-stage stochastic linear program with recourse (SLP-2).
 Let $\x$ be a vector of first-stage decision variables with cost vector $\c$, constraint matrix $\A$ and right-hand side $\b$.
 We assume a finite distribution given by $q_\omega$ with scenarios indexed by $\omega = 1, \dots, n$.
 The SLP-2 is
 \begin{align}
-	\min_\x \ & \left\{ \c\x + \sum_{\omega=1}^n q_\omega h_\omega(\x) : \A\x = \b, \x \geq 0 \right\}, \label{eq:slp_first_stage}% \\
-% 	\st \ & \A\x = \b \nonumber  \\
-% 	&\ \ \ \x \geq 0 \nonumber
+	\min_\x \ & \left\{ \c\x + \sum_{\omega=1}^n q_\omega h_\omega(\x) : \A\x = \b, \x \geq 0 \right\}, \label{eq:slp_first_stage}
 \end{align}
 where
 \begin{align}
-	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \k^\omega \y^\omega : \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0 \right\}. \label{eq:slp_second_stage}
+	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \k \y^\omega : \D \y^\omega = \B \x + \d^\omega, \y^\omega \geq 0 \right\}. \label{eq:slp_second_stage}
 \end{align}
 We assume relatively complete recourse; i.e., the second-stage problems $h_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem; and that the second-stage problems $h_\omega(\x)$ are dual feasible for every feasible solution $\x$ of the first-stage problem.
 For convenience, we denote $X = \{\x : \A\x = \b, \x \geq 0\}$.
@@ -688,7 +401,7 @@ The SLP-2 formulation assumes that the distribution $\{q_\omega\}_{\omega=1}^n$ 
 However, in many applications the distribution is itself unknown.
 One technique to deal with this is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions that is believed to contain the true distribution.
 In this paper, we construct the ambiguity set by considering all distributions whose $\phi$-divergence from the nominal distribution $q$ is sufficiently small.
-Throughout portions of this paper, we focus on a data-driven setting and assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, although $q$ can be obtained in other ways.
+We focus on a data-driven setting and assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, although $q$ can be obtained in other ways.
 In SLP-2, this data-driven setting would correspond to the probability of scenario $\omega$ to be $q_\omega = \frac{N_\omega}{N}$.
 
 By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution with respect to $\phi$-divergence, we create the \plp\ model.
@@ -745,7 +458,6 @@ Some of these properties help with our specialized solution method and we refer 
 \end{property}
 
 Note that being a coherent risk measure implies that \plp\ is a convex problem.
-The convexity of LRO was also noted in \cite{wang2010likelihood}.
 
 \begin{property}
 	\label{property:time_structure}
@@ -767,8 +479,7 @@ The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), 
 The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method for retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property:primal_dual_relation}.
 In many cases, the first equation in (\ref{eq:p_worst}) is sufficient to calculate $\{p_\omega\}_{\omega=1}^n$.
 In addition, $\phi^*$ is often differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(s_\omega)$.
-Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detailed in Section \ref{sec:classification}.
-
+Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detailed in Section \ref{ssec:classification}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -783,21 +494,19 @@ Most $\phi$-divergences in Table~\ref{tb:phi_definitions} satisfy this different
 	\rho = \frac{\phi''(1)}{2N} \chi^2_{n-1,1-\alpha},
 \end{equation}
 where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
-For corrections for small sample sizes and more details, we refer the readers to \citep{pardo2005statistical} and \citep{bental2011robust}. 
+For corrections for small sample sizes and more details, we refer the readers to \citep{pardo2005statistical} and \citep{bental2011robust}.
 
-We are now ready to present the main contributions of this paper.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{A Classification of $\phi$-Divergences}
-\label{sec:classification}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{A Classification of $\phi$-Divergences}
+\label{ssec:classification}
 
 Given that there are many $\phi$-divergences to choose from, it is important to study how $\phi$-divergences act within an ambiguous (or, distributionally robust) stochastic optimization model. 
 We present a classification of $\phi$-divergences into four types, resulting from an examination of the limiting behavior of $\phi(t)$ as $t \rightarrow 0$ and $t \rightarrow \infty$.
-Different classifications may be suitable to different problem types and desired qualities in the ambiguous model---we discuss modeling considerations with respect to our classification in Section \ref{ssec:modeling}.
+Different classifications may be suitable to different problem types and desired qualities in the ambiguous model---we discuss modeling considerations with respect to our classification in Section \ref{sssec:suppressandpop}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Suppressing and Popping of Scenarios}
-\label{ssec:suppressandpop}
+\subsubsection{Suppressing and Popping of Scenarios}
+\label{sssec:suppressandpop}
 
 As motivation for our classification, consider a self-adjoint $\phi$-divergence, which satisfies the relation
 \begin{equation} \label{eq:self_adjoint_classification}
@@ -855,8 +564,8 @@ This means that self-adjoint $\phi$-divergences are either capable of both poppi
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Modeling Considerations When Choosing a Divergence}
-\label{ssec:modeling}
+\subsubsection{Modeling Considerations When Choosing a Divergence}
+\label{sssec:model}
 
 We offer the following suggestions for choosing an appropriate $\phi$-divergence classification for the data available.
 First, consider whether to choose a distribution that can suppress scenarios.
@@ -871,8 +580,8 @@ This allows for including interesting but unobserved scenarios, allowing the mat
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Value of Data}
-\label{sec:value}
+\subsection{Value of Data}
+\label{ssec:value}
 
 In this section we assume the nominal distribution $q$ is the empirical distribution ($q_\omega = \tfrac{N_\omega}{N}$) and provide insight into how the \plp\ changes when a single observation.
 This analysis must consider how $\rho$ changes as additional samples are taken; therefore, we use $\rho_N$ to emphasize the dependence on sample size in this section.
@@ -884,7 +593,7 @@ For \plp, this means that the initial model is likely to be more conservative in
 Below, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
 %We also provide a way of estimating the probability of sampling such an observation.
 
-\begin{theorem}
+\begin{theorem}[Theorem 1 from \cite{love2013phi}]
 	\label{thm:value}
 	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied
 	\begin{equation} \label{eq:cost_decrease_cond}
@@ -898,7 +607,7 @@ This is equivalent to saying that an additional observation of $\hat{\omega}$ wi
 
 It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences and we detail this in the corollary below. 
 
-\begin{corollary}
+\begin{corollary}[Corollary 1 from \cite{love2013phi}]
 	\label{cor:cost_decrease_trick}
 	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied for:\vspace*{-0.1in}
 	\begin{multicols}{2}
@@ -916,13 +625,276 @@ Let $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\
 Set $L$ divides the scenarios into two---the ones in $L$ guarantee a drop in the overall cost if sampled one more and therefore can be considered ``good'' scenarios. 
 Note that scenarios not in $L$ can also result in the cost decrease.
 
-Finally, one might be interested in obtaining a lower bound on the probability that the next sample will decrease the optimal cost.
-An approximate lower bound on the probability of selecting a sample in $L$ can be found by solving
-\begin{equation}
-	\min_{r} \left\{ \sum_{\omega \in L} r_\omega \colon\ r \in \mathcal{P} \right\}. \label{eq:lb_probability}
-\end{equation}
-That is, we find the minimum probability of $L$ within the ambiguity set defining \plp\ (since we do not know the true distribution).
-We solve (\ref{eq:lb_probability}) by taking its dual.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Application to Tucson, AZ}
+\label{sec:water}
+
+We now apply the formulation described in Sections \ref{sec:network_model} and \ref{sec:phi_divergences} to generate a generalized network \plp\ model describing water allocation in a developing region of Tucson, AZ shown in Figure \ref{fig:tucson_elevation}.
+
+The majority of Tucson's water comes from the Colorado river, brought in by the (CAP) canal, which is indicated by the canal shown in blue in Figure \ref{fig:tucson_elevation}.
+This water may then be treated and sent to customers, or pumped underground to one of five aquifers to be saved for future use.
+One aquifer recharge facility, the Central Avra Valley Storage And Recovery Project (CAVSARP) is shown in Figure \ref{fig:tucson_elevation}, along with two water treatment plants: the Tucson Water Reclamation Facility (TWRF) and the Haden-Udal Water Treatment Plant (HUWTP).
+
+One southeastern portion of Tucson, outlined in purple in Figure \ref{fig:tucson_elevation}, is being increasingly developed.
+This area is split into different elevation zones, shown by the green lines, the demands in each of which will be served by a dedicated reservoir and pump.
+That is, the elevation lines in Figure \ref{fig:tucson_elevation} also split the region into several pressure zones.
+Given the capacity of the existing treatment plants, and the energy cost of pumping the water through a series of pressure zones, Tucson Water is interested in the possibility of building additional treatment facilities  in this area, herein known as the RESIN (REsilient and Sustainable INfrastructures) area.
+
+\begin{figure}
+	\FIGURE
+	{%
+		\includegraphics*[width=.6\textwidth]{tucson_water_images/tucson_elevation.png}%
+	}
+	{
+		A map of Tucson, AZ, showing the RESIN area outlined in purple in the southeastern part.
+		The green lines indicate elevation changes, denoting the difference between the pressure zones considered in this study.
+		\label{fig:tucson_elevation}
+	}
+	{}
+\end{figure}
+
+A more detailed view of Tucson's water treatment system is shown in Figure \ref{fig:tucson_treatment}.
+The blue nodes and arcs indicate the potable water treatment, storage and distribution system, which takes CAP water as an input and distributes it to the pressure zones shown in Figure \ref{fig:tucson_zones}.
+The purple nodes and arcs indicate non-potable water which can be used to satisfy some (especially agricultural and industrial) demands.
+The black nodes and arcs indicate waste water that is returned from potable water use.
+
+\begin{figure}
+	\FIGURE
+	{%
+		\includegraphics*[width=.8\textwidth]{tucson_water_images/nodes_central.png}%
+	}
+	{
+		A schematic of the existing water treatment and recharge facilities in Tucson.
+		Blue indicated potable water, purple indicates non-potable (reclaimed) water, and black represents waste water.
+		\label{fig:tucson_treatment}
+	}
+	{}
+\end{figure}
+
+The pressure zones in the RESIN area, shown in Figure \ref{fig:tucson_zones}, have a largely period structure.
+Each pressure zone contains a potable and non-potable demand node.
+Note that potable water, being of higher quality, can be used to meet either type of demand.
+Each zone also contains a potable-water reservoir and pump, which is used to supply potable to the next pressure zone, and a booster station that provides the conveyance for the non-potable water.
+Finally, each zone has a wastewater return, which is transported back to the centralized processing facilities via a gravity flow.
+
+The quantity of water demand in each zone is determined as a multiple of the projected population in each year.
+Potable demand makes up 80\% of the total demand, and nonpotable demand is the remaining 20\%.
+
+\begin{figure}
+	\FIGURE
+	{%
+		\begin{tabular}{c}
+			\includegraphics*[width=.5\textwidth]{tucson_water_images/zones_c_e.png}%
+			\includegraphics*[width=.5\textwidth]{tucson_water_images/zones_split.png} \\
+			\includegraphics*[width=.6\textwidth]{tucson_water_images/zones_legend.png}
+		\end{tabular}
+	}
+	{
+		A schematic illustration of the pressure zones in the RESIN area.
+		Each zones contains potable and non-potable demand nodes, a reservoir and booster station for transporting the potable and non-potable water, respectively, and waste water return pipes.
+		\label{fig:tucson_zones}
+	}
+	{}
+\end{figure}
+
+Finally, additional infrastructure may be constructed in the RESIN area.
+One option is to construct a satellite wastewater treatment plant (WWTP), capable of treating wastewater up to a nonpotable quality, for satisfying demands in it's own zone and and higher zones.
+Additionally, an indirect potable reuse (IPR) facility can be constructed, which further treats water from the WWTP up to potable quality.
+This IPR facility can include reverse osmosis (RO) or not.
+Figure \ref{fig:tucson_zones_wwtp} gives an illustration of an additional WWTP and IPR constructed in zone GS.
+
+\begin{figure}
+	\FIGURE
+	{%
+		\begin{tabular}{c}
+			\includegraphics*[width=.8\textwidth]{tucson_water_images/zones_south_ipr.png}%
+		\end{tabular}
+	}
+	{
+		A satellite wastewater treatment plant is shown here, build in pressure zone GS.
+		\label{fig:tucson_zones_wwtp}
+	}
+	{}
+\end{figure}
+
+The model has a total of $P = 41$ time periods, representing years 2010--2050.
+For each time period, the network has 62 nodes representing demand for potable and nonpotable (reclaimed) water, pumps, water treatment plants, and the available water supply from the Colorado River.
+The network in each time period has 102 arcs, representing the pipe network carrying the water between the nodes physically and connecting the network to the five reservoirs that connect the time stages in the model.
+We use $P_1 = 5$ time periods for the first stage.
+
+Uncertainty in the model comes from population growth, CAP water availability, and climate-driven per-capita demand.
+The remainder of this section discusses our methods for modeling the problem uncertainty.
+
+\subsection{Population \& Water Supply Estimates}
+
+\begin{table}
+	\TABLE
+	{
+		Population estimates for the RESIN area, and for the Tucson Water service area.
+		\label{tb:population}
+	}
+	{\begin{tabular}{lcc}
+		\hline
+		         & \multicolumn{2}{c}{population} \\
+		Estimate & 2010 & 2050 \\
+		\hline
+		\cite{taz}    &  53,028 &   460,000 \\
+		\cite{wisp}   &  53,028 &   740,000 \\
+		\hline
+		\cite{tucson} & 750,000 & 1,300,000 \\
+		\hline
+	\end{tabular}}
+	{}
+\end{table}
+
+Estimates of the population in each pressure zone were compiled from two population studies in Pima County in Arizona: the Water \& Wastewater Infrastructure, Supply \& Planning Study \citep{wisp} and the Traffic Analysis Zone (TAZ) \citep{taz}.
+\cite{taz} provides a lower estimate of growth in the RESIN area, while \cite{wisp} provides the higher estimate.
+The RESIN area represents a subset of the population served by Tucson Water, the population of which is estimated from \cite{tucson}.
+Sample values can be seen in Table \ref{tb:population}.
+
+Tucson Water has a yearly CAP water allocation of 144,000 acre-feet, which may be reduced in the event of an extended drought reducing the flows of the Colorado river.
+The Arizona Department of Water Resources believes that a 10\% reduction to 130,000 acre-feet is the maximum realistic reduction by 2050 \citep{scott2012scenario}.
+The water allocation to the RESIN area is determined by the proportion of the Tucson Water service population in the RESIN area, e.g., under the \cite{wisp} growth scenario with the full CAP allocation, the RESIN area is allocated about 81,970 acre-feet in 2050.
+
+\subsection{Water Demand Regression}
+\label{ssec:demand_regression}
+
+We next need to estimate the weather-dependent demand of water resources in the RESIN area, which will be integrated climate models to project the future demand for water in the developing area.
+To estimate demand separately in each elevation zone, we need a statistical model of the per-capita water demand to be used in conjunction with the zonal population estimates.
+For this task, data on monthly demand for water in Tucson from 1991-2011 was obtained from Tucson, along with the recorded amount of rain and the average daily high temperature in each month.
+
+A direct measure of population was only available on a yearly basis, but service counts were available for each month, from which population estimates were inferred in order to estimate the per-capita demand for water.
+We performed a linear regression on the total population against the monthly service count data to estimate the population for each month.
+The linear regression found that only the number of single family residences was a statistically significant predictor of population size.
+The results are shown in Table \ref{tb:population_linear_reg}.
+The counts of single family residences accounted for the vast majority of the variation in the population data, demonstrated by an adjusted $R^2 = 0.9946$.
+
+\begin{table}
+	\TABLE
+	{
+		Results of the linear regression of population on number of single family units in Tucson Water's service counts.
+		\label{tb:population_linear_reg}
+	}
+	{\begin{tabular}{rrrrr}
+		\hline
+						   & Estimate  & Std. Error & $t$ value & $p$ \\
+		\hline
+		(Intercept)    & 2.026e+05 & 7.145e+03  & 28.3 6    & $<2 \cdot 10^{-16}$ \\
+		Single Family  & 2.543e+00 & 4.171e-02  & 60.98     & $<2 \cdot 10^{-16}$ \\
+		\hline
+	\end{tabular}}
+	{}
+\end{table}
+
+Given the monthly estimates on population, the water demand per capita in gallons per capita per day (GPCD) were calculated for every month in the 1991-2011 data.
+A linear regression of these GPCD values on the mean daily high temperature and average precipitation rate for each month, and the year of the observation, was then calculated.
+The year of the observation is included because the average GPCD water demand began dropping near the beginning of the 21st century, from over 170 GPCD in 1996 to under 140 GPCD in 2011.
+The linear fit, shown in Table \ref{tb:gpcd_linear_reg} has adjusted $R^2 = 0.7266$.
+
+\begin{table}
+	\TABLE
+	{
+		Results of the linear regression of water demand in GPCD on average daily high temperature, precipitation rate, and year.
+		\label{tb:gpcd_linear_reg}
+	}
+	{\begin{tabular}{rrrrr}
+		\hline
+						   & Estimate  & Std. Error & $t$ value & $p$ \\
+		\hline
+		(Intercept)    & 2721.2539 & 355.5267   & 7.654     & $4.33\cdot 10^{-13}$ \\
+		Temperature    &   3.5830  & 0.1446     & 24.774    & $< 2\cdot 10^{-16}$\\
+		Precipitation  &  -2.6329  & 1.1337     & -2.322    & $0.021$ \\
+		Year           &  -1.3296  & 0.1776     & -7.486    & $1.24\cdot 10^{-12}$ \\
+		\hline
+	\end{tabular}}
+	{}
+\end{table}
+
+This fit, with the year included, projects water demand to be around 145-155 GPCD in 2010, which decreases over time to 100-110 GPCD by 2050.
+Tucson Water uses a typical estimate of 120-145 GPCD in their projections.
+The range specified by this fit is similar to this for many of the years considered.
+Because the water demand is linear in the year, we refer to this as the linear fit.
+
+The linear fit for projecting a continual increase in water efficiency out to 2050.
+To combat this, a second model was developed to capture the decrease in water usage in the data, but not extrapolate this trend.
+For this, we choose to conduct the regression on a bounded value of the year, i.e., choose the value in a set $\{Y_l, Y_l+1, \dots, Y_u\}$ closest to the actual year.
+First, the upper bound $Y_u = 2011$ was chosen so that no decrease in water demand would be projected beyond the scope of the data.
+The value $Y_l = 2004$ was then selected to generate the best fit to the data.
+This piecewise fit is shown in Table \ref{tb:gpcd_piecewise_reg}, and has $R^2 = 0.7634$.
+
+\begin{table}
+	\TABLE
+	{
+		Results of the linear regression of water demand in GPCD on average daily high temperature, precipitation rate, and and the bounded year.
+		\label{tb:gpcd_piecewise_reg}
+	}
+	{\begin{tabular}{rrrrr}
+		\hline
+						   & Estimate  & Std. Error & $t$ value & $p$ \\
+		\hline
+		(Intercept)    & 9254.0201 & 904.3062   & 10.233    & $<2\cdot 10^{-16}$ \\
+		Temperature    & 3.5913    & 0.1345     & 26.694    & $<2\cdot 10^{-16}$ \\
+		Precipitation  & -2.2570   & 1.0510     & -2.148    & $0.0327$ \\
+		Bounded Year   & -4.5847   & 0.4509     & -10.167   & $<2\cdot 10^{-16}$ \\
+		\hline
+	\end{tabular}}
+	{}
+\end{table}
+
+The piecewise fit typically predicts demands of 135-145 GPCD throughout 2010-2050, increasing through the time period, which is in-line with Tucson Water's predictions.
+
+\subsection{Climate Models Used}
+
+A list of the climate models used in this paper is shown in Table \ref{tb:climate_models}.
+Bias-Corrected and Spatially Downscaled (BCSD) data from Coupled Model Intercomparison Project: Phase 5 (CMIP5) was obtained from \citep{cmip5}.
+Additional information on the downscaled data can be found in \citep{bcsdreclamation}.
+Each model included predictions of the variables \texttt{tasmax} and \texttt{pr}, the average daily high temperature ($^\circ C$) and the average precipitation rate (mm/day) in each month.
+
+\begin{table}
+	\TABLE
+	{
+		A list of climate models used in this analysis
+		\label{tb:climate_models}
+	}
+	{\begin{tabular}{p{.7\textwidth}|r}
+		\hline
+		Institution & Model \\
+		\hline
+		\hline
+		Commonwealth Scientific and Industrial Research Organization (CSIRO) and Bureau of Meteorology (BOM), Australia & CSIRO-mk-3-6-0 \\
+		\hline
+		\multirow{2}{*}{Geophysical Fluid Dynamics Laboratory} & GFDL-CM3 \\
+		 & GFDL-ESM2M \\
+		\hline
+		Met Office Hadley Centre & HadGEM2-ES \\
+		\hline
+		\multirow{3}{*}{\vbox{Atmosphere and Ocean Research Institute (The University of Tokyo), National Institute for Environmental Studies, and Japan Agency for Marine-Earth Science and Technology}}  & MIROC5 \\
+		 & MIROC-ESM \\
+		 & \\
+		\hline
+	\end{tabular}}
+	{}
+\end{table}
+
+Each model had output associated with a given path for future greenhouse gas emissions.
+Our analysis includes four paths: RCP2.6, RCP4.5, RCP6.0 and RCP8.5.
+RCP2.6 is an optimistic scenario where emissions are drastically reduced by mid-century.
+RCP4.5 and RCP6.0 show stabilization of emissions before and after 2100, respectively.
+Finally, RCP8.5 is the scenario where emissions continue to grow quickly throughout the remainder of the century.
+A comparison of the model output of the average daily high temperature for 2040-2050 for emissions path RCP8.5 is shown in Table \ref{tb:model_comparison_temperature}.
+
+\begin{table}
+	\TABLE
+	{
+		A comparison of projected ($\geq 2040$) average daily high temperatures ($^\circ C$) with the historical record (1991-2011) in the RESIN area.
+		All values come from models using emissions path RCP8.5.
+		\label{tb:model_comparison_temperature}
+	}
+	{\csvautotabular{tables/temperature.csv}}
+	{}
+\end{table}
 
 
 
@@ -934,11 +906,11 @@ We solve (\ref{eq:lb_probability}) by taking its dual.
 The water allocation model was solved using the decomposition algorithm described in \cite{love2013phi}.
 We solved the model for different $\phi$-divergences, using values of $\rho$ equivalent to asymptotic confidence regions of $90\%$, $95\%$ and $99\%$.
 
-Figure \ref{fig:shortage_frequency_piecewise} shows the total shortage amount over the 41-year study period for each infrastructure configuration when using the piecewise water use fit described in Table \ref{tb:gpcd_piecewise_reg}.
+Figure \ref{fig:shortage_frequency_piecewise} shows the total shortage amount over the 41-year study period for each infrastructure configuration when using the piecewise fit described in Table \ref{tb:gpcd_piecewise_reg}.
 We can see that a satellite wastewater treatment plant provides the most substantial reduction in shortage severity, but that the indirect potable recharge facility decreases the worst-case shortages.
-The addition of a reverse osmosis (RO) facility offers little benefit.
-Figure \ref{fig:shortage_frequency_linear} shows a similar pattern, although with smaller shortages due to the lower water demand per capita through most of the study period.
-These shortage amounts are computed with the Burg $\phi$-divergence, but are dictated largely by the physical constraints of the system, and do not change substantially with different $\phi$ or $\rho$.
+The reverse osmosis (RO) option offers little benefit over the generic IPR.
+Figure \ref{fig:shortage_frequency_linear} shows the shortage frequency from the linear fit, for which we see a similar pattern, although with smaller shortages due to the lower water demand per capita through most of the study period.
+These shortage amounts are computed with the Modified $\chi^2$ $\phi$-divergence, but are dictated largely by the physical constraints of the system, and do not change substantially with different $\phi$ or $\rho$.
 
 \begin{figure}
 	\FIGURE
@@ -974,7 +946,8 @@ We note that the highest probability is assigned to the highest emissions scenar
 RCP6.0 in fact has the lowest anticipated costs over the 2010-2050 time period.
 We can also see that GFDL-CM3 results in the highest running cost overall for the water distribution system, followed by MIROC-ESM-CHEM.
 MIROC5 is tends to generate lower-cost simulations, and thus is given the lowest probability, followed by CSIRO.
-We find that GFDL-CM3 with the RCP4.5 results in the highest operating cost, while MIROC5 with RCP6.0 has the lowest cost.
+
+Considering both climate model and emissions scenario together, we find that GFDL-CM3 with the RCP4.5 results in the highest operating cost, while MIROC5 with RCP6.0 has the lowest cost.
 
 \begin{table}
 	\TABLE
@@ -1004,7 +977,7 @@ Table \ref{tb:shortage_model_emission_kl} lists the maximum total shortage over 
 
 Table \ref{tb:total_cost} calculates the worst-case expected operating cost of the water system from 2010-2050.
 This cost includes \$800 loss per acre-foot of shortage.
-We can see that, while the satellite wastewater treatment plant decreases the cost only by \$10-\$15 million, the IPR facility reduces the cost by an addition \$25 million over the 41-year time span.
+We can see that, while the satellite wastewater treatment plant decreases the cost only by \$10-\$15 million, the IPR facility reduces the cost by an additional \$25 million over the 41-year time span.
 
 \begin{table}
 	\TABLE
@@ -1025,7 +998,7 @@ We can see that, while the satellite wastewater treatment plant decreases the co
 	{}
 \end{table}
 
-Finally, we applied the value of data condition developed in Section \ref{sec:value} to the results of the water model.
+Finally, we applied the value of data condition developed in Section \ref{ssec:value} to the results of the water model.
 Several themes were immediately clear from the data: (1) every low population scenario satisfied the condition, and (2) high population, low supply scenarios only rarely satisfied the condition.
 This has the reasonable interpretation that additional confidence in low population growth will reduce the expected cost of operating the water distribution system by reducing the amount of water that must be processed.
 Likewise, the high population, low scenario is more expensive to run, and generates more penalties from shortage.
@@ -1039,7 +1012,7 @@ Again, this is a fairly intuitive result, as higher emissions scenarios will eve
 \begin{table}
 	\TABLE
 	{
-		An indication of which climate models satisfy the value of data condition from Section \ref{sec:value}.
+		An indication of which climate models satisfy the value of data condition from Section \ref{ssec:value}.
 		Results are presented for Burg entropy (b) and Modified $\chi^2$ distance (m).
 		\label{tb:value}
 	}
@@ -1060,6 +1033,15 @@ Again, this is a fairly intuitive result, as higher emissions scenarios will eve
 \section{Summary and Future Work}
 \label{sec:concl}
 
+In this paper, we have integrated projections for future climate, population growth and available water supply into a single integrated water allocation model.
+These scenarios were combined in a \plp\ model proposed in \cite{love2013phi}, for several $\phi$-divergences.
+We applied this method to a developing area in Tucson, Arizona, and determined projections for the severity of future water shortages, the expected operating cost of the system, and a worst-case distribution on the future scenarios.
+
+Future extensions of this study have several possible paths.
+First, we would like to extend this method to the multistage setting, where uncertainty is revealed in multiple stages, rather than all occurring simultaneously.
+This will allow for an extended treatment of projections of population and water availability.
+Integrating the climate projections into the estimates of CAP water availability would help to represent the correlation between demand and supply better.
+Finally, increasing the size of the model to include more of Tucson and the state of Arizona would allow for more detailed future water planning.
 
 
 % Acknowledgments here
