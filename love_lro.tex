@@ -1002,7 +1002,7 @@ Table \ref{tb:shortage_model_emission_kl} lists the maximum total shortage over 
 	{}
 \end{table}
 
-Finally, Table \ref{tb:total_cost} calculates the worst-case expected operating cost of the water system from 2010-2050.
+Table \ref{tb:total_cost} calculates the worst-case expected operating cost of the water system from 2010-2050.
 This cost includes \$800 loss per acre-foot of shortage.
 We can see that, while the satellite wastewater treatment plant decreases the cost only by \$10-\$15 million, the IPR facility reduces the cost by an addition \$25 million over the 41-year time span.
 
@@ -1021,6 +1021,37 @@ We can see that, while the satellite wastewater treatment plant decreases the co
 		WWTP & 303.91 & 304.59 & 305.85 \\
 		IPR  & 279.86 & 280.55 & 281.82 \\
 		RO   & 290.89 & 291.60 & 292.90
+	 \end{tabular}}
+	{}
+\end{table}
+
+Finally, we applied the value of data condition developed in Section \ref{sec:value} to the results of the water model.
+Several themes were immediately clear from the data: (1) every low population scenario satisfied the condition, and (2) high population, low supply scenarios only rarely satisfied the condition.
+This has the reasonable interpretation that additional confidence in low population growth will reduce the expected cost of operating the water distribution system by reducing the amount of water that must be processed.
+Likewise, the high population, low scenario is more expensive to run, and generates more penalties from shortage.
+Additional confidence in these scenarios might decrease expected cost only if they are associated with more optimistic temperature and precipitation predictions.
+
+The remaining case, with high population and high supply, is summarized in Table \ref{tb:value}.
+We note that the value of data condition is more likely to be satisfied by the lower emissions scenarios, with the exception of the GFDL-CM3 model.
+Again, this is a fairly intuitive result, as higher emissions scenarios will eventually lead to higher temperatures and increased water demand.
+%We further note that all the scenarios that satisfy the condition with the Burg entropy also satisfy the condition with the Modified $\chi^2$ distance.
+
+\begin{table}
+	\TABLE
+	{
+		An indication of which climate models satisfy the value of data condition from Section \ref{sec:value}.
+		Results are presented for Burg entropy (b) and Modified $\chi^2$ distance (m).
+		\label{tb:value}
+	}
+	{\begin{tabular}{l|cccc}
+		               & RCP2.6    & RCP4.5    & RCP6.0    & RCP8.5 \\
+		\hline
+		CSIRO mk3.6    & (b,m)     & (b,m)     & (b,m)     & (b,m)     \\
+		GFDL-CM3       &           &           & (b,m)     & (m)       \\
+		GFDL-ESM2M     & (b,m)     & (b,m)     & (b,m)     & (m)       \\
+		HadGEM2-ES     & (b,m)     & (b,m)     & (m)       & (m)       \\
+		MIROC5         & (b,m)     & (b,m)     & (b,m)     & (m)       \\
+		MIROC-ESM-CHEM & (b,m)     & (m)       &           &           \\
 	 \end{tabular}}
 	{}
 \end{table}
