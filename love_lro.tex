@@ -172,15 +172,15 @@
 \AUTHOR{David Love}
 \AFF{University of Arizona, \EMAIL{dlove@email.arizona.edu}, \url{http://math.arizona.edu/~dlove/}}
 \AUTHOR{G\"{u}zin~Bayraksan}
-\AFF{The Ohio State University, \EMAIL{bayraksan.1@osu.edu}, \url{http://www-iwse.eng.ohio-state.edu/biosketch\_GBayraksan.cfm}}
+\AFF{The Ohio State University, \EMAIL{bayraksan.1@osu.edu}, \url{http://www.ise.osu.edu/ISEFaculty/bayraksan/}}
 % Enter all authors
 } % end of the block
 
 \ABSTRACT{%
-	We investigate the application of techniques from distributionally robust optimization to water allocation in Tucson, AZ under future uncertainty.
+	We investigate the application of techniques from distributionally robust optimization to water allocation in under future uncertainty, and apply it to a southeastern portion of Tucson, AZ.
 	Tucson, like must of the southwestern United States, faces considerable uncertainty in its ability to provide water for its citizens in the future.
 	The sources of this uncertainty include (1) the future population growth of the region, (2) the availability of water from the Colorado River, and (3) the effects of climate change and how it relates to water usage.
-	This paper presents an approach for integrating forecasts for all these sources of uncertainty in a single optimization model, and provide insight on the value of constructing additional treatment facilities to mitigate the future risks.
+	This paper presents a new data-driven approach for integrating forecasts for all these sources of uncertainty in a single optimization model and provide insight on the value of constructing additional treatment facilities to mitigate the future risks.
 }%
 
 % Sample 
@@ -189,7 +189,7 @@
 
 % Fill in data. If unknown, outcomment the field
 \KEYWORDS{Data-driven optimization, water allocation, climate change}
-%Optimization under uncertainty, water resources management,  ambiguous stochastic programming, robust optimization, environmental sustainability}
+%Optimization under uncertainty, water resources management,  robust optimization, environmental sustainability}
 %\HISTORY{}
 \maketitle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -208,39 +208,41 @@
 
 \section{Introduction and Motivation}
 
-The continued availability of water resources is in question in many parts of the world, especially in light of an uncertain climate future and population increase.
+The continued availability of water resources is in question in many parts of the world, especially in light of an uncertain climate variability and population increase.
 To combat these influences, methods of allocating water resources must adapt.
-The Lower Colorado River Basin supplies water to 25 million people in California, Nevada and Arizona, making the management of this resource very important.
+The Lower Colorado River Basin supplies water to 25 million people in California, Nevada and Arizona, in addition to Mexico, making the management of this resource very important.
 In Tucson, Arizona the Colorado River supplies more than 60\% of the water through the Central Arizona Project (CAP), the largest and most expensive aqueduct system in the United States.
 This paper studies allocation of CAP water in a developing portion of Tucson under future climate and population uncertainty, creating a single integrated model using projections for each of these sources of uncertainty.
 
-Climate change is one of the most important sources of uncertainty in evaluating the sustainability of water resources.
+Climate variability is one of the most important sources of uncertainty in evaluating the sustainability of water resources.
 A wide variety of general circulation models (GCMs) have been developed for evaluating the effects of climate change.
-The coarse results from these models are used as drivers for Regional Climate Models (RCMs) to generate temperature and precipitation predictions on finer scales.
-To gain insight on still small regions, Bias Correction and Spatial Downscaling (BCSD) techniques have been applied to the results of the RCMs to generate these predictions on even finer scales \citep{bcsdreclamation}.
+The results from these models are used as drivers for Regional Climate Models (RCMs) to generate temperature and precipitation predictions on finer scales.
+To gain insight on still smaller regions, Bias Correction and Spatial Downscaling (BCSD) techniques have been applied to the results of the RCMs to generate predictions on even finer scales \citep{bcsdreclamation}.
 Methods of comparing and integrating the results of these differing models are important parts of water allocation planning.
+However, these predictions contain significant uncertainties in themselves, with potential modeling errors in every step of the prediction process.
+This poses an important challenge in decision making when these predictions are used.
 
-In this paper, we adapt the $\phi$-divergence method of formulating two-stage stochastic linear programs from \cite{love2013phi}, which we call the two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse (\plp), to a water allocation model.
-The \plp\ model is an attractive approach to modeling uncertainty because it allows for using the data directly, integrating those scenarios of interest into a single modeling formulation.
+In this paper, we present a new model for sustainable water allocation to handle uncertainties from various data sources in a robust manner.
+This modeling approach, recently proposed and investigated by \cite{bental2011robust} and \cite{love2013phi}, is particularly attractive in its ability to handle situations where the future uncertainty model is itself uncertain, like the climate models used to predict future water use.
+It allows for using the data directly, integrating those scenarios of interest into a single modeling formulation.
 These scenarios can come from direct observation, results of simulation, or from expert opinion that the decision maker would especially like to be robust against.
-In this water allocation problem, scenarios are generated from projections of population growth, CAP water supply, and climate-driven per-capita demand for water resources.
+In this water allocation problem, scenarios are generated from projections of population growth, Colorado River water supply, and climate-driven per-capita demand for potable and nonpotable water use.
 
 \subsection{Related Literature}
 
-Stochastic programming methods have a long history in water resources management.
-One early example is \cite{hall1970optimal}, which formulates a stochastic linear programming model for water rights allocation in arid and semiarid agriculture.
-\cite{bishop1975optimization} provides an early stochastic model of a water allocation system, including wastewater treatment and reuse.
-More recent work includes \cite{higgins2008stochastic}, which provides a multistage nonlinear stochastic formulation of water resource allocation and applies it to South East Queensland in Australia.
-Other studies have used interval-stochastic programming to formulate the model, e.g., \cite{li2009multistage}.
+Models of optimization under uncertainty, especially when the uncertainty is represented stochastically, have a long history in water allocation problems.
+One early example is \citep{hall1970optimal}, which formulates a stochastic linear programming model for water rights allocation in arid and semiarid agriculture.
+\cite{bishop1975optimization} provide an early stochastic model of a water allocation system, including wastewater treatment and reuse.
+More recent work includes \citep{higgins2008stochastic}, which provides a multistage nonlinear stochastic formulation of water resource allocation and applies it to South East Queensland in Australia.
+Other studies have used interval-stochastic programming to formulate the model, e.g., \citep{li2009multistage}.
 \cite{shao2011conditional} combine inexact stochastic programming with uncertainty measured by the Conditional Value at Risk (CVaR).
-This is particularly similar to the work presented here, because CVaR can be represented as a $\phi$-divergence \citep{love2013phi}.
+This is particularly similar to the work presented here, because CVaR can be represented in the form presented in this paper \citep{love2013phi}.
 
-Another optimization model for water distribution developed by \cite{wang2008basin} considers the entire South Saskatchewan River Basin.
+Another optimization model for water distribution, developed by \cite{wang2008basin}, considers the entire South Saskatchewan River Basin.
 This study applies two multi-objective optimization models to generate water management solutions that are both equitable and economically efficient using the Cooperative Water Allocation Model.
 
-Most similar to the water allocation model considered here is the CALVIN (CALifornia Value Integrated Network) model that has been used to study water distribution in California \citep{jenkins2004optimization}.
+Most similar to the water allocation model considered here is the CALVIN (CALifornia Value Integrated Network) model that has been used to study water distribution in California \citep{draper_etal_03,jenkins2004optimization}.
 CALVIN is a multi-period generalized network flow model developed to minimize the total economic cost of water distribution in California.
-Much of the work using CALVIN has been aimed towards analyzing the impact of climate changes.
 \cite{harou2010economic} integrated sustained drought scenarios into the CALVIN model based on historical records of long-term droughts in California.
 Later, \cite{connell2011adapting} integrate the GFDL-CM3 climate model, one of the climate models used in this work, into CALVIN as a method of evaluating the impact of a warmer and dryer climate on water availability in the future.
 
@@ -253,31 +255,33 @@ This comparison helped to inform our choices of climate models included in the p
 
 \subsection{Contributions}
 
-This paper applies the \plp\ method described in \cite{love2013phi} to a model for water treatment and distribution in a developing region of Tucson, AZ described in \cite{woods2012centralized}.
-This work integrates multiple sources of uncertainty into a single optimization model to estimate the relative risk posed by each unknown quantity.
-These sources of uncertainty include: (1) population growth in the region considered, (2) Tucson's water allocation from the Lower Colorado River Basin, and (3) the climate of the region and its effect on per-capita demand for water in the region.
-We generate scenarios for each of these variables, and integrate them into a single \plp\ stochastic programming model, and estimate the long-run value of constructing additional water treatment facilities to decrease the severity of future water shortages.
+This paper integrates multiple projections on future uncertainty to produce a unified model for water allocation under uncertainty.
+We pair the water allocation model developed by \cite{woods2012centralized} with the uncertainty modeling technique described in \citep{love2013phi} to develop a novel data-driven water allocation problem.
+This formulation is able to combine projections of future uncertainty, including population growth, water availability and climate variation, into a single model.
+When solved, we obtain estimates of the severity and likelihood of future water shortages, the expected operating cost of the allocation system, and a weighing of the relative desirability of each possible scenario.
+In addition, we calculate the effect of several alternative infrastructure scenarios that may decrease both the operating cost and severity of the future shortages.
 
 \subsection{Organization}
 
 The rest of the paper is organized as follows.
-Section \ref{sec:network_model} presents the water distribution model and the planning scenarios used.
-Section \ref{sec:phi_divergences} briefly describes the \plp\ approach from \cite{love2013phi} and reviews some of the key features.
-Section \ref{sec:water} describes the application to Tucson, AZ, and Section \ref{sec:comp} presents the results of solving this application with the \plp\ method.
+Section \ref{sec:network_model} presents the water allocation model.
+Section \ref{sec:phi_divergences} briefly describes the \plp\ approach from \citep{love2013phi} and reviews some of the key features.
+Section \ref{sec:water} describes the application to Tucson, AZ, and Section \ref{sec:comp} presents the results and a discussion on water allocation and infrastructure decisions and recommendations as a result of this study.
 We end in Section \ref{sec:concl} with our conclusions.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Generalized Network Water Model}
+\section{Generalized Network Water Allocation Model}
 \label{sec:network_model}
 
-A generalized network model of water distribution is defined by a set of nodes and directed arcs $(N,\: A)$.
+A generalized network model of water allocation is defined by a set of nodes and directed arcs $(N,\: A)$.
 The nodes represent available water supply inputs, water treatment plants, reservoirs, interconnection points, and water demand sites.
 The arcs represent the conveyance system (pipes, etc.) that carry water between the nodes.
 Water can be stored in between time periods in reservoirs to meet future demands.
-The model aims to find the minimal cost water flows considering energy, treatment, storage, and transportation costs over the planning period. 
-Generalized network water allocation models have been used to find water allocations and delivery reliabilities and to assess values of different water use operations; see, e.g., \cite{draper_etal_03}. 
+The model aims to find the minimal cost water flows considering energy, treatment, storage, and transportation costs over the planning period.
+
+\subsection{Deterministic Model}
 
 Water flows on arc $(i,j) \in A$ during time period $t = 1, \dots, P$ are represented by decisions $x_{ijt}$.
 Each arc $(i,j) \in A$ and time period $t$ has a unit cost $c_{ijt}^x$, loss coefficient $0 \leq a_{ijt} \leq 1$ to account for evaporation, leakage from the pipes, etc., and bounds on the flow $l_{ijt}^x \leq x_{ijt} \leq u_{ijt}^x$.
@@ -295,10 +299,17 @@ The deterministic model is a multi-period generalized network flow model of the 
 	& l_{jt}^s \leq s_{jt} \leq u_{sjt}^s, \ \ \ \forall j,t \\
 	& l_{jt}^r \leq r_{jt} \leq u_{sjt}^r, \ \ \ \forall j,t.
 \end{align*}
-To compute the first-year constraints, we assume that $x_{ij0} \equiv 0$ and that $s_{j0}$ is given.
+To compute the first-year constraints, we assume that $x_{ij0} \equiv 0$ and that initial storage levels $s_{j0}$ are given.
+
+The deterministic model has the obvious shortcoming that many of the parameters are unknown.
+Often, the unknowns are represented by solving distinct scenarios that cover the range of possibilities.
+However, even in this case, the models provide no insight on how much weight each result should be given.
+To compensate for these problems, we formulate a stochastic water allocation model in the next section.
+
+\subsection{Stochastic Model}
 
 The model is converted to a two-stage stochastic model with $P_1$ periods in the first stage and $P-P_1$ stages in the second stage.
-We assume that the supplies and demands are uncertain, as well as the bounds on the decision variables.
+We assume that the supplies and demands are uncertain, as well as available water treatment capacities (as an effect of relative population growth).
 \begin{align}
 	\min_{(x,s,r) \in L^1} \ & \sum_{(i,j) \in A} \sum_{t=1}^{P_1} c_{ijt}^x x_{ijt} + \sum_{j \in N} \sum_{t=1}^{P_1} c_{jt}^s s_{jt} + \sum_{\omega=1}^n q_\omega h_\omega(s) \label{eq:gen_network_two_stage} \\
 	\st \ & \sum_{j : (j,i) \in A} a_{jit} x_{jit} = \sum_{j : (i,j) \in A} x_{ijt} + r_{jt} + b_{jt} \ \ \forall i \not\in S, 1 \leq t \leq P_1 \notag \\
@@ -313,28 +324,39 @@ where $\{q_\omega\}_{\omega = 1}^n$ is the probability distribution of the uncer
 \end{align}
 and $L^1$ and $L^2_\omega$ represent the feasible regions defined by the lower and upper variable bounds.
 
+\subsection{Motivation for a Data-Driven Distributionally Robust Model}
+
+Although the stochastic model removes most of the problems with uncertain parameters, it has introduced the probability distribution $q_1, \dots, q_n$ that itself needs to be estimated.
+The method of distributionally robust optimization helps to counteract this problem.
+In the distributionally robust formulation, the distribution is replaced by a ``nominal'' distribution that is extracted directly from the data, and the optimization takes place over a set of distributions that are ``similar'' to the nominal distribution.
+The advantage is that both the nominal distribution and the level of similarity are extracted from the data, and thus no parameters need to be estimated.
+The sequel describes the distributionally robust method presented in \citep{love2013phi}.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The \plp\ Problem}
+\section{Background on Data-Driven Optimization using $\phi$-Divergences}
 \label{sec:phi_divergences}
 
-We now turn our attention to formulating the \plp\ model.
-We first define the concept of a $\phi$-divergence and describe some of it's properties.
-\cite{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
-After defining the \plp\ problem, we review some of the properties discussed in \cite{love2013phi}, and other properties that can be found in \cite{bental2011robust}.
+We now provide background on our modeling approach.
+This discussion is largely based on \citep{love2013phi}.
+% We first define the concept of a $\phi$-divergence and describe some of it's properties.
+% \cite{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
+% After defining the \plp\ problem, we review some of the properties discussed in \cite{love2013phi}, and other properties that can be found in \cite{bental2011robust}.
 
-$\phi$-divergences are used in statistics to measure the ``distance'' between two distributions. 
-In the discrete case, $\phi$-divergences can be used generally to measure the distance between two probability vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$, i.e., vectors satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
+\subsection{Introduction to $\phi$-Divergences}
+
+$\phi$-divergences are used in statistics to measure the ``distance'' between two distributions \citep{pardo2005statistical}. 
+In the discrete and finite case, they measure the distance between two discrete distributinos $p$ and $q$ given by vectors representing probability mass functions $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$, satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
 The $\phi$-divergence is defined by
 \[
 	I_\phi(p,q) = \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right),
 \]
-where $\phi(t)$, called the $\phi$-divergence function, is a convex function on $t \geq 0$ such that $\phi(t) \geq 0$ and $\phi(1) = 0$, and with the additional interpretations that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and $0 \phi(0/0) = 0$
+where $\phi(t)$, called the $\phi$-divergence function, is a convex function on $t \geq 0$ such that $\phi(t) \geq 0$ and $\phi(1) = 0$, and with the additional interpretations that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and $0 \phi(0/0) = 0$.
 
 $\phi$-divergences are not, in general, metrics.
 For example, most $\phi$-divergences do not satisfy the triangle inequality and many are not symmetric in the sense that $I_\phi(p,q) \neq I_\phi(q,p)$.
-One exception is the Variation distance, which is equivalent to the $L^1$-distance between the vectors.
+One exception is the Variation distance (see Table \ref{tb:phi_definitions}), which is equivalent to the $L^1$-distance between the vectors.
 
 A $\phi$-divergence has an adjoint, defined by
 \begin{equation} \label{eq:adjoint}
@@ -343,47 +365,44 @@ A $\phi$-divergence has an adjoint, defined by
 which satisfies all criteria for a $\phi$-divergence \citep{bental1991certainty}, and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
 Divergences that are symmetric with respect to the input vectors are known as self-adjoint.
 
-The problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
-\begin{equation} \label{eq:conjugate}
-	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}.
-\end{equation}
-The conjugate $\phi^*$ is a nondecreasing convex function and may be undefined above some upper bound $\bar{s}$.
-
-Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
-For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain; i.e., $\{s : \phi^*(s) < \infty\}$.
+Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints.
+We can see that the Kullback-Leibler divergence and the Burg entropy are adjoints.
+The $\chi^2$-distance is related to the famous $\chi^2$ test \citep{pardo2005statistical}, and it's adjoint is the Modified $\chi^2$-distance.
+%For all divergences, $\phi(t) = \infty$ for $t < 0$.
 
 \begin{table}
 	\TABLE
 	{
-		Definitions of some common $\phi$-divergences, along with their adjoints $\tilde{\phi}(t)$ and conjugates $\phi^*(s)$
+		Definitions of some common $\phi$-divergences and their adjoints.
 		\label{tb:phi_definitions}
 	}
-	{\begin{tabular}{lccccc}
+	{\begin{tabular}{lcccc}
 		\hline \\
-		Divergence                        & $\phi(t)$          & $\tilde{\phi}(t)$               & $\phi(t), t \geq 0$   & $I_\phi(p,q)$     & $\phi^*(s)$ \\
+		Divergence                        & $\phi(t)$          & $\tilde{\phi}(t)$               & $\phi(t), t \geq 0$   & $I_\phi(p,q)$ \\
 		\hline
-		Kullback-Leibler                 & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ & $e^s - 1$ \\
-		Burg Entropy                      & $\phi_b$           & $\phi_{kl}$                     & $-\log t + t - 1$     & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(1-s),\ s < 1$  \\
-		J-Divergence                      & $\phi_j$           & $\phi_j$                        & $(t-1)\log t$         & $\sum (p_\omega - q_\omega) \log\left(\frac{p_\omega}{q_\omega}\right)$ & No closed form \\
-		$\chi^2$-Distance                 & $\phi_{\chi^2}$    & $\phi_{m\chi^2}$                & $\frac{1}{t} (t-1)^2$ & $\sum \frac{(p_\omega-q_\omega)^2}{p_\omega}$              & $2 - 2\sqrt{1-s},\ s < 1$  \\
-		Modified $\chi^2$-Dist.           & $\phi_{m\chi^2}$   & $\phi_{\chi^2}$                 & $(t-1)^2$             & $\sum \frac{(p_\omega - q_\omega)^2}{q_\omega}$            & $\begin{cases} -1 & s < -2 \\ s + \frac{s^2}{4} & s \geq -2 \end{cases}$ \\
-% 		$\chi$-div,  $\theta > 1$ & $\phi_\chi^\theta$ & $t^{1-\theta}\phi_\chi^\theta$ & $|t-1|^\theta$         & $\sum q_\omega |1-\frac{p_\omega}{q_\omega}|^\theta$       & $\begin{cases} -1 & s \leq -\theta \\ s + (\theta-1)\left(\frac{|s|}{\theta}\right)^\frac{\theta}{\theta-1}  & s \geq -\theta \end{cases}$ \\
-		Variation Distance                & $\phi_v$           & $\phi_v$                        & $|t-1|$               & $\sum |p_\omega - q_\omega|$                               & $\begin{cases} -1 & s \leq -1 \\ s & -1 \leq s \leq 1 \end{cases}$ \\
-		Hellinger Distance                & $\phi_h$           & $\phi_h$                        & $(\sqrt{t} - 1)^2$    & $\sum (\sqrt{p_\omega} - \sqrt{q_\omega})^2$               & $\frac{s}{1-s},\ s < 1$ \\
+		Kullback-Leibler                 & $\phi_{kl}$        & $\phi_b$                        & $t\log t - t + 1$     & $\sum p_\omega \log\left(\frac{p_\omega}{q_\omega}\right)$ \\
+		Burg Entropy                      & $\phi_b$           & $\phi_{kl}$                     & $-\log t + t - 1$     & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ \\
+		$\chi^2$-Distance                 & $\phi_{\chi^2}$    & $\phi_{m\chi^2}$                & $\frac{1}{t} (t-1)^2$ & $\sum \frac{(p_\omega-q_\omega)^2}{p_\omega}$ \\
+		Modified $\chi^2$-Dist.           & $\phi_{m\chi^2}$   & $\phi_{\chi^2}$                 & $(t-1)^2$             & $\sum \frac{(p_\omega - q_\omega)^2}{q_\omega}$ \\\
+		Variation Distance                & $\phi_v$           & $\phi_v$                        & $|t-1|$               & $\sum |p_\omega - q_\omega|$ \\
 	\hline
 	\end{tabular}}
 	{}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Formulating \plp}
+\subsection{Formulation}
 \label{ssec:form}
 
-In this section, we simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows.
+We can simplify the notation for the first-stage (\ref{eq:gen_network_two_stage}) and second-stage (\ref{eq:gen_network_second_stage}) problems as follows.
 In the first stage, decision variables $\{x_{ijt}\}$, $\{s_{jt}\}$ and $\{r_{jt}\}$ become the vector $\x$, costs $\{c_{ijt}^x\}$ and $\{c_{jt}^s\}$ are written as the row vector $\c$, the supply/demand parameters $b_{jt}$ become the vector $\b$ and the constraint matrix is written as $A$.
 In the second stage, we denote the decisions as $\y^\omega$, the costs as $\k^\omega$, the supply/demands as $\d^\omega$, and the constraint matrices multiplying $\y^\omega$ and $\x$ as $D^\omega$ and $B^\omega$, respectively.
 
 We begin with a two-stage stochastic linear program with recourse (SLP-2).
+The SLP-2 is designed to model a situation where some decisions (occurring in the first stage) must be made under some amount of uncertainty.
+This uncertainty will later reveals itself, after which the decision-maker can make additional choices (called \emph{recourse decisions}) in light of this new information.
+See \citep{ruszczynski2003stochastic} for an overview of two-stage models in stochastic programming.
+
 Let $\x$ be a vector of first-stage decision variables with cost vector $\c$, constraint matrix $\A$ and right-hand side $\b$.
 We assume a finite distribution given by $q_\omega$ with scenarios indexed by $\omega = 1, \dots, n$.
 The SLP-2 is
@@ -394,92 +413,37 @@ where
 \begin{align}
 	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \k \y^\omega : \D \y^\omega = \B \x + \d^\omega, \y^\omega \geq 0 \right\}. \label{eq:slp_second_stage}
 \end{align}
-We assume relatively complete recourse; i.e., the second-stage problems $h_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem; and that the second-stage problems $h_\omega(\x)$ are dual feasible for every feasible solution $\x$ of the first-stage problem.
+We assume \emph{relatively complete recourse}; i.e., the second-stage problems $h_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem; and that the second-stage problems $h_\omega(\x)$ are dual feasible for every feasible solution $\x$ of the first-stage problem.
 For convenience, we denote $X = \{\x : \A\x = \b, \x \geq 0\}$.
 
 The SLP-2 formulation assumes that the distribution $\{q_\omega\}_{\omega=1}^n$ is known.
-However, in many applications the distribution is itself unknown.
-One technique to deal with this is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions that is believed to contain the true distribution.
-In this paper, we construct the ambiguity set by considering all distributions whose $\phi$-divergence from the nominal distribution $q$ is sufficiently small.
+However, in many applications, like the water application in this paper, the distribution is itself unknown.
+One technique to deal with this is to replace the known distribution with a set of distributions that is believed to contain the true distribution.
+In this paper, we construct this set of distributions by considering all distributions whose $\phi$-divergence from the nominal distribution $q$ is sufficiently small.
 We focus on a data-driven setting and assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, although $q$ can be obtained in other ways.
 In SLP-2, this data-driven setting would correspond to the probability of scenario $\omega$ to be $q_\omega = \frac{N_\omega}{N}$.
+In our setting, the observations come from projections of climate, population and water availability, making $N_\omega \equiv 1$ the most natural choice.
+However, some $N_\omega$ can be increased if certain scenarios are believed to be more likely than others.
 
-By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution with respect to $\phi$-divergence, we create the \plp\ model.
-In the \plp, the objective function is minimized with respect to the worst-case distribution selected from the ambiguity set of distributions.
-The resulting minimax formulation of \plp\ is
+By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution with respect to $\phi$-divergence, we create the model from \citep{love2013phi}.
+In this model, the objective function is minimized with respect to the worst-case distribution selected from the set of distributions in an effort to be robust with respect to these uncertainties.
+The resulting minimax formulation is
 \begin{equation}
 	\min_{\x \in X} \max_{p \in \mathcal{P}} \left\{ \c\x + \sum_{\omega=1}^{n} p_\omega h_\omega(\x) \right\}, \label{eq:plp_primal}
 \end{equation}
-where the ambiguity set is
+where the set of distribution $\mathcal{P}$ is given by
 \begin{align}
 	\mathcal{P} = & \left\{ \sum_{\omega = 1}^{n} q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho, \right. \label{eq:plp_primal_divergence} \\
 	& \ \sum_{\omega=1}^{n} p_\omega = 1, \label{eq:plp_primal_probability} \\
 	& \ \left. p_\omega \geq 0,\ \forall \omega \right\}. \label{eq:nonneg}
 \end{align}
-We refer to (\ref{eq:plp_primal_divergence}) as the $\phi$-divergence constraint and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
+Constraint (\ref{eq:plp_primal_divergence}) works to ensure that only distribution sufficiently close to $q$ are selected.
+Constraints (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure that $p_1, \dots, p_n$ is itself a probability distribution.
 We discus how to determine $\rho$ in (\ref{eq:plp_primal_divergence}) in Section \ref{ssec:robust_level}.
 
-Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual form
-\begin{align}
-	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \lambda \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \label{eq:plp_two_stage} \\
-	\st \ & \x \in X \nonumber \\
-	& \frac{h_\omega(\x) - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \label{eq:plp_feas_constraint}\\
-	& \lambda \geq 0, \nonumber
-\end{align}
-where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}), $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
-Note that some $\phi$, such as the J-Divergence, have no closed form representation of $\phi^*$, but can be expressed as the sum of other divergences---Burg Entropy and KL divergence---which allows the dual to be formed; see \citep{bental2011robust} for details.
-Theorem 1 of \cite{bental2011robust} contains a derivation of the dual problem.
-Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
-Also note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
-For some $\phi$-divergences, like the KL divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
-However, other $\phi$-divergences, like the Hellinger distance, have a finite limit, inducing this constraint.
-Throughout the paper, we use $s_\omega$ to denote
-\begin{equation}
-	s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}. \label{eq:s_omega_definition}
-\end{equation}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Basic Properties}
-\label{ssec:basicprop}
-
-In this section we list some basic properties of \plp.
-Most of these have already been noted earlier (e.g., by \cite{bental2011robust} and others for specific $\phi$-divergences) but we list them for completeness.
-Some of these properties help with our specialized solution method and we refer to them in later sections.
-
-\begin{property}
-	\label{property:convex}
-	\plp\ is a convex program.
-\end{property}
-
-\begin{property}
-	\label{property:coherent_risk_measure}
-	\plp\ is equivalent to minimizing a coherent risk measure.
-\end{property}
-
-Note that being a coherent risk measure implies that \plp\ is a convex problem.
-
-\begin{property}
-	\label{property:time_structure}
-	\plp\ preserves the time structure of SLP-2.
-\end{property}
-
-\begin{property}
-	\label{property:primal_dual_relation}
-	The worst-case distribution can be calculated with the equations
-	\begin{equation}\label{eq:p_worst}
-		\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(s_\omega\right), \ \ \ \ \ \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho, \ \ \ \ \ \sum_{\omega=1}^n p_\omega = 1.
-	\end{equation}
-\end{property}
-
-We now discuss these properties. A coherent risk measure is defined in \citep{rockafellar2007coherent}, which shows that minimizing a coherent risk measure over a polyhedron implies that \plp\ is a convex problem.
-The convexity of \plp\ was also noted in \citep{bental2011robust}.
-Properties \ref{property:time_structure} and \ref{property:primal_dual_relation} help with our decomposition-based solution method described in \cite{love2013phi}.
-The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(s_\omega\right)$, aiding in our decomposition-based solution method. 
-The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method for retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property:primal_dual_relation}.
-In many cases, the first equation in (\ref{eq:p_worst}) is sufficient to calculate $\{p_\omega\}_{\omega=1}^n$.
-In addition, $\phi^*$ is often differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(s_\omega)$.
-Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detailed in Section \ref{ssec:classification}.
+The problem (\ref{eq:plp_primal}) can be formulated in alternate ways that make it computationally tractable.
+Most notable is the fact that (\ref{eq:plp_primal}) is a convex problem, for which a wide variety of algorithms are available.
+For further discussion on computational methods, we direct the interested reader to \citep{bental2011robust} and \citep{love2013phi}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -496,134 +460,47 @@ Most $\phi$-divergences in Table~\ref{tb:phi_definitions} satisfy this different
 where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
 For corrections for small sample sizes and more details, we refer the readers to \citep{pardo2005statistical} and \citep{bental2011robust}.
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{A Classification of $\phi$-Divergences}
+\subsection{$\phi$-Divergences Selected for this Study}
 \label{ssec:classification}
 
-Given that there are many $\phi$-divergences to choose from, it is important to study how $\phi$-divergences act within an ambiguous (or, distributionally robust) stochastic optimization model. 
-We present a classification of $\phi$-divergences into four types, resulting from an examination of the limiting behavior of $\phi(t)$ as $t \rightarrow 0$ and $t \rightarrow \infty$.
-Different classifications may be suitable to different problem types and desired qualities in the ambiguous model---we discuss modeling considerations with respect to our classification in Section \ref{sssec:suppressandpop}.
+We selected three $\phi$-divergences for the computations in this study, based on the classification of $\phi$-divergences presented in \citep{love2013phi}: Modified $\chi^2$-distance, Kullback-Leibler divergence and Burg entropy.
+
+Because the data in this study comes in the form of projections of possible future scenarios, the decision maker may be interested in knowing whether some scenarios should be given probability $p_\omega = 0$ in the worst-case distribution.
+That is, some of the scenarios may be considered to be overly optimistic, and the decision maker may want a formulation capable of making this distinction.
+We refer to determining $p_\omega = 0$ as \emph{suppressing} scenario $\omega$.
+
+Both the Modified $\chi^2$-distance and the Kullback-Leibler divergence are capable of suppressing scenarios, but they do so in different ways.
+The problem (\ref{eq:plp_primal}) formulated with the Modified $\chi^2$-distance is capable of choosing whether to suppress any scenario individually, thus generating a wide variety of possible model output.
+In contrast, when the Kullback-Leibler divergence is used, the only possible results are: (a) no scenarios will be suppressed (i.e., $p_\omega > 0$ for every scenario $\omega$), or (b) all but one scenario will be suppressed (i.e., some scenario will have $p_\omega = 1$, while all others will have probability 0).
+
+Unlike the two $\phi$-divergences discussed above, the Burg entropy is not capable of suppressing scenarios, and thus the result will always show $p_\omega > 0$ for every scenario.
+The Burg entropy may be used if the decision maker wants to ensure that no scenarios are suppressed.
+See \citep{love2013phi} for a derivation of these behaviors.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Suppressing and Popping of Scenarios}
-\label{sssec:suppressandpop}
-
-As motivation for our classification, consider a self-adjoint $\phi$-divergence, which satisfies the relation
-\begin{equation} \label{eq:self_adjoint_classification}
-	\frac{\phi(t)}{t} = \phi\left(\frac{1}{t}\right),
-\end{equation}
-and consider $t \rightarrow \infty$.
-If both sides of (\ref{eq:self_adjoint_classification}) are finite in the limit, then we see a correspondence between the boundedness of $\phi(t)$ for $t < 1$ and linear growth of $\phi(t)$ for $t > 1$.
-On the other hand, infinite limits of (\ref{eq:self_adjoint_classification}) indicate a correspondence between superlinear growth of $\phi(t)$ for $t > 1$ and unboundedness of $\phi(t)$ for $t < 1$.
-
-Recall the definition of the ambiguity set, in particular, the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}). 
-In the \plp, $\phi$ has arguments given by ratios of probabilities, $\tfrac{p_\omega}{q_\omega}$ and the limits $t \rightarrow 0$ and $t \rightarrow \infty$ correspond to the cases when $p_\omega = 0$ and $q_\omega = 0$, respectively.
-Consider each of these limiting cases:
-\begin{itemize}
-	\item {\sc Case 1:} $q_\omega > 0$ but $p_\omega = 0$.
-		We call this the ``{\bf Suppress}'' behavior because a scenario with a positive probability in the nominal distribution can take zero probability in the ambiguous problem. In this case we need to examine $\lim_{t \searrow 0} \phi(t)$:
-	\begin{itemize}
-		\item If $\lim_{t \searrow 0} \phi(t) = \infty$, the ambiguity region will never contain distributions with $p_\omega = 0$ but $q_\omega > 0$.
-		\item On the other hand, if $\lim_{t \searrow 0} \phi(t) < \infty$, the ambiguity region could contain such a distribution, provided $q_\omega$ is sufficiently small or $\rho$ is sufficiently large.
-			We say that such a $\phi$-divergence can \emph{suppress} scenario $\omega$.
-	\end{itemize}
-	\item {\sc Case 2:} $q_\omega = 0$ but $p_\omega > 0$.
-		We call this the ``{\bf Pop}'' behavior because a scenario with zero probability in the nominal distribution can have a positive probability (or, pop) in the ambiguous problem. In this case, we need to examine $\lim_{t \nearrow 0} \frac{\phi(t)}{t}$:
-	\begin{itemize}
-		\item If $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$, the ambiguity region can never contain distributions with $p_\omega > 0$ but $q_\omega = 0$.
-		\item On the other hand, if $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$, the ambiguity region will admit sufficiently small $p_\omega$.
-			We say that these $\phi$-divergences can \emph{pop} scenario $\omega$.
-	\end{itemize}
-	\item {\sc Case 3:} $p_\omega = 0$ but $q_\omega = 0$.
-		Such a situation has no contribution to the divergence, since $0 \phi\left(\tfrac{0}{0}\right) = 0$.
-\end{itemize}
-
-\noindent These two limiting cases describing suppressing and popping behavior in $\phi$-divergences create four distinct categories.
-Examples of divergences in each category are given in Table \ref{tb:phi_categories}.
-Note that $\phi$ can suppress scenarios if and only if its adjoint $\tilde{\phi}$ can pop scenarios, and vice versa.
-This means that self-adjoint $\phi$-divergences are either capable of both popping and suppressing scenarios or capable of neither.
-
-\begin{table}
-	\TABLE
-	{
-		Examples of $\phi$-divergences fitting into each category.
-		The number in parentheses under the ``Can Suppress Scenarios'' column denotes the subcategory detailed in \cite{love2013phi}.
-		\label{tb:phi_categories}
-	}
-	{\begin{tabular}{l|p{.33\textwidth}p{.33\textwidth}}
-		 & Can Suppress Scenarios & Cannot Suppress Scenarios \\
-		 \hline
-		 Can Pop Scenarios %
-			& \parbox{.33\textwidth}{Hellinger Distance (2),\\Variation Distance (1)} %
-			& \parbox{.33\textwidth}{Burg Entropy,\\$\chi^2$-Distance} \smallskip \\
-		 Cannot Pop Scenarios %
-			& \parbox{.33\textwidth}{Kullback-Leibler Divergence (2),\\Modified $\chi^2$-Distance (1)} %
-			& \parbox{.33\textwidth}{J-Divergence}
-	\end{tabular}}
-	{}
-\end{table}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Modeling Considerations When Choosing a Divergence}
-\label{sssec:model}
-
-We offer the following suggestions for choosing an appropriate $\phi$-divergence classification for the data available.
-First, consider whether to choose a distribution that can suppress scenarios.
-If the problem scenarios come from high-quality observed data, one may wish to avoid divergences that can suppress scenarios.
-However, if the data is poorly sampled or comes from opinion rather than observation or simulation, the option of suppressing scenarios may result in a solution with better robustness properties.
-
-Next, consider whether to choose a distribution that allows for popping scenarios.
-If the problem scenarios come strictly from observation, with little theoretical understanding of the problem, we suggest choosing a divergence that cannot pop scenarios.
-However, if the problem scenarios come from a mix of observed/simulated data and expert opinion about scenarios of interest, then divergences that can pop present an interesting modeling choice.
-This allows for including interesting but unobserved scenarios, allowing the mathematical program to assign an appropriate probability to them.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Value of Data}
 \label{ssec:value}
 
-In this section we assume the nominal distribution $q$ is the empirical distribution ($q_\omega = \tfrac{N_\omega}{N}$) and provide insight into how the \plp\ changes when a single observation.
-This analysis must consider how $\rho$ changes as additional samples are taken; therefore, we use $\rho_N$ to emphasize the dependence on sample size in this section.
-To be consistent with the known $\phi$-divergence results stated in Section \ref{ssec:robust_level}, we assume $\rho_N = \frac{\rho_0}{N}$.
-
-With a data-driven formulation such as \plp, it is natural to ask how the optimal value and solution changes as more data is gathered.
+With a data-driven formulation such as (\ref{eq:plp_primal}, it is natural to ask how the optimal value and solution changes as more data is gathered.
 In particular, one might be concerned about being overly conservative in the problem formulation and thus missing the opportunity to find a better solution to the true distribution.
-For \plp, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst-case distribution from the ambiguity set.  
+For (\ref{eq:plp_primal}), this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative because new information removes the current worst-case distribution from the set of distributions.  
 Below, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
-%We also provide a way of estimating the probability of sampling such an observation.
 
-\begin{theorem}[Theorem 1 from \cite{love2013phi}]
-	\label{thm:value}
-	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied
-	\begin{equation} \label{eq:cost_decrease_cond}
-		\sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right),
-	\end{equation}
-	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solve the $N$-sample problem with $q_\omega = \tfrac{N_\omega}{N}$.
-\end{theorem}
+Theorem 1 and Corollary 1 from \citep{love2013phi} provide sufficient conditions for an additional sample to rule out the worst-case distribution, which are summarized here for the $\phi$-divergences used in this study.
+An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied for:
+	\begin{description}
+		\item[Burg entropy:] $\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}} < \frac{N}{N+1}$,
+		\item[Kullback-Leibler:] $\sum_\omega q_\omega \left(\frac{p_\omega}{q_\omega}\right)^\frac{N}{N+1} \log\left(\frac{p_\omega}{q_\omega}\right)^\frac{N}{N+1} + 1 > \left(\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}\right)^\frac{N}{N+1}$
+		\item[Modified $\chi^2$:] $2 \sum_\omega p_\omega \frac{p_\omega}{q_\omega} > \left(\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}\right)^2 + \left(\frac{N+1}{N}\right)^2$.
+	\end{description}
 
-We can interpret \eqref{eq:cost_decrease_cond} as follows. If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
-This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}_{\omega=1}^{n}$ in \eqref{eq:p_worst}.
-
-It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences and we detail this in the corollary below. 
-
-\begin{corollary}[Corollary 1 from \cite{love2013phi}]
-	\label{cor:cost_decrease_trick}
-	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied for:\vspace*{-0.1in}
-	\begin{multicols}{2}
-		\begin{description}
-			\item[Burg entropy:] $\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}} < \frac{N}{N+1}$, %(or, $p_{\hat{\omega}}<\frac{N_{\hat{\omega}}}{N}$)
-			\item[$\chi^2$-distance:]  $\sum_\omega q_\omega \frac{q_\omega}{p_\omega} + \sqrt{\frac{N+1}{N}} < 2 \frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}$,
-			\item[Hellinger:] $\sum_\omega q_\omega \sqrt{\frac{p_\omega}{q_\omega}} + \sqrt{\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}} < 2 \frac{N}{N+1}$,
-			\item[Modified $\chi^2$:] $2 \sum_\omega p_\omega \frac{p_\omega}{q_\omega} > \left(\frac{p_{\hat{\omega}}}{q_{\hat{\omega}}}\right)^2 + \left(\frac{N+1}{N}\right)^2$.
-		\end{description}
-	\end{multicols}
-\end{corollary}
-
-The simple conditions in Theorem~\ref{thm:value} and Corollary~\ref{cor:cost_decrease_trick} provide insight into different scenarios for a decision maker. 
-Let $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$.
-Set $L$ divides the scenarios into two---the ones in $L$ guarantee a drop in the overall cost if sampled one more and therefore can be considered ``good'' scenarios. 
-Note that scenarios not in $L$ can also result in the cost decrease.
+The conditions listed above provide a simple test for determining which scenarios would decrease the expected cost if they were given additional weighting in the problem.
+In our problem described in Section \ref{sec:water}, scenarios can be categorized as part of two groups: low population and high population.
+Our analysis of the value of data in Section \ref{sec:comp} shows that the low population scenarios satisfy the above conditions, as would be expected.
+Further details are available in Section \ref{sec:comp}.
 
 
 
@@ -631,16 +508,29 @@ Note that scenarios not in $L$ can also result in the cost decrease.
 \section{Application to Tucson, AZ}
 \label{sec:water}
 
-We now apply the formulation described in Sections \ref{sec:network_model} and \ref{sec:phi_divergences} to generate a generalized network \plp\ model describing water allocation in a developing region of Tucson, AZ shown in Figure \ref{fig:tucson_elevation}.
+In this section, we provide details on the generalized network model (\ref{eq:gen_network_two_stage}) describing water allocation in a developing region of Tucson, AZ shown in Figure \ref{fig:tucson_elevation}.
 
-The majority of Tucson's water comes from the Colorado river, brought in by the (CAP) canal, which is indicated by the canal shown in blue in Figure \ref{fig:tucson_elevation}.
+The resulting model has a total of $P = 41$ time periods, representing years 2010--2050.
+For each time period, the network has 62 nodes representing demand for potable and nonpotable (reclaimed) water, pumps, water treatment plants, and the available water supply from the Colorado River.
+Costs for all time periods are brought into present value by applying a 4\% discount rate per year.
+The network in each time period has 102 arcs, representing the pipe network carrying the water between the nodes physically and connecting the network to the five reservoirs that connect the time stages in the model.
+We use $P_1 = 5$ time periods for the first stage.
+
+Uncertainty in the model comes from population growth, water availability, and climate-driven per-capita demand.
+The remainder of this section discusses our methods for modeling the problem uncertainty.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Network Details}
+
+The majority of Tucson's water comes from the Colorado river, brought in by the Central Arizona Project (CAP) canal, which is shown in blue on the left side of Figure \ref{fig:tucson_elevation}.
 This water may then be treated and sent to customers, or pumped underground to one of five aquifers to be saved for future use.
 One aquifer recharge facility, the Central Avra Valley Storage And Recovery Project (CAVSARP) is shown in Figure \ref{fig:tucson_elevation}, along with two water treatment plants: the Tucson Water Reclamation Facility (TWRF) and the Haden-Udal Water Treatment Plant (HUWTP).
 
-One southeastern portion of Tucson, outlined in purple in Figure \ref{fig:tucson_elevation}, is being increasingly developed.
+The southeastern portion of Tucson, outlined in purple in Figure \ref{fig:tucson_elevation}, is being increasingly developed.
 This area is split into different elevation zones, shown by the green lines, the demands in each of which will be served by a dedicated reservoir and pump.
 That is, the elevation lines in Figure \ref{fig:tucson_elevation} also split the region into several pressure zones.
-Given the capacity of the existing treatment plants, and the energy cost of pumping the water through a series of pressure zones, Tucson Water is interested in the possibility of building additional treatment facilities  in this area, herein known as the RESIN (REsilient and Sustainable INfrastructures) area.
+Given the capacity of the existing treatment plants, and the energy cost of pumping the water through a series of pressure zones, the governing agencies in Tucson are interested in the possibility of building additional treatment facilities  in this area, herein known as the RESIN (REsilient and Sustainable INfrastructures) area.
 
 \begin{figure}
 	\FIGURE
@@ -658,7 +548,7 @@ Given the capacity of the existing treatment plants, and the energy cost of pump
 A more detailed view of Tucson's water treatment system is shown in Figure \ref{fig:tucson_treatment}.
 The blue nodes and arcs indicate the potable water treatment, storage and distribution system, which takes CAP water as an input and distributes it to the pressure zones shown in Figure \ref{fig:tucson_zones}.
 The purple nodes and arcs indicate non-potable water which can be used to satisfy some (especially agricultural and industrial) demands.
-The black nodes and arcs indicate waste water that is returned from potable water use.
+The black nodes and arcs indicate wastewater that is returned from potable water use.
 
 \begin{figure}
 	\FIGURE
@@ -673,7 +563,7 @@ The black nodes and arcs indicate waste water that is returned from potable wate
 	{}
 \end{figure}
 
-The pressure zones in the RESIN area, shown in Figure \ref{fig:tucson_zones}, have a largely period structure.
+The pressure zones in the RESIN area, shown in Figure \ref{fig:tucson_zones}, have a periodic structure, with the possible exception of additional infrastructure as described below.
 Each pressure zone contains a potable and non-potable demand node.
 Note that potable water, being of higher quality, can be used to meet either type of demand.
 Each zone also contains a potable-water reservoir and pump, which is used to supply potable to the next pressure zone, and a booster station that provides the conveyance for the non-potable water.
@@ -681,6 +571,9 @@ Finally, each zone has a wastewater return, which is transported back to the cen
 
 The quantity of water demand in each zone is determined as a multiple of the projected population in each year.
 Potable demand makes up 80\% of the total demand, and nonpotable demand is the remaining 20\%.
+
+A dummy node, not shown in the figures, capable of supplying water to the demand sites in the event of a water shortage is also included in the model.
+The cost of this extra supply is set at \$800/acre-foot.
 
 \begin{figure}
 	\FIGURE
@@ -699,35 +592,10 @@ Potable demand makes up 80\% of the total demand, and nonpotable demand is the r
 	{}
 \end{figure}
 
-Finally, additional infrastructure may be constructed in the RESIN area.
-One option is to construct a satellite wastewater treatment plant (WWTP), capable of treating wastewater up to a nonpotable quality, for satisfying demands in it's own zone and and higher zones.
-Additionally, an indirect potable reuse (IPR) facility can be constructed, which further treats water from the WWTP up to potable quality.
-This IPR facility can include reverse osmosis (RO) or not.
-Figure \ref{fig:tucson_zones_wwtp} gives an illustration of an additional WWTP and IPR constructed in zone GS.
 
-\begin{figure}
-	\FIGURE
-	{%
-		\begin{tabular}{c}
-			\includegraphics*[width=.8\textwidth]{tucson_water_images/zones_south_ipr.png}%
-		\end{tabular}
-	}
-	{
-		A satellite wastewater treatment plant is shown here, build in pressure zone GS.
-		\label{fig:tucson_zones_wwtp}
-	}
-	{}
-\end{figure}
-
-The model has a total of $P = 41$ time periods, representing years 2010--2050.
-For each time period, the network has 62 nodes representing demand for potable and nonpotable (reclaimed) water, pumps, water treatment plants, and the available water supply from the Colorado River.
-The network in each time period has 102 arcs, representing the pipe network carrying the water between the nodes physically and connecting the network to the five reservoirs that connect the time stages in the model.
-We use $P_1 = 5$ time periods for the first stage.
-
-Uncertainty in the model comes from population growth, CAP water availability, and climate-driven per-capita demand.
-The remainder of this section discusses our methods for modeling the problem uncertainty.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Population \& Water Supply Estimates}
+\label{ssec:population_supply_estimates}
 
 \begin{table}
 	\TABLE
@@ -758,12 +626,20 @@ Tucson Water has a yearly CAP water allocation of 144,000 acre-feet, which may b
 The Arizona Department of Water Resources believes that a 10\% reduction to 130,000 acre-feet is the maximum realistic reduction by 2050 \citep{scott2012scenario}.
 The water allocation to the RESIN area is determined by the proportion of the Tucson Water service population in the RESIN area, e.g., under the \cite{wisp} growth scenario with the full CAP allocation, the RESIN area is allocated about 81,970 acre-feet in 2050.
 
+% UPDATE CITATIONS BELOW!!!
+A reduction in Colorado River water allotment will occur if the elevation of Lake Mead falls below 1025 feet, according to the Colorado River Compact 2007 interim guidelines \citep{???}.
+For the nominal distribution, we estimate the probability of this event as 0.2, based on \citep{usbor}.
+For this purpose, we will select the ``number'' of observations as $N_\omega = 1.6$ for any scenario without an allotment restriction, and $N_\omega = 0.4$ for any scenario with an allotment restriction.
+These numbers are chosen so that any pair of scenarios that differ only by water allotment are given a total of 2 observations, while maintaining weighting desired.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Water Demand Regression}
 \label{ssec:demand_regression}
 
-We next need to estimate the weather-dependent demand of water resources in the RESIN area, which will be integrated climate models to project the future demand for water in the developing area.
+We next need to estimate the weather-dependent water demand in the RESIN area.
 To estimate demand separately in each elevation zone, we need a statistical model of the per-capita water demand to be used in conjunction with the zonal population estimates.
-For this task, data on monthly demand for water in Tucson from 1991-2011 was obtained from Tucson, along with the recorded amount of rain and the average daily high temperature in each month.
+For this task, data on monthly demand for water in Tucson from 1991--2011 was used, along with the recorded amount of rain and the average daily high temperature in each month.
 
 A direct measure of population was only available on a yearly basis, but service counts were available for each month, from which population estimates were inferred in order to estimate the per-capita demand for water.
 We performed a linear regression on the total population against the monthly service count data to estimate the population for each month.
@@ -774,7 +650,7 @@ The counts of single family residences accounted for the vast majority of the va
 \begin{table}
 	\TABLE
 	{
-		Results of the linear regression of population on number of single family units in Tucson Water's service counts.
+		Results of the linear regression of population on number of single family units in Tucson Water's service counts
 		\label{tb:population_linear_reg}
 	}
 	{\begin{tabular}{rrrrr}
@@ -788,15 +664,16 @@ The counts of single family residences accounted for the vast majority of the va
 	{}
 \end{table}
 
-Given the monthly estimates on population, the water demand per capita in gallons per capita per day (GPCD) were calculated for every month in the 1991-2011 data.
-A linear regression of these GPCD values on the mean daily high temperature and average precipitation rate for each month, and the year of the observation, was then calculated.
+Given the monthly estimates on population, the water demand per capita in gallons per capita per day (GPCD) were calculated for every month in the 1991--2011 data.
+A linear regression of these GPCD values on climate-related variables like the mean daily high temperature and average precipitation rate for each month, and the year of the observation, was then calculated.
 The year of the observation is included because the average GPCD water demand began dropping near the beginning of the 21st century, from over 170 GPCD in 1996 to under 140 GPCD in 2011.
-The linear fit, shown in Table \ref{tb:gpcd_linear_reg} has adjusted $R^2 = 0.7266$.
+The linear fit, shown in Table \ref{tb:gpcd_linear_reg} has an adjusted $R^2 = 0.7266$.
+We see that both temperature and precipitation are statistically significant, and temperature seems to explain more of the variation in the data.
 
 \begin{table}
 	\TABLE
 	{
-		Results of the linear regression of water demand in GPCD on average daily high temperature, precipitation rate, and year.
+		Results of the linear regression of water demand in GPCD on average daily high temperature, precipitation rate, and year
 		\label{tb:gpcd_linear_reg}
 	}
 	{\begin{tabular}{rrrrr}
@@ -812,17 +689,17 @@ The linear fit, shown in Table \ref{tb:gpcd_linear_reg} has adjusted $R^2 = 0.72
 	{}
 \end{table}
 
-This fit, with the year included, projects water demand to be around 145-155 GPCD in 2010, which decreases over time to 100-110 GPCD by 2050.
-Tucson Water uses a typical estimate of 120-145 GPCD in their projections.
+This fit, with the year included, projects water demand to be around 145--155 GPCD in 2010, which decreases over time to 100--110 GPCD by 2050.
+Tucson Water uses a typical estimate of 120--145 GPCD in their projections.
 The range specified by this fit is similar to this for many of the years considered.
 Because the water demand is linear in the year, we refer to this as the linear fit.
 
-The linear fit for projecting a continual increase in water efficiency out to 2050.
+The linear fit projects a continual increase in water efficiency out to 2050.
 To combat this, a second model was developed to capture the decrease in water usage in the data, but not extrapolate this trend.
 For this, we choose to conduct the regression on a bounded value of the year, i.e., choose the value in a set $\{Y_l, Y_l+1, \dots, Y_u\}$ closest to the actual year.
 First, the upper bound $Y_u = 2011$ was chosen so that no decrease in water demand would be projected beyond the scope of the data.
 The value $Y_l = 2004$ was then selected to generate the best fit to the data.
-This piecewise fit is shown in Table \ref{tb:gpcd_piecewise_reg}, and has $R^2 = 0.7634$.
+This piecewise fit is shown in Table \ref{tb:gpcd_piecewise_reg}, and has an adjusted $R^2 = 0.7634$.
 
 \begin{table}
 	\TABLE
@@ -843,14 +720,16 @@ This piecewise fit is shown in Table \ref{tb:gpcd_piecewise_reg}, and has $R^2 =
 	{}
 \end{table}
 
-The piecewise fit typically predicts demands of 135-145 GPCD throughout 2010-2050, increasing through the time period, which is in-line with Tucson Water's predictions.
+The piecewise fit typically predicts demands of 135--145 GPCD throughout 2010--2050, increasing through the time period, which is in-line with Tucson Water's predictions.
 
-\subsection{Climate Models Used}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Climate Models and Greenhouse Emissions Paths Used}
 
 A list of the climate models used in this paper is shown in Table \ref{tb:climate_models}.
 Bias-Corrected and Spatially Downscaled (BCSD) data from Coupled Model Intercomparison Project: Phase 5 (CMIP5) was obtained from \citep{cmip5}.
 Additional information on the downscaled data can be found in \citep{bcsdreclamation}.
-Each model included predictions of the variables \texttt{tasmax} and \texttt{pr}, the average daily high temperature ($^\circ C$) and the average precipitation rate (mm/day) in each month.
+Each model included predictions of the variables \texttt{tasmax} and \texttt{pr}, the average daily high temperature ($^\circ C$) and the average precipitation rate (mm/day) in each month, respectively.
 
 \begin{table}
 	\TABLE
@@ -880,10 +759,15 @@ Each model included predictions of the variables \texttt{tasmax} and \texttt{pr}
 
 Each model had output associated with a given path for future greenhouse gas emissions.
 Our analysis includes four paths: RCP2.6, RCP4.5, RCP6.0 and RCP8.5.
-RCP2.6 is an optimistic scenario where emissions are drastically reduced by mid-century.
-RCP4.5 and RCP6.0 show stabilization of emissions before and after 2100, respectively.
-Finally, RCP8.5 is the scenario where emissions continue to grow quickly throughout the remainder of the century.
-A comparison of the model output of the average daily high temperature for 2040-2050 for emissions path RCP8.5 is shown in Table \ref{tb:model_comparison_temperature}.
+The greenhouse emissions path RCP2.6 is an optimistic case where emissions are drastically reduced by mid-century.
+The paths RCP4.5 and RCP6.0 show stabilization of emissions before and after 2100, respectively.
+Finally, RCP8.5 is the case where emissions continue to grow quickly throughout the remainder of the century.
+
+A comparison of the model output of the average daily high temperature for 2040--2050 for emissions path RCP8.5 is shown in Table \ref{tb:model_comparison_temperature}.
+We can see that average daily high temperature is consistently 1-3$^\circ C$ higher in every month, with smaller variations between the models.
+Table \ref{tb:model_comparison_precipitation} compares the mean precipitation per month (mm) with each RCP8.5 projection.
+We note that the projections typically predict more rain than the historic record, especially during the summer monsoon in July--September.
+CSIRO seems to have an especially large precipitation prediction during these months.
 
 \begin{table}
 	\TABLE
@@ -896,6 +780,56 @@ A comparison of the model output of the average daily high temperature for 2040-
 	{}
 \end{table}
 
+\begin{table}
+	\TABLE
+	{
+		A comparison of projected ($\geq 2040$) average precipitation per month (mm) with the historical record (1991-2011) in the RESIN area.
+		All values come from models using emissions path RCP8.5.
+		\label{tb:model_comparison_precipitation}
+	}
+	{\csvautotabular{tables/precipitation.csv}}
+	{}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Scenarios and Infrastructure Configurations}
+
+In total, each problem has scenarios generated from the following considerations, with the number of possibilities given in parentheses:
+\begin{itemize}
+	\item Population projections (2),
+	\item Water allotment scenarios (2),
+	\item Per capita demand regression model (2),
+	\item Climate models (6),
+	\item Emissions paths (4),
+\end{itemize}
+which results to a total of 192 scenarios, for which we define $N= 192$ total observations.
+In the nominal distribution, the weighting of each scenarios depends only on the water allotment as described in Section \ref{ssec:population_supply_estimates}.
+With these weights, the nominal distribution is given by $q_\omega = 0.008\bar{3}$ for the 96 scenarios with no allotment reduction, and $q_\omega = 0.00208\bar{3}$ for the 96 scenarios with a reduction in water allotment.
+
+In addition to the scenarios outlines, there are four options for additional infrastructure that may be constructed in the RESIN area.
+These possibilities are:
+\begin{itemize}
+	\item \textbf{None:} No additional infrastructure is constructed.
+	\item \textbf{WWTP:} A satellite wastewater treatment plant (WWTP) is constructed, capable of treating wastewater up to a nonpotable quality, for satisfying demands in its own zone and and higher zones.
+	\item \textbf{IPR:} In addition to the WWTP, an indirect potable reuse (IPR) facility can be constructed, which further treats water from the WWTP up to potable quality.
+	\item \textbf{RO:} The IPR facility described above also includes a reverse osmosis (RO) capability in this option.
+\end{itemize}
+Figure \ref{fig:tucson_zones_wwtp} gives an illustration of an additional WWTP and IPR constructed in zone GS.
+
+\begin{figure}
+	\FIGURE
+	{%
+		\begin{tabular}{c}
+			\includegraphics*[width=.8\textwidth]{tucson_water_images/zones_south_ipr.png}%
+		\end{tabular}
+	}
+	{
+		A satellite wastewater treatment plant is shown here, build in pressure zone GS.
+		\label{fig:tucson_zones_wwtp}
+	}
+	{}
+\end{figure}
 
 
 
