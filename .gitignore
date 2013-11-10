@@ -24,3 +24,7 @@
 # Temporary Files #
 ###################
 .*.swp # vim lock file
+
+# R #
+#####
+.R*
