@@ -94,7 +94,7 @@
 \renewcommand{\c}{\mathbf{c}}
 \newcommand{\A}{\mathbf{A}}
 \renewcommand{\b}{\mathbf{b}}
-\renewcommand{\k}{\mathbf{k}}
+\newcommand{\g}{\mathbf{g}}
 \newcommand{\D}{\mathbf{D}}
 \newcommand{\B}{\mathbf{B}}
 \renewcommand{\d}{\mathbf{d}}
@@ -151,17 +151,20 @@
 % \RUNAUTHOR{Jones, Miller, and Wilson}
 % \RUNAUTHOR{Jones et al.} % for four or more authors
 % Enter authors following the given pattern:
-\RUNAUTHOR{Love and Bayraksan}
+%\RUNAUTHOR{Love and Bayraksan}
+\RUNAUTHOR{\ }
 
 % Title or shortened title suitable for running heads. Sample:
 % \RUNTITLE{Bundling Information Goods of Decreasing Value}
 % Enter the (shortened) title:
-\RUNTITLE{Phi-Divergence Constrained Ambiguous Stochastic Programs}
+%\RUNTITLE{Phi-Divergence Constrained Ambiguous Stochastic Programs}
+\RUNTITLE{\ }
+
 
 % Full title. Sample:
 % \TITLE{Bundling Information Goods of Decreasing Value}
 % Enter the full title:
-\TITLE{Phi-Divergence Constrained Ambiguous Stochastic Programs}
+\TITLE{Phi-Divergence Constrained\\ Ambiguous Stochastic Programs}
 
 % Block of authors and their affiliations starts here:
 % NOTE: Authors with same affiliation, if the order of authors allows, 
@@ -169,9 +172,11 @@
 %   \EMAIL field can be repeated if more than one author
 \ARTICLEAUTHORS{%
 \AUTHOR{David Love}
-\AFF{University of Arizona, \EMAIL{dlove@email.arizona.edu}, \url{http://math.arizona.edu/~dlove/}}
+\AFF{Graduate Program in Applied Mathematics, University of Arizona, \EMAIL{dlove@email.arizona.edu}%, \url{http://math.arizona.edu/~dlove/}
+}
 \AUTHOR{G\"{u}zin~Bayraksan}
-\AFF{The Ohio State University, \EMAIL{bayraksan.1@osu.edu}, \url{http://www-iwse.eng.ohio-state.edu/biosketch\_GBayraksan.cfm}}
+\AFF{Department of Integrated Systems Engineering, The Ohio State University, \EMAIL{bayraksan.1@osu.edu}%, %\url{http://www-iwse.eng.ohio-state.edu/biosketch\_GBayraksan.cfm}
+}
 % Enter all authors
 } % end of the block
 
@@ -181,6 +186,7 @@
 	We present a classification of $\phi$-divergences to elucidate their use for models with different properties and different sources of data.
 	A condition of assessing the value of collecting additional data is derived and we demonstrate convergence of the $\phi$-divergence-based ambiguous program to the associated non-ambiguous stochastic program.
 	A decomposition-based solution algorithm to solve the resulting model is given.
+  Finally, numerical results are presented to illustrate the behavior of $\phi$-divergences in an optimization setting.  
 }%
 
 % Sample 
@@ -206,7 +212,7 @@
 %  \label{cyclic-schedules} %% 1.2.1
 %\section{Problem Description.}\label{problemdescription} %% 2.
 
-\section{Introduction and Motivation}
+\section{Introduction}
 
 In practice, many optimization problems can be modeled by stochastic programs minimizing the expected value of an uncertain objective function.
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
@@ -248,28 +254,41 @@ Our work unites these previous papers and provides insight into conditions where
 
 \subsection{Contributions}
 
-The contributions of this paper are as follows. 
-\begin{itemize}
-	\item One of the open problems identified by \citet{bental2011robust} was to study the performance of different $\phi$-divergences.
-		Given that there are many $\phi$-divergences, a decision maker is left with the question of how each divergence behaves for his/her problem and which one to choose.
-		We provide a novel classification of $\phi$-divergences dictated by the types of distributions that can be admitted to the set of distributions. 
-		This allows us to provide insight into which class of $\phi$-divergence is most useful to which type of model.
-		We note that this classification is a general feature of $\phi$-divergences and applies to a broader class of $\phi$-divergence constrained problems than the ones presented in this paper. 
-		
-	\item In a data-driven setting, several important questions arise.
+One of the open problems identified by \citet{bental2011robust} was to study the performance of different $\phi$-divergences.
+Given that there are many $\phi$-divergences, a decision maker is left with the question of how each divergence behaves for his/her problem and which one to choose.
+In this paper, we provide a classification of $\phi$-divergences that begins to answer this open question.
+
+In a data-driven setting, several important questions arise.
 		What happens as we add one more data?
 		Will our solution change, and if so, will the overall cost decrease?
 		Can we determine sampling from which scenarios result in a better (lower-cost) solution?
 		Can we characterize the behavior of the problem as we add more data?
 		In this paper, we provide answers to these questions.
-		First, we provide a simple condition to determine if sampling from a particular scenario will rule out the current worst-case distribution, which can be generalized beyond the two-stage setting.
-		Second, we show that \plp\ converges to the stochastic program with the (unknown) true distribution.
+
+\bigskip
+
+
+The contributions of this paper are as follows. 
+\begin{enumerate}
+	\item 
+		We provide a novel classification of $\phi$-divergences dictated by the types of distributions that can be admitted to the set of distributions. 
+		This allows us to provide insight into which class of $\phi$-divergence is most useful to which type of model.
+		We note that this classification is a general feature of $\phi$-divergences and applies to a broader class of $\phi$-divergence constrained problems than the ones presented in this paper. 
 		
+	\item 
+		We provide a simple condition to determine if sampling from a particular scenario will rule out the current worst-case distribution, which can be generalized beyond the two-stage setting.
+		We refer to this as the {\it value of additional data}. 
+		
+
+\item 
+		In a data-driven setting---where data is collected to form the ambiguity set of distributions using $\phi$-divergences---we show that \plp\ converges to the stochastic program with the (unknown) true distribution.
+		
+
 	\item Stochastic programs often become quite large, which raises questions of computational tractability.
 		We help to answer this problem by providing a modified Bender's decomposition that can be used to solve the \plp\ efficiently by solving only linear programs. 
 
-	\item Finally, we provide some interesting examples of $\phi$-divergences that result in commonly used risk models and illustrate our results numerically. 
-\end{itemize}
+	\item We provide some interesting examples of $\phi$-divergences that result in commonly used risk models and illustrate our results numerically. 
+\end{enumerate}
 
 \subsection{Organization}
 
@@ -283,52 +302,54 @@ Section \ref{sec:soln_algorithm} presents a decomposition method for solving the
 We end in Section \ref{sec:plp_conclusions} with conclusions and future work.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction to $\phi$-Divergences}
+\section{$\phi$-Divergences} %Introduction to
 \label{sec:phi_divergences}
 
-In this section we define the concept of a $\phi$-divergence and describe some of the properties that will be used through the remainder of the paper.
+In this section we define the concept of a $\phi$-divergence and describe some of its properties that will be used throughout the paper.
 \citet{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
 Many results in this section can be also found in \citep{bental2011robust}.
 
-$\phi$-divergences are used in statistics to measure the ``distance'' between two distributions. 
-In the discrete case, $\phi$-divergences can be used generally to measure the distance between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$ and specifically when $p$ and $q$ are probability vectors; i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$.
+In the finite case, $\phi$-divergences are used to measure the distance between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$.
+Specifically, when $p$ and $q$ are probability vectors (i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$), $\phi$-divergences are used to quantify the distance between two discrete distributions. 
 The $\phi$-divergence is defined by
 \[
 	I_\phi(p,q) = \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right),
 \]
-where $\phi(t)$, called the $\phi$-divergence function, is a convex function on $t \geq 0$ such that $\phi(1) = 0$ and with the additional interpretations that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and $0 \phi(0/0) = 0$.
-If both $p$ and $q$ are probability vectors, as we assume throughout this paper, we can additionally assume without loss of generality that $\phi(t) \geq 0$.
-The function $\phi(t)$ can be modified as $\psi(t) = \phi(t) + c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t$ and $I_\psi(p,q) = I_\phi(p,q)$ for all probability vectors $p,q$.
-If $\phi(t)$ is differentiable at $t = 1$ this can be done by selecting $c = -\phi'(1)$.
+where $\phi(t)$, called the $\phi$-divergence function, is a convex function on $t \geq 0$ such that $\phi(1) = 0$.
+Additionally, it is defined that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ and $0 \phi(0/0) = 0$.
+When both $p$ and $q$ are probability vectors---which is our setup throughout this paper---we can further assume that $\phi(t) \geq 0$ without loss of generality.
+Observe that the function $\phi(t)$ can be modified as $\psi(t) = \phi(t) + c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t\geq 0$ and $I_\psi(p,q) = I_\phi(p,q)$ for all probability vectors $p,q$.
+If $\phi(t)$ is differentiable at $t = 1$, this modification can be done by selecting $c = -\phi'(1)$.
 %; see, e.g., the Likelihood divergence and Burg entropy in Table~\ref{tb:phi_definitions}.
 
 $\phi$-divergences are not, in general, metrics.
 For example, most $\phi$-divergences do not satisfy the triangle inequality and many are not symmetric in the sense that $I_\phi(p,q) \neq I_\phi(q,p)$.
-One exception is the Variation distance, which is equivalent to the $L^1$-distance between the vectors.
-
-A $\phi$-divergence has an adjoint, defined by
+One exception is the variation distance, which is equivalent to the $L^1$-distance between the vectors (see Table~\ref{tb:phi_definitions}).
+A $\phi$-divergence has an {\it adjoint}, defined by
 \begin{equation} \label{eq:adjoint}
 	\tilde{\phi}(t) = t \phi\left(\frac{1}{t}\right),
 \end{equation}
 which satisfies all criteria for a $\phi$-divergence \citep{bental1991certainty} and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
-Divergences that are symmetric with respect to the input vectors are known as self-adjoint.
+Divergences that are symmetric with respect to the input vectors are known as {\it self-adjoint}.
 
-The problem formulation involves use of the conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$, defined as
+An important related function is the {\it conjugate function}, which is used, for instance, in the dual problem formulation (Section \ref{ssec:form}). 
+The conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$ is defined as
 \begin{equation} \label{eq:conjugate}
-	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}.
+	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\},
 \end{equation}
-The conjugate $\phi^*$ is a nondecreasing convex function and may be undefined above some upper bound $\bar{s}$.
+and it is a nondecreasing convex function, which may be undefined above some upper bound $\bar{s}$.
 
 Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
-For all divergences, $\phi(t) = \infty$ for $t < 0$ and the value of the conjugate is listed only in its domain; i.e., $\{s : \phi^*(s) < \infty\}$.
-Most of these common divergences are widely used in statistics and information theory.
+For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain (i.e., $\{s : \phi^*(s) < \infty\}$).
+Most of these common  $\phi$-divergences are widely used in statistics and information theory.
 In Section \ref{ssec:special_phi}, we present other $\phi$-divergences that assign a distance of either $0$ or $\infty$, which result in commonly used risk models.
 Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' that is somewhat different from the others.
 The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy the normalizing condition $\phi(t) \geq 0$.
 This divergence is included because \citet{wang2010likelihood} use it to formulate a distributionally robust newsvendor problem so that the ambiguity set of distributions have a sufficiently high empirical likelihood. 
 They refer to this as the Likelihood Robust Optimization. 
 We also note that \citep{calafiore2007ambiguous}, \citep{hukullback}, and \citep{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler (KL) divergence''---reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
-In this paper, $q$ denotes the nominal distribution. 
+In this paper, $q$ denotes the  nominal distribution.
+%, which is the distribution found directly via data or a distribution that is believed to represent the 'true' distribution but with some uncertainty. 
 
 \begin{table}
 	\TABLE
@@ -365,26 +386,29 @@ In this section we provide primal and dual formulations and basic properties of 
 \label{ssec:form}
 
 We begin with a two-stage stochastic linear program with recourse (SLP-2).
-Let $\x$ be a vector of first-stage decision variables with cost vector $\c$, constraint matrix $\A$ and right-hand side $\b$.
-We assume a finite distribution given by $q_\omega$ with scenarios indexed by $\omega = 1, \dots, n$.
-The SLP-2 is
-\begin{align}
-	\min_\x \ & \left\{ \c\x + \sum_{\omega=1}^n q_\omega h_\omega(\x) : \A\x = \b, \x \geq 0 \right\}, \label{eq:slp_first_stage}% \\
-% 	\st \ & \A\x = \b \nonumber  \\
-% 	&\ \ \ \x \geq 0 \nonumber
-\end{align}
+Let $\x$ be a vector of first-stage decision variables with cost vector $\c$, constraint matrix $\A$, and right-hand-side vector $\b$.
+We assume a finite distribution with realizations indexed by $\omega = 1, \dots, n$ and probabilities denoted by $q_\omega$. 
+We refer to realizations interchangeably as scenarios. 
+The SLP-2 is given by
+\begin{equation}
+	\min_\x \ \left\{ \c\x + \sum_{\omega=1}^n q_\omega h_\omega(\x) : \ \A\x = \b, \x \geq 0 \right\}, \label{eq:slp_first_stage}
+\end{equation}
 where
 \begin{align}
-	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \k^\omega \y^\omega : \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0 \right\}. \label{eq:slp_second_stage}
+	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \g^\omega \y^\omega : \  \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0 \right\}. \label{eq:slp_second_stage}
 \end{align}
-We assume relatively complete recourse; i.e., the second-stage problems $h_\omega(\x)$ are feasible for every feasible solution $\x$ of the first-stage problem; and that the second-stage problems $h_\omega(\x)$ are dual feasible for every feasible solution $\x$ of the first-stage problem.
-For convenience, we denote $X = \{\x : \A\x = \b, \x \geq 0\}$.
+For a given scenario $\omega$, the second-stage decision variables $\y^\omega$ are optimized with respect to cost vector $\g^{\omega}$. 
+The second-stage constraints with constraint matrix $\D^{\omega}$ depend on the first-stage variables $\x$ through the technology matrix $\B^{\omega}$, which appear on the right-hand side of constraints along with $\d^{\omega}$. 
+We assume relatively complete recourse; i.e., the second-stage problems given in (\ref{eq:slp_second_stage}) are feasible for every feasible solution $\x$ of the first-stage problem (\ref{eq:slp_first_stage}). 
+We also assume that the second-stage problems are dual feasible for every feasible solution $\x$ of the first-stage problem.
+For convenience, throughout the rest of the paper, we denote the first-stage feasible region as $X = \{\x : \ \A\x = \b, \x \geq 0\}$.
 
 The SLP-2 formulation assumes that the distribution $\{q_\omega\}_{\omega=1}^n$ is known.
 However, in many applications the distribution is itself unknown.
-One technique to deal with this is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions that is believed to contain the true distribution.
+One technique to deal with this uncertainty is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions that is believed to contain the true distribution.
+This is also referred to as the uncertainty set in distributionally robust optimization. 
 In this paper, we construct the ambiguity set by considering all distributions whose $\phi$-divergence from the nominal distribution $q$ is sufficiently small.
-Throughout portions of this paper, we focus on a data-driven setting and assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, although $q$ can be obtained in other ways.
+Throughout portions of this paper, we assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, although $q$ can be obtained in other ways.
 In SLP-2, this data-driven setting would correspond to the probability of scenario $\omega$ to be $q_\omega = \frac{N_\omega}{N}$.
 
 By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution with respect to $\phi$-divergence, we create the \plp\ model.
@@ -400,7 +424,7 @@ where the ambiguity set is
 	& \ \left. p_\omega \geq 0,\ \forall \omega \right\}. \label{eq:nonneg}
 \end{align}
 We refer to (\ref{eq:plp_primal_divergence}) as the $\phi$-divergence constraint and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
-We discus how to determine $\rho$ in (\ref{eq:plp_primal_divergence}) in Section \ref{ssec:robust_level}.
+We will discus how to determine $\rho$ in (\ref{eq:plp_primal_divergence}) in Section \ref{ssec:robust_level}.
 
 Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual form
 \begin{align}
@@ -409,11 +433,14 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 	& \frac{h_\omega(\x) - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \label{eq:plp_feas_constraint}\\
 	& \lambda \geq 0, \nonumber
 \end{align}
-where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}), $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
-Note that some $\phi$, such as the J-Divergence, have no closed form representation of $\phi^*$, but can be expressed as the sum of other divergences---Burg Entropy and KL divergence---which allows the dual to be formed; see \citep{bental2011robust} for details.
+where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}). 
+Additionally, it is interpreted that $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
+Some $\phi$-divergences have no closed-form representation of $\phi^*$ (e.g., J-divergence), but they can be expressed as the sum of other $\phi$-divergences with closed-form conjugates (e.g., sum of Burg Entropy and KL divergence gives the J-divergence). 
+In this case, the dual can be formed similarly; see \citep{bental2011robust} for details.
 \citet[Theorem 1]{bental2011robust} contains a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
-Note in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
-Also note that the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
+Observe in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
+We will discuss this case in more detail in Section~\ref{sec:classification}. 
+Also, the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
 For some $\phi$-divergences, like the KL divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
 However, other $\phi$-divergences, like the Hellinger distance, have a finite limit, inducing this constraint.
 Throughout the paper, we use $s_\omega$ to denote

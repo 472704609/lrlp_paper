@@ -1081,12 +1081,14 @@
 
 \RRHFirstLine{}
 %{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}% default
-\RRHSecondLine{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}
+% -- THIS IS THE ORIGINAL - GB \RRHSecondLine{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}
+\RRHSecondLine{\bf\theRUNAUTHOR \enskip {\it\theRUNTITLE}}
 %{\fs.7.9.{\theJOURNAL} \theVOLUME(\theNO), \theRUNPAGERANGE,
 %  \copyright\,{\theYEAR}\ INFORMS}% default
 \LRHFirstLine{}
 %{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}% default
-\LRHSecondLine{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}% default
+% -- THIS IS THE ORIGINAL - GB  \LRHSecondLine{\bf\theRUNAUTHOR:\enskip {\it\theRUNTITLE}}% default
+\LRHSecondLine{\bf\theRUNAUTHOR \enskip {\it\theRUNTITLE}}% default
 %{\fs.7.9.{\theJOURNAL} \theVOLUME(\theNO), \theRUNPAGERANGE,
 %  \copyright\,{\theYEAR}\ INFORMS}% default
 
