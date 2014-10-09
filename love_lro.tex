@@ -434,11 +434,11 @@ Taking the dual of the inner maximization problem, with dual variables $\lambda$
 	& \lambda \geq 0, \nonumber
 \end{align}
 where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}). 
-Additionally, it is interpreted that $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
+Additionally, we have that $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
 Some $\phi$-divergences have no closed-form representation of $\phi^*$ (e.g., J-divergence), but they can be expressed as the sum of other $\phi$-divergences with closed-form conjugates (e.g., sum of Burg Entropy and KL divergence gives the J-divergence). 
 In this case, the dual can be formed similarly; see \citep{bental2011robust} for details.
-\citet[Theorem 1]{bental2011robust} contains a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
-Observe in particular that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
+Theorem 1 of \citep{bental2011robust} contains a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
+Observe, in particular, that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
 We will discuss this case in more detail in Section~\ref{sec:classification}. 
 Also, the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
 For some $\phi$-divergences, like the KL divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
@@ -466,26 +466,6 @@ Some of these properties help with our specialized solution method and we refer 
 	\label{property:coherent_risk_measure}
 	\plp\ is equivalent to minimizing a coherent risk measure.
 \end{property}
-
-\begin{proof}{\sc Proof of Property \ref{property:coherent_risk_measure}}
-	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \citep{rockafellar2007coherent}.
-	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$.
-	Throughout the proof, all expectations are taken with respect to the uniform distribution.
-	
-	First, probability constraint (\ref{eq:plp_primal_probability}) can be written as $\e{\tilde{p}} = 1$, where $\tilde{p}$ is the random variable taking values $\tilde{p}_\omega$ with equal probability.
-	Then the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}) becomes $\sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho$, where $\tilde{q}_\omega = \frac{q_\omega}{1/n}$ and $\frac{\phi(a/0)}{a/0} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-	Combining these yields the set ${\cal Q} = \{\tilde{p} | \e{\tilde{p}} = 1, \sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho \}$, a closed and convex risk envelope.
-	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{\tilde{p} \in {\cal Q}} \e{\tilde{p} h(x)}$, where $h(x)$ is the random variables defined by $\{h_\omega(x)\}$.
-	Thus we see that \plp\ is the minimum of a coherent risk measure.
-\end{proof}
-
-\begin{remark}
-	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$ for all $\omega$.
-	However, the case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}.
-\end{remark}
-
-Note that being a coherent risk measure implies that \plp\ is a convex problem.
-The convexity of LRO was also noted in \citep{wang2010likelihood}.
 
 \begin{property}
 	\label{property:time_structure}
@@ -516,6 +496,30 @@ In many cases, the first equation in (\ref{eq:p_worst}) is sufficient to calcula
 In addition, $\phi^*$ is often differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(s_\omega)$.
 Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detailed in Section \ref{sec:classification}.
 
+\bigskip 
+
+\bigskip
+
+
+\begin{proof}{\sc Proof of Property \ref{property:coherent_risk_measure}}
+	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \citep{rockafellar2007coherent}.
+	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$.
+	Throughout the proof, all expectations are taken with respect to the uniform distribution.
+	
+	First, probability constraint (\ref{eq:plp_primal_probability}) can be written as $\e{\tilde{p}} = 1$, where $\tilde{p}$ is the random variable taking values $\tilde{p}_\omega$ with equal probability.
+	Then the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}) becomes $\sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho$, where $\tilde{q}_\omega = \frac{q_\omega}{1/n}$ and $\frac{\phi(a/0)}{a/0} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
+	Combining these yields the set ${\cal Q} = \{\tilde{p} | \e{\tilde{p}} = 1, \sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho \}$, a closed and convex risk envelope.
+	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{\tilde{p} \in {\cal Q}} \e{\tilde{p} h(x)}$, where $h(x)$ is the random variables defined by $\{h_\omega(x)\}$.
+	Thus we see that \plp\ is the minimum of a coherent risk measure.
+\end{proof}
+
+\begin{remark}
+	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$ for all $\omega$.
+	However, the case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}.
+\end{remark}
+
+Note that being a coherent risk measure implies that \plp\ is a convex problem.
+The convexity of LRO was also noted in \citep{wang2010likelihood}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
