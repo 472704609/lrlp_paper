@@ -99,6 +99,8 @@
 \newcommand{\B}{\mathbf{B}}
 \renewcommand{\d}{\mathbf{d}}
 
+\newcommand{\q}{\mathbf{q}}
+
 % Epiconvergence for \plp
 \newcommand{\qtrue}{q^{\text{true}}}
 
@@ -305,22 +307,24 @@ We end in Section \ref{sec:plp_conclusions} with conclusions and future work.
 \section{$\phi$-Divergences} %Introduction to
 \label{sec:phi_divergences}
 
-In this section we define the concept of a $\phi$-divergence and describe some of its properties that will be used throughout the paper.
-\citet{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences.
-Many results in this section can be also found in \citep{bental2011robust}.
+In this section we define the concept of a $\phi$-divergence and review several properties of  $\phi$-divergences that will be used throughout the paper. 
+\citet{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences. 
+We refer the readers to this book for further details.
+%Many results in this section can be also found in \citep{bental2011robust}.
 
 In the finite case, $\phi$-divergences are used to measure the distance between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$.
-Specifically, when $p$ and $q$ are probability vectors (i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$), $\phi$-divergences are used to quantify the distance between two discrete distributions. 
+Specifically, when $p$ and $q$ are probability vectors (i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$), $\phi$-divergences are used to quantify the distance between two discrete distributions with finite support. 
 The $\phi$-divergence is defined by
 \[
 	I_\phi(p,q) = \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right),
 \]
-where $\phi(t)$, called the $\phi$-divergence function, is a convex function on $t \geq 0$ such that $\phi(1) = 0$.
+where $\phi(t)$, called the {\it $\phi$-divergence function}, is a convex function on $t \geq 0$ such that $\phi(1) = 0$.
 Additionally, it is defined that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ and $0 \phi(0/0) = 0$.
 When both $p$ and $q$ are probability vectors---which is our setup throughout this paper---we can further assume that $\phi(t) \geq 0$ without loss of generality.
 Observe that the function $\phi(t)$ can be modified as $\psi(t) = \phi(t) + c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t\geq 0$ and $I_\psi(p,q) = I_\phi(p,q)$ for all probability vectors $p,q$.
 If $\phi(t)$ is differentiable at $t = 1$, this modification can be done by selecting $c = -\phi'(1)$.
 %; see, e.g., the Likelihood divergence and Burg entropy in Table~\ref{tb:phi_definitions}.
+Throughout the remainder of this paper, we assume $\phi(t) \geq 0$, although we give an example of a $\phi$-divergence that does not satisfy this condition in Table~\ref{tb:phi_definitions} below. 
 
 $\phi$-divergences are not, in general, metrics.
 For example, most $\phi$-divergences do not satisfy the triangle inequality and many are not symmetric in the sense that $I_\phi(p,q) \neq I_\phi(q,p)$.
@@ -332,7 +336,7 @@ A $\phi$-divergence has an {\it adjoint}, defined by
 which satisfies all criteria for a $\phi$-divergence \citep{bental1991certainty} and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
 Divergences that are symmetric with respect to the input vectors are known as {\it self-adjoint}.
 
-An important related function is the {\it conjugate function}, which is used, for instance, in the dual problem formulation (Section \ref{ssec:form}). 
+An important function related to the $\phi$-divergence function is its  {\it  convex conjugate}, which is used, for instance, in the dual problem formulation (Section \ref{ssec:form}). 
 The conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$ is defined as
 \begin{equation} \label{eq:conjugate}
 	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\},
@@ -387,7 +391,8 @@ In this section we provide primal and dual formulations and basic properties of 
 
 We begin with a two-stage stochastic linear program with recourse (SLP-2).
 Let $\x$ be a vector of first-stage decision variables with cost vector $\c$, constraint matrix $\A$, and right-hand-side vector $\b$.
-We assume a finite distribution with realizations indexed by $\omega = 1, \dots, n$ and probabilities denoted by $q_\omega$. 
+We assume the random parameters of the second-stage problem have a finite distribution with realizations indexed by $\omega = 1, \dots, n$ and probabilities denoted by $q_\omega$,  $\omega = 1, \dots, n$. 
+%and probabilities denoted by...
 We refer to realizations interchangeably as scenarios. 
 The SLP-2 is given by
 \begin{equation}
@@ -395,23 +400,23 @@ The SLP-2 is given by
 \end{equation}
 where
 \begin{align}
-	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \g^\omega \y^\omega : \  \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0 \right\}. \label{eq:slp_second_stage}
+	h_\omega(\x) = \min_{\y^\omega} \ & \left\{ \g^\omega \y^\omega : \  \D^\omega \y^\omega = \B^\omega \x + \d^\omega, \y^\omega \geq 0 \right\}, \ \   \omega = 1, \dots, n. \label{eq:slp_second_stage}
 \end{align}
 For a given scenario $\omega$, the second-stage decision variables $\y^\omega$ are optimized with respect to cost vector $\g^{\omega}$. 
-The second-stage constraints with constraint matrix $\D^{\omega}$ depend on the first-stage variables $\x$ through the technology matrix $\B^{\omega}$, which appear on the right-hand side of constraints along with $\d^{\omega}$. 
-We assume relatively complete recourse; i.e., the second-stage problems given in (\ref{eq:slp_second_stage}) are feasible for every feasible solution $\x$ of the first-stage problem (\ref{eq:slp_first_stage}). 
+The second-stage constraints with recourse matrix $\D^{\omega}$ depend on the first-stage variables $\x$ through the technology matrix $\B^{\omega}$, which appear on the right-hand side of constraints along with $\d^{\omega}$. 
+We assume relatively complete recourse; i.e., the second-stage problems (\ref{eq:slp_second_stage}) are feasible for every feasible solution $\x$ of the first-stage problem (\ref{eq:slp_first_stage}). 
 We also assume that the second-stage problems are dual feasible for every feasible solution $\x$ of the first-stage problem.
 For convenience, throughout the rest of the paper, we denote the first-stage feasible region as $X = \{\x : \ \A\x = \b, \x \geq 0\}$.
 
-The SLP-2 formulation assumes that the distribution $\{q_\omega\}_{\omega=1}^n$ is known.
-However, in many applications the distribution is itself unknown.
-One technique to deal with this uncertainty is to replace the known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions that is believed to contain the true distribution.
-This is also referred to as the uncertainty set in distributionally robust optimization. 
-In this paper, we construct the ambiguity set by considering all distributions whose $\phi$-divergence from the nominal distribution $q$ is sufficiently small.
-Throughout portions of this paper, we assume that $q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, although $q$ can be obtained in other ways.
+The SLP-2 formulation assumes that the distribution $\q =\{q_\omega\}_{\omega=1}^n$ is known.
+However, in many applications, the distribution is itself unknown, and there is no reliable way to obtain the probabilities of scenarios $\omega$.
+One technique to deal with this uncertainty is to replace the assumed known distribution with an {\it ambiguity set} of distributions; i.e., a set of distributions that is believed to contain the true distribution.
+(This set is also referred to as the uncertainty set in distributionally robust optimization.)
+In this paper, we construct the ambiguity set by considering all distributions whose $\phi$-divergence from the nominal distribution $\q$ is sufficiently small.
+Throughout portions of this paper, we assume that $\q$ is generated from observations, where scenario $\omega$ has been observed $N_\omega$ times, with $N = \sum_{\omega=1}^n N_\omega$ total observations, although $\q$ can be obtained in other ways.
 In SLP-2, this data-driven setting would correspond to the probability of scenario $\omega$ to be $q_\omega = \frac{N_\omega}{N}$.
 
-By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution with respect to $\phi$-divergence, we create the \plp\ model.
+By replacing the specific distribution in SLP-2 with a set of distributions sufficiently close to the nominal distribution $\q$ with respect to a $\phi$-divergence, we create the \plp\ model.
 In the \plp, the objective function is minimized with respect to the worst-case distribution selected from the ambiguity set of distributions.
 The resulting minimax formulation of \plp\ is
 \begin{equation}
@@ -423,8 +428,8 @@ where the ambiguity set is
 	& \ \sum_{\omega=1}^{n} p_\omega = 1, \label{eq:plp_primal_probability} \\
 	& \ \left. p_\omega \geq 0,\ \forall \omega \right\}. \label{eq:nonneg}
 \end{align}
-We refer to (\ref{eq:plp_primal_divergence}) as the $\phi$-divergence constraint and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
-We will discus how to determine $\rho$ in (\ref{eq:plp_primal_divergence}) in Section \ref{ssec:robust_level}.
+We refer to (\ref{eq:plp_primal_divergence}) as the $\phi$-divergence constraint, and (\ref{eq:plp_primal_probability}) and (\ref{eq:nonneg}) simply ensure a probability measure.
+We will discus how to determine $\rho$ in (\ref{eq:plp_primal_divergence}) shortly in Section \ref{ssec:robust_level}.
 
 Taking the dual of the inner maximization problem, with dual variables $\lambda$ and $\mu$, of constraints (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}), respectively, and combining the two minimizations gives \plp\ in dual form
 \begin{align}
@@ -442,11 +447,9 @@ Observe, in particular, that the dual formulation is accurate even for $q_\omega
 We will discuss this case in more detail in Section~\ref{sec:classification}. 
 Also, the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
 For some $\phi$-divergences, like the KL divergence, this limit is $\infty$, in which case (\ref{eq:plp_feas_constraint}) is redundant.
-However, other $\phi$-divergences, like the Hellinger distance, have a finite limit, inducing this constraint.
-Throughout the paper, we use $s_\omega$ to denote
-\begin{equation}
-	s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}. \label{eq:s_omega_definition}
-\end{equation}
+However, other $\phi$-divergences, like the variation distance, have a finite limit, inducing this constraint.
+When this limit is finite, i.e., $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t}=  \bar{s}<\infty$, then for any $s> \bar{s}$, $\phi^*(s)=\infty$. 
+When this limit is $\infty$, on the other hand, $\phi^*(s)<\infty$ for any finite value of $s$. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -454,8 +457,12 @@ Throughout the paper, we use $s_\omega$ to denote
 \label{ssec:basicprop}
 
 In this section we list some basic properties of \plp.
-Most of these have already been noted earlier (e.g., \citep{bental2011robust} and others for specific $\phi$-divergences) but we list them for completeness.
-Some of these properties help with our specialized solution method and we refer to them in later sections.
+Most of these have already been noted earlier (e.g., by \citet{bental2011robust} and by others for specific $\phi$-divergences) but we list them for completeness.
+Some of these properties help with our specialized solution method, and we refer to them in later sections.
+Throughout the rest of the paper, we use $s_\omega$ to denote
+\begin{equation}
+	s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}. \label{eq:s_omega_definition}
+\end{equation}
 
 \begin{property}
 	\label{property:convex}
