@@ -1,0 +1,1559 @@
+% This file was created with JabRef 2.10.
+% Encoding: Cp1252
+
+
+@Article{zackova1966minimax,
+  Title                    = {On minimax solutions of stochastic linear programming problems},
+  Author                   = {{\v{Z}}{\'a}{\v{c}}kov{\'a}, J.},
+  Journal                  = {{\v{C}}asopis pro P{\v{e}}stov{\'a}n{\'\i} Matematiky},
+  Year                     = {1966},
+  Number                   = {4},
+  Pages                    = {423--430},
+  Volume                   = {91},
+
+  Publisher                = {Mathematical Institute of the Czechoslovak Academy of Sciences}
+}
+
+@Article{alperovits_shamir_77,
+  Title                    = {Design of optimal water distribution systems},
+  Author                   = {E. Alperovits and U. Shamir},
+  Journal                  = {Water Resources Research},
+  Year                     = {1977},
+  Pages                    = {885--900},
+  Volume                   = {13}
+}
+
+@Article{andrieu_henrion_romisch_10,
+  Title                    = {A model for dynamic chance constraints in hydro power reservoir management},
+  Author                   = {L. Andrieu and R. Henrion and W. R\"{o}misch},
+  Journal                  = {European Journal of Operational Research},
+  Year                     = {2010},
+  Pages                    = {579-589},
+  Volume                   = {207}
+}
+
+@Article{barnett2009sustainable,
+  Title                    = {Sustainable water deliveries from the {C}olorado {R}iver in a changing climate},
+  Author                   = {T.P. Barnett and D.W. Pierce},
+  Journal                  = {Proceedings of the National Academy of Sciences},
+  Year                     = {2009},
+  Number                   = {18},
+  Pages                    = {7334--7338},
+  Volume                   = {106},
+
+  Publisher                = {National Acad Sciences}
+}
+
+@InCollection{bayraksan_10,
+  Title                    = {Solving stochastic programs},
+  Author                   = {G. Bayraksan},
+  Booktitle                = {Wiley Encyclopedia of Operations Research and Management Science},
+  Publisher                = {Wiley},
+  Year                     = {2011}
+}
+
+@Article{bayraksan_morton_11,
+  Title                    = {A Sequential Sampling Procedure for Stochastic Programming},
+  Author                   = {G. Bayraksan and D.P. Morton},
+  Journal                  = {Operations Research},
+  Year                     = {2011},
+  Note                     = {Forthcoming}
+}
+
+@InCollection{bayraksan_morton_09,
+  Title                    = {Assessing Solution Quality in Stochastic Programs via Sampling},
+  Author                   = {G. Bayraksan and D.P. Morton},
+  Booktitle                = {Tutorials in Operations Research},
+  Publisher                = {INFORMS},
+  Year                     = {2009},
+  Pages                    = {102-122},
+  Volume                   = {5}
+}
+
+@Article{bayraksan_morton_06,
+  Title                    = {Assessing Solution Quality in Stochastic Programs},
+  Author                   = {G. Bayraksan and D.P. Morton},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2006},
+  Pages                    = {495-514},
+  Volume                   = {108}
+}
+
+@Article{bayraksan_ppl_11,
+  Title                    = {Fixed-Width Sequential Stopping Rules for a Class of Stochastic Programs},
+  Author                   = {G. Bayraksan and P. Pierre-Louis},
+  Journal                  = {{SIAM} Journal on Optimization},
+  Year                     = {2011},
+  Note                     = {Under revision}
+}
+
+@Article{benders_62,
+  Title                    = {Partitioning Procedures for Solving Mixed-Variable Programming Problems},
+  Author                   = {J.F. Benders},
+  Journal                  = {Numerische Mathematik},
+  Year                     = {1962},
+  Pages                    = {238-252},
+  Volume                   = {4}
+}
+
+@Article{bental1991certainty,
+  Title                    = {Certainty equivalents and information measures: duality and extremal principles},
+  Author                   = {A. Ben-Tal and A. Ben-Israel and M. Teboulle},
+  Journal                  = {Journal of mathematical analysis and applications},
+  Year                     = {1991},
+  Number                   = {1},
+  Pages                    = {211--236},
+  Volume                   = {157},
+
+  Publisher                = {Elsevier}
+}
+
+@Article{bental2010soft,
+  Title                    = {A Soft Robust Model for Optimization Under Ambiguity},
+  Author                   = {A. Ben-Tal and D. Bertsimas and D.B. Brown},
+  Journal                  = {Operations Research},
+  Year                     = {2010},
+  Pages                    = {1220-1234},
+  Volume                   = {58}
+}
+
+@Article{bental2011robust,
+  Title                    = {Robust solutions of optimization problems affected by uncertain probabilities},
+  Author                   = {A. Ben-Tal and D. Den Hertog and A. De Waegenaere and B. Melenberg and G. Rennen},
+  Journal                  = {Management Science},
+  Year                     = {2013},
+  Pages                    = {341-357},
+  Volume                   = {59},
+
+  Publisher                = {CentER Working Paper Series}
+}
+
+@Article{bental_nemirovski_00,
+  Title                    = {Robust solutions of linear programming problems contaminated with uncertain data},
+  Author                   = {A. Ben-Tal and A. Nemirovski},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2000},
+  Pages                    = {411–424},
+  Volume                   = {88}
+}
+
+@Article{bertsimas_sim_04,
+  Title                    = {The Price of Robustness},
+  Author                   = {D. Bertsimas and M. Sim},
+  Journal                  = {Operations Research},
+  Year                     = {2004},
+  Pages                    = {35-53},
+  Volume                   = {52}
+}
+
+@Article{birge_85a,
+  Title                    = {Decomposition and partitioning methods for multistage stochastic linear programs},
+  Author                   = {J.R. Birge},
+  Journal                  = {Operations Research},
+  Year                     = {1985},
+  Pages                    = {989-1007},
+  Volume                   = {33}
+}
+
+@Book{birge_louveaux_97,
+  Title                    = {Introduction to Stochastic Programming},
+  Author                   = {J.R. Birge and F. Louveaux},
+  Publisher                = {Springer-Verlag, New York},
+  Year                     = {1997}
+}
+
+@Article{blomvall_shapiro_06,
+  Title                    = {Solving multistage asset investment problems by the sample average approximation method},
+  Author                   = {J. Blomvall and A. Shapiro},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2006},
+  Number                   = {2},
+  Pages                    = {571-595},
+  Volume                   = {108}
+}
+
+@Misc{nsfstats,
+  Title                    = {Science and engineering Indicators: 2010},
+
+  Author                   = {National Science Board},
+  HowPublished             = {National Science Foundation. http://www.nsf.gov/statistics/seind10/},
+  Year                     = {2010}
+}
+
+@Book{bolgov_02,
+  Title                    = {Hydrological models for environmental management},
+  Author                   = {M.V. Bolgov},
+  Publisher                = {Springer},
+  Year                     = {2002}
+}
+
+@Article{bonami_etal_08,
+  Title                    = {An algorithmic framework for convex mixed integer nonlinear programs},
+  Author                   = {P. Bonami and L.T. Biegler and A.R. Conn and G. Cornuejols and I.E. Grossmann and C.D. Laird and J. Lee and A. Lodi and F. Margot and N. Sawaya and A. W\"{a}chter},
+  Journal                  = {Discrete Optimization},
+  Year                     = {2008},
+  Volume                   = {5},
+
+  Page                     = {186-204}
+}
+
+@Article{calafiore2007ambiguous,
+  Title                    = {Ambiguous risk measures and optimal robust portfolios},
+  Author                   = {G.C. Calafiore},
+  Journal                  = {SIAM Journal on Optimization},
+  Year                     = {2007},
+  Number                   = {3},
+  Pages                    = {853--877},
+  Volume                   = {18},
+
+  Publisher                = {SIAM}
+}
+
+@Article{calafiore2005uncertain,
+  Title                    = {Uncertain convex programs: randomized solutions and confidence levels},
+  Author                   = {G.C. Calafiore and M.C. Campi},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2005},
+  Number                   = {1},
+  Pages                    = {25--46},
+  Volume                   = {102},
+
+  Publisher                = {Springer}
+}
+
+@Article{calafiore2006distributionally,
+  Title                    = {On distributionally robust chance-constrained linear programs},
+  Author                   = {G.C. Calafiore and L. {El Ghaoui}},
+  Journal                  = {Journal of Optimization Theory and Applications},
+  Year                     = {2006},
+  Number                   = {1},
+  Pages                    = {1--22},
+  Volume                   = {130},
+
+  Publisher                = {Springer}
+}
+
+@Article{casey_sen_05,
+  Title                    = {The Scenario Generation Algorithm for Multistage Stochastic Linear Programming},
+  Author                   = {M. Casey and S. Sen},
+  Journal                  = {Mathematics of Operations Research},
+  Year                     = {2005},
+  Pages                    = {615-631},
+  Volume                   = {30}
+}
+
+@Article{chen_powell_99,
+  Title                    = {Convergent cutting-plane and partial-sampling algorithm for multistage stochastic linear programs with recourse},
+  Author                   = {Z.L. Chen and W.B. Powell},
+  Journal                  = {Journal of Optimization Theory and Applications},
+  Year                     = {1999},
+  Number                   = {3},
+  Pages                    = {497-524},
+  Volume                   = {102}
+}
+
+@Book{chiralaksanakul_03,
+  Title                    = {Monte Carlo Methods for Multi-stage Stochastic Programs},
+  Author                   = {A. Chiralaksanakul},
+  Publisher                = {Ph.D. dissertation, The University of Texas at Austin},
+  Year                     = {2003}
+}
+
+@Article{chiralaksanakul_morton_07,
+  Title                    = {Assessing policy quality in multi-stage stochastic programming},
+  Author                   = {A. Chiralaksanakul and D.P. Morton},
+  Journal                  = {The Stochastic Programming E-Print Series},
+  Year                     = {2004},
+  Note                     = {Avaliable at www.speps.info}
+}
+
+@Article{christensen_lettenmaier_07,
+  Title                    = {A multimodel ensemble approach to assessment of climate change impacts on the hydrology and water resources of the {Colorado River Basin}},
+  Author                   = {N. Christensen and D.P. Lettenmaier},
+  Journal                  = {Hydrology and Earth System Sciences},
+  Year                     = {2007},
+  Number                   = {4},
+  Pages                    = {1417-1434},
+  Volume                   = {11}
+}
+
+@Article{christensen2004effects,
+  Title                    = {The effects of climate change on the hydrology and water resources of the {C}olorado {R}iver {B}asin},
+  Author                   = {N.S. Christensen and A.W. Wood and N. Voisin and D.P. Lettenmaier
+ and R.N. Palmer},
+  Journal                  = {Climatic Change},
+  Year                     = {2004},
+  Number                   = {1},
+  Pages                    = {337--363},
+  Volume                   = {62},
+
+  Publisher                = {Springer}
+}
+
+@Article{chuang_chan_02,
+  Title                    = {Empirical Likelihood for Autoregressive Models with Applications to Unstable Time Series},
+  Author                   = {C.-S. Chuang and N.H. Chan},
+  Journal                  = {Statistica Sinica},
+  Year                     = {2002},
+  Pages                    = {387-407},
+  Volume                   = {12}
+}
+
+@Article{chung_lansey_bayraksan_09,
+  Title                    = {Reliable Water Supply System Design under Uncertainty},
+  Author                   = {G. Chung and K. Lansey and G. Bayraksan},
+  Journal                  = {Environmental Modeling and Software},
+  Year                     = {2009},
+  Pages                    = {449-462},
+  Volume                   = {24}
+}
+
+@InProceedings{chungproc_09,
+  Title                    = {Optimization of Water Reuse System under Uncertainty},
+  Author                   = {G. Chung and K. Lansey and G. Bayraksan and T.-W. Kim and J. H. Kim},
+  Booktitle                = {Proceedings of the 2009 World City Water Forum (WCWF)},
+  Year                     = {2009}
+}
+
+@Booklet{cityofTucsonWaterPlan,
+  Title                    = {Water Plan: 2000-2050},
+  Author                   = {{City of Tucson, Water Department}},
+  HowPublished             = {http://cms3.tucsonaz.gov/water/waterplan},
+  Year                     = {2004}
+}
+
+@Article{consigli_dupacova_wallace_00,
+  Title                    = {Generating scenarios for multistage stochastic programs},
+  Author                   = {G. Consigli and J. Dupa{\v{c}}ov{\'{a}} and S. Wallace},
+  Journal                  = {Ann. Oper. Res.},
+  Year                     = {2000},
+  Pages                    = {25-53},
+  Volume                   = {100}
+}
+
+@Misc{Cramer,
+  Author                   = {L. Cramer},
+  HowPublished             = {personal communication},
+  Year                     = {2011}
+}
+
+@Article{cunha_sousa_10,
+  Title                    = {Robust design of water distribution networks for a proactive risk management},
+  Author                   = {M.C. Cunha and J. Sousa},
+  Journal                  = {Journal of Water Resources Planning and Management},
+  Year                     = {2010},
+  Number                   = {2},
+  Pages                    = {227–236},
+  Volume                   = {136}
+}
+
+@TechReport{dantzig_infanger_95,
+  Title                    = {A probabilistic lower bound for two-stage stochastic programs},
+  Author                   = {G.B. Dantzig and G. Infanger},
+  Institution              = {Department of Operations Research, Stanford University},
+  Year                     = {1995},
+  Month                    = {November},
+  Number                   = {SOL 95-6}
+}
+
+@Misc{daskinsoftware,
+  Title                    = {Spreadsheet for the Traveling Salesman Problem and Facility Location Problem},
+
+  Author                   = {M. Daskin},
+  HowPublished             = {http://sitemaker.umich.edu/msdaskin/software},
+  Note                     = {Last accessed: July 3, 2011}
+}
+
+@Article{delage2010distributionally,
+  Title                    = {Distributionally robust optimization under moment uncertainty with application to data-driven problems},
+  Author                   = {E. Delage and Y. Ye},
+  Journal                  = {Operations Research},
+  Year                     = {2010},
+  Number                   = {3},
+  Pages                    = {595--612},
+  Volume                   = {58},
+
+  Publisher                = {INFORMS}
+}
+
+@Article{dempster_thompson_99,
+  Title                    = {{EVPI}-based importance sampling solution procedures for multistage stochastic linear programmes on parallel {MIMD} architectures},
+  Author                   = {M.A.H. Dempster and R.T. Thompson},
+  Journal                  = {Annals of Operations Research},
+  Year                     = {1999},
+  Pages                    = {161-184},
+  Volume                   = {90}
+}
+
+@Misc{romp,
+  Title                    = {Regional Optimization Master Plan},
+
+  Author                   = {Pima County Regional Wastewater Reclamation Department},
+  HowPublished             = {http://www.pima.gov/wwm/pubs/pdf/romp/ROMP\_11.pdf},
+  Note                     = {Last accessed: July, 2011}
+}
+
+@Article{dibike_caulibaly_05,
+  Title                    = {Hydrologic impact of climate change in the {S}aguenay watershed: comparison of downscaling methods and hydrologic models},
+  Author                   = {Y.B. Dibike and P. Coulibaly},
+  Journal                  = {Journal of Hydrology},
+  Year                     = {2005},
+  Number                   = {1-4},
+  Pages                    = {145 - 163},
+  Volume                   = {307}
+}
+
+@Article{donohue_birge_06,
+  Title                    = {The abridged nested decomposition method for multistage stochastic linear programs with relatively complete recourse},
+  Author                   = {C.J. Donohue and J.R. Birge},
+  Journal                  = {Algorithmic Operations Research},
+  Year                     = {2006},
+  Pages                    = {20-30}
+}
+
+@Misc{cmip5,
+  Title                    = {Downscaled {CMIP3} and {CMIP5} Climate and Hydrology Projections},
+
+  Author                   = {Downscaled},
+  HowPublished             = {http://gdo-dcp.ucllnl.org/downscaled\_cmip\_projections/},
+  Note                     = {Last accessed: 2013-10-25},
+  Year                     = {2013}
+}
+
+@Article{draper_etal_03,
+  Title                    = {Economic-engineering optimization for {C}alifornia water management},
+  Author                   = {A.J. Draper and M.W. Jenkins and K.W. Kirby and J.R. Lund and R.E. Howitt},
+  Journal                  = {Journal of Water Resources Planning and Management},
+  Year                     = {2003},
+  Pages                    = {155-164},
+  Volume                   = {129}
+}
+
+@Article{dupacova_87,
+  Title                    = {The Minimax Approach to Stochastic Programming and an Illustrative Application},
+  Author                   = {J. Dupa{\v{c}}ov{\'{a}}},
+  Journal                  = {Stochastics},
+  Year                     = {1987},
+  Pages                    = {73-88},
+  Volume                   = {20}
+}
+
+@Article{dupacova_86,
+  Title                    = {Stability in stochastic programming with recourse: contaminated distributions},
+  Author                   = {J. Dupa{\v{c}}ov{\'{a}}},
+  Journal                  = {Math. Program. Study},
+  Year                     = {1986},
+  Pages                    = {133-144},
+  Volume                   = {27}
+}
+
+@Article{dupacova_77,
+  Title                    = {Minimax approach to stochastic linear programming and the moment problem},
+  Author                   = {J. Dupa{\v{c}}ov{\'{a}}},
+  Journal                  = {EMO},
+  Year                     = {1977},
+  Note                     = {In Czech. Extended abstract in English: ZAMM 58 (1978), 466-467},
+  Pages                    = {279-307},
+  Volume                   = {13}
+}
+
+@Article{dupacova_etal_91,
+  Title                    = {Stochastic programming in water management: A case study and a comparison of solution techniques},
+  Author                   = {J. Dupa{\v{c}}ov{\'{a}} and A. Gaivoronski and Z. Kos and T. Sz{\'{a}}ntai},
+  Journal                  = {European Journal of Operational Research},
+  Year                     = {1991},
+  Pages                    = {28--44},
+  Volume                   = {52}
+}
+
+@Article{dupacova_growekuska_romisch_03,
+  Title                    = {Scenario reduction in stochastic programming: an approach using probability metrics},
+  Author                   = {J. Dupa{\v{c}}ov{\'{a}} and N. Gr{\"{o}}we-Kuska and W. R{\"{o}}misch},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2003},
+  Pages                    = {493-511},
+  Volume                   = {95}
+}
+
+@Article{dupacova1988asymptotic,
+  Title                    = {Asymptotic behavior of statistical estimators and of optimal solutions of stochastic optimization problems},
+  Author                   = {J. Dupacov{\'a} and R. Wets},
+  Journal                  = {The Annals of Statistics},
+  Year                     = {1988},
+  Number                   = {4},
+  Pages                    = {1517--1549},
+  Volume                   = {16},
+
+  Publisher                = {Institute of Mathematical Statistics}
+}
+
+@Article{edirisnghe_etal_00,
+  Title                    = {Capacity Planning Model for a Multipurpose Water Reservoir with Target-Priority Operation},
+  Author                   = {N.C.P. Edirisinghe and E.I. Patterson and N. Saadouli},
+  Journal                  = {Annals of Operations Research},
+  Year                     = {2000},
+  Pages                    = {273--303},
+  Volume                   = {100}
+}
+
+@Article{edwards_chelst_04,
+  Title                    = {The {HSOR} Project: Insinuating {OR} into High School Mathematics Classrooms},
+  Author                   = {T.G. Edwards and K.R. Chelst},
+  Journal                  = {INFORMS Transactions on Education},
+  Year                     = {2004},
+  Note                     = {Available online at http://ite.pubs.informs.org/},
+  Number                   = {3},
+  Pages                    = {1-8},
+  Volume                   = {4}
+}
+
+@Article{eiger_etal_94,
+  Title                    = {Optimal Design of water distribution networks},
+  Author                   = {G. Eiger and U. Shamir and A. Ben-Tal},
+  Journal                  = {Water Resources Research},
+  Year                     = {1994},
+  Pages                    = {2637--2646},
+  Volume                   = {30}
+}
+
+@Misc{nae_08,
+  Title                    = {Grand Challenges for Engineering},
+
+  Author                   = {National Academy of Engineering},
+  Note                     = {http://www.engineeringchallenges.org/cms/8996/9136.aspx},
+  Year                     = {2008}
+}
+
+@Misc{usarmyce_99,
+  Title                    = {{HEC-PRM} package},
+
+  Author                   = {{U.S.} Army Corps of Engineers},
+  Year                     = {1999},
+
+  Address                  = {Davis, California},
+  Institution              = {Hydraulic Engineering Center}
+}
+
+@Article{erdogan2006ambiguous,
+  Title                    = {Ambiguous chance constrained problems and robust optimization},
+  Author                   = {E. Erdo{\u{g}}an and G. Iyengar},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2006},
+  Number                   = {1-2},
+  Pages                    = {37--61},
+  Volume                   = {107},
+
+  Publisher                = {Springer}
+}
+
+@Book{bigthirst,
+  Title                    = {The Big Thirst: The Secret Life and Turbulent Future of Water},
+  Author                   = {C. Fishman},
+  Publisher                = {Free Press},
+  Year                     = {2011}
+}
+
+@Book{floudas_95,
+  Title                    = {Nonlinear and mixed-integer optimization: Fundamentals and applications},
+  Author                   = {C.C. Floudas},
+  Publisher                = {Oxford University Press},
+  Year                     = {1995},
+
+  Address                  = {Oxford}
+}
+
+@Article{freimer_thomas_linderoth_10,
+  Title                    = {The impact of sampling methods on bias and variance in stochastic linear programs},
+  Author                   = {M. B. Freimer and D. J. Thomas and J. T. Linderoth},
+  Journal                  = {Computational Optimization and Applications},
+  Year                     = {2010},
+  Pages                    = {1-25},
+
+  Publisher                = {Springer Netherlands}
+}
+
+@Article{goh_sim_10,
+  Title                    = {Distributionally Robust Optimization and its Tractable Approximations},
+  Author                   = {J. Goh and M. Sim},
+  Journal                  = {Operations Research},
+  Year                     = {2010},
+  Number                   = {4},
+  Pages                    = {902-917},
+  Volume                   = {58}
+}
+
+@Article{grossmann_02,
+  Title                    = {Review of Nonlinear Mixed-Integer and Disjunctive Programming Techniques},
+  Author                   = {I.E. Grossmann},
+  Journal                  = {Optimization and Engineering},
+  Year                     = {2002},
+  Number                   = {3},
+  Pages                    = {227-252},
+  Volume                   = {3},
+
+  Publisher                = {Springer Netherlands}
+}
+
+@Article{hoyland_kaut_wallace_00,
+  Title                    = {A heuristic for generating scenario trees for multistage decision problems},
+  Author                   = {K. H{\o}yland and M. Kaut and S. Wallace},
+  Journal                  = {Computational Optimization and Applications},
+  Year                     = {2003},
+  Pages                    = {169-185},
+  Volume                   = {24}
+}
+
+@Article{hoyland_kaut_wallace_03,
+  Title                    = {A heuristic for moment-matching scenario generation},
+  Author                   = {K. H{\o}yland and M. Kaut and S. Wallace},
+  Journal                  = {Computational Optimization and Applications},
+  Year                     = {2003},
+  Pages                    = {169-185},
+  Volume                   = {24}
+}
+
+@Article{hoyland_wallace_01,
+  Title                    = {Generating scenario trees for multistage decision problems},
+  Author                   = {K. H{\o}yland and S. Wallace},
+  Journal                  = {Management Science},
+  Year                     = {2001},
+  Pages                    = {295-307},
+  Volume                   = {47}
+}
+
+@Article{harou_etal_09,
+  Title                    = {Hydro-economic models: {C}oncepts, design, applications, and future prospects},
+  Author                   = {J.J. Harou and M. Pulido-Velazquez and D.E. Rosenberg and J. Medellin-Azuara and J.R. Lund and R.E. Howitt},
+  Journal                  = {Journal of Hydrology},
+  Year                     = {2009},
+  Pages                    = {627-643},
+  Volume                   = {375}
+}
+
+@Article{heitsch_romisch_09,
+  Title                    = {Scenario tree reduction for multistage stochastic programs},
+  Author                   = {H. Heitsch and W. R{\"o}misch},
+  Journal                  = {Computational Management Science},
+  Year                     = {2009},
+  Number                   = {2},
+  Pages                    = {117-133},
+  Volume                   = {6}
+}
+
+@Article{henrion_kuhler_romisch_08,
+  Title                    = {Discrepancy distances and scenario reduction in two-stage stochastic mixed-integer programming},
+  Author                   = {R. Henrion and C. K\"{u}chler and W. R\"{o}misch},
+  Journal                  = {Journal of Industrial and Management Optimization},
+  Year                     = {2008},
+  Number                   = {2},
+  Volume                   = {4}
+}
+
+@Article{higle_98,
+  Title                    = {Variance reduction and objective function evaluation in stochastic linear programs},
+  Author                   = {J.L. Higle},
+  Journal                  = {INFORMS Journal on Computing},
+  Year                     = {1998},
+  Pages                    = {236-247},
+  Volume                   = {10}
+}
+
+@Article{higle_sen_99a,
+  Title                    = {Statistical approximations for stochastic linear programming problems},
+  Author                   = {J.L. Higle and S. Sen},
+  Journal                  = {Annals of Operations Research},
+  Year                     = {1999},
+  Pages                    = {173-192},
+  Volume                   = {85}
+}
+
+@Book{higle_sen_96a,
+  Title                    = {Stochastic Decomposition: A Statistical Method for Large Scale Stochastic Linear Programming},
+  Author                   = {J.L. Higle and S. Sen},
+  Publisher                = {Kluwer Academic Publishers, Dordrecht},
+  Year                     = {1996}
+}
+
+@Article{higle_sen_96b,
+  Title                    = {Duality and statistical tests of optimality for two stage stochastic programs},
+  Author                   = {J.L. Higle and S. Sen},
+  Journal                  = {Mathematical Programming},
+  Year                     = {1996},
+  Pages                    = {257-275},
+  Volume                   = {75}
+}
+
+@Article{higle_sen_94,
+  Title                    = {Finite master programs in regularized stochastic decomposition},
+  Author                   = {J.L. Higle and S. Sen},
+  Journal                  = {Mathematical Programming},
+  Year                     = {1994},
+  Pages                    = {143-168},
+  Volume                   = {67}
+}
+
+@Article{higle_sen_91a,
+  Title                    = {Statistical verification of optimality conditions for stochastic programs with recourse},
+  Author                   = {J.L. Higle and S. Sen},
+  Journal                  = {Annals of Operations Research},
+  Year                     = {1991},
+  Pages                    = {215-240},
+  Volume                   = {30}
+}
+
+@Article{higle_sen_91b,
+  Title                    = {Stochastic decomposition: an algorithm for two-stage linear programs with recourse},
+  Author                   = {J.L. Higle and S. Sen},
+  Journal                  = {Mathematics of Operations Research},
+  Year                     = {1991},
+  Pages                    = {650-669},
+  Volume                   = {16}
+}
+
+@Article{hochreiter_pflug_07,
+  Title                    = {Financial scenario generation for stochastic multi-stage decision processes as facility location problems},
+  Author                   = {R. Hochreiter and G.Ch. Pflug},
+  Journal                  = {Annals of Operations Research},
+  Year                     = {2007},
+  Number                   = {1},
+  Pages                    = {257-272},
+  Volume                   = {152}
+}
+
+@TechReport{hukullback,
+  Title                    = {Kullback-{L}eibler Divergence Constrained Distributionally Robust Optimization},
+  Author                   = {Z. Hu and L. J. Hong},
+  Institution              = {The Hong Kong University of Science and Technology},
+  Year                     = {2013},
+  Note                     = {Available at: Optimization Online \url{www.optimization-online.org}},
+
+  Owner                    = {guzin},
+  Timestamp                = {2013.05.28}
+}
+
+@Article{hughes_etal_99,
+  Title                    = {A non-homogeneous hidden Markov model for precipitation occurrence},
+  Author                   = {J.P. Hughes and P. Guttorp and S.P. Charles},
+  Journal                  = {Journal Of The Royal Statistical Society Series C},
+  Year                     = {1999},
+  Number                   = {1},
+  Pages                    = {15-30},
+  Volume                   = {48}
+}
+
+@Article{infanger1992monte,
+  Title                    = {Monte Carlo (importance) sampling within a Benders decomposition algorithm for stochastic linear programs},
+  Author                   = {G. Infanger},
+  Journal                  = {Annals of Operations Research},
+  Year                     = {1992},
+  Number                   = {1},
+  Pages                    = {69--95},
+  Volume                   = {39},
+
+  Publisher                = {Springer}
+}
+
+@Article{infanger_morton_92,
+  Title                    = {Cut sharing for multistage stochastic linear programs with interstage dependency},
+  Author                   = {G. Infanger and D.P. Morton},
+  Journal                  = {Mathematical Programming},
+  Year                     = {1996},
+  Pages                    = {241-256},
+  Volume                   = {75}
+}
+
+@Article{iyengar_05,
+  Title                    = {Robust Dynamic Programming},
+  Author                   = {G.N. Iyengar},
+  Journal                  = {Mathematics of Operations Research},
+  Year                     = {2005},
+  Pages                    = {257-280},
+  Volume                   = {30}
+}
+
+@Article{jacobs_etal_95,
+  Title                    = {{SOCRATES:} a system for scheduling hydroelectric generation under uncertainty},
+  Author                   = {J. Jacobs and G. Freeman and J. Grygier and D. Morton and G. Schultz and K. Staschus and J. Stedinger},
+  Journal                  = {Annals of Operations Research},
+  Year                     = {1995},
+  Pages                    = {99-133},
+  Volume                   = {59}
+}
+
+@TechReport{jiang2012data,
+  Title                    = {Data-driven Chance Constrained Stochastic Program},
+  Author                   = {R. Jiang and Y. Guan},
+  Institution              = {University of Florida},
+  Year                     = {2013},
+  Note                     = {Available at: Optimization Online \url{www.optimization-online.org}}
+}
+
+@TechReport{kang_lansey_11,
+  Title                    = {Scenario-based Robust Optimization of Regional Water/Wastewater Infrastructure},
+  Author                   = {D. Kang and K. Lansey},
+  Institution              = {The University of Arizona},
+  Year                     = {2011}
+}
+
+@Article{karuppiah_grossmann_08,
+  Title                    = {Global optimization of multiscenario mixed integer nonlinear programming models arising in the synthesis of integrated water networks under uncertainty},
+  Author                   = {R. Karuppiah and I.E. Grossmann},
+  Journal                  = {Computers and Chemical Engineering},
+  Year                     = {2008},
+  Number                   = {1-2},
+  Pages                    = {145 - 160},
+  Volume                   = {32}
+}
+
+@Article{keller_bayraksan_11,
+  Title                    = {Disjunctive Decomposition for Two-Stage Stochastic Mixed-Binary Programs with Generalized Upper Bound Constraints},
+  Author                   = {B.D. Keller and G. Bayraksan},
+  Journal                  = {{INFORMS} Journal on Computing},
+  Year                     = {2011},
+  Note                     = {Forthcoming. DOI: 10.1287/ijoc.1100.0442}
+}
+
+@Article{keller_bayraksan_12,
+  Title                    = {Quantifying Operational Risk in Financial Institutions},
+  Author                   = {B.D. Keller and G. Bayraksan},
+  Journal                  = {{INFORMS} Transactions on Education},
+  Year                     = {2011},
+  Note                     = {Accepted for publication}
+}
+
+@Article{kelley_60,
+  Title                    = {The Cutting Plane Method for Solving Convex Programs},
+  Author                   = {J.E. Kelley},
+  Journal                  = {SIAM Journal of Industrial and Applied Mathematics},
+  Year                     = {1960},
+  Pages                    = {703-712},
+  Volume                   = {8}
+}
+
+@TechReport{usgs_05,
+  Title                    = {Estimated Use of Water in the United States in 2005},
+  Author                   = {J.F. Kenny and N.L. Barber and S.S. Hutson and K.S. Linsey and J.K. Lovelace and M.A. Maupin},
+  Institution              = {{U.S. Department of the Interior, U.S. Geological Survey}},
+  Year                     = {2009},
+  Note                     = {Available at: http://pubs.usgs.gov/circ/1344/pdf/c1344.pdf}
+}
+
+@Article{klabjan2013robust,
+  Title                    = {Robust Stochastic Lot-Sizing by Means of Histograms},
+  Author                   = {D. Klabjan and D. Simchi-Levi and M. Song},
+  Journal                  = {Production and Operations Management},
+  Year                     = {2013},
+  Number                   = {3},
+  Pages                    = {691--710},
+  Volume                   = {22},
+
+  Publisher                = {Wiley Online Library}
+}
+
+@Article{kracman_etal_06,
+  Title                    = {Stochastic Optimization of the {Highland Lakes} System in {Texas}},
+  Author                   = {D. R. Kracman and D. C. McKinney and D. W. Watkins, Jr. and L. S. Lasdon},
+  Journal                  = {Journal of Water Resources Planning and Management},
+  Year                     = {2006},
+  Pages                    = {62--70},
+  Volume                   = {132}
+}
+
+@Article{lan_nemirovski_shapiro_09,
+  Title                    = {Validation analysis of robust stochastic approximation method},
+  Author                   = {G. Lan and A. Nemirovski and A. Shapiro},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2011},
+  Note                     = {Forthcoming}
+}
+
+@InProceedings{lanseyetal_08,
+  Title                    = {Conjunctive Decentralized Dual Water Distribution Systems},
+  Author                   = {K. Lansey and R. Arnold and G. Bayraksan and C. Choi and I. Pepper and C. Scott},
+  Booktitle                = {Proceedings of the 2008 Water Distribution System Analysis Conference ({WDSA} 2008)},
+  Year                     = {2008}
+}
+
+@Article{Mays,
+  Title                    = {Water Distribution System Design under Uncertainties},
+  Author                   = {K. Lansey and N. Duan and L. Mays and Y.-K. Tung},
+  Journal                  = {Journal of the Water Resources Planning and Management Division},
+  Year                     = {1989},
+  Pages                    = {630--645},
+  Volume                   = {115}
+}
+
+@Article{lee_grossmann_00,
+  Title                    = {New Algorithms for Nonlinear Generalized Disjunctive Programming},
+  Author                   = {S. Lee and I.E. Grossmann},
+  Journal                  = {Computers and Chemical Engineering},
+  Year                     = {2000},
+  Pages                    = {2125-2141},
+  Volume                   = {24}
+}
+
+@Article{li_etal_11,
+  Title                    = {Stochastic pooling problem for natural gas production network design and operation under uncertainty},
+  Author                   = {X. Li and E. Armagan and A. Tomasgard and P.I. Barton},
+  Journal                  = {AIChE Journal},
+  Year                     = {2011},
+  Number                   = {8},
+  Pages                    = {2120--2135},
+  Volume                   = {57}
+}
+
+@Article{li_tomasgard_barton_11,
+  Title                    = {Nonconvex Generalized Benders Decomposition for Stochastic Separable Mixed-Integer Nonlinear Programs},
+  Author                   = {X. Li and A. Tomasgard and P.I. Barton},
+  Journal                  = {Journal of Optimization Theory and Applications},
+  Year                     = {2011},
+  Pages                    = {1-30}
+}
+
+@Article{linowsky_philpott_05,
+  Title                    = {On the convergence of sampling-based decomposition algorithms for multistage stochastic programs},
+  Author                   = {K. Linowsky and A.B. Philpott},
+  Journal                  = {Journal of Optimization Theory and Applications},
+  Year                     = {2005},
+  Pages                    = {349-366},
+  Volume                   = {125}
+}
+
+@InProceedings{love2013likelihood,
+  Title                    = {A Likelihood Robust Method for Water Allocation under Uncertainty},
+  Author                   = {D. Love and G. Bayraksan},
+  Booktitle                = {Proceedings of the 2013 Industrial and Systems Engineering Research Conference},
+  Year                     = {2013},
+  Editor                   = {A. Krishnamurthy and W.K.V. Chan}
+}
+
+@TechReport{usarmyce_96,
+  Title                    = {Developing Seasonal and Long-term Reservoir Operations Plans using {HEC-PRM}},
+  Author                   = {J.R. Lund},
+  Institution              = {{U.S.} Army Corps of Engineers},
+  Year                     = {1996}
+}
+
+@Article{mak_morton_wood_99,
+  Title                    = {Monte {C}arlo bounding techniques for determining solution quality in stochastic programs},
+  Author                   = {W.K. Mak and D.P. Morton and R.K. Wood},
+  Journal                  = {Oper. Res. Lett.},
+  Year                     = {1999},
+  Pages                    = {47-56},
+  Volume                   = {24}
+}
+
+@Article{marques_lund_howitt_10,
+  Title                    = {Modeling Conjunctive Use Operations and Farm Decisions with Two-Stage Stochastic Quadratic Programming},
+  Author                   = {G.F. Marques and J.R. Lund and R.E. Howitt},
+  Journal                  = {Journal of Water Resources Planning and Management},
+  Year                     = {2010},
+  Number                   = {3},
+  Pages                    = {336-394},
+  Volume                   = {136}
+}
+
+@Article{martin2011hadgem2,
+  Title                    = {The HadGEM2 family of Met Office Unified Model climate configurations},
+  Author                   = {Martin, G. M. and Bellouin, N. and Collins, W. J. and Culverwell, I. D. and Halloran, P. R. and others},
+  Journal                  = {Geoscientific Model Development},
+  Year                     = {2011},
+  Number                   = {3},
+  Pages                    = {723--757},
+  Volume                   = {4},
+
+  Doi                      = {10.5194/gmd-4-723-2011},
+  Url                      = {http://www.geosci-model-dev.net/4/723/2011/}
+}
+
+@Article{homem_deMatos_finardi_11,
+  Title                    = {Sampling strategies and stopping criteria for stochastic dual dynamic programming: a case study in long-term hydrothermal scheduling},
+  Author                   = {T. Homem-de-Mello and V. de Matos and E. Finardi},
+  Journal                  = {Energy Systems},
+  Year                     = {2011},
+  Number                   = {1},
+  Pages                    = {1-31},
+  Volume                   = {2}
+}
+
+@Article{nilim_ghaoui_05,
+  Title                    = {Robust Control of Markov Decision Processes with Uncertain Transition Matrices},
+  Author                   = {A. Nilim and L. Ghaoui},
+  Journal                  = {Operations Research},
+  Year                     = {2005},
+  Pages                    = {780-798},
+  Volume                   = {53}
+}
+
+@Article{noakes_etal_85,
+  Title                    = {Forecasting monthly riverflow time series},
+  Author                   = {D.J. Noakes and A.I. McLeod and K.W. Hipel},
+  Journal                  = {International Journal of Forecasting},
+  Year                     = {1985},
+  Pages                    = {179–190},
+  Volume                   = {1}
+}
+
+@Book{nocedal1999numerical,
+  Title                    = {Numerical Optimization},
+  Author                   = {J. Nocedal and S. Wright},
+  Publisher                = {Springer Verlag},
+  Year                     = {1999},
+
+  Address                  = {New York, NY}
+}
+
+@Article{norkin_pflug_ruszczynski_98,
+  Title                    = {A branch and bound method for stochastic global optimization},
+  Author                   = {V.I. Norkin and G.Ch. Pflug and A. Ruszczy{\'{n}}ski},
+  Journal                  = {Math. Program.},
+  Year                     = {1998},
+  Pages                    = {425-450},
+  Volume                   = {83}
+}
+
+@Article{ntaimo_10,
+  Title                    = {Disjunctive Decomposition for Two-Stage Stochastic Mixed-Binary Programs with Random Recourse},
+  Author                   = {L. Ntaimo},
+  Journal                  = {Operations Research},
+  Year                     = {2010},
+  Pages                    = {229-243},
+  Volume                   = {58}
+}
+
+@Article{ntaimo_sen_08,
+  Title                    = {A comparative study of decomposition algorithms for stochastic combinatorial optimization},
+  Author                   = {L. Ntaimo and S. Sen},
+  Journal                  = {Computational Optimization and Applications},
+  Year                     = {2008},
+  Pages                    = {299–319},
+  Volume                   = {40}
+}
+
+@Article{NtaimoSen05,
+  Title                    = {The million-variable `march' for stochastic combinatorial optimization},
+  Author                   = {L. Ntaimo and S. Sen},
+  Journal                  = {Journal of Global Optimization},
+  Year                     = {2005},
+  Pages                    = {385-400},
+  Volume                   = {32}
+}
+
+@Book{pardo2005statistical,
+  Title                    = {Statistical Inference Based On Divergence Measures},
+  Author                   = {L. Pardo},
+  Publisher                = {Chapman and Hall/CRC},
+  Year                     = {2005},
+  Volume                   = {185}
+}
+
+@Article{pereira_pinto_91,
+  Title                    = {Multi-Stage Stochastic Optimization Applied to Energy Planning},
+  Author                   = {M.V.F. Pereira and L.M.V.G. Pinto},
+  Journal                  = {Mathematical Programming},
+  Year                     = {1991},
+  Pages                    = {359-375},
+  Volume                   = {52}
+}
+
+@Article{pereira_pinto_85,
+  Title                    = {Stochastic Optimization of a Multireservoir Hydroelectric System---A Decomposition Approach},
+  Author                   = {M.V.F. Pereira and L.M.V.G. Pinto},
+  Journal                  = {Water Resources Research},
+  Year                     = {1985},
+  Pages                    = {779-792},
+  Volume                   = {21}
+}
+
+@Article{pflug_01,
+  Title                    = {Scenario tree generation for multiperiod financial optimization by optimal discretization},
+  Author                   = {G.Ch. Pflug},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2001},
+  Pages                    = {251-271},
+  Volume                   = {89}
+}
+
+@Article{pflug2007ambiguity,
+  Title                    = {Ambiguity in portfolio selection},
+  Author                   = {G. Pflug and D. Wozabal},
+  Journal                  = {Quantitative Finance},
+  Year                     = {2007},
+  Number                   = {4},
+  Pages                    = {435--442},
+  Volume                   = {7},
+
+  Publisher                = {Taylor \& Francis}
+}
+
+@Article{philpott_guan_08,
+  Title                    = {On the convergence of stochastic dual dynamic programming and related methods},
+  Author                   = {A.B. Philpott and Z. Guan},
+  Journal                  = {Operations Research Letters},
+  Year                     = {2008},
+  Number                   = {4},
+  Pages                    = {450 - 455},
+  Volume                   = {36}
+}
+
+@Article{philpott_matos_11,
+  Title                    = {Dynamic sampling algorithms for multi-stage stochastic programs with risk aversion},
+  Author                   = {A. Philpott and V.L. de Matos},
+  Journal                  = {European Journal on Operational Research},
+  Year                     = {2011},
+  Note                     = {Under Review}
+}
+
+@Misc{taz,
+  Title                    = {Annual Traffic Count Program},
+
+  Author                   = {{Pima Association of Governments}},
+  HowPublished             = {http://www.pagnet.org/RegionalData/Maps/MapsandGISDownloads/tabid/902/Default.aspx},
+  Year                     = {2012}
+}
+
+@Article{quimby_desantis_06,
+  Title                    = {Influence of role models on women career choices},
+  Author                   = {J.L. Quimby and A.M. De{S}antis},
+  Journal                  = {The Career Development Quarterly},
+  Year                     = {2006},
+  Pages                    = {297-306},
+  Volume                   = {54}
+}
+
+@InCollection{romisch_03,
+  Title                    = {Stability of stochastic programming problems},
+  Author                   = {W.~R{\"{o}}misch},
+  Booktitle                = {Stochastic Programming},
+  Publisher                = {Elsevier},
+  Year                     = {2003},
+  Editor                   = {A. Ruszczy{\'{n}}ski and A. Shapiro},
+  Pages                    = {483-554},
+  Series                   = {Handbooks in Operations Research and Management Science},
+  Volume                   = {10}
+}
+
+@TechReport{bcsdreclamation,
+  Title                    = {Downscaled CMIP3 and CMIP5 Climate and Hydrology Projections: Release of Downscaled CMIP5 Climate Projections, Comparison with preceding Information, and Summary of User Needs},
+  Author                   = {Reclamation},
+  Institution              = {prepared by the U.S. Department of the Interior, Bureau of Reclamation, Technical Services Center},
+  Year                     = {2013},
+
+  Address                  = {Denver, Colorado},
+
+  Pages                    = {47}
+}
+
+@InCollection{rockafellar2007coherent,
+  Title                    = {Coherent approaches to risk in optimization under uncertainty},
+  Author                   = {R.T. Rockafellar},
+  Booktitle                = {Tutorials in Operations Research},
+  Publisher                = {INFORMS},
+  Year                     = {2007},
+
+  Address                  = {Hanover, MD},
+  Editor                   = {T. Klastorin},
+  Pages                    = {38-61},
+  Volume                   = {3},
+
+  Journal                  = {Tutorials in Operations Research}
+}
+
+@Book{rockafellar1998variational,
+  Title                    = {Variational Analysis},
+  Author                   = {R.T. Rockafellar and R. Wets},
+  Publisher                = {Springer Verlag},
+  Year                     = {1998},
+  Volume                   = {317}
+}
+
+@Article{scarf1958min,
+  Title                    = {A min-max solution of an inventory problem},
+  Author                   = {H. Scarf and K.J. Arrow and S. Karlin},
+  Journal                  = {Studies in the mathematical theory of inventory and production},
+  Year                     = {1958},
+  Pages                    = {201--209},
+  Volume                   = {10},
+
+  Publisher                = {Stanford University Press Stanford, CA}
+}
+
+@InCollection{Sen05,
+  Title                    = {Decomposition algorithms for stochastic mixed-integer programming models},
+  Author                   = {S. Sen},
+  Booktitle                = {Handbook of Discrete Optimization},
+  Publisher                = {Elsevier},
+  Year                     = {2005},
+
+  Address                  = {Amsterdam},
+  Editor                   = {K. Aarda and G. Nemhauser and R. Weismental}
+}
+
+@Article{SenHigle2005,
+  Title                    = {The {C}$^3$ theorem and {D}$^2$ algorithm for large scale stochastic mixed-integer programming: {S}et convexification},
+  Author                   = {S. Sen and J. Higle},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2005},
+  Pages                    = {1-20},
+  Volume                   = {104},
+
+  Owner                    = {bk},
+  Timestamp                = {2008.08.03}
+}
+
+@Article{SenSherali2006,
+  Title                    = {Decomposition with Branch-and-Cut approaches for Two-Stage Stochastic Mixed-Integer Programming},
+  Author                   = {S. Sen and H. Sherali},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2006},
+  Pages                    = {203-222},
+  Volume                   = {106},
+
+  Owner                    = {Brian}
+}
+
+@Article{shapiro_11,
+  Title                    = {Analysis of stochastic dual dynamic programming method},
+  Author                   = {A. Shapiro},
+  Journal                  = {European Journal of Operational Research},
+  Year                     = {2011},
+  Number                   = {1},
+  Pages                    = {63 - 72},
+  Volume                   = {209}
+}
+
+@Article{shapiro_06,
+  Title                    = {On complexity of multistage stochastic programs},
+  Author                   = {A. Shapiro},
+  Journal                  = {{OR} Letters},
+  Year                     = {2006},
+  Pages                    = {1–8},
+  Volume                   = {34}
+}
+
+@Article{shapiro_03,
+  Title                    = {Inference of statistical bounds for multistage stochastic programming problems},
+  Author                   = {A. Shapiro},
+  Journal                  = {Mathematical Methods of Operations Research},
+  Year                     = {2003},
+  Pages                    = {67-68},
+  Volume                   = {58}
+}
+
+@Article{shapiro2004class,
+  Title                    = {On a class of minimax stochastic programs},
+  Author                   = {A. Shapiro and S. Ahmed},
+  Journal                  = {SIAM Journal on Optimization},
+  Year                     = {2004},
+  Number                   = {4},
+  Pages                    = {1237--1249},
+  Volume                   = {14},
+
+  Publisher                = {SIAM}
+}
+
+@Article{shapiro_homem-de-mello_98,
+  Title                    = {A simulation-based approach to two-stage stochastic programming with recourse},
+  Author                   = {A. Shapiro and T. {Homem-de-Mello}},
+  Journal                  = {Mathematical Programming},
+  Year                     = {1998},
+  Pages                    = {301-325},
+  Volume                   = {81}
+}
+
+@Article{shapiro2002minimax,
+  Title                    = {Minimax analysis of stochastic problems},
+  Author                   = {A. Shapiro and A. Kleywegt},
+  Journal                  = {Optimization Methods and Software},
+  Year                     = {2002},
+  Number                   = {3},
+  Pages                    = {523--542},
+  Volume                   = {17},
+
+  Publisher                = {Taylor \& Francis}
+}
+
+@Article{shen_smith_ahmed_10,
+  Title                    = {Expectation and Chance-Constrained Models and Algorithms for Insuring Critical Paths},
+  Author                   = {S. Shen and J.C. Smith and S. Ahmed},
+  Journal                  = {Management Science},
+  Year                     = {2010},
+  Number                   = {10},
+  Pages                    = {1794-1814},
+  Volume                   = {56}
+}
+
+@Book{sherali_adams_98,
+  Title                    = {A Reformulation-Linearization Technique for Solving Discrete and Continuous Nonconvex Problems (Nonconvex Optimization and Its Applications},
+  Author                   = {H.D. Sherali and W.P. Adams},
+  Publisher                = {Springer},
+  Year                     = {1998}
+}
+
+@Article{sherali_fraticelli_02,
+  Title                    = {A modification of Benders' decomposition algorithm for discrete subproblems: An approach for stochastic programs with integer recourse},
+  Author                   = {H.D. Sherali and B. Fraticelli},
+  Journal                  = {Journal of Global Optimization},
+  Year                     = {2002},
+  Number                   = {1},
+  Pages                    = {319-342},
+  Volume                   = {22}
+}
+
+@Article{sherali_smith_97,
+  Title                    = {A global optimization approach to a water distribution network design problem},
+  Author                   = {H.D. Sherali and E.P. Smith},
+  Journal                  = {Journal of Global Optimization},
+  Year                     = {1997},
+  Pages                    = {107--132},
+  Volume                   = {11}
+}
+
+@InCollection{sherali_smith_kim_96,
+  Title                    = {A pipe reliability and cost model for an integrated approach toward designing water distribution systems},
+  Author                   = {H.D. Sherali and E.P. Smith and S. Kim},
+  Booktitle                = {Global Optimization in Engineering Design},
+  Publisher                = {Kluwer Academic Publishers, Dordrecht, the Netherlands},
+  Year                     = {1996},
+  Editor                   = {I.E. Grossmann},
+  Pages                    = {333--354}
+}
+
+@Article{sherali_smith_09,
+  Title                    = {Two-stage stochastic hierarchical multiple risk problems: models and algorithms},
+  Author                   = {H.D. Sherali and J.C. Smith},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2009},
+  Number                   = {2},
+  Pages                    = {403-427},
+  Volume                   = {120}
+}
+
+@Article{sherali_etal_01,
+  Title                    = {Effective relaxations and Partitioning Schemes for Solving Water Distribution Network Design Problems to Global Optimality},
+  Author                   = {H.D. Sherali and S. Subramanian and G.V. Loganathan},
+  Journal                  = {Journal of Global Optimization},
+  Year                     = {2001},
+  Pages                    = {1--26},
+  Volume                   = {19}
+}
+
+@Article{sherali_etal_98,
+  Title                    = {Enhanced lower bounds for the global optimization of water distribution networks},
+  Author                   = {H.D. Sherali and R. Totlani and G.V. Loganathan},
+  Journal                  = {Water Resources Research},
+  Year                     = {1998},
+  Pages                    = {1831--1841},
+  Volume                   = {34}
+}
+
+@Article{sherali_wang_01,
+  Title                    = {Global optimization of nonconvex factorable programming problems},
+  Author                   = {H.D. Sherali and H. Wang},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2001},
+  Number                   = {3},
+  Pages                    = {459-478},
+  Volume                   = {89}
+}
+
+@Article{sherali_zhu_06,
+  Title                    = {On solving discrete two-stage stochastic programs having mixed-integer first- and second-stage variables},
+  Author                   = {H.D. Sherali and X. Zhu},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2006},
+  Number                   = {2},
+  Pages                    = {597-616},
+  Volume                   = {108}
+}
+
+@Article{soyster_73,
+  Title                    = {Convex programming with set-inclusive constraints and applications to inexact linear programming},
+  Author                   = {A.L. Soyster},
+  Journal                  = {Operations Research},
+  Year                     = {1973},
+  Pages                    = {1154–1157},
+  Volume                   = {21}
+}
+
+@Article{stockbridge_bayraksan_11,
+  Title                    = {A probability metrics approach for reducing the bias of optimality gap estimators in stochastic programming},
+  Author                   = {R. Stockbridge and G. Bayraksan},
+  Journal                  = {Mathematical Programming},
+  Year                     = {2011},
+  Note                     = {Submitted for publication}
+}
+
+@Book{tawarmalani_sahinidis_02,
+  Title                    = {Convexification and Global Optimization in Continuous and Mixed-Integer Nonlinear Programming: Theory, Algorithms, Software, and Applications},
+  Author                   = {M. Tawarmalani and N.V. Sahinidis},
+  Publisher                = {Springer},
+  Year                     = {2002},
+  Series                   = {Nonconvex Optimization and Its Applications}
+}
+
+@TechReport{usbr_11,
+  Title                    = {{Colorado River Basin} Water Supply and Demand Study: Technical Report {A} -- {S}cenario Development},
+  Author                   = {{U.S. Department of the Interior, Bureau of Reclamation}},
+  Year                     = {2011},
+
+  HowPublished             = {http://www.usbr.gov/lc/region/programs/crbstudy/Report1/TechRptA.pdf}
+}
+
+@Misc{usbr_lowercolorado_11,
+  Title                    = {{Lower Colorado} Water Supply Report},
+
+  Author                   = {{U.S. Department of the Interior, Bureau of Reclamation}},
+  HowPublished             = {http://www.usbr.gov/lc/region/g4000/weekly.pdf},
+  Month                    = {July},
+  Year                     = {2011}
+}
+
+@Misc{usbr_colorado_climate,
+  Title                    = {Review of Science and Methods for Incorporating Climate Change Information into {R}eclamation's {Colorado River Basin} Planning Studies},
+
+  Author                   = {{U.S. Department of the Interior, Bureau of Reclamation}},
+  HowPublished             = {http://www.usbr.gov/lc/region/programs/strategies/FEIS/AppU.pdf},
+  Year                     = {2007}
+}
+
+@Book{unstudy,
+  Title                    = {Water: A shared responsibility},
+  Author                   = {UNESCO},
+  Publisher                = {United Nations Educational, Scientific and Cultural Organization (UNESCO) and Berghahn Books},
+  Year                     = {2006},
+  Series                   = {The United Nations World Water Development Report}
+}
+
+@TechReport{wang2010likelihood,
+  Title                    = {Likelihood robust optimization for data-driven newsvendor problems},
+  Author                   = {Z. Wang and P.W. Glynn and Y. Ye},
+  Institution              = {Department of Management Science and Engineering, Stanford University, USA},
+  Year                     = {2010}
+}
+
+@Article{watanabe2010improved,
+  Title                    = {Improved climate simulation by MIROC5: mean states, variability, and climate sensitivity},
+  Author                   = {Watanabe, Masahiro and Suzuki, Tatsuo and O'ishi, Ryouta and Komuro, Yoshiki and Watanabe, Shingo and Emori, Seita and Takemura, Toshihiko and Chikira, Minoru and Ogura, Tomoo and Sekiguchi, Miho and others},
+  Journal                  = {Journal of Climate},
+  Year                     = {2010},
+  Number                   = {23},
+  Pages                    = {6312--6335},
+  Volume                   = {23}
+}
+
+@Article{watanabe2011miroc,
+  Title                    = {MIROC-ESM 2010: model description and basic results of CMIP5-20c3m experiments},
+  Author                   = {Watanabe, S and Hajima, T and Sudo, K and Nagashima, T and Takemura, T and Okajima, H and Nozawa, T and Kawase, H and Abe, M and Yokohata, T and others},
+  Journal                  = {Geoscientific Model Development},
+  Year                     = {2011},
+  Pages                    = {845--872},
+  Volume                   = {4}
+}
+
+@Misc{tama,
+  Title                    = {Tucson Active Management Area Water Use and Demand Assessment: 1985-2025},
+
+  Author                   = {Arizona Department of Water Resources},
+  HowPublished             = {http://www.azwater.gov/AzDWR/WaterManagement/Assessments/default.htm},
+  Year                     = {2010}
+}
+
+@Misc{pysp,
+  Title                    = {Pysp: Modeling and solving stochastic programs in python},
+
+  Author                   = {J.-P. Watson and D.L. Woodruff and W.E. Hart},
+  HowPublished             = {https://software.sandia.gov/trac/coopr/attachment/wiki/PySP/pysp jnl.pdf},
+  Year                     = {2010}
+}
+
+@Article{wiesemann2013distributionally,
+  Title                    = {Distributionally Robust Convex Optimization},
+  Author                   = {W. Wiesemann and D. Kuhn and M. Sim},
+  Year                     = {2013}
+}
+
+@Misc{wisp,
+  Title                    = {Location of Growth, Urban Form, and Cost of Infrastructure},
+
+  Author                   = {WISP},
+  HowPublished             = {http://www.tucsonpimawaterstudy.com/Reports/Phase2/White\_paper\_6.14.09.pdf},
+  Year                     = {2009}
+}
+
+@Article{yuan_sen_09,
+  Title                    = {Enhanced cut generation methods for decomposition-based branch and cut for two-stage stochastic mixed-integer programs},
+  Author                   = {Y. Yuan and S. Sen},
+  Journal                  = {INFORMS Journal on Computing},
+  Year                     = {2009},
+  Pages                    = {480-487}
+}
+
+@InProceedings{zhangproc_10,
+  Title                    = {Optimal Reclaimed Water Network Design via Two-Stage Stochastic Binary Programming},
+  Author                   = {W. Zhang and G. Bayraksan and G. Chung and K. Lansey},
+  Booktitle                = {Proceedings of the 2010 Water Distribution System Analysis Conference (WDSA 2010)},
+  Year                     = {2010}
+}
+
+@Article{zhang_etal_11,
+  Title                    = {Reclaimed Water Distribution Network Design under Temporal and Spatial Growth and Demand Uncertainties},
+  Author                   = {W. Zhang and G. Chung and P. Pierre-Louis and G. Bayraksan and K. Lansey},
+  Journal                  = {European Journal on Operational Research},
+  Year                     = {2011},
+  Note                     = {Submitted for publication}
+}
+
+@TechReport{zhu_sen_10,
+  Title                    = {Multi-stage Stochastic Decomposition: A Sequential Sampling Algorithm for Multi-stage Stochastic Linear Programs},
+  Author                   = {Z. Zhu and S. Sen},
+  Institution              = {The Data Driven Decisions Lab, Industrial, Welding, and Systems Engineering, the Ohio State University,},
+  Year                     = {2010}
+}
+
+@Book{barnhart_laporte_07,
+  Title                    = {Transportation},
+  Editor                   = {C. Barnhart and G. Laporte},
+  Publisher                = {Elsevier},
+  Year                     = {2007},
+  Series                   = {Handbooks in Operations Research and Management Science},
+  Volume                   = {14}
+}
+
+@Book{optinenergy,
+  Title                    = {Optimization in the Energy Industry},
+  Editor                   = {J. Kallrath and P. Pardalos and S. Rebennack and M. Scheidt},
+  Publisher                = {Springer},
+  Year                     = {2009},
+  Series                   = {Energy Systems}
+}
+
+@Book{handbook,
+  Title                    = {Handbooks in OR \& MS},
+  Editor                   = {A. Ruszczy{\'{n}}ski and A. Shapiro},
+  Publisher                = {Elsevier Science},
+  Year                     = {2003},
+  Volume                   = {10: Stochastic Programming},
+
+  Owner                    = {guzin},
+  Timestamp                = {2013.05.28}
+}
+
+@Misc{climas,
+  Title                    = {{Climate Assessment for the Southwest (CLIMAS)}},
+  HowPublished             = {http://www.climas.arizona.edu/},
+
+  Institution              = {The Institute of the Environment, the University of Arizona}
+}
+
+@Misc{spsoftware,
+  Title                    = {Software \& Test Sets at the Stochastic Programming Community Website},
+  HowPublished             = {http://stoprog.org/index.html?software.html},
+  Note                     = {Last accessed: July 15, 2011}
+}
+
+@Misc{watervillage,
+  Title                    = {{UA/NSF Water Quality Center Water Village}},
+  HowPublished             = {http://wqc.arizona.edu/}
+}
+
