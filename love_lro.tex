@@ -173,8 +173,10 @@
 %   should be entered in ONE field, separated by a comma. 
 %   \EMAIL field can be repeated if more than one author
 \ARTICLEAUTHORS{%
-\AUTHOR{David Love}
-\AFF{Graduate Program in Applied Mathematics, University of Arizona, \EMAIL{dlove@email.arizona.edu}%, \url{http://math.arizona.edu/~dlove/}
+\AUTHOR{David K.\ Love}
+\AFF{American Express, New York, NY,
+\EMAIL{love.david.k@gmail.com}
+%\AFF{Graduate Program in Applied Mathematics, University of Arizona, %\EMAIL{dlove@email.arizona.edu}%, \url{http://math.arizona.edu/~dlove/}
 }
 \AUTHOR{G\"{u}zin~Bayraksan}
 \AFF{Department of Integrated Systems Engineering, The Ohio State University, \EMAIL{bayraksan.1@osu.edu}%, %\url{http://www-iwse.eng.ohio-state.edu/biosketch\_GBayraksan.cfm}
@@ -182,13 +184,18 @@
 % Enter all authors
 } % end of the block
 
-\ABSTRACT{%
-	This paper investigates the properties of $\phi$-divergence constrained ambiguous stochastic programs.
-	$\phi$-divergences (e.g., Kullback-Leibler, $\chi^2$ distance, etc.) provide a natural way to create an ambiguity set of distributions that are centered around a nominal distribution, which is often determined by collected observations. 
-	We present a classification of $\phi$-divergences to elucidate their use for models with different properties and different sources of data.
-	A condition of assessing the value of collecting additional data is derived and we demonstrate convergence of the $\phi$-divergence-based ambiguous program to the associated non-ambiguous stochastic program.
-	A decomposition-based solution algorithm to solve the resulting model is given.
-  Finally, numerical results are presented to illustrate the behavior of $\phi$-divergences in an optimization setting.  
+\ABSTRACT{%  should be <= 200 words. Exactly at that!
+	This paper investigates the use of $\phi$-divergences in ambiguous (or distributionally robust) two-stage stochastic programs. 
+	Classical stochastic programming assumes the distribution of uncertain parameters are known. 
+	However, the true distribution is unknown in many applications. 
+	Especially in cases where there is little data or not much trust in the data, an ambiguity set of distributions can be used to hedge against the distributional uncertainty. 
+	$\phi$-divergences (e.g., Kullback-Leibler divergence, $\chi^2$ distance, etc.) provide a natural way to create an ambiguity set of distributions that are centered around a nominal distribution. 
+	The nominal distribution can be obtained by using observed data, expert opinions, simulations, etc. 
+	In this paper, we present a classification of $\phi$-divergences to elucidate their use for models with different properties and sources of data.
+	We illustrate our classification on $\phi$-divergences that result in common risk optimization models. 
+	A condition for assessing the value of collecting additional data is derived, and we demonstrate that the $\phi$-divergence-based ambiguous program behaves essentially the same as the associated non-ambiguous stochastic program as more data is collected.
+	We present a decomposition-based solution algorithm to solve the resulting model. 
+	Finally, we demonstrate the behavior of $\phi$-divergences in an optimization setting for a numerical example.  
 }%
 
 % Sample 
