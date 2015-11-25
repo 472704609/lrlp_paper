@@ -74,9 +74,9 @@
 % Commands for probability
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\E}{\mathbb{E}}
-\newcommand{\p}[1]{\P \left[ #1 \right]}
+%\renewcommand{\P}[1]{\P \left[ #1 \right]}
 \newcommand{\e}[1]{\E \left[ #1 \right]}
-% \newcommand{\ee}[2]{\E_{#1} \left[ #2 \right]}
+\newcommand{\ee}[2]{\E_{#1} \left[ #2 \right]}
 
 % Definitions of variables
 \newcommand{\X}{X}
@@ -100,6 +100,7 @@
 \renewcommand{\d}{\mathbf{d}}
 
 \newcommand{\q}{\mathbf{q}}
+\newcommand{\p}{\mathbf{p}}
 
 % Epiconvergence for \plp
 \newcommand{\qtrue}{q^{\text{true}}}
@@ -166,7 +167,7 @@
 % Full title. Sample:
 % \TITLE{Bundling Information Goods of Decreasing Value}
 % Enter the full title:
-\TITLE{Phi-Divergence Constrained\\ Ambiguous Stochastic Programs}
+\TITLE{Phi-Divergence Constrained Ambiguous Stochastic Programs for Data-Driven Optimization}
 
 % Block of authors and their affiliations starts here:
 % NOTE: Authors with same affiliation, if the order of authors allows, 
@@ -223,7 +224,7 @@
 
 \section{Introduction}
 
-In practice, many optimization problems can be modeled by stochastic programs minimizing the expected value of an uncertain objective function.
+Many optimization problems can be modeled by stochastic programs minimizing the expected value of an uncertain objective function.
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
 Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions and optimizes the expected cost relative to the worst distribution in the uncertainty set.
 One approach that has been recently proposed by \citet{bental2011robust} uses a set of distributions that are sufficiently close in the $\phi$-divergence sense from a given ``nominal'' distribution. 
@@ -317,49 +318,66 @@ We end in Section \ref{sec:plp_conclusions} with conclusions and future work.
 In this section we define the concept of a $\phi$-divergence and review several properties of  $\phi$-divergences that will be used throughout the paper. 
 \citet{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences. 
 We refer the readers to this book for further details.
-%Many results in this section can be also found in \citep{bental2011robust}.
+Many results in this section can be also found in \cite{bental1991certainty,bental2011robust}.
 
-In the finite case, $\phi$-divergences are used to measure the distance between two non-negative vectors $p = (p_1, \dots, p_n)^T$ and $q = (q_1, \dots, q_n)^T$.
-Specifically, when $p$ and $q$ are probability vectors (i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$), $\phi$-divergences are used to quantify the distance between two discrete distributions with finite support. 
+In the finite case, $\phi$-divergences are used to measure the distance between two non-negative vectors $\p = (p_1, \dots, p_n)^T$ and $\q = (q_1, \dots, q_n)^T$.
+Specifically, when $\p$ and $\q$ are probability vectors (i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$), $\phi$-divergences are used to quantify the distance between two discrete distributions with finite support. 
 The $\phi$-divergence is defined by
 \[
-	I_\phi(p,q) = \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right),
+	I_\phi(\p,\q) = \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right),
 \]
 where $\phi(t)$, called the {\it $\phi$-divergence function}, is a convex function on $t \geq 0$ such that $\phi(1) = 0$.
 Additionally, it is defined that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ and $0 \phi(0/0) = 0$.
-When both $p$ and $q$ are probability vectors---which is our setup throughout this paper---we can further assume that $\phi(t) \geq 0$ without loss of generality.
-Observe that the function $\phi(t)$ can be modified as $\psi(t) = \phi(t) + c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t\geq 0$ and $I_\psi(p,q) = I_\phi(p,q)$ for all probability vectors $p,q$.
+When both $\p$ and $\q$ are probability vectors---which is our setup throughout this paper---we can further assume that $\phi(t) \geq 0$ without loss of generality. 
+Observe that the function $\phi(t)$ can be modified as $\psi(t) = \phi(t) + c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t\geq 0$ and $I_\psi(\p,\q) = I_\phi(\p,\q)$ for all probability vectors $\p,\q$.
 If $\phi(t)$ is differentiable at $t = 1$, this modification can be done by selecting $c = -\phi'(1)$.
 %; see, e.g., the Likelihood divergence and Burg entropy in Table~\ref{tb:phi_definitions}.
-Throughout the remainder of this paper, we assume $\phi(t) \geq 0$, although we give an example of a $\phi$-divergence that does not satisfy this condition in Table~\ref{tb:phi_definitions} below. 
+Throughout the remainder of this paper, we assume $\phi(t) \geq 0$ for $t\geq 0$, although we give an example of a $\phi$-divergence that does not satisfy this condition in Table~\ref{tb:phi_definitions} below. 
+We will discuss this case shortly. 
+
+We extend $\phi(t)$ to the set of reals by setting $\phi(t)=+\infty$ for $t<0$.
+We make a technical---but not restrictive---assumption 
+%because we will use $\phi$-divergences in an optimization setting. 
+%We assume $\phi$ is a closed function. 
+that $\phi$ is a closed function because we will use $\phi$-divergences in an optimization setting. 
+For a proper convex function, closedness (i.e., its epigraph being closed) is the same as lower semi-continuity \citep{rockafellar_70}. 
+(Recall that $\phi$ is a proper function because for at least one $t$ ($t=1$), $\phi(t)=0<\infty$, and $\phi(t)>-\infty$, for all $t\in\mathbb{R}$.)
+%Lower semi-continuity is a natural assumption because we will use $\phi$-divergences in an optimization setting.%, and it is satisfied by common  $\phi$-divergences (see Table~\ref{tb:phi_definitions}).
+%This assumption is naturally satisfied by $\phi$-divergences that are commonly used in the literature (see Table~\ref{tb:phi_definitions}).
+Lower semi-continuity is a desirable property in our setting, and it is satisfied by common $\phi$-divergences (see Table~\ref{tb:phi_definitions}).
+  
 
 $\phi$-divergences are not, in general, metrics.
-For example, most $\phi$-divergences do not satisfy the triangle inequality and many are not symmetric in the sense that $I_\phi(p,q) \neq I_\phi(q,p)$.
+Most $\phi$-divergences do not satisfy the triangle inequality and many are not symmetric in the sense that $I_\phi(\p,\q) \neq I_\phi(\q,\p)$.
 One exception is the variation distance, which is equivalent to the $L^1$-distance between the vectors (see Table~\ref{tb:phi_definitions}).
 A $\phi$-divergence has an {\it adjoint}, defined by
 \begin{equation} \label{eq:adjoint}
 	\tilde{\phi}(t) = t \phi\left(\frac{1}{t}\right),
 \end{equation}
-which satisfies all criteria for a $\phi$-divergence \citep{bental1991certainty} and has the property that $I_{\tilde{\phi}}(p,q) = I_\phi(q,p)$.
+which satisfies all criteria for a $\phi$-divergence \citep{bental1991certainty} and has the property that $I_{\tilde{\phi}}(\p,\q) = I_\phi(\q,\p)$.
 Divergences that are symmetric with respect to the input vectors are known as {\it self-adjoint}.
 
 An important function related to the $\phi$-divergence function is its  {\it  convex conjugate}, which is used, for instance, in the dual problem formulation (Section \ref{ssec:form}). 
+We will also use the properties of the conjugate for our classification (Section \ref{sec:classification}). 
 The conjugate $\phi^* : \R \rightarrow \R \cup \{\infty\}$ is defined as
 \begin{equation} \label{eq:conjugate}
-	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\},
+	\phi^*(s) = \sup_{t \geq 0} \{st - \phi(t)\}.
 \end{equation}
-and it is a nondecreasing convex function, which may be undefined above some upper bound $\bar{s}$.
+It is a nondecreasing convex function, which may be undefined above some upper bound $\bar{s}$.
+Because $\phi$ is a proper closed convex function, $\phi^{**}=\phi$ and $t \in \partial \phi^*(s)$ if and only if $s \in \partial \phi(t)$ \citep[Corollary 23.5.1]{rockafellar_70}. 
+We will use the latter property in our analysis. 
+ 
 
 Table \ref{tb:phi_definitions} lists some common examples of $\phi$-divergences, along with their adjoints and conjugates.
-For all divergences, $\phi(t) = \infty$ for $t < 0$, and the value of the conjugate is listed only in its domain (i.e., $\{s : \phi^*(s) < \infty\}$).
-Most of these common  $\phi$-divergences are widely used in statistics and information theory.
+The value of the conjugate is listed only in its domain, i.e., $\{s : \phi^*(s) < \infty\}$.
+Most of these $\phi$-divergences are widely used in statistics and information theory.
 In Section \ref{ssec:special_phi}, we present other $\phi$-divergences that assign a distance of either $0$ or $\infty$, which result in commonly used risk models.
 Table \ref{tb:phi_definitions} also lists a divergence, labeled ``Likelihood,'' that is somewhat different from the others.
-The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but does not satisfy the normalizing condition $\phi(t) \geq 0$.
+The Likelihood divergence is equivalent to the Burg entropy when comparing probability vectors, but it does not satisfy the normalizing condition $\phi(t) \geq 0$.
 This divergence is included because \citet{wang2010likelihood} use it to formulate a distributionally robust newsvendor problem so that the ambiguity set of distributions have a sufficiently high empirical likelihood. 
-They refer to this as the Likelihood Robust Optimization. 
-We also note that \citep{calafiore2007ambiguous}, \citep{hukullback}, and \citep{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler (KL) divergence''---reversing the order of the arguments $p$ and $q$ relative to the notation presented here.
-In this paper, $q$ denotes the  nominal distribution.
+They refer to this method as the Likelihood Robust Optimization. 
+We also note that \citep{calafiore2007ambiguous}, \citep{hukullback}, and \citep{wang2010likelihood} all use a different naming convention than the one given here, referring to the Likelihood divergence or Burg entropy as the ``Kullback-Leibler (KL) divergence''---reversing the order of the arguments $\p$ and $\q$ relative to the notation presented here.
+In this paper, $\q$ denotes the  nominal distribution.
 %, which is the distribution found directly via data or a distribution that is believed to represent the 'true' distribution but with some uncertainty. 
 
 \begin{table}
