@@ -591,7 +591,8 @@ To correct for small sample sizes and for more details, we refer the readers to 
 \label{sec:properties}
 
 In this section we assume the nominal distribution $\q$ is the empirical distribution $\q^{N}$ (i.e., $q_\omega=q_\omega^N = {N_\omega}/{N}$) and provide insight into how the \plp\ changes as data is added.
-First, we investigate how \plp\ might change with a single additional observation in Section \ref{ssec:value}, then as more and more data is gathered with asymptotic results in Section \ref{ssec:epiconvergence}.
+First, we investigate how \plp\ might change with a single additional observation in Section \ref{ssec:value}. 
+Next, we examine what happens as more and more data is gathered with asymptotic results in Section \ref{ssec:epiconvergence}.
 This analysis must consider how the level of robustness $\rho$ changes as additional observations are obtained. 
 Therefore, in this section, we use the notation $\rho_N$ to emphasize the dependence of $\rho$ on the number observations.
 To be consistent with the known $\phi$-divergence results stated in Section \ref{ssec:robust_level}, we set $\rho_N = \frac{\rho_0}{N}$.
@@ -608,11 +609,12 @@ This would happen, for instance, when the new information removes the current wo
 Below, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
 %We also provide a way of estimating the probability of sampling such an observation.
 
-Our main goal is to come up with simple conditions using the current solution. 
+Our main goal is to come up with simple conditions on how an additional data affects the problem by using the current solution. 
 One could, of course, solve the problem with an additional observation and see if the optimal value is lowered, and check this for every scenario $\omega$. 
-We would like to avoid resolving the problem; furthermore, we would like to come up with easy-to-check conditions depending on the nominal probabilities $q_\omega$, the worst-case probabilities $p_\omega^*$, and the number of observations $N$. 
+We would like to avoid resolving the problem. 
+Furthermore, we would like to come up with easy-to-check conditions depending on the nominal probabilities $q_\omega$, the worst-case probabilities $p_\omega^*$, and the number of observations $N$. 
 Toward this end, we first provide a general result. 
-Then, we provide simpler conditions for a subset of the $\phi$-divergences by using only $\q$, $\p^*$ and $N$. 
+Using this general result, we provide simpler conditions for a subset of the $\phi$-divergences by using only $\q$, $\p^*$ and $N$. 
 
 \begin{proposition}
 	\label{prop:value}
@@ -620,11 +622,16 @@ Then, we provide simpler conditions for a subset of the $\phi$-divergences by us
 	\begin{equation} \label{eq:cost_decrease_cond}
 		\sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right),
 	\end{equation}
-	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solve the $N$-sample problem with $q_\omega = \tfrac{N_\omega}{N}$.
+	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solves the $N$-sample problem with $q_\omega = \tfrac{N_\omega}{N}$ and $\lambda^*_N>0$.
+In (\ref{eq:cost_decrease_cond}), $\phi^{*\prime}(s)$ denotes the derivative of $\phi^{*}$ at $s$ if it is differentiable, and it denotes a subgradient of $\phi^{*}$ at $s$ otherwise. 
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:value}.}
-	For ease of exposition, we assume $\phi^*$ is differentiable, although the proof works without this assumption with little modification.	
+	For ease of exposition, assume $\phi^*$ is differentiable.
+	The proof works without this assumption by considering a subgradient.
+	Because $\phi$ is a proper closed convex function, so is $\phi^*$ \citep[Theorem 12.2]{rockafellar_70}.
+	Hence, it is subdifferentiable on the relative interior of its domain.  
+	The assumption $\lambda^*_N>0$ together with constraint (\ref{eq:plp_feas_constraint}) ensures that $\frac{N}{N+1}s^*_\omega$ is in the relative interior of the domain of $\phi^{*}$.  IS THIS REALLY TRUE? ???  HOW ABOUT THE OTHER SIDE...?  WHEN IT GETS TO 0 OR SOMETHING???  
 	We begin the proof with the change of variables $\kappa = \frac{\lambda}{N}$ and note that $N\rho_N = \rho_0$ is constant.	
 	With this change of variables, the objective function of the $N$-sample problem is given by
 	\[
