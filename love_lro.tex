@@ -618,21 +618,22 @@ Using this general result, we provide simpler conditions for a subset of the $\p
 
 \begin{proposition}
 	\label{prop:value}
-	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of the \plp\ if the following condition is satisfied
+	Let $(\x^*_N,\mu^*_N,\lambda^*_N)$ solve the $N$-sample problem with $q_\omega = \tfrac{N_\omega}{N}$, and suppose $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ is finite for all $\omega=1,ldots,n$.
+	An additional sample of scenario $\hat{\omega}$ will result in a decrease in the worst-case expected cost of \plp\ if the following condition is satisfied
 	\begin{equation} \label{eq:cost_decrease_cond}
-		\sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right),
+		\sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right).
 	\end{equation}
-	where $s^*_\omega = \dfrac{h_\omega(\x^*_N) - \mu^*_N}{\lambda^*_N}$ and $(\x^*_N,\mu^*_N,\lambda^*_N)$ solves the $N$-sample problem with $q_\omega = \tfrac{N_\omega}{N}$ and $\lambda^*_N>0$.
-In (\ref{eq:cost_decrease_cond}), $\phi^{*\prime}(s)$ denotes the derivative of $\phi^{*}$ at $s$ if it is differentiable, and it denotes a subgradient of $\phi^{*}$ at $s$ otherwise. 
+	In (\ref{eq:cost_decrease_cond}), $\phi^{*\prime}(s)$ denotes the derivative of $\phi^{*}$ at $s$ if it is differentiable, and it denotes a subgradient of $\phi^{*}$ at $s$ otherwise. 
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:value}.}
 	For ease of exposition, assume $\phi^*$ is differentiable.
 	The proof works without this assumption by considering a subgradient.
 	Because $\phi$ is a proper closed convex function, so is $\phi^*$ \citep[Theorem 12.2]{rockafellar_70}.
-	Hence, it is subdifferentiable on the relative interior of its domain.  
-	The assumption $\lambda^*_N>0$ together with constraint (\ref{eq:plp_feas_constraint}) ensures that $\frac{N}{N+1}s^*_\omega$ is in the relative interior of the domain of $\phi^{*}$.  IS THIS REALLY TRUE? ???  HOW ABOUT THE OTHER SIDE...?  WHEN IT GETS TO 0 OR SOMETHING???  
-	We begin the proof with the change of variables $\kappa = \frac{\lambda}{N}$ and note that $N\rho_N = \rho_0$ is constant.	
+	Hence,  $\phi^*$ is subdifferentiable on the relative interior of its domain. %\citep[Theorem xxx]{rockafellar_70}.  
+	The assumption that $s^*_\omega$ is finite together with constraint (\ref{eq:plp_feas_constraint}) ensures that $\frac{N}{N+1}s^*_\omega$ is in the relative interior of the domain of $\phi^{*}$. 
+
+	We begin the proof with the change of variables $\kappa = \frac{\lambda}{N}$ and note that $N\rho_N = (N+1)\rho_{N+1} =\rho_0$ is constant.	
 	With this change of variables, the objective function of the $N$-sample problem is given by
 	\[
 		f_N(\x,\mu,\kappa) = c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{\kappa N} \right) \right].
@@ -640,7 +641,7 @@ In (\ref{eq:cost_decrease_cond}), $\phi^{*\prime}(s)$ denotes the derivative of 
 	Let $z_N^*$ be the optimal value and  $(\x^*_N,\mu^*_N,\kappa^*_N)$ be the optimal solution of the $N$-sample dual problem (\ref{eq:plp_two_stage}) with the change of variables.
 % and objective function $f_N(\x,\mu,\kappa)$.
 %$ = \min_{\x \in X,\mu,\kappa \geq 0} f_N(\x,\mu,\kappa)$.
-	We wish to find a simple estimate of the decrease in the optimal cost, $z_N^* - z_{N+1}^*$, associated with taking an additional sample of a specific scenario $\hat{\omega}$.
+	We wish to find a simple estimate of the decrease in the optimal cost $z_N^* - z_{N+1}^*$ associated with taking an additional sample of a specific scenario $\hat{\omega}$.
 In particular, we look for a condition under which $z_N^* - z_{N+1}^* > 0$.	
 %	Let $(\x^*_N,\mu^*_N,\kappa^*_N)$ minimize $f_N$.
 	Observe that $(\x^*_N,\mu^*_N,\kappa^*_N)$ is a feasible but not necessarily an optimal solution to the $(N+1)$-sample problem.
@@ -648,7 +649,7 @@ In particular, we look for a condition under which $z_N^* - z_{N+1}^* > 0$.
 	Then, $z_N^* - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N)$ provides a lower bound on the decrease in optimal cost $z_N^* - z_{N+1}^*$.
 	We will find scenarios $\hat{\omega}$ such that $z_N^* - f_{N+1}(\x^*_N,\mu^*_N,\kappa^*_N) > 0$.
 
-	The objective of the $(N+1)$-sample problem for a given $(\x,\mu,\kappa)$ is $ f_{N+1}(\x,\mu,\kappa) = \c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{\kappa (N+1)} \right) \right]$,	where $N'_\omega$ is the number of observations of scenario $\omega$ after $N+1$ total observations ($N_{\hat{\omega}}=N_{\hat{\omega}}+1$ and $N'_\omega = N_\omega$ for others).
+	The objective of the $(N+1)$-sample problem for a given $(\x,\mu,\kappa)$ is $ f_{N+1}(\x,\mu,\kappa) = \c\x + \mu + \rho_0 \kappa + \sum_{\omega = 1}^n N'_\omega \left[ \kappa \phi^*\left(\frac{h_\omega(\x) - \mu}{\kappa (N+1)} \right) \right]$,	where $N'_\omega$ is the number of observations of scenario $\omega$ after $N+1$ total observations (e.g., $N_{\hat{\omega}}=N_{\hat{\omega}}+1$ and $N'_\omega = N_\omega$ for others).
 	Then, $z_N^* - z_{N+1}^*$ is bounded by $\kappa \sum_{\omega=1}^n \left[ N_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\kappa N} \right) - N'_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\kappa (N+1)} \right) \right]$, which must be positive to guarantee a drop in optimal cost.
 	If $\hat{\omega}$ is the next scenario observed, we can rewrite this condition as
 	\begin{equation} \label{eq:raw_cond}
@@ -675,9 +676,12 @@ Because $\phi^*(s)$ is convex, the gradient inequality gives $\phi^*(s^N_\omega)
 
 We can interpret \eqref{eq:cost_decrease_cond} as follows. 
 If an additional sample is taken from the unknown distribution and the resulting observed scenario $\hat{\omega}$ satisfies (\ref{eq:cost_decrease_cond}), then the $(N+1)$-sample problem will have a lower cost than the $N$-sample problem that was already solved.
-This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}_{\omega=1}^{n}$ in \eqref{eq:p_worst}.
+%This is equivalent to saying that an additional observation of $\hat{\omega}$ will rule out the computed worst-case distribution given by $\{p_\omega\}_{\omega=1}^{n}$ in \eqref{eq:p_worst}.
 
-It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences and we detail this in the corollary below. 
+It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences, and we detail this in the corollary below. 
+In particular, condition \eqref{eq:cost_decrease_cond} uses the dual formulation and $\phi^{* \prime}$. 
+By utilizing the primal-dual relationship $\frac{p_{\hat{\omega}}^*}{q_{\hat{\omega}}} = \phi^{* \prime}(s_{\hat{\omega}}^*)$, we provide easy-to-check conditions using $\q,\p^*$ and $N$. 
+
 
 %\begin{remark}
 %	\label{rmk:cost_decrease_trick}
