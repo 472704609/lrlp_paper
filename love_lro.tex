@@ -104,6 +104,7 @@
 
 % Epiconvergence for \plp
 \newcommand{\qtrue}{\q^{\text{true}}}
+\newcommand{\ob}{\bar{\omega}}
 
 % Useful mathematics functions
 \newcommand{\keywords}[1]{\par\noindent\enspace\ignorespaces\textbf{Keywords:} #1}
@@ -445,7 +446,7 @@ By replacing the specific distribution in SLP-2 with a set of distributions suff
 In the \plp, the objective function is minimized with respect to the worst-case distribution selected from the ambiguity set of distributions.
 The resulting minimax formulation of \plp\ is
 \begin{equation}
-	\min_{\x \in X} \max_{p \in \mathcal{P}} \left\{ \c\x + \sum_{\omega=1}^{n} p_\omega h_\omega(\x) \right\}, \label{eq:plp_primal}
+	\min_{\x \in X} \max_{\p \in \mathcal{P}} \left\{ \c\x + \sum_{\omega=1}^{n} p_\omega h_\omega(\x) \right\}, \label{eq:plp_primal}
 \end{equation}
 where the ambiguity set is
 \begin{align}
@@ -476,8 +477,8 @@ We will discuss this case in more detail in Section~\ref{sec:classification}.
 Also, the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
 This constraint results from a dual feasibility consideration. 
 When this limit is finite, i.e., $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t}=  \bar{s}<\infty$, then for any $s> \bar{s}$, $\phi^*(s)=\infty$. 
-Therefore, $\phi$-divergences with a finite limit (like the variation distance), induce this constraint. 
-When this limit is $\infty$ (like the KL divergence), on the other hand, $\phi^*(s)<\infty$ for any finite value of $s$. 
+Therefore, $\phi$-divergences with a finite limit (like the variation distance) induce this constraint. 
+When this limit is $\infty$ (like the KL divergence), $\phi^*(s)<\infty$ for any finite value of $s$. 
 In this case, all values are dual feasible, and (\ref{eq:plp_feas_constraint}) can be removed from the formulation. 
 
 %For some $\phi$-divergences, dant.
@@ -590,7 +591,7 @@ To correct for small sample sizes and for more details, we refer the readers to 
 \section{Data-Driven Properties}
 \label{sec:properties}
 
-In this section we assume the nominal distribution $\q$ is the empirical distribution $\q^{N}$ (i.e., $q_\omega=q_\omega^N = {N_\omega}/{N}$) and provide insight into how the \plp\ changes as data is added.
+In this section we assume the nominal probabilities $\q$ are the empirical probabilities $\q^{N}$ (i.e., $q_\omega=q_\omega^N = {N_\omega}/{N}$) and provide insight into how the \plp\ changes as data is added.
 First, we investigate how \plp\ might change with a single additional observation in Section \ref{ssec:value}. 
 Next, we examine what happens as more and more data is gathered with asymptotic results in Section \ref{ssec:epiconvergence}.
 This analysis must consider how the level of robustness $\rho$ changes as additional observations are obtained. 
@@ -601,18 +602,21 @@ Observe that $\rho_0=\frac{\phi''(1)}{2} \chi^2_{n-1,1-\alpha}$ in (\ref{eq:asym
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Value of Additional Data} \label{ssec:value}
 
-With a data-driven formulation such as \plp, it is natural to ask how the optimal value and solution changes as more data is gathered.
-In particular, %for robust formulations like \plp\ 
+With a data-driven formulation such as \plp, 
+%it is natural to ask how the optimal value and solution changes as more data is gathered.
+%In particular, %for robust formulations like \plp\ 
 one might be concerned about being overly conservative in the problem formulation, and thus, missing the opportunity to find a better solution to the true distribution.
 For \plp, this means that the initial model is likely to be more conservative in an effort to be robust, while the new information could make the model less conservative.
 This would happen, for instance, when the new information removes the current worst-case distribution from the ambiguity set.  
-Below, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for better optimization; i.e., a lower-cost solution.
+Below, we present a simple method of determining if taking an additional observation will allow for a lower-cost solution.
+%Below, we present a simple method of determining if taking an additional sample will eliminate the old worst-case distribution and allow for a lower-cost solution.
 %We also provide a way of estimating the probability of sampling such an observation.
 
-Our main goal is to come up with simple conditions on how an additional data affects the problem by using the current solution. 
-One could, of course, solve the problem with an additional observation and see if the optimal value is lowered, and check this for every scenario $\omega$. 
+%Our main goal is to come up with simple conditions on how an additional data affects the problem by using the current solution.
+Our main goal is to come up with simple conditions by using the current solution.
+In particular, we would like the easy-to-check conditions to use only the current optimal worst-case probabilities $p_\omega^*$, current nominal probabilities $q_\omega$, and the number of observations $N$.
+One could, of course, solve the problem with an additional observation of $\omega$, see if the optimal value is lowered, and check this for every scenario $\omega$. 
 We would like to avoid resolving the problem. 
-Furthermore, we would like to come up with easy-to-check conditions depending on the nominal probabilities $q_\omega$, the worst-case probabilities $p_\omega^*$, and the number of observations $N$. 
 Toward this end, we first provide a general result. 
 Using this general result, we provide simpler conditions for a subset of the $\phi$-divergences by using only $\q$, $\p^*$ and $N$. 
 
@@ -681,8 +685,8 @@ If an additional observation is taken from the unknown distribution and the resu
 %NOTE: one possibility here is to discuss the sw* be finite condition, which eliminates the case \lambda = 0.  But, looking at (\ref{eq:raw_cond}), and the version of (\ref{eq:raw_cond}) after the use of the gradient inequality reveals that this inequality will not be satisfied for the case of $\lamba=\kappa=0$ anyway. 
 
 It is possible to simplify the condition in \eqref{eq:cost_decrease_cond} for some $\phi$-divergences, and we detail this in the corollary below. 
-In particular, condition \eqref{eq:cost_decrease_cond} uses the dual formulation and (sub)gradient $\phi^{* \prime}$. 
-By utilizing the primal-dual relationship $\frac{p_{\hat{\omega}}^*}{q_{\hat{\omega}}} = \phi^{* \prime}(s_{\hat{\omega}}^*)$, we provide easy-to-check conditions using $\q,\p^*$ and $N$. 
+Condition \eqref{eq:cost_decrease_cond} uses the dual formulation and (sub)gradient $\phi^{* \prime}$. 
+This allows us to utilize the primal-dual relationship $\frac{p_{\hat{\omega}}^*}{q_{\hat{\omega}}} = \phi^{* \prime}(s_{\hat{\omega}}^*)$ to provide easy-to-check conditions using $\q,\p^*$ and $N$. 
 
 
 %\begin{remark}
@@ -725,26 +729,46 @@ By utilizing the primal-dual relationship $\frac{p_{\hat{\omega}}^*}{q_{\hat{\om
 	\end{multicols}
 	\noindent We illustrate the rest of the steps using Burg entropy. 
 	Because $I_{\phi_c}(\p,\q) = I_\phi(\p,\q)$, we can equivalently solve \plp\ by using $\phi_c$ instead. 
-	Applying condition (\ref{eq:cost_decrease_cond}) to $\phi_{b,c}$, after some algebra, we obtain the condition $- \left( \frac{N}{N+1} \right)s_{\hat{\omega}}^* >1$ for Burg entropy. 
+	Applying (\ref{eq:cost_decrease_cond}) to $\phi_{b,c}$, after some algebra, we obtain the simplified condition $- \left( \frac{N}{N+1} \right)s_{\hat{\omega}}^* >1$ for Burg entropy. 
 	Property \ref{property:primal_dual_relation} yields the relationship $\frac{p^*_{\hat{\omega}}}{q_{\hat{\omega}}}=\frac{-1}{s_{\hat{\omega}}^*}$. 
 	Substituting this into the simplified condition gives the desired result. 
+	Modified $\chi^{2}$ must consider the split at $0$. 
+	This can be easily handled. 
+	The left-hand side of (\ref{eq:cost_decrease_cond}) contains the term  $\phi^{*\prime}_{m\chi^2, b}(s_{\omega}^*)s_{\omega}^*$, which is equal to $2\left(\frac{p_{\omega}^*}{q_\omega}\right)^2$.  
+	Both terms equal to $0$ if $s_{\omega}^* < 0$ and $(s_{\omega}^*)^2/2$ otherwise.  
+	The right-hand side can be handled similarly, resulting in the final condition presented above. 
 	\Halmos
 \end{proof}
+
+Let us take a closer look into Corollary~\ref{cor:cost_decrease_trick}'s condition for Burg entropy. 
+Recall that using Burg entropy, we obtain the likelihood robust optimization of \cite{wang2010likelihood}, and it has been used by some authors as the Kullback-Leibler divergence because of the change between $\p$ and $\q$. 
+In this case, we have the condition $p_{\hat{\omega}}^* < \frac{N}{N+1}q_{\hat{\omega}}$.  
+This means that the \plp\ has assigned a worst-case probability  $p_{\hat{\omega}}^*$ that is less than the slightly adjusted observed frequency $q_{\hat{\omega}}=\frac{N_{\hat{\omega}}}{N}$ of scenario $\hat{\omega}$. 
+The problem \plp\ focuses on the worst-case cost within the ambiguity set. 
+It tends to assign higher probabilities $p_\omega^*$ to costly 
+scenarios. 
+Because $p_{\hat{\omega}}^* < \frac{N}{N+1}q_{\hat{\omega}}$, the condition in Corollary~\ref{cor:cost_decrease_trick} suggests that $\hat{\omega}$ might not be a very costly scenario. 
+If we observe one more from this scenario, we believe it is more likely in the nominal (or true) distribution. 
+Consequently, a lower-cost scenario being more likely would decrease the optimal cost. 
+
 
 The simple conditions in Proposition~\ref{prop:value} and Corollary~\ref{cor:cost_decrease_trick} provide insight into different scenarios for a decision maker. 
 Let $L = \left\{ \hat{\omega} : \sum_{\omega=1}^n q_\omega \phi^{*\prime}\left(\frac{N}{N+1}s^*_\omega\right) \left(\frac{N}{N+1}s^*_\omega\right) > \phi^*\left(\frac{N}{N+1}s^*_{\hat{\omega}}\right) \right\}$.
 %That is, $L$ gives the set of scenarios that, if sampled one more observation, would result in a decrease in the optimal cost in \plp.  
-Set $L$ divides the scenarios into two---the ones in $L$ guarantee a drop in the overall cost if sampled one more and therefore can be considered ``good'' scenarios. 
+Set $L$ divides the scenarios into two---the ones in $L$ guarantee a drop in the overall cost if sampled one more.
+Therefore, these scenarios can be considered `good' or `optimistic' scenarios. 
 Note that scenarios not in $L$ can also result in the cost decrease. 
-The numerical experiments in Section \ref{sec:comp_results} suggest that $L$ is an adequate indicator of ``good'' scenarios for our test problem. 
+The numerical experiments in Section \ref{sec:comp_results} suggest that $L$ is an adequate indicator of `good' scenarios for our test problem. 
  
+
+
 
 Finally, one might be interested in obtaining a lower bound on the probability that the next sample will decrease the optimal cost. 
 An approximate lower bound on the probability of selecting a sample in $L$ can be found by solving
 \begin{equation}
 	\min_{r} \left\{ \sum_{\omega \in L} r_\omega \colon\ r \in \mathcal{P} \right\}. \label{eq:lb_probability}
 \end{equation}
-That is, we find the minimum probability of $L$ within the ambiguity set defining \plp\ (since we do not know the true distribution).
+Because we do not know the true distribution, we find the minimum probability of the scenarios in $L$ within the ambiguity set defining \plp.
 We solve (\ref{eq:lb_probability}) by taking its dual.
 
 
@@ -752,61 +776,129 @@ We solve (\ref{eq:lb_probability}) by taking its dual.
 \subsection{Asymptotic Analysis}
 \label{ssec:epiconvergence}
 
-We now wish to show that \plp\ behaves essentially the same as the corresponding SLP-2 with the (unknown) true distribution $\qtrue$ as $N\rightarrow \infty$. 
+We now show that \plp\ behaves essentially the same as the corresponding SLP-2 with the (unknown) true distribution $\qtrue$ as $N\rightarrow \infty$. 
 %We now wish to show that the optimal value and solution of \plp\ converges to the optimal value and solution of the corresponding SLP-2 with the (unknown) true distribution $\qtrue$.
-This requires that the sequence of nominal distributions converge to the true distribution $\qtrue$ in $L^\infty$, a situation that is satisfied by the assumed empirical distribution.
+%I HAD THIS BELOW SENTENCE BUT REMOVED IT. 
+This requires that the sequence of nominal probabilities $\q$ converge to $\qtrue$ with probability one (w.p.1) uniformly in $\omega$---a situation that is satisfied by the assumed empirical probabilities under mild conditions.
+To emphasize the nominal distribution's dependence on $N$, we use $\q^N$ in this section. 
 %In the proof, we assume $q^N = q^N^N$.
-To emphasize the dependence of $N$ in the nominal distribution used, we prefer to use $q^N$ in this section. 
+We begin by showing that the worst-case probabilities $\p^*$ obtained by solving  \plp\ have a similar asymptotic behavior as $\q^N$. 
+%%converge to the true distribution $\qtrue$ as $N \rightarrow \infty$ uniformly w.p.1. 
+%This result shows that  $\p^*$ also obeys a Uniform Strong Law of Large Numbers (USSLN). 
 
-We begin by showing that the worst-case distribution obtained by solving the \plp\ converges weakly to the true distribution as $N \rightarrow \infty$.
-Let $(\Xi,{\cal F},\P^\infty)$ be the probability space associated with taking infinitely many random samples from the distribution $\qtrue$.
-Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert q^N(\xi) - \qtrue \Vert_\infty \rightarrow 0$.
 
 \begin{proposition} \label{prop:weak_conv}
-	Suppose $\phi(t) \geq 0$ has a unique root at $t = 1$.
+	Suppose $\phi(t) \geq 0$ has a unique root at $t = 1$, the $N$-observation \plp\ with $\rho_N$ has a finite optimal solution $(\x^*, \p^*)$, w.p.1, and the observations are independent and identically distributed from a distribution with probability mass function $\qtrue$. 
+%in a way that $q^N_\omega$ obeys the Strong Law of Large Numbers (SLLN) for each $\omega$. 
+	Then, w.p.1, $\sup_\omega |p^*_{\omega} - q^{\text{true}}_\omega| \rightarrow 0$ as $N \rightarrow \infty$. 
 	%Let $p \neq \qtrue$.
-	For all $\epsilon > 0$ and $\xi \in \Xi'$, there exists $N'$ such that $\forall N \geq N'$, $I_{\phi}(p,q^N(\xi)) \leq \frac{\rho_0}{N}$ implies $\max_\omega |p_\omega - \qtrue_\omega| \leq \epsilon$.
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:weak_conv}.}
-	Let $Z = \{\omega : \qtrue_\omega = 0\}$ be the set of impossible scenarios.
-	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \qtrue_\omega > \frac{\epsilon}{2}$ and drop the dependence on $\xi \in \Xi'$.	
-	First, note that $\max_\omega |p_\omega - \qtrue_\omega| \leq \max_\omega |p_\omega - q^N_\omega| + \max_\omega |q^N_\omega - \qtrue_\omega|$.
-	Let $N''$ be such that $\max_\omega |q^N_\omega - \qtrue_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
-	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - q^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,q) > \frac{\rho_0}{N}$.
-	First, bound the divergence by
+	Because $q_\omega^N=\frac{N_\omega}{N}$ obeys the strong law of large numbers and $\omega =1,...,n$ is a finite set, we have uniform convergence over $\omega$. 
+	That is, $\sup_\omega |q^N_{\omega} - q^{\text{true}}_\omega| \rightarrow 0$ as $N \rightarrow \infty$, w.p.1.
+	Now, on a sample path that this convergence occurs, we will show that for all $\epsilon > 0$, there exists $N'$  (depending on the sample path) such that $\forall N \geq N'$ (on that path), $I_{\phi}(\p^*,\q^N) \leq \frac{\rho_0}{N}$ implies $\sup_\omega |p^*_\omega - q^{\text{true}}_\omega| \leq \epsilon$.
+	Because such sample paths have measure 1, our desired result will occur w.p.1. 
+	Below, for simplicity of notation we skip the dependence on a particular sample path.
+
+
+	First, note that $\sup_\omega |p_\omega^* - q^{\text{true}}_\omega| \leq \sup_\omega |p_\omega^* - q^N_\omega| + \sup_\omega |q^N_\omega - q^{\text{true}}_\omega|$.
+	Assume, again for simplicity, $\epsilon$ is chosen so that $\min_{\omega} q^{\text{true}}_\omega > \frac{\epsilon}{2}$.
+	Let $N''$ be such that $\sup_\omega |q^N_\omega - q^{\text{true}}_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N''$.
+	This implies $q^N_\omega>0$ for all $N \geq N''$ for all $\omega$.
+	Now suppose  $\sup_\omega |p_\omega^* - q^N_\omega| > \frac{\epsilon}{2}$. 
+	Then, for at least one $\omega$---let's denote it $\ob$---we have either $p_{\ob}^* >q_{\ob}^N + \frac{\epsilon}{2}$ or $p_{\ob}^* < q_{\ob}^N - \frac{\epsilon}{2}$.
+	In either case, because $\phi(t)\geq 0$ is a convex function with a root at $t=1$, we can say for $\ob$ 
+$$
+\phi \left( \frac{p_{\ob}^*}{q^N_{\ob}} \right) \geq \min\left\{ \phi\left( \frac{q^N_{\ob}+\tfrac{\epsilon}{2}}{q^N_{\ob}} \right), \phi\left( \frac{q^N_{\ob}-\tfrac{\epsilon}{2}}{q^N_{\ob}} \right) \right\} \geq \min\left\{ \phi\left( 1+\frac{\epsilon}{2}\right), \phi\left( 1-\frac{\epsilon}{2}\right) \right\}. 
+$$  
+	The last inequality follows from the fact that $\frac{a+\frac{\epsilon}{2}}{a} \geq 1+ \frac{\epsilon}{2}$ and $\frac{a-\frac{\epsilon}{2}}{a} \leq 1- \frac{\epsilon}{2}$ for $0<a\leq 1$ and again the properties of $\phi$. 
+	Putting this all together, 
+%	under the set forth assumptions, we have
 	\begin{align}
-		I_{\phi}(p,q^N) & = \sum_{\omega=1}^n q^N_\omega \phi\left( \frac{p_\omega}{q^N_\omega} \right) \nonumber \\
-		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} q^N_\omega \phi\left( \frac{p_\omega}{q^N_\omega} \right) \nonumber \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \{q^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{q^N_\omega} \right) \right\} \nonumber \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{q^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
-		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
+		I_{\phi}(\p^*,\q^N) & = \sum_{\omega=1}^n q^N_\omega \phi\left( \frac{p_\omega^*}{q^N_\omega} \right) \nonumber \\
+%		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} q^N_\omega \phi\left( \frac{p_\omega}{q^N_\omega} \right) \nonumber \\
+		& \geq  \min_{\omega} \{q^N_\omega\} \cdot  \phi \left( \frac{p_{\ob}^*}{q^N_{\ob}} \right)  \nonumber \\
+%		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{q^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
+		& \geq  \min_{\omega} \left\{ q^{\text{true}}_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:last}.
 	\end{align}
-	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios---please see Section~\ref{ssec:suppressandpop} for details) and zero otherwise.	
-	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{q^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{q^N_\omega+\tfrac{\epsilon}{2}}{q^N_\omega} \right), \phi\left( \frac{q^N_\omega-\tfrac{\epsilon}{2}}{q^N_\omega} \right) \right\}$ for at least one $\omega$ and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
-	
-	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
+	The right-hand side of (\ref{eq:last}) is positive because $\phi$ has a unique root at $t=1$. 
+	By choosing $N'\geq N''$ to satisfy $\min_{\omega} \left\{ q^{\text{true}}_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\}\geq \frac{\rho_0}{N'}$, we see that $\sup_\omega |p_\omega^* - q^N_\omega| > \frac{\epsilon}{2}$ implies $I_\phi(\p^*,\q) > \frac{\rho_0}{N}$ for all $N \geq N'$. 
+	Because the phi-divergence constraint ensures $I_\phi(\p^*,\q) \leq \frac{\rho_0}{N}$, we must have $\sup_\omega |p_\omega^* - q^N_\omega| \leq \frac{\epsilon}{2}$ for all $N \geq N'$, and the desired result follows. 
+%\bigskip 
+%\bigskip 
+%\bigskip 
+%
+%
+%	This means that for all $N \geq N'$,  $\sup_\omega |p_\omega - q^N_\omega| > \frac{\epsilon}{2}$ implies that $I_\phi(\p,\q) > \frac{\rho_0}{N}$.
+%
+%\bigskip 
+%
+%	For simplicity, we assume $\epsilon$ is chosen so that $\max_{\omega \notin Z} \qtrue_\omega > \frac{\epsilon}{2}$ and drop the dependence on $\xi \in \Xi'$.	
+%
+%	To complete the proof, we will show that one can choose $N' \geq N''$ such that $\forall N \geq N'$, $\max_\omega |p_\omega - q^N_\omega| > \frac{\epsilon}{2} \Rightarrow I_\phi(p,q) > \frac{\rho_0}{N}$.
+%	First, bound the divergence by
+%	\begin{align}
+%		I_{\phi}(p,q^N) & = \sum_{\omega=1}^n q^N_\omega \phi\left( \frac{p_\omega}{q^N_\omega} \right) \nonumber \\
+%		& = \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \sum_{\omega \notin Z} q^N_\omega \phi\left( \frac{p_\omega}{q^N_\omega} \right) \nonumber \\
+%		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \{q^N_\omega\} \cdot \max_{\omega \notin Z} \left\{ \phi \left( \frac{p_\omega}{q^N_\omega} \right) \right\} \nonumber \\
+%		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega  + \min_{\omega \notin Z} \{q^N_\omega\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \label{eq:asymptotic_proof_phi_substitution} \\
+%		& \geq \bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \nonumber,
+%	\end{align}
+%	where $\bar{s}\mathbb{I}_{\bar{s} < \infty}$ is the indicator function taking value $\bar{s}$ if $\bar{s} < \infty$ (i.e., if $\phi$ can pop scenarios---please see Section~\ref{ssec:suppressandpop} for details) and zero otherwise.	
+%	Inequality (\ref{eq:asymptotic_proof_phi_substitution}) is true because $\phi \left( \frac{p_\omega}{q^N_\omega} \right) \geq \min\left\{ \phi\left( \frac{q^N_\omega+\tfrac{\epsilon}{2}}{q^N_\omega} \right), \phi\left( \frac{q^N_\omega-\tfrac{\epsilon}{2}}{q^N_\omega} \right) \right\}$ for at least one $\omega$ and applying the inequalities $\frac{a+\eta}{a} \geq 1 + \eta$ and $\frac{a-\eta}{a} \leq 1-\eta$.
+%	
+%	Finally, choose $N'$ to satisfy $\bar{s} \mathbb{I}_{\bar{s} < \infty} \sum_{\omega \in Z} p_\omega + \min_{\omega \notin Z} \left\{ \qtrue_\omega - \frac{\epsilon}{2} \right\} \cdot \min\left\{ \phi\left(1+\frac{\epsilon}{2}\right), \phi\left(1-\frac{\epsilon}{2}\right) \right\} \geq \frac{\rho_0}{N'}$.
 	\Halmos
+% 
+%
+% This is the stuff that was before the proposition 
+%	Let $(\Xi,{\cal F},\P^\infty)$ be the probability space associated with taking infinitely many random samples from the distribution $\qtrue$.
+%Let $\Xi' \subset \Xi$ be a measure 1 set such that $\Vert q^N(\xi) - \qtrue \Vert_\infty \rightarrow 0$.
+%\bigskip 
+%
+%	For all $\epsilon > 0$ and $\xi \in \Xi'$, there exists $N'$ such that $\forall N \geq N'$, $I_{\phi}(p,q^N(\xi)) \leq \frac{\rho_0}{N}$ implies $\max_\omega |p_\omega - \qtrue_\omega| \leq \epsilon$.
+%\bigskip 
+%
+%
+%	Let $Z = \{\omega : \qtrue_\omega = 0\}$ be the set of impossible scenarios.
+%
 \end{proof}
 
-The requirements on $\phi$ in Proposition \ref{prop:weak_conv} are satisfied by every divergence in Table \ref{tb:phi_definitions} except Likelihood (which, however, can be rewritten as Burg Entropy).
-The unique root requirement, however, is violated for the special cases introduced in Section \ref{ssec:special_phi}.
-Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\qtrue$, which is used to show the desired result below. 
-%In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\qtrue$ by establishing the epiconvergence of \plp\ to SLP-2.
+We are now ready to present the main result on the asymptotic behavior of \plp. 
+
+
 \begin{theorem}
 	\label{thm:epiconvergence}
-	Assume $X$ is compact and $h_\omega(\x)$ are primal and dual feasible for every $\x \in X$.
-	Then, the optimal value of \plp\ (\ref{eq:plp_two_stage}) converges to that of SLP-2 (\ref{eq:slp_first_stage}) with distribution $\qtrue$ and all limit points of the solutions of \plp\ solve SLP-2 with distribution $\qtrue$.
+	Assume $X \neq \emptyset$ is compact, and $h_\omega(\x)$ are primal and dual feasible for every $\x \in X$.
+	Suppose $\phi(t) \geq 0$ has a unique root at $t = 1$, and the observations are independent and identically distributed from a distribution with probability mass function $\qtrue$. 
+	Then, the optimal value of \plp\ given in (\ref{eq:plp_two_stage}) converges to that of SLP-2 given in (\ref{eq:slp_first_stage}) with $\qtrue$, and all limit points of the solutions $\x^*$ of \plp\ solve SLP-2 with $\qtrue$ as $N \rightarrow \infty$.
 \end{theorem}
 
 \begin{proof}{\sc Proof of Theorem \ref{thm:epiconvergence}.}
+	The assumptions ensure $\sup_{\omega, \x \in X}|h_\omega(\x)|<C$ for some constant $C<\infty$. 
+	This, together with $X\neq \emptyset$ and $\mathcal{P} \neq \emptyset$ both being compact, implies w.p.1 \plp\ and SLP-2 with $\qtrue$ have finite optimal solutions. 
 	The theorem can be proven by showing the epiconvergence of the objective function of \plp\ to that of SLP-2.
-    To this end, we apply Proposition \ref{prop:weak_conv} to \citep[Theorem 3.7]{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
+   Let $f(\x,\omega)=\c\x + h_\omega(\x)$. 
+	View the objective of \plp\ as $\ee{\p^*}{f(\x,\omega)}=\sum_{\omega=1}^{n}p^*_\omega f(\x,\omega)$ and the objective of SLP-2 with $\qtrue$ as $\ee{\qtrue}{f(\x,\omega)}=\sum_{\omega=1}^{n}q^{\text{true}}_\omega f(\x,\omega)$. 
+	Here, $\p^*$ depends on the number of observations $N$, the actual observations collected, and also $\x$.  
+	The proof of Proposition \ref{prop:weak_conv} implies that $\p^*$ converges in distribution to $\qtrue$ (for all $\x$ including $\x^*$) as $N \rightarrow \infty$.
+	Applying this result to Theorem 3.7 of \cite{dupacova1988asymptotic} establishes epiconvergence of $\ee{\p^*}{f(\x,\omega)}$ to $\ee{\qtrue}{f(\x,\omega)}$ under the additional conditions: (i) $X$ is closed and nonempty (satisfied by our assumptions), (ii) for all $\x \in X$, $f(x, \omega)$ is continuous over $\omega$ (satisfied because $\omega$ is discrete), (iii) for all $\omega$, $f(x, \omega)$ is lower-semicontinuous and locally lower Lipschitz on $X$ as defined in \cite{dupacova1988asymptotic} (satisfied by our class of problems \citep{shaDR:09}).
+	%, and (iv) convergence in distribution of the $\p^*$ to $\qtrue$ (implied by Proposition \ref{prop:weak_conv}). 
+	Consequently, all limit points $\x^*$ of \plp\ solve SLP-2 with probability mass function $\qtrue$. 
+	 With $X$ and $\Omega$ compact, the optimal values also converge \citep[]{}.
+%we apply Proposition \ref{prop:weak_conv} to \cite[Theorem 3.7]{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
     \Halmos
 \end{proof}
 
 
 
+
+
+The requirements on $\phi$ in Proposition \ref{prop:weak_conv} are satisfied by every divergence in Table \ref{tb:phi_definitions} except Likelihood (which, however, can be rewritten as Burg Entropy).
+The unique root requirement, however, is violated for the special cases introduced in Section \ref{ssec:special_phi}.
+Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\qtrue$, which is used to show the desired result below. 
+%In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\qtrue$ by establishing the epiconvergence of \plp\ to SLP-2.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{A Classification of $\phi$-Divergences}

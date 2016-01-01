@@ -1167,6 +1167,16 @@
   Volume                   = {317}
 }
 
+@Book{rockafellar_70,
+  Title                    = {Convex Analysis},
+  Author                   = {R. T. Rockafellar},
+  Publisher                = {Princeton University Press},
+  Year                     = {1970},
+
+  Owner                    = {Guzin Bayraksan},
+  Timestamp                = {2015.04.26}
+}
+
 @Article{scarf1958min,
   Title                    = {A min-max solution of an inventory problem},
   Author                   = {H. Scarf and K.J. Arrow and S. Karlin},
