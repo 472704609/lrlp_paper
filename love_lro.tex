@@ -870,34 +870,28 @@ We are now ready to present the main result on the asymptotic behavior of \plp.
 
 \begin{theorem}
 	\label{thm:epiconvergence}
-	Assume $X \neq \emptyset$ is compact, and $h_\omega(\x)$ are primal and dual feasible for every $\x \in X$.
+	Assume $X \neq \emptyset$ is compact and $h_\omega(\x)$ are primal and dual feasible for every $\x \in X$.
 	Suppose $\phi(t) \geq 0$ has a unique root at $t = 1$, and the observations are independent and identically distributed from a distribution with probability mass function $\qtrue$. 
-	Then, the optimal value of \plp\ given in (\ref{eq:plp_two_stage}) converges to that of SLP-2 given in (\ref{eq:slp_first_stage}) with $\qtrue$, and all limit points of the solutions $\x^*$ of \plp\ solve SLP-2 with $\qtrue$ as $N \rightarrow \infty$.
+	Then, the optimal value of \plp\ given in (\ref{eq:plp_two_stage}) converges to that of SLP-2 given in (\ref{eq:slp_first_stage}) with $\qtrue$, and all limit points of the solutions $\x^*$ of \plp\ solve SLP-2 with $\qtrue$ as $N \rightarrow \infty$, w.p.1.
 \end{theorem}
 
 \begin{proof}{\sc Proof of Theorem \ref{thm:epiconvergence}.}
-	The assumptions ensure $\sup_{\omega, \x \in X}|h_\omega(\x)|<C$ for some constant $C<\infty$. 
-	This, together with $X\neq \emptyset$ and $\mathcal{P} \neq \emptyset$ both being compact, implies w.p.1 \plp\ and SLP-2 with $\qtrue$ have finite optimal solutions. 
-	The theorem can be proven by showing the epiconvergence of the objective function of \plp\ to that of SLP-2.
+	The assumptions ensure that $\sup_{\omega, \x \in X}|h_\omega(\x)|<C$ for some constant $C<\infty$ and that both problems SLP-2 with $\qtrue$ and  \plp\ w.p.1 have finite optimal solutions.  
    Let $f(\x,\omega)=\c\x + h_\omega(\x)$. 
-	View the objective of \plp\ as $\ee{\p^*}{f(\x,\omega)}=\sum_{\omega=1}^{n}p^*_\omega f(\x,\omega)$ and the objective of SLP-2 with $\qtrue$ as $\ee{\qtrue}{f(\x,\omega)}=\sum_{\omega=1}^{n}q^{\text{true}}_\omega f(\x,\omega)$. 
-	Here, $\p^*$ depends on the number of observations $N$, the actual observations collected, and also $\x$.  
-	The proof of Proposition \ref{prop:weak_conv} implies that $\p^*$ converges in distribution to $\qtrue$ (for all $\x$ including $\x^*$) as $N \rightarrow \infty$.
-	Applying this result to Theorem 3.7 of \cite{dupacova1988asymptotic} establishes epiconvergence of $\ee{\p^*}{f(\x,\omega)}$ to $\ee{\qtrue}{f(\x,\omega)}$ under the additional conditions: (i) $X$ is closed and nonempty (satisfied by our assumptions), (ii) for all $\x \in X$, $f(x, \omega)$ is continuous over $\omega$ (satisfied because $\omega$ is discrete), (iii) for all $\omega$, $f(x, \omega)$ is lower-semicontinuous and locally lower Lipschitz on $X$ as defined in \cite{dupacova1988asymptotic} (satisfied by our class of problems \citep{shaDR:09}).
-	%, and (iv) convergence in distribution of the $\p^*$ to $\qtrue$ (implied by Proposition \ref{prop:weak_conv}). 
-	Consequently, all limit points $\x^*$ of \plp\ solve SLP-2 with probability mass function $\qtrue$. 
-	 With $X$ and $\Omega$ compact, the optimal values also converge \citep[]{}.
-%we apply Proposition \ref{prop:weak_conv} to \cite[Theorem 3.7]{dupacova1988asymptotic}, which establishes the epiconvergence of (\ref{eq:plp_primal}) under the evident conditions that the objective function (under the worst-case distribution) is continuous with respect to $\omega$ (because $\omega$ is discrete) and lower semicontinuous and locally lower Lipschitz with respect to $x$ (because \plp\ is convex).
+	View the objective of \plp\ as $\ee{\p^*}{f(\x,\omega)}=\sum_{\omega=1}^{n}p^*_{\omega,N}(\x) f(\x,\omega)$ and the objective of SLP-2 with $\qtrue$ as $\ee{\qtrue}{f(\x,\omega)}=\sum_{\omega=1}^{n}q^{\text{true}}_\omega f(\x,\omega)$. 
+	Here, $\p^*$ depends on the number of observations $N$, the actual observations collected, and also $\x$; so we use the longer notation $p^*_{\omega,N}(\x)$ inside the summation for clarity.
+	Following the same arguments as in the proof Proposition \ref{prop:weak_conv}, we have for each $\x \in X$, $\sup_\omega |p^*_{\omega, N}(\x) - q^{\text{true}}_\omega| \rightarrow 0$ as $N \rightarrow \infty$, w.p.1. 
+	Using this result, we can obtain pointwise strong law of large numbers (SLLN)---that is, for each $\x  \in X$, $|\ee{\p^*}{f(\x,\omega)}-\ee{\qtrue}{f(\x,\omega)}|\rightarrow 0$ as $N\rightarrow \infty$ w.p.1. 
+	Because $X$ is convex and compact, $f(\x,\omega)$ is convex and continuous on $X$ for all $\omega$, and $\ee{\qtrue}{f(\x,\omega)}$ is finite valued and continuous on $X$, the desired result follows (see, e.g., Theorem 4 of \cite{shapiro_03}). 
     \Halmos
 \end{proof}
 
 
 
 
-
-The requirements on $\phi$ in Proposition \ref{prop:weak_conv} are satisfied by every divergence in Table \ref{tb:phi_definitions} except Likelihood (which, however, can be rewritten as Burg Entropy).
-The unique root requirement, however, is violated for the special cases introduced in Section \ref{ssec:special_phi}.
-Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\qtrue$, which is used to show the desired result below. 
+The requirements on $\phi$ in Proposition \ref{prop:weak_conv} and Theorem \ref{thm:epiconvergence} are satisfied by every divergence in Table \ref{tb:phi_definitions} except Likelihood (which, however, can be rewritten as Burg Entropy).
+The unique root requirement, on the other hand, is violated for the special cases to be introduced in Section \ref{ssec:special_phi}.
+%Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\ref{eq:plp_primal}) converge weakly to $\qtrue$, which is used to show the desired result below. 
 %In the next theorem, we establish the proof that the optimal value and solution of \plp\ converges to that of the SLP-2 with distribution $\qtrue$ by establishing the epiconvergence of \plp\ to SLP-2.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -905,106 +899,181 @@ Proposition \ref{prop:weak_conv} implies that the worst-case distributions of (\
 \label{sec:classification}
 
 Given that there are many $\phi$-divergences to choose from, it is important to study how $\phi$-divergences act within an ambiguous (or, distributionally robust) stochastic optimization model. 
-We present a classification of $\phi$-divergences into four types, resulting from an examination of the limiting behavior of $\phi(t)$ as $t \rightarrow 0$ and $t \rightarrow \infty$.
-Different classifications may be suitable to different problem types and desired qualities in the ambiguous model---we discuss modeling considerations with respect to our classification in Section \ref{ssec:modeling}.
-We also provide some special $\phi$-divergences that result in common risk models used in the literature and discuss their behavior with respect to our classification in Section \ref{ssec:special_phi}.
+We present a classification of $\phi$-divergences into four types, resulting from an examination of the limiting behavior of $\phi(t)$ as $t \searrow 0$ and $t \nearrow \infty$.
+Different classifications may be suitable to different problem types and desired qualities in the ambiguous model.
+We discuss modeling considerations with respect to our classification in Section \ref{ssec:modeling}.
+We also provide some special $\phi$-divergences that result in common risk models and discuss their behavior with respect to our classification in Section \ref{ssec:special_phi}.
+We begin in Section~\ref{ssec:suppressandpop} by defining two behaviors---suppression and popping of scenarios---that result in our main classification. 
+Additional details on these behaviors, along with a subclassification, follow in Sections~\ref{ssec:suppress} and \ref{ssec:pop}. 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Suppressing and Popping of Scenarios}
+\subsection{Suppression and Popping of Scenarios: A Main Classification}
 \label{ssec:suppressandpop}
 
-As motivation for our classification, consider a self-adjoint $\phi$-divergence, which satisfies the relation
-\begin{equation} \label{eq:self_adjoint_classification}
-	\frac{\phi(t)}{t} = \phi\left(\frac{1}{t}\right),
-\end{equation}
-and consider $t \rightarrow \infty$.
-If both sides of (\ref{eq:self_adjoint_classification}) are finite in the limit, then we see a correspondence between the boundedness of $\phi(t)$ for $t < 1$ and linear growth of $\phi(t)$ for $t > 1$.
-On the other hand, infinite limits of (\ref{eq:self_adjoint_classification}) indicate a correspondence between superlinear growth of $\phi(t)$ for $t > 1$ and unboundedness of $\phi(t)$ for $t < 1$.
+Recall the definition of the ambiguity set $\mathcal{P}$, in particular, the phi-divergence constraint 
+\[
+\sum_{\omega = 1}^{n} q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho. 
+\]
+Suppose $0<\rho<\infty$. 
+Above, $\phi$ has arguments given by ratios of probabilities, $\tfrac{p_\omega}{q_\omega}$. 
+The case $q_\omega > 0$, $p_\omega = 0$ means that a scenario with a positive nominal probability has been assigned zero probability by the ambiguous counterpart problem. 
+This case corresponds to the limit of $\phi$ as $t \searrow 0$. 
+On the other hand, the case  $q_\omega = 0$, $p_\omega > 0$ could mean that scenario $\omega$ has never been observed before---so it has a zero probability in the nominal distribution---but the ambiguous counterpart problem has assigned it a positive probability. 
+Recall that, by definition, $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$, and so in the latter case, we need to examine $\lim_{t \nearrow \infty} \frac{\phi(t)}{t}$.  
 
-Recall the definition of the ambiguity set, in particular, the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}). 
-In the \plp, $\phi$ has arguments given by ratios of probabilities, $\tfrac{p_\omega}{q_\omega}$ and the limits $t \rightarrow 0$ and $t \rightarrow \infty$ correspond to the cases when $p_\omega = 0$ and $q_\omega = 0$, respectively.
-Consider each of these limiting cases:
+
+Consider each of the limiting cases in more detail:
 \begin{itemize}
-	\item {\sc Case 1:} $q_\omega > 0$ but $p_\omega = 0$.
-		We call this the ``{\bf Suppress}'' behavior because a scenario with a positive probability in the nominal distribution can take zero probability in the ambiguous problem. In this case we need to examine $\lim_{t \searrow 0} \phi(t)$:
+	\item {\sc Case 1:} ($q_\omega > 0$ but $p_\omega = 0$)
+		We call this the ``{\bf Suppression}'' behavior because a scenario with a positive probability in the nominal distribution can take zero probability in the ambiguous problem. 
+		In other words, such a scenario can be suppressed. 
+%In this case we need to examine $\lim_{t \searrow 0} \phi(t)$:
 	\begin{itemize}
 		\item If $\lim_{t \searrow 0} \phi(t) = \infty$, the ambiguity region will never contain distributions with $p_\omega = 0$ but $q_\omega > 0$.
-		\item On the other hand, if $\lim_{t \searrow 0} \phi(t) < \infty$, the ambiguity region could contain such a distribution, provided $q_\omega$ is sufficiently small or $\rho$ is sufficiently large.
-			We say that such a $\phi$-divergence can \emph{suppress} scenario $\omega$.
+			We say that such a  $\phi$-divergence \emph{cannot suppress} scenarios.
+
+		\item  If $\lim_{t \searrow 0} \phi(t) < \infty$, the ambiguity region could contain such a distribution, provided $q_\omega$ is sufficiently small and/or $\rho$ is sufficiently large.
+			We say that such a $\phi$-divergence  \emph{can suppress} scenarios.
 	\end{itemize}
-	\item {\sc Case 2:} $q_\omega = 0$ but $p_\omega > 0$.
-		We call this the ``{\bf Pop}'' behavior because a scenario with zero probability in the nominal distribution can have a positive probability (or, pop) in the ambiguous problem. In this case, we need to examine $\lim_{t \nearrow 0} \frac{\phi(t)}{t}$:
+
+	\item {\sc Case 2:} ($q_\omega = 0$ but $p_\omega > 0$)
+		We call this the ``{\bf Popping}'' behavior because a scenario with zero probability in the nominal distribution can have a positive probability (or, pop) in the ambiguous problem. 
+%In this case, we need to examine $\lim_{t \nearrow 0} \frac{\phi(t)}{t}$:
 	\begin{itemize}
-		\item If $\lim_{t \nearrow 0} \frac{\phi(t)}{t} = \infty$, the ambiguity region can never contain distributions with $p_\omega > 0$ but $q_\omega = 0$.
-		\item On the other hand, if $\lim_{t \nearrow 0} \frac{\phi(t)}{t} < \infty$, the ambiguity region will admit sufficiently small $p_\omega$.
-			We say that these $\phi$-divergences can \emph{pop} scenario $\omega$.
+		\item If $\lim_{t \nearrow \infty} \frac{\phi(t)}{t} = \infty$, the ambiguity region will never contain distributions with $p_\omega > 0$ but $q_\omega = 0$.
+			We say that such a $\phi$-divergence \emph{cannot pop} scenarios.
+
+		\item If $\lim_{t \nearrow \infty} \frac{\phi(t)}{t} < \infty$, the ambiguity region can admit sufficiently small $p_\omega$.
+			We say that these $\phi$-divergences \emph{can pop} scenarios.
 	\end{itemize}
-	\item {\sc Case 3:} $p_\omega = 0$ but $q_\omega = 0$.
-		Such a situation has no contribution to the divergence, since $0 \phi\left(\tfrac{0}{0}\right) = 0$.
+
+	\item {\sc Case 3:} ($p_\omega = 0$ but $q_\omega = 0$)
+		Such a situation has no contribution to the divergence because $0 \phi\left(\tfrac{0}{0}\right) = 0$.
 \end{itemize}
 
-\noindent These two limiting cases describing suppressing and popping behavior in $\phi$-divergences create four distinct categories.
-Examples of divergences in each category are given in Table \ref{tb:phi_categories}.
-Note that $\phi$ can suppress scenarios if and only if its adjoint $\tilde{\phi}$ can pop scenarios and vice versa.
-This means that self-adjoint $\phi$-divergences are either capable of both popping and suppressing scenarios or capable of neither.
+%\noindent
+The two limiting cases describing suppression and popping behavior 
+%in a $\phi$-divergence 
+create four distinct classes of $\phi$-divergences.
+Table~\ref{tb:phi_categories} categorizes the $\phi$-divergences listed in Table~\ref{tb:phi_definitions} (except for Likelihood).
+We will shortly provide a subclassification for the $\phi$-divergences that can suppress.
+We end this section with a simple proposition that relates the behavior of a $\phi$-divergence with its adjoint.  
+
 
 \begin{table}
 	\TABLE
 	{
-		Examples of $\phi$-divergences fitting into each category.
-		The number in parentheses under the ``Can Suppress Scenarios'' column denotes the subcategory detailed in Section \ref{ssec:suppress}.
+		Examples of $\phi$-divergences fitting into each class.
+		The number in parentheses under the ``Can Suppress Scenarios'' column denotes the subclass detailed in Section \ref{ssec:suppress}.
 		\label{tb:phi_categories}
 	}
-	{\begin{tabular}{l|p{.33\textwidth}p{.33\textwidth}}
-		 & Can Suppress Scenarios & Cannot Suppress Scenarios \\
+	{\begin{tabular}{l p{.33\textwidth}p{.33\textwidth}}
+		 \hline
+		 & Can Suppress Scenarios & Cannot Suppress Scenarios  \\
 		 \hline 
+		&   & \\  [\dimexpr-\normalbaselineskip+3pt]
 		 Can Pop Scenarios %
-			& \parbox{.33\textwidth}{Hellinger Distance (2),\\Variation Distance (1)} %
-			& \parbox{.33\textwidth}{Burg Entropy,\\$\chi^2$-Distance} \smallskip \\
+			& \parbox{.33\textwidth}{Variation Distance (1)\\Hellinger Distance (2)} %
+			& \parbox{.33\textwidth}{$\chi^2$-Distance\\Burg Entropy} \smallskip \\
 		 Cannot Pop Scenarios %
-			& \parbox{.33\textwidth}{Kullback-Leibler Divergence (2),\\Modified $\chi^2$-Distance (1)} %
-			& \parbox{.33\textwidth}{J-Divergence}
+			& \parbox{.33\textwidth}{Modified $\chi^2$-Distance (1)\\Kullback-Leibler Divergence (2)} %
+			& \parbox{.33\textwidth}{J-Divergence}  \\ 
+		&   & \\  [\dimexpr-\normalbaselineskip+3pt]
+		\hline
 	\end{tabular}}
 	{}
 \end{table}
 
+
+
+\begin{proposition} \label{prop:adjoint}
+	A $\phi$-divergence can suppress scenarios if and only if its adjoint $\tilde{\phi}$ can pop scenarios.  
+\end{proposition}
+
+\begin{proof}{\sc Proof of Proposition \ref{prop:adjoint}.}
+%	The adjoint satisfies the relation 
+%	\begin{equation}\label{eq:adjoint}
+%	\end{equation}
+%$$\tilde{\phi}(t) = t\frac{\phi(t)}{t}.$$
+	Suppose $\phi$ can suppress scenarios. 
+	Then, $\lim_{t \searrow 0} \phi(t) < \infty$.
+	Rearranging the adjoint relationship (\ref{eq:adjoint}) as 
+$\frac{\tilde{\phi}(t)}{t} = \phi\left(\frac{1}{t}\right)$, and taking limits as $t \nearrow \infty$, we see that $\lim_{t \nearrow \infty} \frac{\tilde{\phi}(t)}{t}< \infty$.  
+	This means that the adjoint $\tilde{\phi}$ can pop scenarios. 
+	The reverse is also true by the adjoint relationship. 
+	\Halmos
+\end{proof}
+
+Proposition \ref{prop:adjoint} implies that a self-adjoint $\phi$-divergence can only appear in the top left (can suppress and can pop) or bottom right (cannot suppress and cannot pop) corners of Table~\ref{tb:phi_categories}, as can be seen by the Variation and Hellinger distances and the J-divergence. 
+%self-adjoint $\phi$-divergences are either capable of both popping and suppressing scenarios at the same time or capable of neither.
+%This can be seen in Table~\ref{tb:phi_categories} by the Variation and Hellinger distances, and the J-divergence. 
+Proposition \ref{prop:adjoint} also implies that a $\phi$-divergence can suppress but cannot pop scenarios if and only if its adjoint $\tilde{\phi}$ can pop but cannot suppress scenarios. 
+Examples of such adjoints can be seen in the opposite corners of Table~\ref{tb:phi_categories} by the pairs (Modified $\chi^2$-Distance,  $\chi^2$-Distance) and (Kullback-Leibler Divergence, Burg Entropy).  
+
+%\bigskip 
+
+
+%In particular, a self-adjoint $\phi$-divergence can only appear in the top left (can suppress and can pop) or bottom right (cannot suppress and cannot pop) corners of Table~\ref{tb:phi_categories}, as can be seen by the Variation and Hellinger distances, and the J-divergence. 
+
+%	This means that a $\phi$-divergence cannot suppress scenarios if and only if its adjoint cannot pop scenarios and vice versa. 
+%	This also means that self-adjoint $\phi$-divergences are either capable of both popping and suppressing scenarios or capable of neither.
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Modeling Considerations When Choosing a Divergence}
-\label{ssec:modeling}
-
-We offer the following suggestions for choosing an appropriate $\phi$-divergence classification for the data available.
-First, consider whether to choose a distribution that can suppress scenarios.
-If the problem scenarios come from high-quality observed data, one may wish to avoid divergences that can suppress scenarios.
-However, if the data is poorly sampled or comes from opinion rather than observation or simulation, the option of suppressing scenarios may result in a solution with better robustness properties.
-
-Next, consider whether to choose a distribution that allows for popping scenarios.
-If the problem scenarios come strictly from observation, with little theoretical understanding of the problem, we suggest choosing a divergence that cannot pop scenarios.
-However, if the problem scenarios come from a mix of observed/simulated data and expert opinion about scenarios of interest, then divergences that can pop present an interesting modeling choice.
-This allows for including interesting but unobserved scenarios, allowing the mathematical program to assign an appropriate probability to them.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Additional Details about Divergences that can Suppress}
+\subsection{Additional Details about Divergences that can Suppress: A Subclassification}
 \label{ssec:suppress}
 
-Recall the primal-dual variable relation, which specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, where $s_\omega=\frac{h_{\omega}(\x)-\mu}{\lambda}$. 
-Note that suppression ($p_\omega = 0$, $q_\omega > 0$) can occur only when $0 \in \partial \phi^*(s_\omega)$.
-For convenience, we assume $\phi^*$ is differentiable.
-We can examine suppressing in more detail by looking at the behavior of $\phi(t)$ as $t \searrow 0$.
-This analysis yields two subcategories within the $\phi$-divergences that can suppress scenarios---one tends to suppress scenarios one at a time and the other simultaneously. 
+Recall the primal-dual variable relation, which specifies $\frac{p^*_\omega}{q_\omega} = \partial \phi^*(s^*_\omega)$, where $s^*_\omega=\frac{h_{\omega}(\x^*)-\mu^*}{\lambda^*}$. 
+Note that suppression ($p^*_\omega = 0$, $q_\omega > 0$) can occur only when $0 \in \partial \phi^*(s^*_\omega)$.
+Recall also that, by the convex conjugate's properties, we have  $\frac{p^*_\omega}{q_\omega} \in \partial \phi^*(s^*_\omega)$ if and only if $s^*_\omega \in \partial \phi(\frac{p^*_\omega}{q_\omega})$. 
+Assume  $\phi$ and $\phi^*$ are differentiable for convenience. 
+Examining $\lim_{t \searrow 0} \phi'(t)$ reveals when $0=\phi^{* \prime} (s^*_\omega)$ by the aforementioned property of conjugates. 
+This analysis yields two subclasses within the $\phi$-divergences that can suppress scenarios---one tends to suppress scenarios one at a time, and the other suppresses all but the most costly scenario(s) simultaneously.
+
 
 \begin{itemize}
-	\item {\sc Subcategory 1\ ($\lim_{t \searrow 0} \phi'(t) > -\infty$).}  There are nonpositive constants $c,\underline{s}$ such that $\phi^*(s) = c$ for all $s < \underline{s}$. 
-		Thus $\phi^{*\prime}(s_\omega) = 0$ when $s_\omega < \underline{s}$, suppressing all such scenarios.
-		In other words, all scenarios that satisfy the relation $\frac{h_\omega(\x)-\mu}{\lambda} < \underline{s}$ are suppressed.
-		As $\rho$ increases, scenarios tend to be suppressed one at a time.
+	\item {\sc Subclass 1\ ($\lim_{t \searrow 0} \phi'(t) > -\infty$)}  In this case, there are two nonpositive constants $c, \underline{s}$ such that (i)  $\lim_{t \searrow 0} \phi'(t) = \underline{s}$, and (ii) $\phi^*(s) = c$ for all $s < \underline{s}$. 
+		Thus, $\phi^{*\prime}(s_\omega^*) = 0$ when $s_\omega^* < \underline{s}$, suppressing all such scenarios.
+		In other words, all scenarios $\omega$ that satisfy the relation $\frac{h_\omega(\x^*)-\mu^*}{\lambda^*} < \underline{s}$ are suppressed.
+		As $\rho$ increases, scenarios tend to be suppressed one at a time as their $s_\omega^*$ reaches $\underline{s}$.
 
-	\item {\sc Subcategory 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$).} In this case, $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
-		As a result, scenarios can only be suppressed if $s_\omega = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
-		Consequently, all solutions with $h_\omega(\x) < \mu$ have $p_\omega=0$ and we must have $\mu = \max_\omega h_\omega(\x)$ to ensure that scenarios $\omega \in \argmax h_\omega(\x)$ are given positive probability so that $p$ is a probability distribution.
+
+	\item {\sc Subclass 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$)} In this case, $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
+		As a result, scenarios can only be suppressed if $s_\omega^* = -\infty$, which can only occur if $\lambda^* = 0$ and $h_\omega(\x^*) < \mu^*$.
+		Consequently, all scenarios $\omega$ with $h_\omega(\x^*) < \mu^*$ have $p_\omega^*=0$, and we must have $\mu^* = \max_\omega h_\omega(\x^*)$ to ensure that scenarios $\omega \in \argmax h_\omega(\x^*)$ are given positive probability so that $\p^*$ is a probability distribution.
 		This means that all but the most expensive scenario(s) will vanish simultaneously.
-		Divergences of this type can be difficult to deal with numerically when suppression occurs given the denominator of $\lambda = 0$ (see Section \ref{ssec:implement} for details).
+
+
+\bigskip 
+
+In this case, $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
+		As an example of a phi-divergence in this subcategory, see Table~\ref{tb:phi_definitions} and consider the Kullback-Liebler Divergence. 
+		For the Kullback-Liebler Divergence, $\lim_{s \rightarrow -\infty}\phi^*(s) =c=-1$. 
+		Because such a constant $c$ is reached only as $s \rightarrow -\infty$, scenarios can only be suppressed if $s_\omega = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
+		Consequently, all solutions with $h_\omega(\x) < \mu$ have $p_\omega=0$ and we must have $\mu = \max_\omega h_\omega(\x)$ to ensure that scenarios $\omega \in \arg\max h_\omega(\x)$ are given positive probability so that $p$ is a probability distribution.
+		This means that all but the most expensive scenario(s) will vanish simultaneously.
+		Divergences of this type can be difficult to deal with numerically when suppression occurs because of the $\lambda = 0$ in the denominator of $s_\omega$.
+
+\bigskip 
+
+
 \end{itemize}
 
+
+
+
+
+		As an example of a phi-divergence in the first subclass, see Table~\ref{tb:phi_definitions}, and consider the Modified $\chi^2$-Distance. 
+		For the Modified $\chi^2$-Distance, $c=-1$ and $\underline{s}=-2=\lim_{t \searrow 0} \phi'(t)$. 
+
+
+		As an example of a phi-divergence in this subcategory, see Table~\ref{tb:phi_definitions} and consider the Kullback-Liebler Divergence. 
+		For the Kullback-Liebler Divergence, $\lim_{s \rightarrow -\infty}\phi^*(s) =c=-1$. 
+		Because such a constant $c$ is reached only as $s \rightarrow -\infty$, scenarios can only be suppressed if $s_\omega = -\infty$, ... 
+
+		Divergences of this type can be difficult to deal with numerically when suppression occurs given the denominator of $\lambda^* = 0$ (see Section \ref{ssec:implement} for details).
 
 Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories. We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and KL Divergence, respectively, in Section \ref{sec:comp_results}.
 
@@ -1264,6 +1333,33 @@ The next example shows how to generate a convex combination of expectation and C
 % $\mu-\lambda$, being the quantity that defines $\bar{q}$, is like $\mbox{VaR}(h(x))$.
 % I don't know that having VaR in there makes any sense, though.
 % I also can't think of any other way to simplify the above.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Modeling Considerations When Choosing a Divergence}
+\label{ssec:modeling}
+
+\bigskip 
+
+
+ 
+This option provides an interesting modeling choice, where one could include unobserved scenarios in the nominal distribution and let the model decide an appropriate risk-averse probability to these scenarios. 
+
+
+
+\bigskip 
+
+
+
+
+We offer the following suggestions for choosing an appropriate $\phi$-divergence classification for the data available.
+First, consider whether to choose a distribution that can suppress scenarios.
+If the problem scenarios come from high-quality observed data, one may wish to avoid divergences that can suppress scenarios.
+However, if the data is poorly sampled or comes from opinion rather than observation or simulation, the option of suppressing scenarios may result in a solution with better robustness properties.
+
+Next, consider whether to choose a distribution that allows for popping scenarios.
+If the problem scenarios come strictly from observation, with little theoretical understanding of the problem, we suggest choosing a divergence that cannot pop scenarios.
+However, if the problem scenarios come from a mix of observed/simulated data and expert opinion about scenarios of interest, then divergences that can pop present an interesting modeling choice.
+This allows for including interesting but unobserved scenarios, allowing the mathematical program to assign an appropriate probability to them.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
