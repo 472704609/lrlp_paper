@@ -1034,62 +1034,50 @@ This analysis yields two subclasses within the $\phi$-divergences that can suppr
 
 
 \begin{itemize}
-	\item {\sc Subclass 1\ ($\lim_{t \searrow 0} \phi'(t) > -\infty$)}  In this case, there are two nonpositive constants $c, \underline{s}$ such that (i)  $\lim_{t \searrow 0} \phi'(t) = \underline{s}$, and (ii) $\phi^*(s) = c$ for all $s < \underline{s}$. 
+	\item {\sc Subclass 1\ ($\lim_{t \searrow 0} \phi'(t) > -\infty$)}  In this case, there are two nonpositive constants $c, \underline{s}$ such that (i)  $\lim_{t \searrow 0} \phi'(t) = \underline{s}$ and (ii) $\phi^*(s) = c$ for all $s < \underline{s}$. 
 		Thus, $\phi^{*\prime}(s_\omega^*) = 0$ when $s_\omega^* < \underline{s}$, suppressing all such scenarios.
-		In other words, all scenarios $\omega$ that satisfy the relation $\frac{h_\omega(\x^*)-\mu^*}{\lambda^*} < \underline{s}$ are suppressed.
+		In other words, all scenarios $\omega$ that satisfy  $\frac{h_\omega(\x^*)-\mu^*}{\lambda^*} < \underline{s}$ are suppressed.
 		As $\rho$ increases, scenarios tend to be suppressed one at a time as their $s_\omega^*$ reaches $\underline{s}$.
+		\smallskip 
 
 
-	\item {\sc Subclass 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$)} In this case, $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
+	\item {\sc Subclass 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$)} In this case, there is a nonpositive constant $c$ such that $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
 		As a result, scenarios can only be suppressed if $s_\omega^* = -\infty$, which can only occur if $\lambda^* = 0$ and $h_\omega(\x^*) < \mu^*$.
+%		(Recall the discussion after the dual formulation (\ref{eq:plp_two_stage}) that reveals $s_\omega \leq 0$.) 
 		Consequently, all scenarios $\omega$ with $h_\omega(\x^*) < \mu^*$ have $p_\omega^*=0$, and we must have $\mu^* = \max_\omega h_\omega(\x^*)$ to ensure that scenarios $\omega \in \argmax h_\omega(\x^*)$ are given positive probability so that $\p^*$ is a probability distribution.
-		This means that all but the most expensive scenario(s) will vanish simultaneously.
-
-
-\bigskip 
-
-In this case, $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
-		As an example of a phi-divergence in this subcategory, see Table~\ref{tb:phi_definitions} and consider the Kullback-Liebler Divergence. 
-		For the Kullback-Liebler Divergence, $\lim_{s \rightarrow -\infty}\phi^*(s) =c=-1$. 
-		Because such a constant $c$ is reached only as $s \rightarrow -\infty$, scenarios can only be suppressed if $s_\omega = -\infty$, which can only occur if $\lambda = 0$ and $h_\omega(\x) < \mu$.
-		Consequently, all solutions with $h_\omega(\x) < \mu$ have $p_\omega=0$ and we must have $\mu = \max_\omega h_\omega(\x)$ to ensure that scenarios $\omega \in \arg\max h_\omega(\x)$ are given positive probability so that $p$ is a probability distribution.
-		This means that all but the most expensive scenario(s) will vanish simultaneously.
-		Divergences of this type can be difficult to deal with numerically when suppression occurs because of the $\lambda = 0$ in the denominator of $s_\omega$.
-
-\bigskip 
-
-
+		This means that all but the most expensive scenario(s) will vanish simultaneously.\smallskip 
 \end{itemize}
 
+Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subclasses with the number in parentheses.
+As an example of a phi-divergence in the first subclass, consider the Modified $\chi^2$-Distance. 
+For the Modified $\chi^2$-Distance, $c=-1$ and $\underline{s}=-2=\lim_{t \searrow 0} \phi'(t)$. 
+We will numerically show in Section~\ref{ssec:numerical_pop_suppress} that Modified  $\chi^2$-Distance suppresses scenarios one at a time as $\rho$ increases. 
+On the other hand, Kullback-Liebler Divergence belongs to the second subclass. 
+For this divergence, constant $c$ is reached asymptotically; $\lim_{s \rightarrow -\infty}\phi^*(s) =c=-1$. 
+%Because such a constant $c$ is reached only as $s \rightarrow -\infty$, scenarios can only be suppressed if $s_\omega = -\infty$, scenarios will be suppressed simultaneously.  
+Divergences in the second subclass can be difficult to deal with numerically when suppression occurs because of the $\lambda^* = 0$ in the denominator (see Section \ref{ssec:implement} for details).
+In addition to numerical illustration of this subclassification in Section~\ref{ssec:numerical_pop_suppress}, we will shortly provide examples of $\phi$-divergences to illuminate the different behaviors in Section~\ref{ssec:special_phi}. 
 
 
 
-
-		As an example of a phi-divergence in the first subclass, see Table~\ref{tb:phi_definitions}, and consider the Modified $\chi^2$-Distance. 
-		For the Modified $\chi^2$-Distance, $c=-1$ and $\underline{s}=-2=\lim_{t \searrow 0} \phi'(t)$. 
-
-
-		As an example of a phi-divergence in this subcategory, see Table~\ref{tb:phi_definitions} and consider the Kullback-Liebler Divergence. 
-		For the Kullback-Liebler Divergence, $\lim_{s \rightarrow -\infty}\phi^*(s) =c=-1$. 
-		Because such a constant $c$ is reached only as $s \rightarrow -\infty$, scenarios can only be suppressed if $s_\omega = -\infty$, ... 
-
-		Divergences of this type can be difficult to deal with numerically when suppression occurs given the denominator of $\lambda^* = 0$ (see Section \ref{ssec:implement} for details).
-
-Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subcategories. We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and KL Divergence, respectively, in Section \ref{sec:comp_results}.
+% We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and KL Divergence, respectively, in Section \ref{sec:comp_results}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Additional Details about Divergences that can Pop}
 \label{ssec:pop}
 
 Divergences that can pop a scenario have $\phi(t)$ grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ on the domain of $\phi^*(s)$.
-The primal-dual variable relation specifies $\frac{p_\omega}{q_\omega} = \partial \phi^*(s_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
-Intuitively, we can think of $\frac{p_\omega}{0} = \infty$ if $p_\omega > 0$ and thus popping a scenario can only occur when the right-hand side subdifferential also includes $\infty$.
-This, in turn, occurs only when $s_\omega = \bar{s}$.
+(Recall the discussion in Section~\ref{ssec:form} regarding \plp\ in dual form.)
+The primal-dual variable relation specifies $\frac{p^*_\omega}{q_\omega} = \partial \phi^*(s^*_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
+Intuitively, we can think of $\frac{p^*_\omega}{0} = \infty$ if $p^*_\omega > 0$. 
+Thus popping a scenario can only occur when the right-hand side subdifferential also includes $\infty$.
+This, in turn, occurs only when $s^*_\omega = \bar{s}$.
+The implication of this result is that only the most expensive scenarios can be popped. 
 The next proposition makes this statement rigorous.
 
 \begin{proposition} \label{prop:pop}
 	Suppose there is a finite $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if $s_\omega = \bar{s}$.
+	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if $s^*_\omega = \bar{s}$.
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
