@@ -472,13 +472,14 @@ So, the Slater condition holds, and we have strong duality.
 Some $\phi$-divergences have no closed-form representation of $\phi^*$ (e.g., J-divergence), but they can be expressed as the sum of other $\phi$-divergences with closed-form conjugates (e.g., sum of Burg Entropy and KL divergence gives the J-divergence). 
 In this case, the dual can be formed similarly; see \cite{bental2011robust} for details.
 Theorem 1 of \cite{bental2011robust} contains a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
-Observe, in particular, that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.
-We will discuss this case in more detail in Section~\ref{sec:classification}. 
+Observe, in particular, that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$ (see proof of  Proposition \ref{prop:pop} and  Section~\ref{sec:classification} for more details).
+%We will discuss this case in more detail in Section~\ref{sec:classification}. 
 Also, the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
 This constraint results from a dual feasibility consideration. 
 When this limit is finite, i.e., $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t}=  \bar{s}<\infty$, then for any $s> \bar{s}$, $\phi^*(s)=\infty$. 
-Therefore, $\phi$-divergences with a finite limit (like the variation distance) induce this constraint. 
-When this limit is $\infty$ (like the KL divergence), $\phi^*(s)<\infty$ for any finite value of $s$. 
+Therefore, $\phi$-divergences with a finite limit (like the variation distance) induce this constraint.
+In this case, $\lambda$ can be moved to the right-hand side of (\ref{eq:plp_feas_constraint}) for numerical implementation. 
+On the other hand, when this limit is $\infty$ (like the KL divergence), $\phi^*(s)<\infty$ for any finite value of $s$. 
 In this case, all values are dual feasible, and (\ref{eq:plp_feas_constraint}) can be removed from the formulation. 
 
 %For some $\phi$-divergences, dant.
@@ -903,12 +904,12 @@ We present a classification of $\phi$-divergences into four types, resulting fro
 Different classifications may be suitable to different problem types and desired qualities in the ambiguous model.
 We discuss modeling considerations with respect to our classification in Section \ref{ssec:modeling}.
 We also provide some special $\phi$-divergences that result in common risk models and discuss their behavior with respect to our classification in Section \ref{ssec:special_phi}.
-We begin in Section~\ref{ssec:suppressandpop} by defining two behaviors---suppression and popping of scenarios---that result in our main classification. 
+We begin in Section~\ref{ssec:suppressandpop} by defining two behaviors---suppressing and popping of scenarios---that result in our main classification. 
 Additional details on these behaviors, along with a subclassification, follow in Sections~\ref{ssec:suppress} and \ref{ssec:pop}. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Suppression and Popping of Scenarios: A Main Classification}
+\subsection{Suppressing and Popping of Scenarios: A Main Classification}
 \label{ssec:suppressandpop}
 
 Recall the definition of the ambiguity set $\mathcal{P}$, in particular, the phi-divergence constraint 
@@ -926,7 +927,7 @@ Recall that, by definition, $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\
 Consider each of the limiting cases in more detail:
 \begin{itemize}
 	\item {\sc Case 1:} ($q_\omega > 0$ but $p_\omega = 0$)
-		We call this the ``{\bf Suppression}'' behavior because a scenario with a positive probability in the nominal distribution can take zero probability in the ambiguous problem. 
+		We call this the ``{\bf Suppressing}'' behavior because a scenario with a positive probability in the nominal distribution can take zero probability in the ambiguous problem. 
 		In other words, such a scenario can be suppressed. 
 %In this case we need to examine $\lim_{t \searrow 0} \phi(t)$:
 	\begin{itemize}
@@ -1071,28 +1072,32 @@ Divergences that can pop a scenario have $\phi(t)$ grow linearly as $t \rightarr
 The primal-dual variable relation specifies $\frac{p^*_\omega}{q_\omega} = \partial \phi^*(s^*_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
 Intuitively, we can think of $\frac{p^*_\omega}{0} = \infty$ if $p^*_\omega > 0$. 
 Thus popping a scenario can only occur when the right-hand side subdifferential also includes $\infty$.
-This, in turn, occurs only when $s^*_\omega = \bar{s}$.
-The implication of this result is that only the most expensive scenarios can be popped. 
+This, in turn, occurs only when scenario $\omega$ is the most expensive scenario. 
+%$s^*_\omega = \bar{s}$.
+Therefore, only the most expensive scenarios can be popped. 
 The next proposition makes this statement rigorous.
 
 \begin{proposition} \label{prop:pop}
 	Suppose there is a finite $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if $s^*_\omega = \bar{s}$.
+	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if 
+%$s^*_\omega = \bar{s}$.
+it has the highest cost $h_\omega(\x^*)$. 
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
 	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \citep{bental2011robust} and additionally consider the case where $q_\omega = 0$.
-	For this proof, we assume for simplicity that the first-stage cost vector $\c = 0$.	
-	We begin with the Lagrangian of (\ref{eq:plp_primal}), $\mathcal{L}(p,\mu,\lambda) = \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda$, for which we generate the dual problem as
+	For this proof, we assume for simplicity that the first-stage cost vector is $\c = 0$.	
+	We begin with the Lagrangian of (\ref{eq:plp_primal}), $\mathcal{L}(p,\mu,\lambda) = \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda$. 
+We then generate the dual of the inner problem as
 	\begin{align}
-		 & \min_{\lambda \geq 0, \mu} \max_{p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda \nonumber \\
+		 & \min_{\lambda \geq 0, \mu} \max_{\p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda \nonumber \\
 		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \sum_{\omega=1}^n \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} \label{eq:pop_proof_detail_1} \\
 		& =  \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \max_{t_\omega \geq 0} \left\{ s_\omega t_\omega - \phi(t_\omega) \right\} \label{eq:pop_proof_detail_2} \\
 		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(s_\omega\right), \nonumber
 	\end{align}
-	where $t_\omega = \frac{p_\omega}{q_\omega}$.
+	where in (\ref{eq:pop_proof_detail_1}), we used the fact that the problem is separable for each scenario $\omega$, and in (\ref{eq:pop_proof_detail_2}), we assumed $q_\omega > 0$ with $t_\omega = \frac{p_\omega}{q_\omega}$.
 	
-	To account for the possibility that $q_\omega = 0$ and demonstrate popping behavior, equality (\ref{eq:pop_proof_detail_2}) must be modified slightly.
+	To account for the possibility that $q_\omega = 0$ and demonstrate popping behavior, equality (\ref{eq:pop_proof_detail_2}) must be slightly modified.
 	Consider a term in the summation in (\ref{eq:pop_proof_detail_1}) for which $q_\omega = 0$:
 	\begin{align}
 		\max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega  \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} & = \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda 0  \phi\left(\frac{p_\omega}{0}\right) \right\} \nonumber \\
