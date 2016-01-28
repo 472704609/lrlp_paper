@@ -63,6 +63,9 @@
 \usepackage{multicol}
 \usepackage{csvsimple}
 
+\allowdisplaybreaks[4]
+
+
 % Frequently used general mathematics
 \newcommand{\R}{{\mathbb{R}}}
 \newcommand{\Rp}{\R^+}
@@ -88,6 +91,8 @@
 \newcommand{\xit}{\tilde{\mathbf{\xi}}}
 \newcommand{\zt}{\tilde{z}}
 \newcommand{\zs}{z^*}
+\newcommand{\bpi}{\mathbf{\pi}}
+\newcommand{\bpih}{\hat{\bpi}}
 
 % Further variables
 \newcommand{\y}{\mathbf{y}}
@@ -98,11 +103,14 @@
 \newcommand{\D}{\mathbf{D}}
 \newcommand{\B}{\mathbf{B}}
 \renewcommand{\d}{\mathbf{d}}
+\newcommand{\T}{\mathbf{T}}
+\newcommand{\M}{\mathbf{M}}
 
+% Probability vectors
 \newcommand{\q}{\mathbf{q}}
 \newcommand{\p}{\mathbf{p}}
 
-% Epiconvergence for \plp
+% Convergence of \plp
 \newcommand{\qtrue}{\q^{\text{true}}}
 \newcommand{\ob}{\bar{\omega}}
 
@@ -327,8 +335,8 @@ The $\phi$-divergence is defined by
 \[
 	I_\phi(\p,\q) = \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right),
 \]
-where $\phi(t)$, called the {\it $\phi$-divergence function}, is a convex function on $t \geq 0$ such that $\phi(1) = 0$.
-Additionally, it is defined that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ and $0 \phi(0/0) = 0$.
+where $\phi(t)$, called the {\it $\phi$-divergence function}, is a convex function on $t \geq 0$ with $\phi(1) = 0$.
+Additionally, it is defined that $0 \phi(a/0) = a \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ for $a>0$ and $0 \phi(0/0) = 0$.
 When both $\p$ and $\q$ are probability vectors---which is our setup throughout this paper---we can further assume that $\phi(t) \geq 0$ without loss of generality. 
 Observe that the function $\phi(t)$ can be modified as $\psi(t) = \phi(t) + c(t-1)$ with an appropriately chosen constant $c$ such that $\psi(t) \geq 0$ for all $t\geq 0$ and $I_\psi(\p,\q) = I_\phi(\p,\q)$ for all probability vectors $\p,\q$.
 If $\phi(t)$ is differentiable at $t = 1$, this modification can be done by selecting $c = -\phi'(1)$.
@@ -395,7 +403,7 @@ In this paper, $\q$ denotes the  nominal distribution.
 		Burg Entropy                      & $\phi_b$           & $\phi_{kl}$                     & $-\log t + t - 1$     & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(1-s),\ s < 1$  \\
 		J-Divergence                      & $\phi_j$           & $\phi_j$                        & $(t-1)\log t$         & $\sum (p_\omega - q_\omega) \log\left(\frac{p_\omega}{q_\omega}\right)$ & No closed form \\
 		Likelihood                        & $\phi_l$           & $t\log t $                      & $-\log t$             & $\sum q_\omega \log\left(\frac{q_\omega}{p_\omega}\right)$ & $-\log(-s) - 1,\ s < 0$ \\
-		$\chi^2$-Distance                 & $\phi_{\chi^2}$    & $\phi_{m\chi^2}$                & $\frac{1}{t} (t-1)^2$ & $\sum \frac{(p_\omega-q_\omega)^2}{p_\omega}$              & $2 - 2\sqrt{1-s},\ s < 1$  \\
+		$\chi^2$-Distance                 & $\phi_{\chi^2}$    & $\phi_{m\chi^2}$                & $\frac{1}{t} (t-1)^2$ & $\sum \frac{(p_\omega-q_\omega)^2}{p_\omega}$              & $2 - 2\sqrt{1-s},\ s \leq 1$  \\
 		Modified $\chi^2$-Dist.           & $\phi_{m\chi^2}$   & $\phi_{\chi^2}$                 & $(t-1)^2$             & $\sum \frac{(p_\omega - q_\omega)^2}{q_\omega}$            & $\begin{cases} -1 & s < -2 \\ s + \frac{s^2}{4} & s \geq -2 \end{cases}$ \\
 % 		$\chi$-div,  $\theta > 1$ & $\phi_\chi^\theta$ & $t^{1-\theta}\phi_\chi^\theta$ & $|t-1|^\theta$         & $\sum q_\omega |1-\frac{p_\omega}{q_\omega}|^\theta$       & $\begin{cases} -1 & s \leq -\theta \\ s + (\theta-1)\left(\frac{|s|}{\theta}\right)^\frac{\theta}{\theta-1}  & s \geq -\theta \end{cases}$ \\
 		Variation Distance                & $\phi_v$           & $\phi_v$                        & $|t-1|$               & $\sum |p_\omega - q_\omega|$                               & $\begin{cases} -1 & s \leq -1 \\ s & -1 \leq s \leq 1 \end{cases}$ \\
@@ -461,26 +469,33 @@ Taking the Lagrangian dual of the inner maximization problem, with dual variable
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \lambda \sum_{\omega=1}^{n} q_\omega \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right) \label{eq:plp_two_stage} \\
 	\st \ & \x \in X \nonumber \\
-	& \frac{h_\omega(\x) - \mu}{\lambda} \leq \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}, \ \forall \omega \label{eq:plp_feas_constraint}\\
+	& h_\omega(\x) - \mu \leq \left( \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} \right) \lambda, \ \forall \omega \label{eq:plp_feas_constraint}\\
 	& \lambda \geq 0. \nonumber
 \end{align}
-When $\lambda =0$, the last term in the objective function (\ref{eq:plp_two_stage}) has the following interpretations: $0\phi^*(s/0)=0$ if $s\leq 0$ and  $0\phi^*(s/0)=+\infty$ if $s > 0$.
+When $\lambda =0$, the last term in the objective function (\ref{eq:plp_two_stage}) has the following interpretations: $0\phi^*(b/0)=0$ if $b\leq 0$ and  $0\phi^*(b/0)=+\infty$ if $b > 0$.
 %where $h_\omega(\x)$ and the second-stage problems are as given in (\ref{eq:slp_second_stage}). 
 When $\rho>0$, the nominal distribution $\q$ strictly satisfies the phi-divergence constraint $I_{\phi}(\q,\q)=0<\rho$. 
 So, the Slater condition holds, and we have strong duality.
 
-Some $\phi$-divergences have no closed-form representation of $\phi^*$ (e.g., J-divergence), but they can be expressed as the sum of other $\phi$-divergences with closed-form conjugates (e.g., sum of Burg Entropy and KL divergence gives the J-divergence). 
+Some $\phi$-divergences, like the J-divergence, have no closed-form representation of $\phi^*$. 
+However, they can be expressed as the sum of other $\phi$-divergences with closed-form conjugates. 
+For example, sum of Burg Entropy and KL divergence gives the J-divergence. 
 In this case, the dual can be formed similarly; see \cite{bental2011robust} for details.
 Theorem 1 of \cite{bental2011robust} contains a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
-Observe, in particular, that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$ (see proof of  Proposition \ref{prop:pop} and  Section~\ref{sec:classification} for more details).
-%We will discuss this case in more detail in Section~\ref{sec:classification}. 
-Also, the right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
+
+
+The right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
 This constraint results from a dual feasibility consideration. 
 When this limit is finite, i.e., $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t}=  \bar{s}<\infty$, then for any $s> \bar{s}$, $\phi^*(s)=\infty$. 
 Therefore, $\phi$-divergences with a finite limit (like the variation distance) induce this constraint.
-In this case, $\lambda$ can be moved to the right-hand side of (\ref{eq:plp_feas_constraint}) for numerical implementation. 
+In (\ref{eq:plp_feas_constraint}), we moved $\lambda$ to the right-hand side to allow for $\lambda=0$. 
 On the other hand, when this limit is $\infty$ (like the KL divergence), $\phi^*(s)<\infty$ for any finite value of $s$. 
-In this case, all values are dual feasible, and (\ref{eq:plp_feas_constraint}) can be removed from the formulation. 
+In this case, 
+%all values are dual feasible, and 
+constraint (\ref{eq:plp_feas_constraint}) can be removed from the formulation. 
+Observe, in particular, that the dual formulation is accurate even for $q_\omega = 0$ for some $\omega$.  
+%(see proof of  Proposition \ref{prop:pop} and  Section~\ref{sec:classification} for more details).
+We will discuss this case in more detail in Section~\ref{sec:classification} (e.g., proof of  Proposition \ref{prop:pop}).
 
 %For some $\phi$-divergences, dant.
 %However, other $\phi$-divergences, like the variation distance, have a finite limit, inducing this constraint.
@@ -1072,16 +1087,15 @@ Divergences that can pop a scenario have $\phi(t)$ grow linearly as $t \rightarr
 The primal-dual variable relation specifies $\frac{p^*_\omega}{q_\omega} = \partial \phi^*(s^*_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
 Intuitively, we can think of $\frac{p^*_\omega}{0} = \infty$ if $p^*_\omega > 0$. 
 Thus popping a scenario can only occur when the right-hand side subdifferential also includes $\infty$.
-This, in turn, occurs only when scenario $\omega$ is the most expensive scenario. 
-%$s^*_\omega = \bar{s}$.
+This, in turn, occurs only when $s^*_\omega = \bar{s}$, or when scenario $\omega$ has the highest cost.
 Therefore, only the most expensive scenarios can be popped. 
 The next proposition makes this statement rigorous.
 
 \begin{proposition} \label{prop:pop}
 	Suppose there is a finite $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-	A scenario $\omega$ for which $q_\omega = 0$ can only be popped if 
+	A scenario $\bar{\omega}$ for which $q_{\bar{\omega}} = 0$ can only be popped if 
 %$s^*_\omega = \bar{s}$.
-it has the highest cost $h_\omega(\x^*)$. 
+it has the highest cost, i.e.,  $\bar{\omega} \in \arg\max_{\omega} h_\omega(\x^*)$. 
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
@@ -1096,135 +1110,108 @@ We then generate the dual of the inner problem as
 		& = \min_{\lambda \geq 0, \mu} \mu + \rho\lambda + \lambda \sum_{\omega=1}^n q_\omega \phi^*\left(s_\omega\right), \nonumber
 	\end{align}
 	where in (\ref{eq:pop_proof_detail_1}), we used the fact that the problem is separable for each scenario $\omega$, and in (\ref{eq:pop_proof_detail_2}), we assumed $q_\omega > 0$ with $t_\omega = \frac{p_\omega}{q_\omega}$.
+	As mentioned earlier, the above formulation is valid when $\lambda =0$ with the following interpretations: $0\phi^*(b/0)=0$ if $b\leq 0$ and  $0\phi^*(b/0)=+\infty$ if $b > 0$.
 	
 	To account for the possibility that $q_\omega = 0$ and demonstrate popping behavior, equality (\ref{eq:pop_proof_detail_2}) must be slightly modified.
-	Consider a term in the summation in (\ref{eq:pop_proof_detail_1}) for which $q_\omega = 0$:
+	Consider a term inside the summation in (\ref{eq:pop_proof_detail_1}) for scenario $\bar{\omega}$  ($q_{\bar{\omega}} = 0$):
 	\begin{align}
-		\max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda q_\omega  \phi\left(\frac{p_\omega}{q_\omega}\right) \right\} & = \max_{p_\omega \geq 0} \left\{ p_\omega (h_\omega(\x) - \mu) - \lambda 0  \phi\left(\frac{p_\omega}{0}\right) \right\} \nonumber \\
-		& = \max_{p_\omega \geq 0} \left\{ p_\omega \left( h_\omega(\x) - \mu - \lambda \bar{s} \right) \right\}. \label{eq:pop_proof_condition}
+		\max_{p_{\bar{\omega}} \geq 0} \left\{ p_{\bar{\omega}} (h_{\bar{\omega}}(\x) - \mu) - \lambda q_{\bar{\omega}}  \phi\left(\frac{p_{\bar{\omega}}}{q_{\bar{\omega}}}\right) \right\} & = \max_{p_{\bar{\omega}} \geq 0} \left\{ p_{\bar{\omega}} (h_{\bar{\omega}}(\x) - \mu) - \lambda 0  \phi\left(\frac{p_{\bar{\omega}}}{0}\right) \right\} \nonumber \\
+		& = \max_{p_{\bar{\omega}} \geq 0} \left\{ p_{\bar{\omega}} \left( h_{\bar{\omega}}(\x) - \mu - \lambda \bar{s} \right) \right\}. \label{eq:pop_proof_condition}
 	\end{align}
-	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_\omega(\x) - \mu - \lambda \bar{s}  \right)$, or equivalently, relation between $s_\omega$ and $\bar{s}$.
+	The behavior of (\ref{eq:pop_proof_condition}) depends on the sign of $\left( h_{\bar{\omega}}(\x) - \mu - \lambda \bar{s}  \right)$ (or equivalently, relation between $s_{\bar{\omega}}$ and $\bar{s}$).
 	There are three cases:
 	\begin{description}
-		\item[Case 1: $s_\omega > \bar{s}$] selects $p_\omega = \infty$, which induces the constraint $\frac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for scenarios with $q_\omega = 0$.
-		\item[Case 2: $s_\omega < \bar{s}$] selects $p_\omega = 0$.
-		\item[Case 3: $s_\omega = \bar{s}$] places no restrictions on the value of $p_\omega$, since (\ref{eq:pop_proof_condition}) is identically zero and hence allows for $p_\omega > 0$ (popping). \Halmos
+		\item[Case 1: $h_{\bar{\omega}}(\x) - \mu > \lambda \bar{s}$] selects $p_{\bar{\omega}} = \infty$, making (\ref{eq:pop_proof_condition}) unbounded. 
+			Because we are trying to minimize the overall objective, this case will be eliminated. 
+			In other words, this case induces the constraint $h_{\bar{\omega}}(\x) - \mu \leq \bar{s} \lambda$ given in (\ref{eq:plp_feas_constraint}). 
+		\item[Case 2:  $h_{\bar{\omega}}(\x) - \mu < \lambda \bar{s}$] selects $p_{\bar{\omega}} = 0$.
+		\item[Case 3: $h_{\bar{\omega}}(\x) - \mu = \lambda \bar{s}$] places no restrictions on the value of $p_{\bar{\omega}}$ because (\ref{eq:pop_proof_condition}) is identically zero, and hence allows for $p_{\bar{\omega}} > 0$ (popping). 
 	\end{description}
+	Because $h_{\bar{\omega}}(\x) - \mu \leq \lambda \bar{s}$ for all ${\bar{\omega}}$ by the above discussion, and $h_{\bar{\omega}}(\x) - \mu = \lambda \bar{s}$ for any popped scenarios, only the most expensive scenario can be popped.
+	\Halmos
 \end{proof}
 
-\begin{remark}
-	Because $s_\omega \leq \bar{s}$ for all $\omega$ and $s_\omega = \bar{s}$ for any popped scenarios, only the most expensive scenario could be popped.
-\end{remark}
 
 \begin{remark}
-	Finding the probability of the popped scenario cannot be done by differentiating $\phi^*$ as with other scenarios, thus the probability must be calculated with $\sum_\omega p_\omega = 1$.
+	Finding the probability of the popped scenario cannot be done by differentiating $\phi^*$ as with other scenarios.
+Thus the probability must be calculated with the primal feasibility conditions $\sum_\omega p_\omega = 1$, $p_\omega \geq 0, \forall \omega$.
 \end{remark}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Some Special $\phi$-Divergences}
+%\subsection{Some Special $\phi$-Divergences: Illustration of Suppression and Popping via Risk Models}
+\subsection{Illustration of Suppression and Popping via Risk Models}
 \label{ssec:special_phi}
 
-The class of $\phi$-divergence constrained problems includes some interesting special cases, which we document here, followed by a discussion of their suppressing and popping behavior.
-Derivations of these special cases are given in the appendix.
+The class of $\phi$-divergence constrained problems includes some special cases that result in common risk models, which we document here. 
+We follow each example with a discussion of their suppressing and popping behavior.
+Derivations of these examples are provided in the appendix.
+Below and in the appendix, we use the notation $[a]^+ = \max \{a,0\}$, and we view $h(\x)$ as a random variable that takes on values  $h_\omega(\x)$ according to the nominal probabilities $\q$ when writing expectations, etc. 
 
-\begin{example}{(CVaR).}
+
+\begin{example}[CVaR]
 	\label{ex:cvar}
-	The coherent risk measure Conditional Value-at-Risk (CVaR) is well studied in financial applications.
+	The coherent risk measure Conditional Value-at-Risk (CVaR) is one of the most widely used risk measure in the literature.
 	Minimizing
 	\[
 		\c\x + \text{CVaR}_\beta(h(\x)) = \c\x + \min_{\mu \in \R} \left\{ \mu + \frac{1}{1-\beta}\e{\left[h(\x)-\mu\right]^+} \right\}
 	\]
-	over $\x \in X$ is equivalent to the $\phi$-divergence constrained problem with
+	over $\x \in X$ is equivalent to the $\phi$-divergence constrained \plp\ with
 	\[
-		\phi(t) = \
+		\phi_{\text{CVaR}}(t) = \
 		\begin{cases}
 			0 & 0 \leq t \leq \frac{1}{1-\beta} \\
 			\infty & \text{otherwise},
 		\end{cases}
 	\]
 	for $0 < \beta < 1$.
-
-	We see that $\phi(0) = 0$, indicating that CVaR will suppress some scenarios.
+	We see that $\phi_{\text{CVaR}}(0) = 0$, indicating that CVaR will suppress some scenarios.
 	This appears in the definition of CVaR as the positive part in the expected value, $\e{[h(\x)-\mu]^+}$.
+	Furthermore, suppression will occur one at a time.  
+%	This one-at-a-time suppression can be seen from the definition of CVaR. 
+%	As is well known, CVaR will only consider the $(1-\beta)-tail scenarios, and scenarios will be suppressed as $\beta$ is increased.  
 	Scenarios cannot be popped because the expectation is taken with respect to the nominal distribution.
+	This can also been seen by the limit $\lim_{t \nearrow \infty}\frac{\phi_{\text{CVaR}}(t)}{t}= \infty$. 
+	\Halmos 
 \end{example}
 
-\begin{proof}{\sc Proof of Example \ref{ex:cvar}}
-	First, note that for a random cost $h_\omega(x)$ we have $\mbox{CVaR}_\beta(h(x)) = \sup_{P \in \mathcal{P}} \{\e{PH(x)}\}$, where the risk envelope is given by
-	\[
-		\mathcal{P} = \left\{ P \left| P \leq \frac{1}{1-\beta}, \e{P} = 1, P \geq 0 \right.\right\}.
-	\]
-	This risk envelope motivates the choice of $\phi(t)$.
-	
-	Note that this $\phi$ only admits two distance values: $0$ or $\infty$.
-	Thus any choice of $\rho < \infty$ is equivalent to $\rho = 0$.
-	
-	The conjugate is
-	\[
-	\phi^*(s) = \
-		\begin{cases}
-			0 & s < 0 \\
-			\frac{1}{1-\beta} s & s \geq 0,
-		\end{cases}
-	\]
-	which results in the objective function given by
-	\begin{align*}
-		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left( \frac{h_\omega(x)-\mu}{\lambda} \right) & = \min_{\lambda \geq 0, \mu} \mu + 0\lambda \\
-		& + \lambda \sum_\omega q_\omega \max\left\{ 0, \frac{1}{1-\beta} \frac{h_\omega(x)-\mu}{\lambda} \right\} \\
-		& = \min_{\mu} \mu + \frac{1}{1-\beta} \sum_\omega q_\omega \max\left\{ 0, h_\omega(x)-\mu \right\} \\
-		& = \min_{\mu} \mu + \frac{1}{1-\beta} \e{[h(x)-\mu]^+},
-	\end{align*}
-	which is one definition of CVaR.
-\end{proof}
 
-The CVaR $\phi$-divergence is bounded above, which leads to the question of what happens when a divergence is bounded below.
-\begin{example}[``Reverse'' CVaR]
+The CVaR $\phi$-divergence is bounded above, which leads to the question of what happens when a $\phi$-divergence is bounded below.
+The ``reverse'' CVaR, turns out, is equivalent to minimizing a convex combination of expectation and worst-case. 
+We discuss this example below. 
+
+
+\begin{example}[Convex Combination of Expectation and Worst-Case]
 	\label{ex:rcvar}
-	The $\phi$-divergence constrained problem with
+	The $\phi$-divergence constrained \plp\ with
 	\[
-		\phi(t) = \
+		\phi_{\text{EW}}(t) = \
 		\begin{cases}
-			0 & t \geq 1-\beta \\
-			\infty & t < 1-\beta,
+			\infty & t < 1-\beta \\
+			0 & t \geq 1-\beta,
 		\end{cases}
 	\]
 	for $0 < \beta < 1$ is equivalent to minimizing the convex combination of expectation and worst-case
 	\[
 		\c\x + \beta \sup_\omega h_\omega(\x) + (1-\beta)\e{h(\x)},
 	\]
-	over $\x \in X$, where the expectation is taken with respect to the nominal distribution $q$.
-	Note that $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t} = 0$, indicating that this divergence will pop scenarios.
+	over $\x \in X$, where the expectation is taken with respect to the nominal distribution $\q$.
+	Note that $\lim_{t \rightarrow \infty} \frac{\phi_{\text{EW}}(t)}{t} = 0$, indicating that this divergence will pop scenarios.
 	This behavior appears in the term $\sup_\omega h_\omega(\x)$.
-	However, $\phi(0) = \infty$ indicates that scenarios will not be suppressed, which is demonstrated by the expectation term $\e{h(\x)}$, which takes into account every scenario with positive nominal probability.
+	However, $\phi_{\text{EW}}(0) = \infty$ indicates that scenarios will not be suppressed, which is demonstrated by the expectation term $\e{h(\x)}$. 
+	Recall that the expectation term takes into account every scenario with positive nominal probability.
+	\Halmos
 \end{example}
 
-\begin{proof}{\sc Proof of Example \ref{ex:rcvar}}
-	Without loss of generality, let $\rho = 0$.
-	The conjugate is
-	\[
-		\phi^*(s) =
-		\begin{cases}
-			(1-\beta) s & s \leq 0 \\
-			\infty & s > 0.
-		\end{cases}
-	\]
-	
-	This gives the problem
-	\begin{align*}
-		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) & = \min_{\mu \geq \sup\{h_\omega(x)\}} \mu + \sum_\omega q_\omega (1-\beta) (h_\omega(x) - \mu) \\
-		& = \min_{\mu \geq \sup\{h_\omega(x)\}} \beta \mu + (1-\beta) \sum_\omega q_\omega h_\omega(x) \\
-		& = \beta \sup_\omega\{h_\omega(x)\} + (1-\beta) \sum_\omega q_\omega h_\omega(x). \halmos
-	\end{align*}
-\end{proof}
+
 
 An objective function taking a weighted sum of expected value and CVaR often comes up in practice.
-The next example shows how to generate a convex combination of expectation and CVaR.
+The next example shows how to generate a convex combination of expectation and CVaR using $\phi$-divergences.
 
-\begin{example}[Conbination CVaR and Expectation]
+\begin{example}[Convex Combination of Expectation and CVaR]
 	\label{ex:cvar_expectation}
-	The $\phi$-divergence constrained problem with
+	The $\phi$-divergence constrained \plp\ with
 	\[
-		\phi(t) = 
+		\phi_{\text{EC}}(t) = 
 		\begin{cases}
 			0 & 1-\alpha \leq t \leq \frac{1}{1-\beta} \\
 			\infty & \text{otherwise},
@@ -1235,43 +1222,10 @@ The next example shows how to generate a convex combination of expectation and C
 		\c\x + (1-\alpha)\e{h(\x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(\x)].
 	\]
 	This divergence will neither pop (because both the expectation and CVaR term are taken with respect to the nominal distribution) nor suppress (because the expectation term includes every scenario).
+	\Halmos
 \end{example}
 
-\begin{proof}{\sc Proof of Example \ref{ex:cvar_expectation}}
-	Without loss of generality, let $\rho = 0$.
-	The conjugate is
-	\[
-		\phi^*(s) =
-		\begin{cases}
-			(1-\alpha) s & s < 0 \\
-			\frac{1}{1-\beta} s & s \geq 0.
-		\end{cases}
-	\]
-	
-	This gives the problem
-	\begin{align*}
-		\min_{\lambda \geq 0,\mu} & \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(x)-\mu}{\lambda}\right) \\
-		& = \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\}.
-	\end{align*}
-	Now, CVaR includes a $\e{[\cdot]^+}$ term, which can be found in the maximum formula.
-	Noting that $1-\alpha < 1 < \frac{1}{1-\beta}$, rewrite the maximum as
-	\begin{align*}
-		\max & \left\{ (1-\alpha)(h_\omega(x)-\mu), \frac{(h_\omega(x)-\mu)}{1-\beta} \right\} \\
-		& = (1-\alpha)(h_\omega(x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(x)-\mu \right]^+.
-	\end{align*}
-	Then working with the linear term and writing in terms of expectations we get
-	\[
-		(1-\alpha)\e{h(x)} + \min_\mu \alpha\mu + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \e{h(x)-\mu}^+
-	\]
-	which simplifies to
-	\[
-		(1-\alpha)\e{h(x)} + \alpha \min_\mu \left\{ \mu + \left(1 - \frac{\beta}{\alpha(1-\beta)+\beta}\right)^{-1} \e{h(x)-\mu}^+ \right\}
-	\]
-	and thus
-	\[
-		(1-\alpha)\e{h(x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(x)]. \Halmos
-	\]
-\end{proof}
+
 
 % \subsection{Variation-type Divergences}
 % 
@@ -1328,90 +1282,125 @@ The next example shows how to generate a convex combination of expectation and C
 % I also can't think of any other way to simplify the above.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Modeling Considerations When Choosing a Divergence}
+\subsection{Modeling Considerations When Choosing a $\phi$-Divergence}
 \label{ssec:modeling}
 
-\bigskip 
 
+We offer the following suggestions for choosing an appropriate $\phi$-divergence class for the data available and the preferences of a decision maker.
 
- 
-This option provides an interesting modeling choice, where one could include unobserved scenarios in the nominal distribution and let the model decide an appropriate risk-averse probability to these scenarios. 
-
-
-
-\bigskip 
-
-
-
-
-We offer the following suggestions for choosing an appropriate $\phi$-divergence classification for the data available.
-First, consider whether to choose a distribution that can suppress scenarios.
-If the problem scenarios come from high-quality observed data, one may wish to avoid divergences that can suppress scenarios.
+%{\it Suppressing or Not.}  
+First, consider whether to choose a  $\phi$-divergence that can suppress scenarios.
+If the scenarios come from high-quality observed data, one may wish to avoid $\phi$-divergences that can suppress scenarios.
+Alternatively, if the decision maker wishes to consider every observed scenario with a positive probability in the final model, then $\phi$-divergences that cannot suppress would be preferable. 
 However, if the data is poorly sampled or comes from opinion rather than observation or simulation, the option of suppressing scenarios may result in a solution with better robustness properties.
+Suppression one at a time may be preferred by decision makers who wish to see the effect of robustness level (or risk level) on the solutions.  
+%In general, suppression may result in more robust (or conservative) solutions. 
+%For this, think of CVaR (which can suppress scenarios) versus convex combination of Expectation and CVaR (which cannot suppress scenarios). 
 
-Next, consider whether to choose a distribution that allows for popping scenarios.
-If the problem scenarios come strictly from observation, with little theoretical understanding of the problem, we suggest choosing a divergence that cannot pop scenarios.
-However, if the problem scenarios come from a mix of observed/simulated data and expert opinion about scenarios of interest, then divergences that can pop present an interesting modeling choice.
-This allows for including interesting but unobserved scenarios, allowing the mathematical program to assign an appropriate probability to them.
+%{\it Popping or Not.} 
+Next, consider whether to choose a  $\phi$-divergence that allows for popping scenarios.
+If the scenarios strictly come from observation, with little theoretical understanding of the problem, we suggest choosing a $\phi$-divergence that cannot pop scenarios.
+However, if the scenarios come from a mix of observed/simulated data and expert opinion about scenarios of interest, then divergences that can pop present an interesting modeling choice.
+This allows for including interesting but unobserved scenarios and letting the mathematical program to assign an appropriate probability to them.
+%Because only the most expensive scenarios can be popped, this could also result in more robust (or conservative) solutions. 
+
+
+A risk-averse decision maker that is flexible might wish to consider $\phi$-divergences that can both pop and suppress. 
+This way, the model assigns an appropriate probability in a risk-averse manner to each scenario. 
+Suppression one at a time may again be preferred to see the effect of robustness level on the individual scenarios. 
+%Variation distance, for example, satisfies all these conditions. 
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{A Decomposition-Based Solution Method}
 \label{sec:soln_algorithm}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Preliminaries}
+\label{ssec:prelim}
+
 As the model gets larger, a direct solution of \plp\ becomes computationally expensive. 
-Decomposition-based methods could significantly reduce the solution time and allow larger problems to be solved efficiently. We propose a Bender's decomposition-based method for solving \plp.
-The algorithm removes feasibility constraint (\ref{eq:plp_feas_constraint})  and exchanges it with a series of feasibility cuts in the first-stage problem.
-The master problem is given by
+Decomposition-based methods could significantly reduce the solution time and allow larger problems to be solved efficiently. 
+We propose a Bender's decomposition-based algorithm for solving \plp\ using the dual formulation. 
+%We use the dual formulation for our decomposition algorithm. 
+The heart of the algorithm lies in the fact that dual \plp\ (\ref{eq:plp_two_stage}) is a convex program that can be decomposed by scenario.
+We begin with a proposition to make the first point (convexity) clear. 
+Decomposability by scenario has already been discussed in Property~\ref{property:time_structure}. 
+The proof of the below proposition is provided in the appendix. 
+
+\begin{proposition}\label{prop:convex}
+$\lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$ is a convex function over $\lambda \geq 0$, $\mu$, and $\x \in X$. 
+\end{proposition} 
+
+
+By Proposition~\ref{prop:convex}, the expectation of this function with respect to the nominal distribution $\sum_{\omega=1}^{n} q_\omega \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$ is also convex.
+The algorithm replaces this convex function with a number of affine cutting planes, forming a lower approximation. 
+It is possible to use a single-cut or multicut version of the algorithm. 
+The single-cut version replaces the overall convex function with a number of affine cutting planes, whereas the multicut version creates affine cutting planes for each individual function $\lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$, $\omega = 1,\ldots,n$. 
+The algorithm also removes the dual feasibility constraint (\ref{eq:plp_feas_constraint})---when it is present in the formulation---and exchanges it with a series of feasibility cuts.
+Recall that feasibility constraint (\ref{eq:plp_feas_constraint}) is present only for $\phi$-divergences that can pop scenarios. 
+  
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Algorithm}
+\label{ssec:algo}
+
+Algorithm 1 presents a basic implementation of the proposed method. 
+The modified Bender's decomposition presented here has the following features:
+\begin{inparaenum}[\itshape (i\upshape)]
+	\item it solves the original linear second-stage subproblems (\ref{eq:slp_second_stage}), rather than nonlinear subproblems, and uses them to quickly generate subgradients of the nonlinear term $\lambda \phi^*\left(\tfrac{h_\omega(\x) - \mu}{\lambda}\right)$; 
+	\item when $\lim_{t \rightarrow \infty}\frac{\phi(t)}{t}=\bar{s}<\infty$, it exchanges the nonlinear constraints $h_\omega(\x) - \mu \leq \bar{s} \lambda$ for a (potentially much) smaller set of easily generated affine feasibility cuts; and thus
+	\item  it maintains a linear master problem and linear subproblems.
+\end{inparaenum}
+
+
+The single-cut master problem is given by
 \begin{align}
 	\min_{\x,\lambda,\mu} \ & \c\x + \mu + \rho \lambda + \theta \label{eq:master_problem}\\
 	\st \ & \x \in X,\ \ \lambda \geq 0 \nonumber  \\
-	& \theta \geq T_j (\x,\mu,\lambda)^T + t_j, \ \  j \in J  \label{eq:objcut} \\
-	& \mu + \bar{s}\lambda \geq M_k \x + m_k, \ \ k \in K \label{eq:feascut} 
+	& \theta \geq \T_j \cdot (\x\ \lambda\ \mu)^T + t_j, \ \  j \in J  \label{eq:objcut} \\
+	& \mu + \bar{s}\lambda \geq \M_k \cdot \x + m_k, \ \ k \in K \label{eq:feascut} 
 \end{align}
-where \eqref{eq:objcut} are the objective cuts, (\ref{eq:feascut}) are the feasibility cuts on constraint (\ref{eq:plp_feas_constraint}) if $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t} < \infty$ and $J$ and $K$ are the sets of objective and feasibility cuts, respectively.
-
-The proposed algorithm is shown in Algorithm 1. 
-The modified Bender's decomposition presented here has the following features:
-\begin{inparaenum}[\itshape (i\upshape)]
-	\item it solves the original linear second stage problems, rather than nonlinear subproblems and uses them to quickly generate subgradients of the nonlinear term $\lambda \phi^*\left(\tfrac{h_\omega(\x) - \mu}{\lambda}\right)$, 
-	\item exchanges the polyhedral $\phi$-divergence constraints $\tfrac{h_\omega(\x) - \mu}{\lambda} \leq \bar{s}$ for a (potentially much) smaller set of easily generated feasibility cuts and thus
-	\item  maintains linear master and subproblems.\medskip
-\end{inparaenum}
+where constraints \eqref{eq:objcut} are the objective cuts, constraints  (\ref{eq:feascut}) are the feasibility cuts replacing constraint (\ref{eq:plp_feas_constraint}) if $\lim_{t \rightarrow \infty} \frac{\phi(t)}{t} =\bar{s} < \infty$, and $J$ and $K$ are the index sets for objective and feasibility cuts, respectively.
+\smallskip
 
 
 %\begin{figure}		
 %\label{fig:algorithm}
 %\FIGURE
 \begin{center}
-\begin{minipage}{.61\textwidth}
+\begin{minipage}{.7\textwidth}
 	\TableSpaced
 	\hrule
 	\vspace{1pt}
     {\bf \small Algorithm 1.\ \ Decomposition algorithm for solving \plp}
 	\hrule
 	\vspace{1pt}
-	\begin{algorithmic}
-		\State Initialize $z_l = -\infty, z_u = \infty$
-		\State Solve master problem (\ref{eq:master_problem}) with $\theta = 0$ to generate $\x$
-		\State Solve all second-stage scenario subproblems (\ref{eq:slp_second_stage}) to obtain $h_\omega(\x)$
-		\State Initialize $\lambda \gets 1$ and $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
-		\State Generate initial objective cut
-		\While{$z_u - z_l \geq \texttt{TOL}\min\{|z_u|,|z_l|\}$}
-			\State Solve master problem (\ref{eq:master_problem}), get $\x$,$\lambda$,$\mu$,$\theta_M$
-			\State Solve subproblems (\ref{eq:slp_second_stage}) to obtain  $h_\omega(\x)$
-			\State $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h_\omega(\x,\lambda,\mu)$
-			\If{$\frac{h_\omega(\x) - \mu}{\lambda} > \bar{s}$}
-				\State Generate feasibility cut
-				\State Find $\mu$ so that $\frac{h_\omega(\x) - \mu}{\lambda} < \bar{s}$
-			\Else
-				\State $z_l \gets$ master optimal cost $\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
+	\begin{algorithmic}[1]
+		\State Initialize $z_l = -\infty, z_u = +\infty$; $J \gets \emptyset, K \gets \emptyset$; select $\texttt{TOL}\geq 0$
+		\State Initialize $\hat{\lambda} \gets 1$, $\hat{\mu} \gets 0$, and $\hat{\theta}\gets 0$  \label{l:init}
+		\While{$z_u - z_l \geq \texttt{TOL}\cdot \min\{|z_u|,|z_l|\}$}
+			\If{at first iteration}
+				\State Solve master problem (\ref{eq:master_problem}) with $\theta=\mu = 0$ to generate $\xh$
+			\Else 
+				\State Solve master problem (\ref{eq:master_problem}) to obtain $\xh$, $\hat{\lambda}$, $\hat{\mu}$, and $\hat{\theta}$
 			\EndIf
-			\State Generate objective cut
-			\If{$\c\x + \mu + \bar{N}\lambda + \theta_{\text{true}} < z_u$}
-				\State $z_u \gets \c\x + \mu + \bar{N}\lambda + \theta_{\text{true}}$
-				\State $\x_\text{best} \gets \x, \lambda_\text{best} \gets \lambda, \mu_\text{best} \gets \mu$
-				\State $p_\omega \gets \phi^{*\prime}(\tfrac{h_\omega(\x) - \mu}{\lambda})$ for $\omega = 1, \dots, n$
+			\State Solve subproblems (\ref{eq:slp_second_stage}) to obtain  $h_\omega(\xh)$ and duals $\bpih_\omega$, $\omega = 1, \ldots, n$
+%%			\State Set $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h^{\dagger}_\omega(\xh,\hat{\lambda},\hat{\mu})$
+			\If{$\bar{s}< \infty$ and $\sup_\omega h_\omega(\xh) - \hat{\mu} > \bar{s}\hat{\lambda}$}
+				\State Generate feasibility cut and add to master problem; update $K$
+				\State Find $\hat{\mu}$ so that $\sup_\omega h_\omega(\xh) - \hat{\mu} < \bar{s}\hat{\lambda}$ \label{l:mu}
+			\Else
+				\State Set $z_l \gets$ master optimal cost $\c\xh + \hat{\mu} + \rho \hat{\lambda} + \hat{\theta}$
+			\EndIf
+			\State Generate objective cut and add to master problem; update $J$
+			\State Set $\theta_{\text{true}} \gets \sum_{\omega=1}^n q_\omega h^{\dagger}_\omega(\xh,\hat{\lambda},\hat{\mu})$
+			\If{$\c\xh + \hat{\mu} + \rho \hat{\lambda} + \theta_{\text{true}} < z_u$} \label{l:begin}
+				\State $z_u \gets \c\xh + \hat{\mu} + \rho \hat{\lambda} + \theta_{\text{true}}$
+				\State $\x_\text{best} \gets \xh, \lambda_\text{best} \gets \hat{\lambda}, \mu_\text{best} \gets \hat{\mu}$
+				\State $p_\omega \gets \phi^{*\prime}(\tfrac{h_\omega(\x) - \mu}{\lambda}) q_\omega $ for $\omega = 1, \dots, n$  \label{l:end}
 			\EndIf
 		\EndWhile
 	\end{algorithmic}
@@ -1421,12 +1410,32 @@ The modified Bender's decomposition presented here has the following features:
 %{}
 %{}
 %\end{figure}
+\medskip 
 
 
-\subsection{Objective Cuts}
+In line \ref{l:init} of Algorithm 1, we initialize $\hat{\lambda} = 1$ somewhat arbitrarily. 
+However, by setting $\hat{\theta}=\hat{\mu}=0$, we obtain a candidate solution $\xh$ in the first iteration by essentially solving $\min\{\c\x: \x \in X\}$. 
+It is possible to obtain an initial $\xh$ in other ways. 
+If we detect that current $\hat{\mu}$ is infeasible, we do not update the lower bound $z_l$ so that the master is solved again with the feasibility cuts. 
+It is easy to obtain a new $\hat{\mu}$ in line \ref{l:mu} of the Algorithm.
+For example, when $\bar{s}\hat{\lambda}>0$, simply setting  $\hat{\mu} = \sup_\omega h_\omega (\xh) -\bar{s}\hat{\lambda} (1-10^3)$ gives us a feasible---but not necessarily optimal---solution. 
+We can then update the upper bound and current solution in lines \ref{l:begin}--\ref{l:end} as necessary.
+We now go through in more detail how to obtain the objective and feasibility cuts. 
 
-Let $(\xh,\mh, \lh)$ be the candidate solution from the master problem (\ref{eq:master_problem}), $\hat{s}_\omega = \frac{h(\xh)-\mu}{\lh}$ and $h^\dagger_\omega(s_\omega) = \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda}\right)$ be the nonlinear portion of the objective function, which will be used to generate the objective cuts.
-An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ to obtain the optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem. Using these to compute the partial (sub)derivatives of the \plp\ subproblems
+
+
+\subsubsection{Objective Cuts}
+
+%The cut coefficients of the objective cuts are obtained through the chain rule to translate the (sub)gradients of $h_\omega(\x)$ to (sub)gradients of $h^{\dagger}_\omega(\x,\lambda,\mu)$. 
+The chain rule translates the (sub)gradients of $h_\omega(\x)$ to (sub)gradients of $h^{\dagger}_\omega(\x,\lambda,\mu)$. 
+Recall notation $s_\omega = \frac{h(\x)-\mu}{\lambda}$ and let $h^\dagger_\omega(s_\omega) = \lambda \phi^*\left(s_\omega \right)$ denote the nonlinear portion of the objective function. 
+Any variable with a `hat' over it (e.g., $\xh, \mh$) indicates a current solution.
+Consider for simplicity $\hat{\lambda} > 0$ and $\phi^*$ is differentiable.
+The cut coefficients of $\x$ are formed through $\partial h^\dagger / \partial \x = (\partial h^\dagger_\omega/\partial s_\omega) \cdot (\partial s_\omega/\partial \x)$. 
+This gives $\phi^{* \prime}(\hat{s}_\omega)\cdot(\bpih_\omega \B^\omega)$ as the coefficients of $\x$, where $\B^\omega$ is the technology matrix of subproblem (\ref{eq:slp_second_stage}). 
+The cut coefficients of $\lambda$ and $\mu$ are found in a similar way. 
+Using the (sub)gradient inequality, we can also obtain the intercept term $t_j^\omega$:
+%%%An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)$ to obtain the optimal dual solutions $\pi^{*,\omega}$ to each second-stage problem. Using these to compute the partial (sub)derivatives of the \plp\ subproblems
 % \begin{align*}
 % 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \x} & = \phi^{*\prime}(\hat{s}_\omega) \pi^{*,\omega}B^\omega, &
 % 	\dfrac{\partial h^\dagger_\omega(\hat{s}_\omega)}{\partial \mu} & = -\phi^{*\prime}(\hat{s}_\omega), &
@@ -1434,108 +1443,105 @@ An objective cut can be computed by solving the SLP-2 subproblems $h_\omega(\xh)
 % \end{align*}
 % The cuts are then given by
 \begin{align*}
-	T_j^\omega & = 
+	\T_j^\omega & = 
 	\left( \begin{array}{ccc}
-		\phi^{*\prime}(\hat{s}_\omega) \pi^{*,\omega}B^\omega, 
-			 & -\phi^{*\prime}(\hat{s}_\omega), 
-			 & \phi^*(\hat{s}_\omega) - \phi^{*\prime}(\hat{s}_\omega) \hat{s}_\omega
+		\phi^{*\prime}(\hat{s}_\omega) \cdot (\bpih_\omega \B^\omega) \ \ \ \  
+			 & \phi^*(\hat{s}_\omega) - \phi^{*\prime}(\hat{s}_\omega) \hat{s}_\omega \ \ \ \ 
+			 & -\phi^{*\prime}(\hat{s}_\omega)
 	\end{array} \right), \\
-	t_j^\omega & = \lh \phi^{*\prime}(\hat{s}_\omega)\left[\hat{s}_\omega - \frac{\pi^{*,\omega}B^\omega\xh - \mh}{\lh}\right].
+	t_j^\omega & =  \phi^{*\prime}(\hat{s}_\omega)\left[ h_\omega(\xh) - \bpih_\omega \B^\omega \xh \right].
+%	t_j^\omega & = \lh \phi^{*\prime}(\hat{s}_\omega)\left[\hat{s}_\omega - \frac{\pi^{*,\omega}B^\omega\xh - \mh}{\lh}\right].
 \end{align*}
-For the single-cut master problem proposed, $T_j = \sum_\omega q_\omega T_j^\omega$ and $t_j = \sum_\omega q_\omega t_j^\omega$ and multi-cut versions are also possible. 
+For the single-cut master problem proposed, the vector of cut coefficients and intercept in constraints (\ref{eq:objcut}) can be found by
+ $\T_j = \sum_{\omega} q_\omega \T_j^\omega$ and $t_j = \sum_\omega q_\omega t_j^\omega$. 
+The multi-cut version replaces the last term in the objective of (\ref{eq:master_problem}) with $\sum_\omega q_\omega \theta_\omega$ and uses the individual cuts $\theta_\omega \geq \T_j^\omega \cdot (\x\  \lambda\ \mu)^{T} + t_j^\omega$ for each scenario $\omega = 1, \ldots, n$. 
 
-\subsection{Feasibility Cuts}
-After the subproblems $h_\omega(\xh)$ are solved, it may be the case that $\hat{s}_\omega < \bar{s}$ for some $\omega$, rendering $\mh$ and $\lh$ infeasible.
-This is corrected using the feasibility problem
-\begin{align*}
-	U_\omega(\x,\mu,\lambda) = \min_{y^\omega \geq 0, z \geq 0} \ & z \\
-	\st \ & z + \bar{s}\lambda + \mu - q^\omega y^\omega \geq 0 \\
-	& D^\omega y^\omega = d^\omega + B^\omega x,
-\end{align*}
-which is solved by $z = h_\omega(x) - \bar{s}\lambda - \mu$.
-The subdifferentials can be easily found as $\frac{\partial z^*}{\partial \x} = \pi^{*,\omega} B^\omega$, $\frac{\partial z^*}{\partial \mu} = -1$ and $\frac{\partial z^*}{\partial \lambda} = -\bar{s}$.
-Then for infeasible candidate solution $(\xh,\lh,\mh)$ we get the inequality
-\begin{align*}
-	U_\omega(\x,\mu,\lambda) \geq \pi^{*,\omega}B^\omega(\x-\xh) - (\mu -\mh) - \bar{s}(\lambda - \lh) + (h_\omega(\xh) - \mh - \bar{s}\lh),
-\end{align*}
-and setting $U_\omega(\x,\mu,\lambda) = 0$ to find a feasible solution gives the feasibility cut
-\[
-	\mu + \bar{s} \lambda \geq \pi^{*,\omega}B^\omega \x + (h_\omega(\xh) - \pi^{*,\omega}B^\omega\xh).
-\]
 
-% Once the feasibility cut is generated, we may need to find a feasible (and reasonable) value of $\mu$ to generate an objective cut, or to initialize the next iteration of the master problem.
-% This can be done quickly by minimizing the objective function of (\ref{eq:plp_det_equiv}) with respect to $\mu$ while keeping $\xh$ and $\lh$ constant, which is equivalent to minimizing $\mu - \sum_\omega N_\omega \lh \log(\mu - h_\omega(\xh))$.
-% We do this by solving the equation $\sum_\omega \frac{N_\omega \lh}{\mu - h_\omega(\xh)} = 1$ with Newton's method.
+\subsubsection{Feasibility Cuts}
+After the linear subproblems (\ref{eq:slp_second_stage}) are solved, it may be the case that $h_\omega(\xh) - \mh > \bar{s} \lh$ for some scenario $\omega$, rendering $\mh$ and $\lh$ infeasible.
+We need $h_\omega(\x) - \mu - \bar{s}\lambda \leq 0$ for feasibility. 
+This is a convex function over $\lambda \geq 0$, $\mu$ and $\x \in X$, and we can use the lower approximation of this function to generate a feasibility cut. 
+The cut coefficients are obtained through the subgradients $(\hat{\pi}_\omega \B^\omega \ \ -1 \ \ -\bar{s} )$ for $(\x\ \ \mu\ \ \lambda)$.  
+This leads to the feasibility constraints (\ref{eq:feascut}) with $\M_k = \bpih_\omega \B^\omega$ and $m_k =\bpih_\omega \d^\omega$, where $\B^\omega$ and $\d^\omega$ are from the subproblem (\ref{eq:slp_second_stage}).
 
-\subsection{Computational Enhancements}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Computational Considerations}
+\label{ssec:computcons}
+
+\subsubsection{Trust Regions}
 
 In order to enhance the performance of the above decomposition algorithm, we included an $L^\infty$-norm trust region which is scaled up (by a factor of $3$) or down (by a factor of $\tfrac{1}{4}$) when the trust region inhibits finding the optimal solution or when the polyhedral lower approximation is far from the second-stage expected cost, respectively.
-The trust region is an implementation of \citep[Algorithm 4.1]{nocedal1999numerical}.
+The trust region is an implementation of Algorithm 4.1 of \cite{nocedal1999numerical}.
+This speeds up the algorithm considerably. 
 
-\subsection{Implementation Notes on Different $\phi$}
+\subsubsection{Implementation Notes on Different $\phi$-Divergences}
 \label{ssec:implement}
 
-First, note that when (\ref{eq:plp_feas_constraint}) is not present, there is no need to use feasibility cuts. Let's now look at implementation issues with respect to suppression and popping. 
+First, when constraint (\ref{eq:plp_feas_constraint}) is not present, there is no need to use feasibility cuts. 
+%Let's now look at implementation issues with respect to suppression and popping. 
 
-Divergences that can suppress in Subcategory 2 (see \S \ref{ssec:suppress}) can be computationally difficult to work with because $\lambda = 0$ could occur.
-Floating point finite tolerance can alleviate this somewhat for the KL divergence, for which $\phi^*(s) = e^s$, because $e^{-800} = 0$ to machine precision.
 We recommend forcing $\lambda$ to be nonzero and checking optimality condition at $\lambda = 0$ separately.
+Especially, divergences that can simultaneously suppress all but the most expensive scenarios in Subclass 2 (see Section \ref{ssec:suppress}) can be computationally difficult to work with because $\lambda = 0$ could occur.
+Floating point finite tolerance can alleviate this somewhat for the KL divergence, for which $\phi^*(s) = e^s$, because $e^{-800} = 0$ to machine precision.
+
 
 Divergences that can pop require a check for any $s_\omega = \bar{s}$.
 The probability of a popped scenario can be determined by enforcing $\sum_\omega p_\omega = 1$ after determining the probability of the other scenarios.
-
+%
 For divergences that cannot pop, it can be useful to add a computational upper bound on $s$, $\bar{s}_\text{comp}$.
 Such an upper bound can be computed easily by bounding the ratio $\frac{p_\omega}{q_\omega} \leq \frac{1}{\min_\omega q_\omega}$.
-The computational upper bound can then be selected so that $\phi^{*\prime}(\bar{s}_\text{comp}) \geq \frac{1}{\min_\omega q_\omega}$.
+The computational upper bound can then be selected so that $\phi^{*\prime}(\bar{s}_\text{comp}) \geq \frac{1}{\min_\omega q_\omega}$ according to machine precision.
 Note, however, that an artificial upper bound will induce artificial popping behavior if the nominal distribution contains impossible scenarios.
 This technique is especially useful for the KL divergence because $e^s$ overflows on double-precision machines for $s \geq 710$.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Numerical Illustration} \label{sec:comp_results}
+\section{Numerical Illustration} 
+\label{sec:comp_results}
 
-To illustrate the techniques discussed in this paper, we applied the decomposition method from Section \ref{sec:soln_algorithm} to a small electricity generation problem.
-On this problem, we demonstrate the popping and suppressing behavior described in Section \ref{sec:classification} for several $\phi$-divergences and show how the worst-case cost decrease condition (\ref{eq:cost_decrease_cond}) compares to the actual cost decrease when an additional sample of each scenario is taken.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Computational Setup}
+\label{ssec:csetup}
 
-We modified an SLP-2 test problem, denoted APL1P, which is a power expansion problem with 5 independent random variables and 1280 realizations \citep{infanger1992monte}.
-To clearly demonstrate how the worst-case distribution changes with $\rho$ and especially to demonstrate suppressing and popping behavior, we took 6 unique samples from APL1P to form the \plp. 
-We denote the resulting problem as $\phi$APL1P. 
-The first-stage determines the capacity to be built for two generators and the generators are operated under uncertain demands and availability of the generators in the second stage.
+To illustrate the techniques discussed in this paper, we applied the specialized Bender's decomposition algorithm from Section \ref{sec:soln_algorithm} to a small electricity generation problem.
+The algorithm was implemented in MATLAB using the CPLEX linear program solver. 
 
-In this problem, the second scenario (displayed in green in Figures \ref{fig:suppress} and \ref{fig:pop}) is the most costly, thus the only candidate for popping. %if its nominal probability vanishes.
-Furthermore, the second scenario will eventually have unit probability in suppressing divergences.
-%All scenarios are assumed to have a single observation, unless popping behavior is being demonstrated.
-
-\subsection{Running Time}
-\label{ssec:run_time}
-
-\begin{figure}
-	\FIGURE
-	{%
-		\includegraphics*[width=.45\textwidth]{images/runtime}
-	}
-	{
-		Solution time for $\phi$APL1P with the proposed decomposition algorithm against the number of scenarios, implemented in MATLAB using the CPLEX linear program solver.
-		This example uses the Modified $\chi^2$-divergence.
-		\label{fig:runtime}
-	}
-	{}
-\end{figure}
-
-To illustrate the linear dependence of the problem complexity on the number of scenarios, we tracked the time to solve $\phi$APL1P for an increasing number of scenarios, with the results shown in Figure \ref{fig:runtime}.
+We modified an SLP-2 test problem, denoted APL1P, which has 5 independent random variables and 1280 realizations \citep{infanger1992monte}.
+The first-stage determines the capacity to be built for two electricity generators.
+The generators are operated under uncertain demands and reliability of the generators in the second stage.
+To clearly demonstrate how the worst-case distribution changes with $\rho$---and especially to demonstrate suppressing and popping behavior and value of data---we took 6 unique scenarios from APL1P. 
+We denote the resulting problem as $\phi$APL1P.
+ 
 
 
-\subsection{Numerical Results}
+To make our presentation clear, we ordered the scenarios of $\phi$APL1P from most costly to least costly. 
+So, \texttt{scen1} is the most costly scenario  (displayed in dark green in Figures \ref{fig:suppress} and \ref{fig:pop} that appears typically at the top), and  \texttt{scen6} is the least costly scenario (displayed in light green in Figures \ref{fig:suppress} and \ref{fig:pop} that appears typically at the very bottom). 
+We assume each scenario is equally likely in the nominal distribution. 
+In the case where we wish to investigate the popping behavior, we set the nominal probability of the most expensive scenario to $q_{\texttt{scen1}} = 0$ and again have the other scenarios be equally likely.  
+
+
+For our numerical experiments, we used the following $\phi$-divergences: (i) Modified $\chi^2$-distance, (ii) KL divergence and (iii) Burg entropy.  
+Modified $\chi^2$-distance and KL divergence are used to demonstrate the one-at-a-time and simultaneous suppression, respectively. 
+Burg entropy, on the other hand, is used to demonstrate the popping behavior. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Computational Results}
 \label{ssec:numerical_results}
 
-Table \ref{tb:numerical_results} shows a few select results for the $\phi$APL1P using different $\phi$-divergences.  
-Behavior is shown assuming one observation per scenario for divergences above the line and with the most costly scenario unobserved below the line to demonstrate popping.
+
+\subsubsection{Optimal Value and Solution}
+\label{ssec:opt}
+
+Table \ref{tb:numerical_results} shows the optimal value and solution of $\phi$APL1P using different $\phi$-divergences.  
+As mentioned above, we assume one observation per scenario for the first three divergences in Table \ref{tb:numerical_results} and the most costly scenario unobserved in the last row to demonstrate popping.
 The value of $\rho$ is chosen in accordance with an asymptotic $95\%$ confidence region in (\ref{eq:asymptotic_rho}).
 For the popping example, while $n=6$ is the same, $N$ is one less, resulting in a different $\rho$. 
 
 All divergences put the highest probability in the most costly scenario. 
-Notice that, at this level of robustness, the Modified $\chi^2$-Distance has suppressed three scenarios, while the KL divergence has not yet suppressed any.
+At this level of robustness, the Modified $\chi^2$-distance has suppressed three scenarios, while the KL divergence has not yet suppressed any.
 In the next section, as $\rho$ increases, the KL divergence will suppress all but the most costly scenario simultaneously. 
 The total costs are similar except for the Burg entropy with popping, which is slightly lower.
 
@@ -1546,19 +1552,24 @@ The total costs are similar except for the Burg entropy with popping, which is s
 		Numerical results of $\phi$APL1P for various divergences.
 		\label{tb:numerical_results}
 	}
-	{\begin{tabular}{cc|c|cccccc}
-		$\phi$ & $\rho$ & Cost & \multicolumn{6}{c}{Worst-Case Distribution} \\
+	{\begin{tabular}{ccccccccc}
 		\hline
-		$\phi_{m\chi^2}$ &  1.845  & 30735 & 0.1353 & 0.6354 & 0.2293 & 0      & 0      & 0 \\
-		$\phi_{kl}$      &  0.9225 & 30921 & 0.1050 & 0.7208 & 0.1507 & 0.0052 & 0.0108 & 0.0075 \\
-		$\phi_b$         &  0.9225 & 30714 & 0.0636 & 0.7751 & 0.0768 & 0.0253 & 0.0308 & 0.0285 \\
+		       &  		  & 				 & \multicolumn{6}{c}{$p_{\omega}^*$} \\
+		\cline{4-9}
+		$\phi$ & $\rho$  & Opt.\ Cost  & \texttt{scen1} & \texttt{scen2} & \texttt{scen3} & \texttt{scen4} & \texttt{scen5} & \texttt{scen6} \\
+ 		\hline
+		$\phi_{m\chi^2}$ &  1.845  & 30735 &  0.6354 & 0.2293 & 0.1353 & 0      & 0      & 0 \\
+		$\phi_{kl}$      &  0.9225 & 30921 &  0.7208 & 0.1507 & 0.1050 & 0.0108 & 0.0075 & 0.0052 \\
+		$\phi_b$         &  0.9225 & 30714 & 0.7751 & 0.0768 & 0.0636 & 0.0308 & 0.0285 & 0.0253 \\
 		\hline
-		$\phi_b$         &  1.107  & 29775 & 0.1065 & 0.6273 & 0.1311 & 0.0402 & 0.0494 & 0.0455
+		$\phi_b$         &  1.107  & 29775 & 0.6273 & 0.1311 & 0.1065  & 0.0494 & 0.0455 & 0.0402 \\
+		\hline
 	\end{tabular}}
 	{}
 \end{table}
 
-\subsection{Illustrations of Popping and Suppressing}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Numerical Illustrations of Suppressing and Popping}
 \label{ssec:numerical_pop_suppress}
 
 %DAVID: I'm removing this first paragraph as it is repeating stuff.
@@ -1567,9 +1578,10 @@ The total costs are similar except for the Burg entropy with popping, which is s
 %In this section we present computational results demonstrating the suppressing and popping behavior of different divergences.
 %The categorization of several $\phi$-divergences can be found in Table \ref{tb:phi_categories}.
 
-We begin with an examination of two divergences that can suppress scenarios.
-Figure \ref{fig:suppress} shows how the worst-case distribution changes with $\rho$ for both the Modified $\chi^2$-Distance (left) and the KL divergence (right).
-As shown in Section \ref{ssec:suppress}, the Modified $\chi^2$-Distance suppresses scenarios one at a time, starting with the least expensive; while the KL divergence will suppress all (simultaneously) but the most costly scenario.
+
+
+Figure \ref{fig:suppress} shows how $p^*_\omega$ changes with $\rho$ for both the Modified $\chi^2$-distance (left) and the KL divergence (right).
+As shown in Section \ref{ssec:suppress}, the Modified $\chi^2$-Distance suppresses scenarios one at a time, starting with the least expensive; while the KL divergence suppresses all scenarios but the most costly scenario simultaneously at a high-enough value of $\rho$.
 
 An example of a $\phi$-divergence that can pop, the Burg entropy, is given in Figure \ref{fig:pop}.
 The left plot in Figure \ref{fig:pop} demonstrates the worst-case distribution assuming that all scenarios have a single observation.
@@ -1577,15 +1589,17 @@ The right plot shows the worst-case distribution when all scenarios but the most
 Notice, in particular, that the probability of the most costly scenario becomes small as $\rho$ decreases.
 Other divergences that can pop but not suppress look qualitatively similar.
 
-\begin{figure}
+\begin{figure}[htb]
 	\FIGURE
 	{%
-		\includegraphics*[width=.45\textwidth]{images/mchi2}%
-		\includegraphics*[width=.45\textwidth]{images/kl}%
+		\includegraphics*[width=.40\textwidth]{images/mchi2}%
+		\includegraphics*[width=.40\textwidth]{images/kl}%
+		\includegraphics*[width=.12\textwidth]{images/legend1.pdf}
 	}
 	{
 		Examples of distributions that can suppress: Modified $\chi^2$ distance (left; one-at-a-time suppression) and KL Divergence (right; simultaneous suppression).
 		%Notice that the Modified $\chi^2$ distance suppresses scenarios one at a time, while the Kullback-Leibler Divergence suppresses all lower-cost scenarios simultaneously.
+		Note the $x$-axis scale difference in the plots.
 		\label{fig:suppress}
 	}
 	{}
@@ -1595,8 +1609,9 @@ Other divergences that can pop but not suppress look qualitatively similar.
 \begin{figure}[h]
 	\FIGURE
 	{%
-		\includegraphics*[width=.42\textwidth]{images/burg}%
-		\includegraphics*[width=.42\textwidth]{images/burg_zero}%
+		\includegraphics*[width=.40\textwidth]{images/burg}%
+		\includegraphics*[width=.40\textwidth]{images/burg_zero}%
+		\includegraphics*[width=.12\textwidth]{images/legend1.pdf}
 	}
 	{
 		Example of a distribution that can pop---the Burg entropy: 
@@ -1607,29 +1622,60 @@ Other divergences that can pop but not suppress look qualitatively similar.
 	{}
 \end{figure}
 
-\subsection{Illustration of Value of Data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Numerical Illustration of Value of Data}
 \label{ssec:numerical_value_of_data}
 
-A comparison of the worst-case expected cost decrease condition (\ref{eq:cost_decrease_cond}) with the actual decrease in expected cost resulting from an additional observation is shown in Figure \ref{fig:value} for the Modified $\chi^2$-Distance (left) and the Burg Entropy (right).
-The solid lines indicate regions where (\ref{eq:cost_decrease_cond}) is satisfied and dotted regions indicate that (\ref{eq:cost_decrease_cond}) is not satisfied.
-Note that (\ref{eq:cost_decrease_cond}) is a sufficient but not necessary condition.
-Both plots were generated using the reformulations to (\ref{eq:cost_decrease_cond}) provided in Corollary \ref{cor:cost_decrease_trick}.
-The most costly scenario, shown in green in all plots, is not visible in Figure \ref{fig:value} because an additional observation will increase the worst-case expected cost.
-Condition (\ref{eq:cost_decrease_cond}) was never satisfied for this scenario.
+We tested the value of data (VoD) condition from Corollary \ref{cor:cost_decrease_trick} for the Modified $\chi^2$-distance and the Burg entropy for various values of $\rho$. 
+Note that VoD condition in (\ref{eq:cost_decrease_cond}) and the modified conditions in Corollary \ref{cor:cost_decrease_trick} are sufficient but not necessary conditions.
+
+Figure \ref{fig:value} compares the VoD condition from Corollary \ref{cor:cost_decrease_trick} to the actual cost decrease resulting from an additional observation for the Modified $\chi^2$-distance (left) and Burg entropy (right). 
+The solid lines indicate when the VoD condition is satisfied, while dotted lines show when an additional observation decrease the optimal value although VoD condition is not satisfied.
+VoD conditions detect the actual cost decrease in majority of the cases for this example. 
+
+
+We see a reversal of the scenarios in Figure \ref{fig:value} compared to Figures \ref{fig:suppress} and \ref{fig:pop}. 
+The least costly scenarios (\texttt{scen6}, \texttt{scen5}, and \texttt{scen4}) cause the largest decrease in the optimal cost if sampled one more observation.
+This is expected because having one more observation from the low-cost scenarios increases our belief (or, nominal probability) that future can be less costly.  
+Higher cost scenarios (\texttt{scen3} and \texttt{scen2})  cause a smaller decrease in the optimal value, and the VoD condition is less effective in detecting these scenarios, especially at lower values of $\rho$. 
+The most costly scenario (\texttt{scen1}) is not visible in Figure \ref{fig:value} because an additional observation will increase the optimal value.
+VoD conditions were never satisfied for this scenario.
+
 
 \begin{figure}
 	\FIGURE
 	{%
-		\includegraphics*[width=.45\textwidth]{images/mchi2_decrease_condition}%
-		\includegraphics*[width=.45\textwidth]{images/burg_decrease_condition}%
+		\includegraphics*[width=.40\textwidth]{images/mchi2_decrease_condition}%
+		\includegraphics*[width=.40\textwidth]{images/burg_decrease_condition}%
+		\includegraphics*[width=.12\textwidth]{images/legend2.pdf}
 	}
 	{
-		Decrease in the worst-case expected cost from an additional observation  for Modified $\chi^2$-Distance (left) and Burg Entropy (right).
-		Solid lines indicate when (\ref{eq:cost_decrease_cond}) is satisfied, while dotted lines show when an additional observation decrease the worst-case expected cost although (\ref{eq:cost_decrease_cond}) is not satisfied.
+		Percentage decrease in the worst-case expected cost from an additional observation for Modified $\chi^2$-distance (left) and Burg entropy (right).
+%		Solid lines indicate when VoD condition is satisfied, while dotted lines show when an additional observation decrease the worst-case expected cost although VoD condition is not satisfied.
+		The solid lines indicate regions where the condition is satisfied, and dotted regions indicate that the condition is not satisfied.
 		\label{fig:value}
 	}
 	{}
 \end{figure}
+
+\subsubsection{Running Time of the Decomposition Algorithm}
+\label{ssec:run_time}
+
+\begin{figure}[h]
+	\FIGURE
+	{%
+		\includegraphics*[width=.40\textwidth]{images/runtime}
+	}
+	{
+		Solution time of $\phi$APL1P with the proposed decomposition algorithm against the number of scenarios for the Modified $\chi^2$-distance.
+		\label{fig:runtime}
+	}
+	{}
+\end{figure}
+
+Finally, to illustrate the linear dependence of the problem complexity on the number of scenarios, we tracked the time to solve $\phi$APL1P (in seconds) for an increasing number of scenarios, from 6 to 200. 
+Figure \ref{fig:runtime} depicts the linear increase in the running time with the number of scenarios in \plp\ formed using the Modified $\chi^2$-distance. 
+Other $\phi$-divergences have similar behavior. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary and Future Work}
@@ -1654,9 +1700,10 @@ Generalizations of the results presented in this paper to other distance measure
 Finally, it would be useful to study applications to real-world problems.
 
 % Acknowledgments here
-% \ACKNOWLEDGMENT{%
-% This work has been partially supported by the National Science Foundation through grant CMMI-1345626. We also gratefully acknowledge support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
-% }% Leave this (end of acknowledgment)
+ \ACKNOWLEDGMENT{%
+This work has been partially supported by the National Science Foundation through grant CMMI-1345626. 
+We also gratefully acknowledge support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
+ }% Leave this (end of acknowledgment)
 
 
 % Appendix here
@@ -1664,13 +1711,129 @@ Finally, it would be useful to study applications to real-world problems.
 %             (2) APPENDICES (if it has more than one unrelated sections)
 % Outcomment the appropriate case if necessary
 %
-% \begin{APPENDICES}
-% 
-% \end{APPENDICES}
+ \begin{APPENDICES}
 
-\section*{Acknowledgements}
-Support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
-This work has also been partially supported by the National Science Foundation through grant CMMI-1151226.
+	\section{Proof of Select Propositions}
+
+\begin{proof}{\sc Proof of Proposition \ref{prop:convex}.}
+	The conjugate $\phi^*$ is a nondecreasing convex function, and $h_\omega(\x)-\mu$ is a convex function over $\x \in X$ and $\mu$. 
+	Therefore, their composition  $\phi^*\left(h_\omega(\x)-\mu\right)$ is convex. 
+	We consider $\lambda>0$ and $\lambda =0$ cases separately. 
+%	First, let $\lambda_1, \lambda_2 \geq 0$ when considering the convexity definition.   
+	Because the perspective of a convex function is convex, $\lambda\phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right)$ is convex over $\lambda>0$,  $\x \in X$ and $\mu$. 
+%	Next, let  $\lambda_1= \lambda_2 = 0$ when considering the convexity definition.   
+	When $\lambda = 0$, by definition, $0\phi^*\left(\frac{b}{0}\right)= 0$ for $b \leq 0$, $0\phi^*\left(\frac{b}{0}\right)= +\infty$ for $b>0$.  
+	This is a nondecreasing convex function; so by the same arguments, we obtain that  $0\phi^*\left(\frac{h_\omega(\x)-\mu}{0}\right)$ is convex over $\lambda=0, \mu$ and $\x \in X$. 
+	Consider $\x_1 \in X$, $\x_2 \in X$, $\mu_1,\mu_2$, and cases (i) $\lambda_1=\lambda_2 = 0$, (ii) $\lambda_1= 0$, $\lambda_2>0$, (iii) $\lambda_1 >0$, $\lambda_2 =0$, and (iv) both $\lambda_1, \lambda_2>0$.  
+	Let $a \in [0,1]$ and define $\bar{\x}=a \x_1 + (1-a) \x_2$, $\bar{\mu}=a\mu_1 + (1-a)\mu_2$, and $\bar{\lambda}=a \lambda_1 + (1-a)\lambda_2$. 
+	Then, using the above definitions and convexity arguments, one can show that for all $a \in [0,1]$, $\bar{\lambda} \phi^*\left(\frac{h_\omega(\bar{\x}) - \bar{\mu}}{\bar{\lambda}}\right) \leq a \lambda_1 \phi^*\left(\frac{h_\omega(\x_1) - \mu_1}{\lambda_1}\right) + (1-a) \lambda_2 \phi^*\left(\frac{h_\omega(\x_2) - \mu_2}{\lambda_2}\right)$.
+	\Halmos
+\end{proof}
+
+
+
+	\section{Derivations of $\phi$-Divergences in Section \ref{ssec:special_phi}}
+
+\begin{proof}{\sc Proof of Example \ref{ex:cvar} (CVaR).}
+%	First, note that for a random cost $h_\omega(x)$ we have $\mbox{CVaR}_\beta(h(x)) = \sup_{P \in \mathcal{P}} \{\e{PH(x)}\}$, where the risk envelope is given by
+%	\[
+%		\mathcal{P} = \left\{ P \left| P \leq \frac{1}{1-\beta}, \e{P} = 1, P \geq 0 \right.\right\}.
+%	\]
+%	This risk envelope motivates the choice of $\phi(t)$.
+%	
+	Note that $\phi_{\text{CVaR}}$ only admits two distance values: $0$ or $\infty$.
+	Thus any choice of $\rho < \infty$ is equivalent to $\rho = 0$.
+	The conjugate of $\phi_{\text{CVaR}}$ is
+	\[
+	\phi_{\text{CVaR}}^*(s) = \
+		\begin{cases}
+			0 & s < 0 \\
+			\frac{1}{1-\beta} s & s \geq 0,
+		\end{cases}
+	\]
+	or equivalently $\phi_{\text{CVaR}}^*(s) = \max\left\{0, \frac{1}{1-\beta} s \right\}$. 
+	This results in the dual problem 
+	\begin{align*}
+		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi_{\text{CVaR}}^*\left( \frac{h_\omega(\x)-\mu}{\lambda} \right) & = \min_{\lambda \geq 0, \mu} \mu + 0\lambda 
+		 + \lambda \sum_\omega q_\omega \max\left\{ 0, \frac{1}{1-\beta} \frac{h_\omega(\x)-\mu}{\lambda} \right\} \\
+		& = \min_{\mu} \mu + \frac{1}{1-\beta} \sum_\omega q_\omega \max\left\{ 0, h_\omega(\x)-\mu \right\} \\
+		& = \min_{\mu} \mu + \frac{1}{1-\beta} \e{[h(\x)-\mu]^+},
+	\end{align*}
+	which is one definition of $\text{CVaR}_\beta(h(\x))$. 
+	Observe that selecting $\lambda=0$ in the above problem results in the objective $\sup_\omega h_\omega(\x)$. 
+	Because $\text{CVaR}_\beta(h(\x)) \leq \sup_\omega h_\omega(\x)$, it is optimal to pick $\lambda >0$. 
+	\Halmos
+\end{proof}
+
+
+\begin{proof}{\sc Proof of Example \ref{ex:rcvar} (Convex Combination of Expectation and Worst-Case).}
+	Without loss of generality, let $\rho = 0$.
+	The conjugate of $\phi_{\text{EW}}$ is
+	\[
+		\phi_{\text{EW}}^*(s) =
+		\begin{cases}
+			(1-\beta) s & s \leq 0 \\
+			\infty & s > 0.
+		\end{cases}
+	\]
+	This gives the dual problem
+	\begin{align*}
+		\min_{\lambda \geq 0,\mu} \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi_{\text{EW}}^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right) & = \min_{\mu \geq \sup_\omega h_\omega(\x)} \mu + \sum_\omega q_\omega (1-\beta) (h_\omega(\x) - \mu) \\
+		& = \min_{\mu \geq \sup_\omega h_\omega(\x)} \beta \mu + (1-\beta) \sum_\omega q_\omega h_\omega(\x) \\
+		& = \beta \sup_\omega h_\omega(\x) + (1-\beta) \e{h(\x)}. \halmos
+	\end{align*}
+\end{proof}
+
+
+\begin{proof}{\sc Proof of Example \ref{ex:cvar_expectation} (Convex Combination of Expectation and CVaR).}
+	Without loss of generality, let $\rho = 0$.
+	The conjugate of $\phi_{\text{EC}}$ is
+	\[
+		\phi_{\text{EC}}^*(s) =
+		\begin{cases}
+			(1-\alpha) s & s < 0 \\
+			\frac{1}{1-\beta} s & s \geq 0.
+		\end{cases}
+	\]
+	Noting that $0<1-\alpha < 1 < \frac{1}{1-\beta}$, we can rewrite the conjugate as $\phi_{\text{EC}}^*(s) = \max \left\{ (1-\alpha) s, \frac{1}{1-\beta} s \right\} = (1-\alpha) s + \left( \frac{1}{1-\beta} - (1-\alpha) \right) [s]^+$. 
+	This gives the dual problem
+	\begin{align*}
+		& \min_{\lambda \geq 0,\mu}  \mu + \rho \lambda + \lambda \sum_\omega q_\omega \phi^*\left(\frac{h_\omega(\x)-\mu}{\lambda}\right) \\
+		= & \min_\mu \mu + \sum_\omega q_\omega \max \left\{ (1-\alpha)(h_\omega(\x)-\mu), \frac{(h_\omega(\x)-\mu)}{1-\beta} \right\} \\
+		= & \min_\mu \mu + (1-\alpha)\e{h(\x)-\mu} + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \e{[h(\x)-\mu]^+} \\ 
+		= & (1-\alpha)\e{h(\x)} + \alpha \min_\mu \left\{ \mu + \left(1 - \frac{\beta}{\alpha(1-\beta)+\beta}\right)^{-1} \e{[h(\x)-\mu]^+} \right\}. 
+	\end{align*}
+%	Now, CVaR includes a $\e{[\cdot]^+}$ term, which can be found in the maximum formula.
+	Then, using the definition of CVaR, we obtain
+	$%\[
+		(1-\alpha)\e{h(\x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(\x)]. 
+	$%\] 
+	\Halmos 
+%
+%	\bigskip 
+%
+%	Noting that $1-\alpha < 1 < \frac{1}{1-\beta}$, rewrite the maximum as
+%	\begin{align*}
+%		\max & \left\{ (1-\alpha)(h_\omega(\x)-\mu), \frac{(h_\omega(\x)-\mu)}{1-\beta} \right\} \\
+%		& = (1-\alpha)(h_\omega(\x)-\mu) + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \left[ h_\omega(\x)-\mu \right]^+.
+%	\end{align*}
+%	Then working with the linear term and writing in terms of expectations we get
+%	\[
+%		(1-\alpha)\e{h(\x)} + \min_\mu \alpha\mu + \left( \frac{1}{1-\beta} - (1-\alpha) \right) \e{h(\x)-\mu}^+
+%	\]
+%	which simplifies to
+%	\[
+%		(1-\alpha)\e{h(\x)} + \alpha \min_\mu \left\{ \mu + \left(1 - \frac{\beta}{\alpha(1-\beta)+\beta}\right)^{-1} \e{h(\x)-\mu}^+ \right\}
+%	\]
+%	and thus
+%	\[
+%		(1-\alpha)\e{h(\x)} + \alpha \mbox{CVaR}_{\frac{\beta}{\alpha(1-\beta)+\beta}}[h(\x)]. \Halmos
+%	\]
+\end{proof}
+
+ 
+ \end{APPENDICES}
+
 
 % References here (outcomment the appropriate case) 
 
