@@ -508,12 +508,13 @@ We will discuss this case in more detail in Section~\ref{sec:classification} (e.
 
 In this section we list some basic properties of \plp.
 Some of these properties have already been noted earlier (e.g., by \citet{bental2011robust} and by others for specific $\phi$-divergences), but we list them for completeness.
-Some of these properties help with our specialized solution method and our classification of $\phi$-divergences, and we refer to them in later sections.
-Throughout the rest of the paper, $s_\omega$ denotes
-\begin{equation*}
-	s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}. %\label{eq:s_omega_definition}
-\end{equation*}
-Furthermore, $(\x^*, \p^*)$ denotes the optimal primal solution, $(\x^*, \lambda^*, \mu^*)$ denotes the optimal dual solution, and optimal $s_\omega^*$ can be found by plugging in the respective optimal solutions. 
+These properties help with our specialized solution method and our classification of $\phi$-divergences, and we refer to them in later sections.
+Throughout the rest of the paper, we use the notation
+\begin{equation}
+	s_\omega = \frac{h_\omega(\x) - \mu}{\lambda}. \label{eq:s_omega_definition}
+\end{equation}
+Furthermore, $(\x^*, \p^*)$ denotes the optimal primal solution, and $(\x^*, \lambda^*, \mu^*)$ denotes the optimal dual solution.
+Optimal $s_\omega^*$ can then be found by plugging in the respective optimal solutions in (\ref{eq:s_omega_definition}). 
 The basic properties of \plp\ are as follows.
 
 
@@ -532,29 +533,59 @@ The basic properties of \plp\ are as follows.
 	\plp\ preserves the time structure of SLP-2.
 \end{property}
 
-\begin{property}
+\begin{property} {\sc (Primal-Dual Relation.)}
 	\label{property:primal_dual_relation}
-	The (optimal) worst-case distribution can be calculated with the equations
+	The (optimal) worst-case probabilities $p^*_\omega$ can be calculated with the equations
 %	\begin{align} 
 	\begin{equation}\label{eq:p_worst}
-		\frac{p_\omega^*}{q_\omega^*} \in \partial \phi^*\left(s_\omega^*\right), \ \ \ \ \ \sum_{\omega=1}^n q_\omega^* \phi\left(\frac{p_\omega^*}{q_\omega^*}\right) \leq \rho, \ \ \ \ \ \sum_{\omega=1}^n p_\omega^* = 1.
+		\frac{p_\omega^*}{q_\omega} \in \partial \phi^*\left(s_\omega^*\right), \ \ \ \ \ \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega^*}{q_\omega}\right) = \rho, \ \ \ \ \ \sum_{\omega=1}^n p_\omega^* = 1
 	\end{equation}		
-%		\frac{p_\omega}{q_\omega} \in \partial \phi^*\left(s_\omega\right)
-% \label{eq:p_worst}
-%		& \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \leq \rho \nonumber \\
-%		& \sum_{\omega=1}^n p_\omega = 1. \nonumber
-%	\end{align}
+when $\lambda^*>0$ and $q_\omega >0$. 
+	With $\lambda^*>0$ and $q_\omega =0$, we have $p_\omega^* \in \partial \phi^*\left(s_\omega^*\right) q_\omega$ (i.e., $p_\omega^* = 0$) when $s_\omega^* < \bar{s}$, and otherwise (i.e., when $s_\omega^* = \bar{s}<\infty$) we need to use the last two equations in (\ref{eq:p_worst}). 
+	With $\lambda^*=0$, $p_\omega^* = 0$ when $h_\omega(\x^*) - \mu^* < 0$; otherwise (when $h_\omega(\x^*) - \mu^* = 0$), we need to use the last two equations in (\ref{eq:p_worst}), but with the regular $\phi$-divergence constraint $I_{\phi}(\p,\q)\leq \rho$ instead of $I_{\phi}(\p,\q)=\rho$. 
+%
+%$\phi$-divergence constraint (\ref{eq:plp_primal_divergence}) and $\sum_\omega p^*_\omega = 1$. 
 \end{property}
 
-A coherent risk measure is defined in \citep{rockafellar2007coherent}, which shows that minimizing a coherent risk measure over a polyhedron implies that \plp\ is a convex problem.
-The convexity of \plp\ was also noted in \citep{bental2011robust}.
-In Section \ref{ssec:special_phi}, we present special $\phi$-divergences that result in CVaR, or a convex combination of expectation with CVaR or the worst-case scenario. 
-Properties \ref{property:time_structure} and \ref{property:primal_dual_relation} help with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
-The preservation of time structure, as can be seen in (\ref{eq:plp_two_stage}), allows us to decompose the problem and convert (sub-)derivatives of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(s_\omega\right)$, aiding in our decomposition-based solution method. 
-The appearance of the conjugate $\phi^*(s)$ in the objective of (\ref{eq:plp_two_stage}) gives a method for retrieving the worst-case distribution from the dual problem, as detailed in Property \ref{property:primal_dual_relation}.
-In many cases, the first equation in (\ref{eq:p_worst}) is sufficient to calculate $\{p_\omega\}_{\omega=1}^n$.
-In addition, $\phi^*$ is often differentiable and so we have the relationship $p_\omega = q_\omega \phi^{* \prime}(s_\omega)$.
-Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detailed in Section \ref{sec:classification}.
+
+
+
+
+The convexity of \plp\ was noted in \cite{bental2011robust}; see also Proposition \ref{prop:convex} in Section \ref{sec:soln_algorithm}.
+A coherent risk measure has desired properties including convexity and monotonicity \citep{rockafellar2007coherent,shaDR:09}.  
+These properties combined with the facts that $h_\omega(\x)$ is convex over $X$ and $X$ is a convex set implies Property \ref{property:convex}.  
+Property \ref{property:coherent_risk_measure} is valid even when we have $q_\omega=0$ for some $\omega$. 
+We provide a proof of Property \ref{property:coherent_risk_measure} in this case in Appendix \ref{sec:apx_proof}. 
+In Section \ref{ssec:special_phi}, we present $\phi$-divergences that result in commonly used coherent risk measures. 
+
+
+Property \ref{property:time_structure} helps with our decomposition-based solution method described in Section \ref{sec:soln_algorithm}. 
+The preservation of time structure can be seen in (\ref{eq:plp_two_stage}).  
+Rewriting it slightly, we obtain
+\begin{equation}
+\label{eq:dec}
+\min_{\x \in X,\lambda \geq 0,\mu} \left\{ \c\x + \mu + \rho \lambda +  \sum_{\omega=1}^{n} q_\omega h_\omega^{\dagger}(\x, \lambda, \mu) \colon \ s_\omega \leq \bar{s} \right\}.
+\end{equation}
+The above formulation preserves the two-stage structure of the SLP-2.
+The first-stage variables can now be viewed as $\x, \lambda$, and $\mu$. 
+The expectation is taken with respect to the nominal distribution $\q$. 
+Finally, $ h^{\dagger}_\omega(\x, \lambda, \mu) =  \lambda \phi^*\left(\frac{h_\omega(\x) - \mu}{\lambda} \right)$, or equivalently $\lambda\phi^*(s_\omega)$, where $h_\omega(\x)$ are defined as before. 
+%In Section \ref{sec:soln_algorithm}, we decompose the problem by scenario and convert (sub-)gradients of $h_\omega(\x)$ to (sub-)derivatives of $\phi^*\left(s_\omega\right)$. 
+
+
+
+
+Property \ref{property:primal_dual_relation} lists the first order necessary conditions for optimality. 
+The appearance of the conjugate $\phi^*$ in the objective of (\ref{eq:plp_two_stage}) gives a method for retrieving the worst-case distribution from the dual problem.
+It uses the fact that $\frac{p^*_\omega}{q_\omega} \in \partial \phi^*(s^*_\omega)$ if and only if $s^*_\omega \in \partial \phi\left(\frac{p^*_\omega}{q_\omega}\right)$.
+In many cases, the first equation in (\ref{eq:p_worst}) is sufficient to calculate $p_\omega^*$.
+In addition, $\phi^*$ is often differentiable, and so we have the relationship $p_\omega^* = q_\omega \phi^{* \prime}(s_\omega)$. 
+Observe that because  $\phi$ is a proper closed convex function, so is $\phi^*$ \citep[Theorem 12.2]{rockafellar_70}.
+Hence,  $\phi^*$ is subdifferentiable on the relative interior of its domain \citep[Theorem 23.4]{rockafellar_70}.  
+The boundary of the domain of $\phi^*$---that is, at $s=\bar{s}$ when $\bar{s}<\infty$---might require special care, where we need the primal feasibility conditions (\ref{eq:plp_primal_divergence}) and (\ref{eq:plp_primal_probability}). 
+The $\phi$-divergence constraint in (\ref{eq:p_worst}) is written as an equality because with $\lambda^*>0$, the complementary slackness dictates that this constraint must be active. 
+With $\lambda^*=0$, we have the regular $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}). 
+While Property \ref{property:primal_dual_relation} summarizes how to obtain $p^*_\omega$ for the cases when $\lambda^* = 0$ or $q_\omega = 0$, we will discuss these special cases in more detail in Section \ref{sec:classification}.
 
 \bigskip 
 
@@ -577,9 +608,6 @@ Special cases when $\lambda = 0$ or $q_\omega = 0$ for some $\omega$ are detaile
 	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$ for all $\omega$.
 	However, the case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}.
 \end{remark}
-
-Note that being a coherent risk measure implies that \plp\ is a convex problem.
-The convexity of LRO was also noted in \citep{wang2010likelihood}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1038,38 +1066,53 @@ Examples of such adjoints can be seen in the opposite corners of Table~\ref{tb:p
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Additional Details about Divergences that can Suppress: A Subclassification}
+\subsection{Additional Details about $\phi$-Divergences that can Suppress: A Subclassification}
 \label{ssec:suppress}
 
-Recall the primal-dual variable relation, which specifies $\frac{p^*_\omega}{q_\omega} = \partial \phi^*(s^*_\omega)$, where $s^*_\omega=\frac{h_{\omega}(\x^*)-\mu^*}{\lambda^*}$. 
+
+$\phi$-divergences that can suppress scenarios (i.e., $\lim_{t \searrow 0} \phi(t) = \underbar{c}$ for some $0\leq \underbar{c}< \infty$) induce a finite limit on $\phi^*(s)$ as $s \searrow -\infty$ (that is, $\lim_{s \searrow -\infty}\phi^*(s)=-\underbar{c}$). 
+This can be seen from the fact that $\phi^*$ is a monotone non-decreasing function that is bounded below by $-\phi(0)=-\lim_{t \searrow 0}\phi(t)$. 
+However, this limit on $\phi^*$ as  $s \searrow -\infty$ can be achieved in different ways. 
+Consider, for instance, Modified $\chi^2$-distance and KL divergence. 
+For both divergences,  $\lim_{t \searrow 0} \phi(t) = 1$ and $\lim_{s \searrow -\infty}\phi^*(s)=-1$. 
+However, these two divergences are inherently different. 
+For the Modified  $\chi^2$-distance, $\phi_{m\chi^2}^*(s)=-1$ for all $s < -2 = \lim_{t \searrow 0} \phi_{m\chi^2}^{\prime}(t)$. 
+In contrast, the same limit is reached only asymptotically as $s \searrow -\infty = \lim_{t \searrow 0} \phi_{kl}^{\prime}(t)$ for the KL divergence. 
+This, in turn, relates to the way the scenarios are suppressed by these divergences. 
+
+
+To see how the above discussion relates to suppression, recall the primal-dual variable relation (\ref{eq:p_worst}), which specifies $\frac{p^*_\omega}{q_\omega} \in \partial \phi^*(s^*_\omega)$, where $s^*_\omega=\frac{h_{\omega}(\x^*)-\mu^*}{\lambda^*}$. 
 Note that suppression ($p^*_\omega = 0$, $q_\omega > 0$) can occur only when $0 \in \partial \phi^*(s^*_\omega)$.
-Recall also that, by the convex conjugate's properties, we have  $\frac{p^*_\omega}{q_\omega} \in \partial \phi^*(s^*_\omega)$ if and only if $s^*_\omega \in \partial \phi(\frac{p^*_\omega}{q_\omega})$. 
+Recall also that, by the convex conjugate's properties, we have  $0 \in \partial \phi^*(s^*_\omega)$ if and only if $s^*_\omega \in \partial \phi(0)$. 
 Assume  $\phi$ and $\phi^*$ are differentiable for convenience. 
 Examining $\lim_{t \searrow 0} \phi'(t)$ reveals when $0=\phi^{* \prime} (s^*_\omega)$ by the aforementioned property of conjugates. 
 This analysis yields two subclasses within the $\phi$-divergences that can suppress scenarios---one tends to suppress scenarios one at a time, and the other suppresses all but the most costly scenario(s) simultaneously.
 
 
 \begin{itemize}
-	\item {\sc Subclass 1\ ($\lim_{t \searrow 0} \phi'(t) > -\infty$)}  In this case, there are two nonpositive constants $c, \underline{s}$ such that (i)  $\lim_{t \searrow 0} \phi'(t) = \underline{s}$ and (ii) $\phi^*(s) = c$ for all $s < \underline{s}$. 
+	\item {\sc Subclass 1\ ($\lim_{t \searrow 0} \phi'(t) > -\infty$)}  In this case, there are two constants $\underbar{c}\geq 0$, and $\underline{s}\leq 0$ such that (i)  $\lim_{t \searrow 0} \phi'(t) = \underline{s}$ and (ii) $\phi^*(s) = -\underbar{c} =  - \lim_{t \searrow 0} \phi(t)$ for all $s < \underline{s}$. 
 		Thus, $\phi^{*\prime}(s_\omega^*) = 0$ when $s_\omega^* < \underline{s}$, suppressing all such scenarios.
 		In other words, all scenarios $\omega$ that satisfy  $\frac{h_\omega(\x^*)-\mu^*}{\lambda^*} < \underline{s}$ are suppressed.
 		As $\rho$ increases, scenarios tend to be suppressed one at a time as their $s_\omega^*$ reaches $\underline{s}$.
+		Modified $\chi^2$-distance belongs to this subclass. 
 		\smallskip 
 
 
-	\item {\sc Subclass 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$)} In this case, there is a nonpositive constant $c$ such that $\phi^*(s) \searrow c$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
-		As a result, scenarios can only be suppressed if $s_\omega^* = -\infty$, which can only occur if $\lambda^* = 0$ and $h_\omega(\x^*) < \mu^*$.
+	\item {\sc Subclass 2\ ($\lim_{t \searrow 0} \phi'(t) = -\infty$)} In this case, there is a constant $\underbar{c}\geq 0$ such that $\phi^*(s) \searrow -\underbar{c}=-\lim_{t \searrow 0} \phi(t)$ as $s \rightarrow -\infty$ asymptotically, but never reaches the bound.
+		As a result, scenarios can only be suppressed if $s_\omega^* = -\infty$. 
+Intuitively, this can only occur if $\lambda^* = 0$ and $h_\omega(\x^*) < \mu^*$.
 %		(Recall the discussion after the dual formulation (\ref{eq:plp_two_stage}) that reveals $s_\omega \leq 0$.) 
 		Consequently, all scenarios $\omega$ with $h_\omega(\x^*) < \mu^*$ have $p_\omega^*=0$, and we must have $\mu^* = \max_\omega h_\omega(\x^*)$ to ensure that scenarios $\omega \in \argmax h_\omega(\x^*)$ are given positive probability so that $\p^*$ is a probability distribution.
-		This means that all but the most expensive scenario(s) will vanish simultaneously.\smallskip 
+		This means that all but the most expensive scenario(s) will vanish simultaneously.
+		KL divergence belongs to this subclass.\smallskip 
 \end{itemize}
 
 Table \ref{tb:phi_categories} lists $\phi$-divergences that belong to these subclasses with the number in parentheses.
-As an example of a phi-divergence in the first subclass, consider the Modified $\chi^2$-Distance. 
-For the Modified $\chi^2$-Distance, $c=-1$ and $\underline{s}=-2=\lim_{t \searrow 0} \phi'(t)$. 
-We will numerically show in Section~\ref{ssec:numerical_pop_suppress} that Modified  $\chi^2$-Distance suppresses scenarios one at a time as $\rho$ increases. 
-On the other hand, Kullback-Liebler Divergence belongs to the second subclass. 
-For this divergence, constant $c$ is reached asymptotically; $\lim_{s \rightarrow -\infty}\phi^*(s) =c=-1$. 
+%%As an example of a phi-divergence in the first subclass, consider the Modified $\chi^2$-Distance. 
+%%For the Modified $\chi^2$-Distance, $c=-1$ and $\underline{s}=-2=\lim_{t \searrow 0} \phi'(t)$. 
+%%We will numerically show in Section~\ref{ssec:numerical_pop_suppress} that Modified  $\chi^2$-Distance suppresses scenarios one at a time as $\rho$ increases. 
+%%On the other hand, Kullback-Liebler Divergence belongs to the second subclass. 
+%%For this divergence, constant $c$ is reached asymptotically; $\lim_{s \rightarrow -\infty}\phi^*(s) =c=-1$. 
 %Because such a constant $c$ is reached only as $s \rightarrow -\infty$, scenarios can only be suppressed if $s_\omega = -\infty$, scenarios will be suppressed simultaneously.  
 Divergences in the second subclass can be difficult to deal with numerically when suppression occurs because of the $\lambda^* = 0$ in the denominator (see Section \ref{ssec:implement} for details).
 In addition to numerical illustration of this subclassification in Section~\ref{ssec:numerical_pop_suppress}, we will shortly provide examples of $\phi$-divergences to illuminate the different behaviors in Section~\ref{ssec:special_phi}. 
@@ -1079,15 +1122,15 @@ In addition to numerical illustration of this subclassification in Section~\ref{
 % We present the one-by-one and simultaneous suppressing behavior numerically for the Modified $\chi^2$-Distance and KL Divergence, respectively, in Section \ref{sec:comp_results}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Additional Details about Divergences that can Pop}
+\subsection{Additional Details about $\phi$-Divergences that can Pop}
 \label{ssec:pop}
 
 Divergences that can pop a scenario have $\phi(t)$ grow linearly as $t \rightarrow \infty$, which causes the existence of an upper bound $\bar{s} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$ on the domain of $\phi^*(s)$.
 (Recall the discussion in Section~\ref{ssec:form} regarding \plp\ in dual form.)
-The primal-dual variable relation specifies $\frac{p^*_\omega}{q_\omega} = \partial \phi^*(s^*_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
+The primal-dual variable relation (\ref{eq:p_worst}) specifies $\frac{p^*_\omega}{q_\omega} \in \partial \phi^*(s^*_\omega)$, but the left-hand side is undefined when $q_\omega = 0$.
 Intuitively, we can think of $\frac{p^*_\omega}{0} = \infty$ if $p^*_\omega > 0$. 
-Thus popping a scenario can only occur when the right-hand side subdifferential also includes $\infty$.
-This, in turn, occurs only when $s^*_\omega = \bar{s}$, or when scenario $\omega$ has the highest cost.
+Thus popping a scenario can be thought to occur when the right-hand side subdifferential also includes $\infty$.
+This, in turn, can only happen at the boundary of the domain, $s^*_\omega = \bar{s}$, or when scenario $\omega$ has the highest cost.
 Therefore, only the most expensive scenarios can be popped. 
 The next proposition makes this statement rigorous.
 
@@ -1099,9 +1142,9 @@ it has the highest cost, i.e.,  $\bar{\omega} \in \arg\max_{\omega} h_\omega(\x^
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
-	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \citep{bental2011robust} and additionally consider the case where $q_\omega = 0$.
-	For this proof, we assume for simplicity that the first-stage cost vector is $\c = 0$.	
-	We begin with the Lagrangian of (\ref{eq:plp_primal}), $\mathcal{L}(p,\mu,\lambda) = \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda$. 
+	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust} and additionally consider the case where $q_\omega = 0$.
+	For this proof, we assume for simplicity that the first-stage cost vector is $\c = \mathbf{0}$.	
+	We begin with the Lagrangian of (\ref{eq:plp_primal}), $\mathcal{L}(\p,\mu,\lambda) = \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda$. 
 We then generate the dual of the inner problem as
 	\begin{align}
 		 & \min_{\lambda \geq 0, \mu} \max_{\p \geq 0} \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda \nonumber \\
@@ -1132,10 +1175,11 @@ We then generate the dual of the inner problem as
 \end{proof}
 
 
-\begin{remark}
-	Finding the probability of the popped scenario cannot be done by differentiating $\phi^*$ as with other scenarios.
-Thus the probability must be calculated with the primal feasibility conditions $\sum_\omega p_\omega = 1$, $p_\omega \geq 0, \forall \omega$.
-\end{remark}
+Observe that the dual formulation (\ref{eq:plp_two_stage}) is still valid when $\lambda=0$ (and $q_{\bar{\omega}} = 0$) with the aforementioned interpretations. 
+When $\lambda>0$, we set  $q_{\bar{\omega}}\phi^*(\bar{s}) = 0 \cdot \infty = 0$ if $\phi^*(\bar{s})= \infty$ when popping occurs by using the typical extended arithmetic rules \citep[]{rockafellar_70}. 
+Finding the probability of the popped scenario cannot be done by using the subgradients of $\phi^*$ as with other scenarios.
+Thus, the probability must be calculated with the primal feasibility conditions as detailed in Property \ref{property:primal_dual_relation}.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subsection{Some Special $\phi$-Divergences: Illustration of Suppression and Popping via Risk Models}
@@ -1713,7 +1757,8 @@ We also gratefully acknowledge support provided by a Water Sustainability Progra
 %
  \begin{APPENDICES}
 
-	\section{Proof of Select Propositions}
+	\section{Proofs of Select Properties and Propositions}
+	\label{sec:apx_proof} 
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:convex}.}
 	The conjugate $\phi^*$ is a nondecreasing convex function, and $h_\omega(\x)-\mu$ is a convex function over $\x \in X$ and $\mu$. 
