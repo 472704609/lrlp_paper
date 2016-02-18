@@ -273,52 +273,48 @@ Our work unites these previous papers and provides insight into conditions where
 
 \subsection{Contributions}
 
-One of the open problems identified by \citet{bental2011robust} was to study the performance of different $\phi$-divergences.
-Given that there are many $\phi$-divergences, a decision maker is left with the question of how each divergence behaves for his/her problem and which one to choose.
-In this paper, we provide a classification of $\phi$-divergences that begins to answer this open question.
+The contributions of this paper are as follows. 
 
-In a data-driven setting, several important questions arise.
+\begin{itemize}
+\item[(i)] One of the open problems identified by \citet{bental2011robust} was to study the performance of different $\phi$-divergences.
+Given that there are many $\phi$-divergences, a decision maker is left with the question of how each divergence behaves for his/her problem and which one to choose.
+In this paper, we provide a novel classification of $\phi$-divergences that begins to answer this open question.
+This classification allows us to provide insight into which class of $\phi$-divergence may be most useful to which type of model.
+		Our main classification is a general feature of $\phi$-divergences and applies to a broader class of $\phi$-divergence constrained problems than the ones presented in this paper. 
+
+\item[(ii)] In a data-driven setting, several important questions arise.
 		What happens as we add one more data?
 		Will our solution change, and if so, will the overall cost decrease?
 		Can we determine sampling from which scenarios result in a better (lower-cost) solution?
 		Can we characterize the behavior of the problem as we add more data?
-		In this paper, we provide answers to these questions.
+		We provide answers to these questions.
 
-\bigskip
-
-
-The contributions of this paper are as follows. 
-\begin{enumerate}
-	\item 
-		We provide a novel classification of $\phi$-divergences dictated by the types of distributions that can be admitted to the set of distributions. 
-		This allows us to provide insight into which class of $\phi$-divergence is most useful to which type of model.
-		We note that this classification is a general feature of $\phi$-divergences and applies to a broader class of $\phi$-divergence constrained problems than the ones presented in this paper. 
-		
-	\item 
-		We provide a simple condition to determine if sampling from a particular scenario will rule out the current worst-case distribution, which can be generalized beyond the two-stage setting.
+		\begin{itemize}
+			\item First, we provide a simple condition to determine if sampling from a particular scenario will lower the cost, which again can be generalized beyond the two-stage setting.
 		We refer to this as the {\it value of additional data}. 
-		
+			\item Next, in a data-driven setting---where random data is collected to form the ambiguity set of distributions using $\phi$-divergences---we show that asymptotically \plp\ essentially behaves  the same as a stochastic program with the (unknown) true distribution.
+		\end{itemize}
 
-\item 
-		In a data-driven setting---where data is collected to form the ambiguity set of distributions using $\phi$-divergences---we show that \plp\ converges to the stochastic program with the (unknown) true distribution.
-		
 
-	\item Stochastic programs often become quite large, which raises questions of computational tractability.
-		We help to answer this problem by providing a modified Bender's decomposition that can be used to solve the \plp\ efficiently by solving only linear programs. 
+\item[(iii)] Stochastic programs often become quite large, which raises questions of computational tractability.
+		We provide a modified Bender's decomposition that can be used to solve \plp\ efficiently by solving only linear problems (master and subproblems). 
 
-	\item We provide some interesting examples of $\phi$-divergences that result in commonly used risk models and illustrate our results numerically. 
-\end{enumerate}
+\item[(iv)]   Finally, we present examples of $\phi$-divergences that result in commonly used risk models, and we illustrate our results on these risk models and also through a numerical example. 
+\end{itemize}
+
+
+
 
 \subsection{Organization}
 
 The rest of the paper is organized as follows.
-Section \ref{sec:phi_divergences} introduces the $\phi$-divergence and presents some useful properties.
-Section \ref{sec:plp2} presents the derivation of $\phi$-divergence model for a two-stage stochastic program with recourse.
-Section \ref{sec:classification} presents a classification of $\phi$-divergences with some examples;
-Sections \ref{sec:properties} describes the data-driven properties of \plp; 
-Section \ref{sec:soln_algorithm} presents a decomposition method for solving the \plp\ model; and in Section \ref{sec:comp_results} we present numerical illustrations of our results. 
+Section \ref{sec:phi_divergences} introduces $\phi$-divergences and lists several useful properties.
+Section \ref{sec:plp2} presents the derivation of $\phi$-divergence constrained ambiguous two-stage stochastic programs with recourse and discusses their basic properties. %, which will be used in later sections.
+Data-driven properties of \plp\ are explored in Section \ref{sec:properties}. 
+Section \ref{sec:classification} presents a classification of $\phi$-divergences and illustrates different classes using risk models. 
+Then, Section \ref{sec:soln_algorithm} discusses a decomposition method for solving the \plp. Finally, Section \ref{sec:comp_results} numerically illustrates the results of the paper, and 
 %some of the properties of the \plp\ model.
-We end in Section \ref{sec:plp_conclusions} with conclusions and future work.
+Section \ref{sec:plp_conclusions} concludes with a summary and future work.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{$\phi$-Divergences} %Introduction to
@@ -515,6 +511,8 @@ Throughout the rest of the paper, we use the notation
 \end{equation}
 Furthermore, $(\x^*, \p^*)$ denotes the optimal primal solution, and $(\x^*, \lambda^*, \mu^*)$ denotes the optimal dual solution.
 Optimal $s_\omega^*$ can then be found by plugging in the respective optimal solutions in (\ref{eq:s_omega_definition}). 
+We assume $X \neq \emptyset$ and compact and second-stage problems (\ref{eq:slp_second_stage}) are primal and dual feasible for all $\omega$ and all $\x \in X$. 
+This ensures that $h_\omega(\x)$ are (finite) real-valued  and the problem has a finite optimal solution.  
 The basic properties of \plp\ are as follows.
 
 
@@ -541,21 +539,20 @@ The basic properties of \plp\ are as follows.
 		\frac{p_\omega^*}{q_\omega} \in \partial \phi^*\left(s_\omega^*\right), \ \ \ \ \ \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega^*}{q_\omega}\right) = \rho, \ \ \ \ \ \sum_{\omega=1}^n p_\omega^* = 1
 	\end{equation}		
 when $\lambda^*>0$ and $q_\omega >0$. 
-	With $\lambda^*>0$ and $q_\omega =0$, we have $p_\omega^* \in \partial \phi^*\left(s_\omega^*\right) q_\omega$ (i.e., $p_\omega^* = 0$) when $s_\omega^* < \bar{s}$, and otherwise (i.e., when $s_\omega^* = \bar{s}<\infty$) we need to use the last two equations in (\ref{eq:p_worst}). 
-	With $\lambda^*=0$, $p_\omega^* = 0$ when $h_\omega(\x^*) - \mu^* < 0$; otherwise (when $h_\omega(\x^*) - \mu^* = 0$), we need to use the last two equations in (\ref{eq:p_worst}), but with the regular $\phi$-divergence constraint $I_{\phi}(\p,\q)\leq \rho$ instead of $I_{\phi}(\p,\q)=\rho$. 
+	With $\lambda^*>0$ and $q_\omega =0$, $p_\omega^* \in \partial \phi^*\left(s_\omega^*\right) q_\omega$ (i.e., $p_\omega^* = 0$) when $s_\omega^* < \bar{s}$; otherwise (i.e., when $s_\omega^* = \bar{s}<\infty$) use the last two equations in (\ref{eq:p_worst}). 
+	With $\lambda^*=0$, $p_\omega^* = 0$ when $h_\omega(\x^*) - \mu^* < 0$; otherwise (when $h_\omega(\x^*) - \mu^* = 0$), use the last two equations in (\ref{eq:p_worst}), but with the regular $\phi$-divergence constraint $I_{\phi}(\p,\q)\leq \rho$ instead of $I_{\phi}(\p,\q)=\rho$. 
 %
 %$\phi$-divergence constraint (\ref{eq:plp_primal_divergence}) and $\sum_\omega p^*_\omega = 1$. 
 \end{property}
 
 
 
-
-
-The convexity of \plp\ was noted in \cite{bental2011robust}; see also Proposition \ref{prop:convex} in Section \ref{sec:soln_algorithm}.
 A coherent risk measure has desired properties including convexity and monotonicity \citep{rockafellar2007coherent,shaDR:09}.  
 These properties combined with the facts that $h_\omega(\x)$ is convex over $X$ and $X$ is a convex set implies Property \ref{property:convex}.  
-Property \ref{property:coherent_risk_measure} is valid even when we have $q_\omega=0$ for some $\omega$. 
-We provide a proof of Property \ref{property:coherent_risk_measure} in this case in Appendix \ref{sec:apx_proof}. 
+See also Proposition \ref{prop:convex} in Section \ref{sec:soln_algorithm} and \cite{bental2011robust}. 
+Property \ref{property:coherent_risk_measure} is valid even when we have $q_\omega=0$ for some $\omega$.
+The case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}. 
+Therefore, we provide a proof of Property \ref{property:coherent_risk_measure} in this case in Appendix \ref{sec:apx_proof}. 
 In Section \ref{ssec:special_phi}, we present $\phi$-divergences that result in commonly used coherent risk measures. 
 
 
@@ -586,28 +583,6 @@ The boundary of the domain of $\phi^*$---that is, at $s=\bar{s}$ when $\bar{s}<\
 The $\phi$-divergence constraint in (\ref{eq:p_worst}) is written as an equality because with $\lambda^*>0$, the complementary slackness dictates that this constraint must be active. 
 With $\lambda^*=0$, we have the regular $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}). 
 While Property \ref{property:primal_dual_relation} summarizes how to obtain $p^*_\omega$ for the cases when $\lambda^* = 0$ or $q_\omega = 0$, we will discuss these special cases in more detail in Section \ref{sec:classification}.
-
-\bigskip 
-
-\bigskip
-
-
-\begin{proof}{\sc Proof of Property \ref{property:coherent_risk_measure}}
-	Rockafellar also shows that $\cal R$ is a coherent risk measure if and only if it can be written using a risk envelope \citep{rockafellar2007coherent}.
-	We will show that \plp\ can be written in the form of a risk envelope in the primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$.
-	Throughout the proof, all expectations are taken with respect to the uniform distribution.
-	
-	First, probability constraint (\ref{eq:plp_primal_probability}) can be written as $\e{\tilde{p}} = 1$, where $\tilde{p}$ is the random variable taking values $\tilde{p}_\omega$ with equal probability.
-	Then the $\phi$-divergence constraint (\ref{eq:plp_primal_divergence}) becomes $\sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho$, where $\tilde{q}_\omega = \frac{q_\omega}{1/n}$ and $\frac{\phi(a/0)}{a/0} = \lim_{t \rightarrow \infty} \frac{\phi(t)}{t}$.
-	Combining these yields the set ${\cal Q} = \{\tilde{p} | \e{\tilde{p}} = 1, \sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega \frac{\phi\left(\tilde{p}_\omega/\tilde{q}_\omega\right)}{\tilde{p}_\omega/\tilde{q}_\omega} \leq \rho \}$, a closed and convex risk envelope.
-	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as $\max_{\tilde{p} \in {\cal Q}} \e{\tilde{p} h(x)}$, where $h(x)$ is the random variables defined by $\{h_\omega(x)\}$.
-	Thus we see that \plp\ is the minimum of a coherent risk measure.
-\end{proof}
-
-\begin{remark}
-	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$ for all $\omega$.
-	However, the case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}.
-\end{remark}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -914,7 +889,7 @@ We are now ready to present the main result on the asymptotic behavior of \plp.
 
 \begin{theorem}
 	\label{thm:epiconvergence}
-	Assume $X \neq \emptyset$ is compact and $h_\omega(\x)$ are primal and dual feasible for every $\x \in X$.
+	Assume $X \neq \emptyset$ is compact and problem (\ref{eq:slp_second_stage}) is primal and dual feasible for all $\omega$ and $\x \in X$.
 	Suppose $\phi(t) \geq 0$ has a unique root at $t = 1$, and the observations are independent and identically distributed from a distribution with probability mass function $\qtrue$. 
 	Then, the optimal value of \plp\ given in (\ref{eq:plp_two_stage}) converges to that of SLP-2 given in (\ref{eq:slp_first_stage}) with $\qtrue$, and all limit points of the solutions $\x^*$ of \plp\ solve SLP-2 with $\qtrue$ as $N \rightarrow \infty$, w.p.1.
 \end{theorem}
@@ -1746,7 +1721,7 @@ Finally, it would be useful to study applications to real-world problems.
 % Acknowledgments here
  \ACKNOWLEDGMENT{%
 This work has been partially supported by the National Science Foundation through grant CMMI-1345626. 
-We also gratefully acknowledge support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
+%We also gratefully acknowledge support provided by a Water Sustainability Program Fellowship through the Technology and Research Initiative Fund at the University of Arizona.
  }% Leave this (end of acknowledgment)
 
 
@@ -1757,8 +1732,34 @@ We also gratefully acknowledge support provided by a Water Sustainability Progra
 %
  \begin{APPENDICES}
 
-	\section{Proofs of Select Properties and Propositions}
+	\section{Proof of Property~\ref{property:coherent_risk_measure} and Proposition~\ref{prop:convex}}
+	%{Select Properties and Propositions}
 	\label{sec:apx_proof} 
+
+
+\begin{proof}{\sc Proof of Property \ref{property:coherent_risk_measure}}
+	
+A coherent risk measure has a dual representation that can be viewed as worst-case expectation from a set of probability measures. 
+	Specifically, $\cal R$ is a real-valued coherent risk measure if and only if there exists a convex, bounded, and closed set $\mathcal{U}$ such that ${\cal R}(Y)=\sup_{\mathbf{\zeta} \in \mathcal{U}}\sum_{\omega=1}^n r_\omega \zeta_\omega Y_\omega$. 
+	Here, random variables $Y$ are seen as functions in an $\mathcal{L}^p$ space with sample space $\Omega$ and a reference probability measure $\mathbf{r}$ (see, e.g., \cite{rockafellar2007coherent}, Theorem 6.6 of \cite{shaDR:09} for details). 
+	In our context, $Y \equiv h(\x)$, taking values $h_\omega(\x)$. 
+	Observe that with our assumptions, $\sup_{\omega, \x \in X} |h_\omega(\x)|<C$ for some $C<\infty$. 
+		Because we have finitely many elements of $\omega$, the choice of norm or $\mathcal{L}^p$ space does not matter; so, $\mathcal{U} \subset \{\mathbf{\zeta} \in \mathbb{R}^n\colon\ \sum_{\omega=1}^{n} r_\omega \zeta_\omega = 1, \ \  \mathbf{\zeta} \geq 0 \}$.
+	To handle the case $q_\omega=0$ for some $\omega$, we use the discrete uniform distribution as the reference distribution;  $r_\omega = \frac{1}{n}, \forall \omega$. 
+	Then, we rewrite  \plp\ in primal form (\ref{eq:plp_primal}) with the change of variables $\tilde{p}_\omega = \frac{p_\omega}{1/n}$ and $\tilde{q}_\omega = \frac{q_\omega}{1/n}$. 
+	By setting $\zeta_\omega = \tilde{p}_\omega$, we obtain $\mathcal{U}=\left\{ \tilde{\p}\in \mathbb{R}^n\colon \  \sum_{\omega=1}^{n} \frac{1}{n}\tilde{q}_\omega \phi\left( \frac{\tilde{p}_\omega}{\tilde{q}_\omega} \right) \leq \rho, \  \sum_{\omega=1}^{n}\tilde{p}_\omega =1, \ \ \tilde{\p} \geq 0 \right\}$---a nonempty convex compact set---again with the interpretations $0\phi\left(\frac{a}{0}\right)=a\lim_{t\rightarrow \infty}\frac{\phi(t)}{t}$ for $a>0$ and $0\phi\left(\frac{0}{0}\right)=0$ for $a=0$.
+	Finally, we can rewrite the inner maximization of (\ref{eq:plp_primal}) as ${\cal R}(h(\x))=\sup_{\tilde{\p} \in \mathcal{U}}\sum_{\omega=1}^n \frac{1}{n} \tilde{p}_\omega h_\omega(\x) =\max_{\p \in {\mathcal{P}}} p_\omega h_\omega(\x)$. 
+	Thus we see that \plp\ minimizes a coherent risk measure.
+	\Halmos
+\end{proof}
+
+\begin{remark}
+	The above proof can be simplified by using $\tilde{p}_\omega = \frac{p_\omega}{q_\omega}$ if $q_\omega > 0$ for all $\omega$.
+	However, the case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}.
+\end{remark}
+
+
+
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:convex}.}
 	The conjugate $\phi^*$ is a nondecreasing convex function, and $h_\omega(\x)-\mu$ is a convex function over $\x \in X$ and $\mu$. 
