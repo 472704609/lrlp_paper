@@ -236,7 +236,7 @@
 Many optimization problems can be modeled by stochastic programs minimizing the expected value of an uncertain objective function.
 However, if the distribution of the uncertain parameters used in the model is incorrect, the stochastic program can give highly suboptimal results.
 Such problems have led to the development of distributionally robust optimization, a modeling technique that replaces the probability distribution by a set of distributions and optimizes the expected cost relative to the worst distribution in the uncertainty set.
-One approach that has been recently proposed by \citet{bental2011robust} uses a set of distributions that are sufficiently close in the $\phi$-divergence sense from a given ``nominal'' distribution. 
+One approach that has been recently proposed by \citet{bental2013robust} uses a set of distributions that are sufficiently close in the $\phi$-divergence sense from a given ``nominal'' distribution. 
 Of particular interest is the case when the nominal distribution takes the form of the empirical distribution determined by direct observation of data.
 In this paper, we adapt the $\phi$-divergence method to the setting of a two-stage stochastic linear program with recourse and call this the two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse (\plp).
 
@@ -266,7 +266,7 @@ Closer to our case, \citet{pflug2007ambiguity} develop a data-driven method for 
 Although it is not a distributionally robust stochastic program, this soft robust model, like the distributionally robust models, takes the form of a convex risk measure.
 
 Three recent papers by \citet{wang2010likelihood}, \citet{calafiore2007ambiguous}, and \citet{hukullback} provide similar studies using a specific $\phi$-divergence, described in Section \ref{sec:phi_divergences}, that is defined by the Kullback-Leibler divergence.
-Both \citep{wang2010likelihood} and \citep{hukullback} produce dual problems similar to that presented in \citep{bental2011robust} and used here.
+Both \citep{wang2010likelihood} and \citep{hukullback} produce dual problems similar to that presented in \citep{bental2013robust} and used here.
 \citet{hukullback} differs from this work and the others by considering a continuous distributions, but doesn't relate the nominal distribution to observational data.
 Additionally, \citet{klabjan2013robust} uses the $\chi^2$ distance, another $\phi$-divergence, to define an uncertain demand distribution for a stochastic lot-sizing problem using historical data.
 Our work unites these previous papers and provides insight into conditions where each $\phi$-divergence should be used and the behavior of the optimization problem as more data is gathered.
@@ -276,7 +276,7 @@ Our work unites these previous papers and provides insight into conditions where
 The contributions of this paper are as follows. 
 
 \begin{itemize}
-\item[(i)] One of the open problems identified by \citet{bental2011robust} was to study the performance of different $\phi$-divergences.
+\item[(i)] One of the open problems identified by \citet{bental2013robust} was to study the performance of different $\phi$-divergences.
 Given that there are many $\phi$-divergences, a decision maker is left with the question of how each divergence behaves for his/her problem and which one to choose.
 In this paper, we provide a novel classification of $\phi$-divergences that begins to answer this open question.
 This classification allows us to provide insight into which class of $\phi$-divergence may be most useful to which type of model.
@@ -323,7 +323,7 @@ Section \ref{sec:plp_conclusions} concludes with a summary and future work.
 In this section we define the concept of a $\phi$-divergence and review several properties of  $\phi$-divergences that will be used throughout the paper. 
 \citet{pardo2005statistical} provides a good overview of much of the known properties of $\phi$-divergences. 
 We refer the readers to this book for further details.
-Many results in this section can be also found in \cite{bental1991certainty,bental2011robust}.
+Many results in this section can be also found in \cite{bental1991certainty,bental2013robust}.
 
 In the finite case, $\phi$-divergences are used to measure the distance between two non-negative vectors $\p = (p_1, \dots, p_n)^T$ and $\q = (q_1, \dots, q_n)^T$.
 Specifically, when $\p$ and $\q$ are probability vectors (i.e., satisfying $\sum_{\omega=1}^n p_\omega = \sum_{\omega=1}^n q_\omega = 1$), $\phi$-divergences are used to quantify the distance between two discrete distributions with finite support. 
@@ -476,8 +476,8 @@ So, the Slater condition holds, and we have strong duality.
 Some $\phi$-divergences, like the J-divergence, have no closed-form representation of $\phi^*$. 
 However, they can be expressed as the sum of other $\phi$-divergences with closed-form conjugates. 
 For example, sum of Burg Entropy and KL divergence gives the J-divergence. 
-In this case, the dual can be formed similarly; see \cite{bental2011robust} for details.
-Theorem 1 of \cite{bental2011robust} contains a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
+In this case, the dual can be formed similarly; see \cite{bental2013robust} for details.
+Theorem 1 of \cite{bental2013robust} contains a derivation of the dual problem, which is reprinted as part of the proof of Proposition \ref{prop:pop}.
 
 
 The right-hand side of (\ref{eq:plp_feas_constraint}) contains a limit.
@@ -503,7 +503,7 @@ We will discuss this case in more detail in Section~\ref{sec:classification} (e.
 \label{ssec:basicprop}
 
 In this section we list some basic properties of \plp.
-Some of these properties have already been noted earlier (e.g., by \citet{bental2011robust} and by others for specific $\phi$-divergences), but we list them for completeness.
+Some of these properties have already been noted earlier (e.g., by \citet{bental2013robust} and by others for specific $\phi$-divergences), but we list them for completeness.
 These properties help with our specialized solution method and our classification of $\phi$-divergences, and we refer to them in later sections.
 Throughout the rest of the paper, we use the notation
 \begin{equation}
@@ -549,7 +549,7 @@ when $\lambda^*>0$ and $q_\omega >0$.
 
 A coherent risk measure has desired properties including convexity and monotonicity \citep{rockafellar2007coherent,shaDR:09}.  
 These properties combined with the facts that $h_\omega(\x)$ is convex over $X$ and $X$ is a convex set implies Property \ref{property:convex}.  
-See also Proposition \ref{prop:convex} in Section \ref{sec:soln_algorithm} and \cite{bental2011robust}. 
+See also Proposition \ref{prop:convex} in Section \ref{sec:soln_algorithm} and \cite{bental2013robust}. 
 Property \ref{property:coherent_risk_measure} is valid even when we have $q_\omega=0$ for some $\omega$.
 The case of $q_\omega = 0$ plays an important role in the classification presented in Section \ref{sec:classification}. 
 Therefore, we provide a proof of Property \ref{property:coherent_risk_measure} in this case in Appendix \ref{sec:apx_proof}. 
@@ -597,12 +597,12 @@ When $\phi$ is twice continuously differentiable around $1$ with $\phi^{\prime \
 \]
 converges in distribution to a $\chi^2$-distribution with $n-1$ degrees of freedom, where $\q^N$ denotes the empirical distribution ($q^N_\omega = N_\omega/N$) and $\qtrue$ denotes the underlying true distribution.
 Most $\phi$-divergences in Table~\ref{tb:phi_definitions} satisfy this differentiability condition.
-\citet{bental2011robust} then use this result to suggest the asymptotic value
+\citet{bental2013robust} then use this result to suggest the asymptotic value
 \begin{equation} \label{eq:asymptotic_rho}
 	\rho = \frac{\phi''(1)}{2N} \chi^2_{n-1,1-\alpha},
 \end{equation}
 where $\chi^2_{n-1,1-\alpha}$ is the $1-\alpha$ percentile of a $\chi^2_{n-1}$ distribution, which produces an approximate $1-\alpha$ confidence region on the true distribution.
-To correct for small sample sizes and for more details, we refer the readers to \cite{pardo2005statistical} and \cite{bental2011robust}. 
+To correct for small sample sizes and for more details, we refer the readers to \cite{pardo2005statistical} and \cite{bental2013robust}. 
 
 %We are now ready to present the main contributions of this paper. 
 
@@ -1117,7 +1117,7 @@ it has the highest cost, i.e.,  $\bar{\omega} \in \arg\max_{\omega} h_\omega(\x^
 \end{proposition}
 
 \begin{proof}{\sc Proof of Proposition \ref{prop:pop}.}
-	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2011robust} and additionally consider the case where $q_\omega = 0$.
+	We present here an abridged derivation of the dual problem (\ref{eq:plp_two_stage}), which can be found in full in \cite{bental2013robust} and additionally consider the case where $q_\omega = 0$.
 	For this proof, we assume for simplicity that the first-stage cost vector is $\c = \mathbf{0}$.	
 	We begin with the Lagrangian of (\ref{eq:plp_primal}), $\mathcal{L}(\p,\mu,\lambda) = \sum_{\omega=1}^n p_\omega h_\omega(\x) + \left( 1-\sum_{\omega=1}^n p_\omega \right)\mu + \left( \rho - \sum_{\omega=1}^n q_\omega \phi\left(\frac{p_\omega}{q_\omega}\right) \right)\lambda$. 
 We then generate the dual of the inner problem as
