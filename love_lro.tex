@@ -202,7 +202,7 @@
 	However, the true distribution is unknown in many applications. 
 	Especially in cases where there is little data or not much trust in the data, an ambiguity set of distributions can be used to hedge against the distributional uncertainty. 
 	$\phi$-divergences (e.g., Kullback-Leibler divergence, $\chi^2$ distance, etc.) provide a natural way to create an ambiguity set of distributions that are centered around a nominal distribution. 
-	The nominal distribution can be obtained by using observed data, expert opinions, simulations, etc. 
+	The nominal distribution can be obtained by using observed data, expert opinions, simulations, and so forth.  
 	In this paper, we present a classification of $\phi$-divergences to elucidate their use for models with different properties and sources of data.
 	We illustrate our classification on $\phi$-divergences that result in common risk optimization models. 
 	A condition for assessing the value of collecting additional data is derived, and we demonstrate that the $\phi$-divergence-based ambiguous program behaves essentially the same as the associated non-ambiguous stochastic program as more data is collected.
@@ -241,8 +241,8 @@ This concern has led to the development of a modeling technique that replaces th
 Then, the model optimizes the worst-case expectation with respect to the distributions in this set to hedge against the distributional uncertainty.
 This set of distributions is referred to as the {\it ambiguity set} of distributions, sometimes called the {\it uncertainty set}.   
 This approach is not new, with early results dating back to \cite{scarf1958min} and Dupa{\v{c}}ov{\'{a}} as \cite{zackova1966minimax}. 
-This type of models has been referred to as {\it ambiguous stochastic programs}; see, for instance, \cite{pflug2007ambiguity} and \cite{erdogan2006ambiguous}. 
-Recently, these models have been called {\it distributionally robust optimization} \citep{delage2010distributionally,goh_sim_10,mehrotra_papp_14,hanasusanto_etal_15}.  
+This type of model has been referred to as an {\it ambiguous stochastic program}; see, for instance, \cite{pflug2007ambiguity} and \cite{erdogan2006ambiguous}. 
+More recently, this approach has been called {\it distributionally robust optimization} \citep{delage2010distributionally,goh_sim_10,mehrotra_papp_14,hanasusanto_etal_15}.  
 
 
 
@@ -258,7 +258,11 @@ In addition to direct observation, data can come from simulations, forecasts, or
 
 %\subsection{Contributions}
 
-In this paper, we adapt the $\phi$-divergence based ambiguity sets to two-stage stochastic linear programs with recourse. 
+In this paper\footnote{This work is largely derived from the dissertation \cite{love_13}. 
+An earlier version of Section \ref{sec:classification} has appeared in the conference paper \cite{love2014classification}, and select results have been summarized in the tutorial \cite{bayraksan_love_15}. 
+This paper contains more results, full derivations and proofs, and further numerical illustration of results.  
+Parts of \cite{bayraksan_love_15} have been included by permission.}
+we adapt the $\phi$-divergence based ambiguity sets to two-stage stochastic linear programs with recourse. 
 We call the resulting model two-stage $\phi$-divergence constrained ambiguous stochastic linear program with recourse and denote it as \plp. 
 % and examine its properties. 
 While we focus on \plp, some of our results apply to a broad class of distributionally robust optimization problems using $\phi$-divergences---we will point to these shortly. 
@@ -327,9 +331,7 @@ We also numerically illustrate our results on a small electricity generation exa
 \end{itemize}
 \smallskip 
 
-Earlier versions of the paper can be found in the dissertation \cite{love_13} and conference paper \cite{love2014classification}, and select results have been summarized in the tutorial \cite{bayraksan_love_15}. 
-This paper contains more results, full derivations and proofs, and further numerical illustration of results.  
-Parts of \cite{bayraksan_love_15} have been included by permission. 
+ 
 
 %\subsection{Organization}
 
@@ -1770,6 +1772,9 @@ There are other divergences, probability metrics, and statistical ways to measur
 Generalizations of the classification presented in this paper to other distance measures is another area of future research. 
 Further refinement of the classification would be valuable to deepen our understanding of why each ambiguity set might be preferred. 
 Finally, while some applications have appeared in the literature---some for specific phi-divergences, e.g., \cite{calafiore2007ambiguous,klabjan2013robust} and some recent work for general phi-divergences, e.g., \cite{love_bayraksan_w_15}---further applications of this class of problems to real-world problems would be beneficial. 
+
+%%
+\theendnotes
 
 
 % Acknowledgments here
